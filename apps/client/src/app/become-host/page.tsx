@@ -76,7 +76,7 @@ const BecomeHostPage = () => {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
       </div>
     );
   }
@@ -87,7 +87,7 @@ const BecomeHostPage = () => {
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <Check className="w-8 h-8 text-green-600" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl font-bold text-gray-900 mb-4 tracking-tight">
           Welcome to FlexiSpace Hosting!
         </h1>
         <p className="text-gray-600 mb-6">
@@ -103,7 +103,7 @@ const BecomeHostPage = () => {
     <div className="">
       {/* Hero Section */}
       <section className="text-center py-12 mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
           Share Your Space, Earn Extra Income
         </h1>
         <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
@@ -120,7 +120,7 @@ const BecomeHostPage = () => {
         <button
           onClick={handleBecomeHost}
           disabled={loading}
-          className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-lg font-semibold rounded-xl hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 shadow-lg shadow-indigo-500/25"
         >
           {loading ? (
             <>
@@ -138,7 +138,7 @@ const BecomeHostPage = () => {
         {!isAuthenticated && (
           <p className="text-sm text-gray-500 mt-4">
             Already have an account?{" "}
-            <Link href="/login?redirect=/become-host" className="text-blue-600 hover:underline">
+            <Link href="/login?redirect=/become-host" className="text-indigo-600 hover:underline">
               Sign in
             </Link>{" "}
             to continue
@@ -148,8 +148,8 @@ const BecomeHostPage = () => {
 
       {/* Benefits */}
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        <div className="p-6 bg-gray-50 rounded-xl">
-          <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-4">
+        <div className="p-6 bg-white rounded-xl border border-gray-100 shadow-[var(--shadow-sm)] hover:-translate-y-0.5 transition-transform duration-200">
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center mb-4">
             <DollarSign className="w-6 h-6" />
           </div>
           <h3 className="font-semibold text-gray-900 mb-2">Earn Extra Income</h3>
@@ -159,8 +159,8 @@ const BecomeHostPage = () => {
           </p>
         </div>
 
-        <div className="p-6 bg-gray-50 rounded-xl">
-          <div className="w-12 h-12 bg-green-100 text-green-600 rounded-lg flex items-center justify-center mb-4">
+        <div className="p-6 bg-white rounded-xl border border-gray-100 shadow-[var(--shadow-sm)] hover:-translate-y-0.5 transition-transform duration-200">
+          <div className="w-12 h-12 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-lg flex items-center justify-center mb-4">
             <Calendar className="w-6 h-6" />
           </div>
           <h3 className="font-semibold text-gray-900 mb-2">Flexible Schedule</h3>
@@ -170,8 +170,8 @@ const BecomeHostPage = () => {
           </p>
         </div>
 
-        <div className="p-6 bg-gray-50 rounded-xl">
-          <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-4">
+        <div className="p-6 bg-white rounded-xl border border-gray-100 shadow-[var(--shadow-sm)] hover:-translate-y-0.5 transition-transform duration-200">
+          <div className="w-12 h-12 bg-gradient-to-br from-purple-50 to-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-4">
             <Shield className="w-6 h-6" />
           </div>
           <h3 className="font-semibold text-gray-900 mb-2">Secure Payments</h3>
@@ -181,8 +181,8 @@ const BecomeHostPage = () => {
           </p>
         </div>
 
-        <div className="p-6 bg-gray-50 rounded-xl">
-          <div className="w-12 h-12 bg-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-4">
+        <div className="p-6 bg-white rounded-xl border border-gray-100 shadow-[var(--shadow-sm)] hover:-translate-y-0.5 transition-transform duration-200">
+          <div className="w-12 h-12 bg-gradient-to-br from-orange-50 to-orange-100 text-orange-600 rounded-lg flex items-center justify-center mb-4">
             <Building2 className="w-6 h-6" />
           </div>
           <h3 className="font-semibold text-gray-900 mb-2">Easy Management</h3>
@@ -195,12 +195,12 @@ const BecomeHostPage = () => {
 
       {/* How It Works */}
       <section className="mb-16">
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-8 tracking-tight">
           How It Works
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="text-center">
-            <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-violet-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
               1
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Create Your Listing</h3>
@@ -211,7 +211,7 @@ const BecomeHostPage = () => {
           </div>
 
           <div className="text-center">
-            <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-violet-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
               2
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Accept Bookings</h3>
@@ -222,7 +222,7 @@ const BecomeHostPage = () => {
           </div>
 
           <div className="text-center">
-            <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+            <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-violet-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">
               3
             </div>
             <h3 className="font-semibold text-gray-900 mb-2">Get Paid</h3>
@@ -235,8 +235,8 @@ const BecomeHostPage = () => {
       </section>
 
       {/* Space Types */}
-      <section className="bg-gray-50 rounded-2xl p-8 mb-16">
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">
+      <section className="bg-gradient-to-br from-gray-50 to-indigo-50/30 rounded-2xl p-8 mb-16">
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-8 tracking-tight">
           What Can You Host?
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
@@ -248,7 +248,7 @@ const BecomeHostPage = () => {
             { name: "Wedding Venues", emoji: "💒" },
             { name: "Coworking Spaces", emoji: "🏠" },
           ].map((type) => (
-            <div key={type.name} className="p-4 bg-white rounded-lg">
+            <div key={type.name} className="p-4 bg-white rounded-lg border border-gray-100 shadow-[var(--shadow-sm)]">
               <div className="text-3xl mb-2">{type.emoji}</div>
               <p className="text-sm font-medium text-gray-900">{type.name}</p>
             </div>
@@ -258,7 +258,7 @@ const BecomeHostPage = () => {
 
       {/* CTA */}
       <section className="text-center py-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4 tracking-tight">
           Ready to Start Hosting?
         </h2>
         <p className="text-gray-600 mb-6">
@@ -267,7 +267,7 @@ const BecomeHostPage = () => {
         <button
           onClick={handleBecomeHost}
           disabled={loading}
-          className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-xl hover:bg-blue-700 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 text-white text-lg font-semibold rounded-xl hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 shadow-lg shadow-indigo-500/25"
         >
           {loading ? (
             <>

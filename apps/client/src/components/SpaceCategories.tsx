@@ -74,8 +74,8 @@ const SpaceCategories = () => {
           onClick={() => handleChange(type.slug)}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
             type.slug === selectedType || (type.slug === "all" && !searchParams.get("type"))
-              ? "bg-gray-900 text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+              ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
+              : "bg-white text-gray-600 border border-gray-200 hover:border-indigo-300"
           }`}
         >
           {type.icon}

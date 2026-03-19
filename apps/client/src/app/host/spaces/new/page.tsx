@@ -71,7 +71,6 @@ const NewSpacePage = () => {
     pricingType: "BOTH",
     pricePerHour: "",
     pricePerDay: "",
-    depositPercent: "30",
     capacity: "",
     address: "",
     city: "",
@@ -175,7 +174,6 @@ const NewSpacePage = () => {
         pricePerDay: formData.pricePerDay
           ? parseFloat(formData.pricePerDay)
           : null,
-        depositPercent: parseInt(formData.depositPercent),
         capacity: parseInt(formData.capacity),
       };
 
@@ -245,7 +243,7 @@ const NewSpacePage = () => {
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, name: e.target.value }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 placeholder="e.g., Modern Downtown Meeting Room"
               />
             </div>
@@ -265,7 +263,7 @@ const NewSpacePage = () => {
                     shortDescription: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 placeholder="A brief description for listings"
               />
             </div>
@@ -285,7 +283,7 @@ const NewSpacePage = () => {
                     description: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 placeholder="Describe your space in detail..."
               />
             </div>
@@ -304,7 +302,7 @@ const NewSpacePage = () => {
                       spaceType: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 >
                   {spaceTypes.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -327,7 +325,7 @@ const NewSpacePage = () => {
                       categorySlug: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 >
                   <option value="">Select a category</option>
                   {categories.map((cat) => (
@@ -351,7 +349,7 @@ const NewSpacePage = () => {
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, capacity: e.target.value }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 placeholder="Maximum number of people"
               />
             </div>
@@ -376,9 +374,9 @@ const NewSpacePage = () => {
               </div>
             ))}
 
-            <label className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors">
+            <label className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
               {uploadingImage ? (
-                <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+                <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
               ) : (
                 <>
                   <Upload className="w-8 h-8 text-gray-400 mb-2" />
@@ -415,7 +413,7 @@ const NewSpacePage = () => {
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, address: e.target.value }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 placeholder="Street address"
               />
             </div>
@@ -432,7 +430,7 @@ const NewSpacePage = () => {
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, city: e.target.value }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -445,7 +443,7 @@ const NewSpacePage = () => {
                   onChange={(e) =>
                     setFormData((prev) => ({ ...prev, state: e.target.value }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -462,7 +460,7 @@ const NewSpacePage = () => {
                       country: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 />
               </div>
               <div>
@@ -478,7 +476,7 @@ const NewSpacePage = () => {
                       postalCode: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 />
               </div>
             </div>
@@ -503,7 +501,7 @@ const NewSpacePage = () => {
                     pricingType: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
               >
                 {pricingTypes.map((type) => (
                   <option key={type.value} value={type.value}>
@@ -532,7 +530,7 @@ const NewSpacePage = () => {
                         pricePerHour: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                     placeholder="$"
                   />
                 </div>
@@ -556,32 +554,12 @@ const NewSpacePage = () => {
                         pricePerDay: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                     placeholder="$"
                   />
                 </div>
               )}
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Deposit Percentage *
-                </label>
-                <input
-                  type="number"
-                  required
-                  min="0"
-                  max="100"
-                  value={formData.depositPercent}
-                  onChange={(e) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      depositPercent: e.target.value,
-                    }))
-                  }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="%"
-                />
-              </div>
             </div>
           </div>
         </section>
@@ -598,7 +576,7 @@ const NewSpacePage = () => {
                 onClick={() => toggleAmenity(amenity.id)}
                 className={`flex items-center gap-2 px-4 py-3 border rounded-lg transition-colors ${
                   formData.amenityIds.includes(amenity.id)
-                    ? "border-blue-500 bg-blue-50 text-blue-700"
+                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
                     : "border-gray-200 hover:bg-gray-50"
                 }`}
               >
@@ -629,7 +607,7 @@ const NewSpacePage = () => {
                     cancellationPolicy: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
               >
                 {cancellationPolicies.map((policy) => (
                   <option key={policy.value} value={policy.value}>
@@ -652,7 +630,7 @@ const NewSpacePage = () => {
                     houseRules: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 placeholder="Any rules or guidelines for guests..."
               />
             </div>
@@ -668,7 +646,7 @@ const NewSpacePage = () => {
                     instantBook: e.target.checked,
                   }))
                 }
-                className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label htmlFor="instantBook" className="text-sm text-gray-700">
                 Enable Instant Book (guests can book without your approval)
@@ -688,7 +666,7 @@ const NewSpacePage = () => {
           <button
             type="submit"
             disabled={loading || formData.images.length === 0}
-            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+            className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-md shadow-indigo-500/20"
           >
             {loading ? (
               <>

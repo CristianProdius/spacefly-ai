@@ -19,8 +19,6 @@ export interface BookingDraft {
   cleaningFee: number;
   serviceFee: number;
   totalAmount: number;
-  depositAmount: number;
-  remainingAmount: number;
 }
 
 interface BookingState {

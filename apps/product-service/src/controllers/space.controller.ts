@@ -422,12 +422,12 @@ export const checkAvailability = async (req: Request, res: Response) => {
     where: {
       spaceId,
       status: {
-        in: ["PENDING", "APPROVED", "DEPOSIT_PAID"],
+        in: ["PENDING", "CONFIRMED"],
       },
       OR: [
         {
-          startDateTime: { lte: end },
-          endDateTime: { gte: start },
+          startDate: { lte: end },
+          endDate: { gte: start },
         },
       ],
     },

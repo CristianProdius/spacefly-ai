@@ -5,7 +5,7 @@ import type { User } from "./auth";
 export type BookingStatus =
   | "PENDING"
   | "APPROVED"
-  | "DEPOSIT_PAID"
+  | "CONFIRMED"
   | "COMPLETED"
   | "CANCELLED"
   | "REJECTED"
@@ -14,40 +14,33 @@ export type BookingStatus =
 export interface Booking {
   id: string;
 
-  // Guest info
-  userId: string;
-  guestEmail: string;
-  guestName: string;
-  guestPhone: string | null;
-  numberOfGuests: number;
-
-  // Space reference
+  // Guest & Host
+  guestId: string;
+  hostId: string;
   spaceId: number;
 
   // Booking details
-  startDateTime: string;
-  endDateTime: string;
+  startDate: string;
+  endDate: string;
+  startTime: string | null;
+  endTime: string | null;
+  guests: number;
   isHourly: boolean;
 
   // Pricing (all in cents)
   subtotal: number;
+  cleaningFee: number;
   serviceFee: number;
   totalAmount: number;
-  depositAmount: number;
-  remainingAmount: number;
-
-  // Payment tracking
-  depositPaid: boolean;
-  depositPaidAt: string | null;
-  remainingPaid: boolean;
-  remainingPaidAt: string | null;
-  depositSessionId: string | null;
-  remainingSessionId: string | null;
 
   // Status
   status: BookingStatus;
-  hostNote: string | null;
-  guestNote: string | null;
+  guestMessage: string | null;
+  hostMessage: string | null;
+
+  // Cancellation
+  cancelledBy: string | null;
+  cancellationReason: string | null;
 
   // Timestamps
   createdAt: string;
@@ -59,7 +52,8 @@ export interface Booking {
 
 export interface BookingWithDetails extends Booking {
   space: Space;
-  user: Pick<User, "id" | "name" | "email" | "image">;
+  guest: Pick<User, "id" | "name" | "email" | "image">;
+  host: Pick<User, "id" | "name" | "email" | "image">;
 }
 
 export interface BookingChartType {
@@ -72,14 +66,13 @@ export interface BookingChartType {
 // Zod Schemas
 export const CreateBookingSchema = z.object({
   spaceId: z.number(),
-  startDateTime: z.string(),
-  endDateTime: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
+  startTime: z.string().optional(),
+  endTime: z.string().optional(),
+  guests: z.number().min(1).default(1),
   isHourly: z.boolean(),
-  numberOfGuests: z.number().min(1).default(1),
-  guestName: z.string().min(1, "Name is required"),
-  guestEmail: z.string().email("Invalid email"),
-  guestPhone: z.string().optional(),
-  guestNote: z.string().optional(),
+  message: z.string().optional(),
 });
 
 export const ApproveBookingSchema = z.object({
@@ -87,7 +80,7 @@ export const ApproveBookingSchema = z.object({
 });
 
 export const RejectBookingSchema = z.object({
-  hostNote: z.string().min(1, "Please provide a reason for rejection"),
+  reason: z.string().min(1, "Please provide a reason for rejection"),
 });
 
 export const CancelBookingSchema = z.object({

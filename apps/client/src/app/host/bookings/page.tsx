@@ -27,8 +27,6 @@ interface Booking {
   guests: number;
   isHourly: boolean;
   totalAmount: number;
-  depositAmount: number;
-  depositPaid: boolean;
   createdAt: string;
   space: {
     id: number;
@@ -47,7 +45,7 @@ const statusFilters = [
   { value: "all", label: "All" },
   { value: "PENDING", label: "Pending" },
   { value: "APPROVED", label: "Approved" },
-  { value: "DEPOSIT_PAID", label: "Confirmed" },
+  { value: "CONFIRMED", label: "Confirmed" },
   { value: "COMPLETED", label: "Completed" },
   { value: "CANCELLED", label: "Cancelled" },
 ];
@@ -97,7 +95,7 @@ const HostBookingsPage = () => {
       if (res.ok) {
         setBookings((prev) =>
           prev.map((b) =>
-            b.id === bookingId ? { ...b, status: "APPROVED" } : b
+            b.id === bookingId ? { ...b, status: "CONFIRMED" } : b
           )
         );
       }
@@ -261,8 +259,8 @@ const HostBookingsPage = () => {
                         booking.status === "PENDING"
                           ? "bg-yellow-100 text-yellow-700"
                           : booking.status === "APPROVED"
-                            ? "bg-blue-100 text-blue-700"
-                            : booking.status === "DEPOSIT_PAID"
+                            ? "bg-indigo-50 text-indigo-700"
+                            : booking.status === "CONFIRMED"
                               ? "bg-green-100 text-green-700"
                               : booking.status === "COMPLETED"
                                 ? "bg-gray-100 text-gray-700"
@@ -348,12 +346,12 @@ const HostBookingsPage = () => {
                 </div>
               )}
 
-              {booking.status === "DEPOSIT_PAID" && (
+              {booking.status === "CONFIRMED" && (
                 <div className="flex items-center gap-3 mt-4 pt-4 border-t">
                   <button
                     onClick={() => handleComplete(booking.id)}
                     disabled={actionLoading === booking.id}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 shadow-md shadow-indigo-500/20"
                   >
                     {actionLoading === booking.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

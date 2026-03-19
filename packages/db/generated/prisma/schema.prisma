@@ -34,7 +34,7 @@ enum PricingType {
 enum BookingStatus {
   PENDING
   APPROVED
-  DEPOSIT_PAID
+  CONFIRMED
   COMPLETED
   CANCELLED
   REJECTED
@@ -72,16 +72,16 @@ model User {
   updatedAt     DateTime @updatedAt
 
   // Host-specific fields
-  hostVerified    Boolean   @default(false)
-  hostingSince    DateTime?
-  stripeAccountId String?
+  hostVerified Boolean   @default(false)
+  hostingSince DateTime?
 
   // Relations
-  sessions Session[]
-  spaces   Space[] // Spaces hosted by this user
-  bookings Booking[] // Bookings made by this user
-  reviews  Review[] // Reviews written by this user
-  payouts  Payout[] // Payouts for hosts
+  sessions        Session[]
+  spaces          Space[] // Spaces hosted by this user
+  bookingsAsGuest Booking[] @relation("GuestBookings")
+  bookingsAsHost  Booking[] @relation("HostBookings")
+  reviews         Review[] // Reviews written by this user
+  payouts         Payout[] // Payouts for hosts
 
   @@index([email])
   @@index([username])
@@ -112,7 +112,7 @@ model Space {
   pricingType      PricingType
   pricePerHour     Int? // In cents
   pricePerDay      Int? // In cents
-  depositPercent   Int         @default(30)
+  cleaningFee      Int         @default(0) // In cents
   capacity         Int
   minBookingHours  Int?
   maxBookingHours  Int?
@@ -213,42 +213,33 @@ model BlockedDate {
 model Booking {
   id String @id @default(cuid())
 
-  // Guest info
-  userId         String
-  guestEmail     String
-  guestName      String
-  guestPhone     String?
-  numberOfGuests Int     @default(1)
-
-  // Space reference
+  // Guest & Host
+  guestId String
+  hostId  String
   spaceId Int
 
   // Booking details
-  startDateTime DateTime
-  endDateTime   DateTime
-  isHourly      Boolean // true = hourly, false = daily
+  startDate DateTime
+  endDate   DateTime
+  startTime String?
+  endTime   String?
+  guests    Int      @default(1)
+  isHourly  Boolean
 
   // Pricing (all in cents)
-  subtotal        Int
-  serviceFee      Int
-  totalAmount     Int
-  depositAmount   Int
-  remainingAmount Int
-
-  // Payment tracking
-  depositPaid              Boolean   @default(false)
-  depositPaidAt            DateTime?
-  remainingPaid            Boolean   @default(false)
-  remainingPaidAt          DateTime?
-  depositSessionId         String?
-  remainingSessionId       String?
-  depositPaymentIntentId   String?
-  remainingPaymentIntentId String?
+  subtotal    Int
+  cleaningFee Int @default(0)
+  serviceFee  Int
+  totalAmount Int
 
   // Status
-  status    BookingStatus @default(PENDING)
-  hostNote  String?
-  guestNote String?
+  status       BookingStatus @default(PENDING)
+  guestMessage String?
+  hostMessage  String?
+
+  // Cancellation
+  cancelledBy        String?
+  cancellationReason String?
 
   // Timestamps
   createdAt   DateTime  @default(now())
@@ -258,14 +249,16 @@ model Booking {
   completedAt DateTime?
 
   // Relations
-  user   User    @relation(fields: [userId], references: [id])
+  guest  User    @relation("GuestBookings", fields: [guestId], references: [id])
+  host   User    @relation("HostBookings", fields: [hostId], references: [id])
   space  Space   @relation(fields: [spaceId], references: [id])
   review Review?
 
-  @@index([userId])
+  @@index([guestId])
+  @@index([hostId])
   @@index([spaceId])
   @@index([status])
-  @@index([startDateTime])
+  @@index([startDate])
   @@index([createdAt])
 }
 
@@ -309,10 +302,9 @@ model Payout {
   status     PayoutStatus @default(PENDING)
   bookingIds String[]
 
-  stripeTransferId String?
-  processedAt      DateTime?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  processedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   host User @relation(fields: [hostId], references: [id])
 

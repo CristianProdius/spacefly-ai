@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut, CalendarDays, User, Building2, Settings } from "lucide-react";
+import { LogOut, CalendarDays, User, Building2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import useAuthStore from "@/stores/authStore";
@@ -34,7 +34,7 @@ const ProfileButton = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors border border-gray-200"
+        className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors border border-gray-200 hover:ring-2 hover:ring-indigo-500/20"
       >
         {user?.image ? (
           <img
@@ -48,7 +48,7 @@ const ProfileButton = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+        <div className="absolute right-0 mt-2 w-56 backdrop-blur-xl bg-white/95 rounded-xl shadow-[var(--shadow-lg)] border border-gray-200 py-2 z-50">
           <div className="px-4 py-3 border-b border-gray-100">
             <p className="font-medium text-gray-900">{user?.name || "User"}</p>
             <p className="text-sm text-gray-500">{user?.email}</p>
@@ -90,7 +90,7 @@ const ProfileButton = () => {
                   router.push("/become-host");
                   setIsOpen(false);
                 }}
-                className="w-full px-4 py-2 text-left text-sm text-blue-600 hover:bg-blue-50 flex items-center gap-3"
+                className="w-full px-4 py-2 text-left text-sm text-indigo-600 hover:bg-indigo-50 flex items-center gap-3"
               >
                 <Building2 className="w-4 h-4" />
                 Become a Host

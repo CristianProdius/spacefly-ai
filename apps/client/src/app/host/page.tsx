@@ -54,7 +54,7 @@ const HostDashboardPage = () => {
         ).length;
         const upcomingBookings = bookings.filter(
           (b: any) =>
-            ["APPROVED", "DEPOSIT_PAID"].includes(b.status) &&
+            ["CONFIRMED"].includes(b.status) &&
             new Date(b.startDate) >= new Date()
         ).length;
 
@@ -68,7 +68,7 @@ const HostDashboardPage = () => {
           0
         );
         const pendingEarnings = bookings
-          .filter((b: any) => ["DEPOSIT_PAID"].includes(b.status))
+          .filter((b: any) => ["CONFIRMED"].includes(b.status))
           .reduce(
             (sum: number, b: any) =>
               sum + (b.totalAmount - b.serviceFee - b.cleaningFee),
@@ -111,7 +111,7 @@ const HostDashboardPage = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
           Welcome back, {user?.name || "Host"}!
         </h1>
         <p className="text-gray-600 mt-1">
@@ -121,9 +121,9 @@ const HostDashboardPage = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-lg">
               <Building2 className="w-5 h-5" />
             </div>
             <span className="text-sm text-gray-500">Active Spaces</span>
@@ -137,9 +137,9 @@ const HostDashboardPage = () => {
           </p>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-yellow-100 text-yellow-600 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-yellow-50 to-yellow-100 text-yellow-600 rounded-lg">
               <Clock className="w-5 h-5" />
             </div>
             <span className="text-sm text-gray-500">Pending Requests</span>
@@ -149,9 +149,9 @@ const HostDashboardPage = () => {
           </p>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-green-100 text-green-600 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-lg">
               <CalendarDays className="w-5 h-5" />
             </div>
             <span className="text-sm text-gray-500">Upcoming</span>
@@ -161,9 +161,9 @@ const HostDashboardPage = () => {
           </p>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-purple-50 to-purple-100 text-purple-600 rounded-lg">
               <DollarSign className="w-5 h-5" />
             </div>
             <span className="text-sm text-gray-500">Total Earnings</span>
@@ -218,7 +218,7 @@ const HostDashboardPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Link
           href="/host/spaces/new"
-          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-center"
+          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
         >
           <Building2 className="w-6 h-6 mx-auto text-gray-600 mb-2" />
           <span className="font-medium text-gray-900">Add New Space</span>
@@ -226,7 +226,7 @@ const HostDashboardPage = () => {
 
         <Link
           href="/host/bookings"
-          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-center"
+          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
         >
           <CalendarDays className="w-6 h-6 mx-auto text-gray-600 mb-2" />
           <span className="font-medium text-gray-900">View All Bookings</span>
@@ -234,7 +234,7 @@ const HostDashboardPage = () => {
 
         <Link
           href="/host/spaces"
-          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors text-center"
+          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
         >
           <Check className="w-6 h-6 mx-auto text-gray-600 mb-2" />
           <span className="font-medium text-gray-900">Manage Spaces</span>

@@ -69,7 +69,7 @@ export const columns: ColumnDef<Booking>[] = [
             `p-1 rounded-md w-max text-xs`,
             status === "PENDING" && "bg-yellow-500/40",
             status === "APPROVED" && "bg-blue-500/40",
-            status === "DEPOSIT_PAID" && "bg-purple-500/40",
+            status === "CONFIRMED" && "bg-purple-500/40",
             status === "COMPLETED" && "bg-green-500/40",
             status === "CANCELLED" && "bg-red-500/40",
             status === "REJECTED" && "bg-red-500/40"

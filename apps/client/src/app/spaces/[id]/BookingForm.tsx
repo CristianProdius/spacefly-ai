@@ -52,8 +52,6 @@ const BookingForm = ({ space }: BookingFormProps) => {
     const cleaningFee = subtotal * 0.05; // 5% cleaning fee
     const serviceFee = subtotal * 0.1; // 10% service fee
     const totalAmount = subtotal + cleaningFee + serviceFee;
-    const depositAmount = totalAmount * (space.depositPercent / 100);
-    const remainingAmount = totalAmount - depositAmount;
 
     return {
       hours,
@@ -62,8 +60,6 @@ const BookingForm = ({ space }: BookingFormProps) => {
       cleaningFee,
       serviceFee,
       totalAmount,
-      depositAmount,
-      remainingAmount,
     };
   }, [bookingType, startDate, endDate, startTime, endTime, space]);
 
@@ -93,8 +89,6 @@ const BookingForm = ({ space }: BookingFormProps) => {
       cleaningFee: pricing.cleaningFee,
       serviceFee: pricing.serviceFee,
       totalAmount: pricing.totalAmount,
-      depositAmount: pricing.depositAmount,
-      remainingAmount: pricing.remainingAmount,
     });
 
     router.push("/bookings/checkout");
@@ -103,7 +97,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
   const minDate = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-lg">
+    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-[var(--shadow-lg)]">
       {/* Price Display */}
       <div className="flex items-baseline gap-1 mb-6">
         {bookingType === "hourly" && space.pricePerHour ? (
@@ -128,9 +122,9 @@ const BookingForm = ({ space }: BookingFormProps) => {
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setBookingType("hourly")}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
               bookingType === "hourly"
-                ? "bg-gray-900 text-white"
+                ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
@@ -138,9 +132,9 @@ const BookingForm = ({ space }: BookingFormProps) => {
           </button>
           <button
             onClick={() => setBookingType("daily")}
-            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
               bookingType === "daily"
-                ? "bg-gray-900 text-white"
+                ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
@@ -167,7 +161,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
                   setEndDate(e.target.value);
                 }
               }}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             />
           </div>
         </div>
@@ -184,7 +178,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
                 value={endDate}
                 min={startDate || minDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
               />
             </div>
           </div>
@@ -201,7 +195,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
                 <select
                   value={startTime}
                   onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 appearance-none"
                 >
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={`${i.toString().padStart(2, "0")}:00`}>
@@ -221,7 +215,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
                 <select
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 appearance-none"
                 >
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={`${i.toString().padStart(2, "0")}:00`}>
@@ -245,7 +239,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
             <select
               value={guests}
               onChange={(e) => setGuests(parseInt(e.target.value))}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 appearance-none"
             >
               {Array.from({ length: space.capacity }, (_, i) => (
                 <option key={i + 1} value={i + 1}>
@@ -281,10 +275,6 @@ const BookingForm = ({ space }: BookingFormProps) => {
             <span>Total</span>
             <span>${pricing.totalAmount.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-blue-600 font-medium">
-            <span>Deposit due now ({space.depositPercent}%)</span>
-            <span>${pricing.depositAmount.toFixed(2)}</span>
-          </div>
         </div>
       )}
 
@@ -292,7 +282,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
       <button
         onClick={handleBooking}
         disabled={!startDate || (bookingType === "daily" && !endDate)}
-        className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-indigo-500/20"
       >
         {space.instantBook ? "Book Now" : "Request to Book"}
       </button>

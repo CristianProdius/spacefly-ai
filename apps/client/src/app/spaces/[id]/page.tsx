@@ -7,7 +7,6 @@ import {
   Star,
   Clock,
   Calendar,
-  Shield,
   Check,
 } from "lucide-react";
 import BookingForm from "./BookingForm";
@@ -89,7 +88,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
   return (
     <div className="max-w-7xl mx-auto">
       {/* Image Gallery */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8 rounded-xl overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8 rounded-xl overflow-hidden shadow-[var(--shadow-lg)]">
         <div className="relative aspect-[4/3] md:aspect-auto md:row-span-2">
           <Image
             src={images[0] || "/placeholder-space.jpg"}
@@ -119,16 +118,16 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           {/* Header */}
           <div>
             <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-              <span className="bg-gray-100 px-2 py-1 rounded">
+              <span className="bg-gray-100 px-2 py-1 rounded border border-gray-200">
                 {spaceTypeLabels[space.spaceType]}
               </span>
               {space.instantBook && (
-                <span className="bg-green-100 text-green-700 px-2 py-1 rounded">
+                <span className="bg-green-50 text-green-700 px-2 py-1 rounded border border-green-200">
                   Instant Book
                 </span>
               )}
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
               {space.name}
             </h1>
             <div className="flex items-center gap-4 text-gray-600">
@@ -151,7 +150,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           </div>
 
           {/* Host Info */}
-          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
             <div className="relative w-14 h-14 rounded-full overflow-hidden">
               <Image
                 src={space.host?.image || "/default-avatar.png"}
@@ -175,7 +174,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
 
           {/* Key Features */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
               <Users className="w-6 h-6 text-gray-600" />
               <div>
                 <p className="font-medium text-gray-900">{space.capacity}</p>
@@ -183,7 +182,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
               </div>
             </div>
             {space.pricingType === "HOURLY" || space.pricingType === "BOTH" ? (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
                 <Clock className="w-6 h-6 text-gray-600" />
                 <div>
                   <p className="font-medium text-gray-900">
@@ -194,7 +193,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
               </div>
             ) : null}
             {space.pricingType === "DAILY" || space.pricingType === "BOTH" ? (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
+              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
                 <Calendar className="w-6 h-6 text-gray-600" />
                 <div>
                   <p className="font-medium text-gray-900">
@@ -204,20 +203,11 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
                 </div>
               </div>
             ) : null}
-            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <Shield className="w-6 h-6 text-gray-600" />
-              <div>
-                <p className="font-medium text-gray-900">
-                  {space.depositPercent}%
-                </p>
-                <p className="text-sm text-gray-500">Deposit</p>
-              </div>
-            </div>
           </div>
 
           {/* Description */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
               About this space
             </h2>
             <p className="text-gray-600 leading-relaxed whitespace-pre-line">
@@ -228,7 +218,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           {/* Amenities */}
           {space.amenities && space.amenities.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
                 Amenities
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -248,7 +238,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           {/* House Rules */}
           {space.houseRules && (
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
                 House Rules
               </h2>
               <p className="text-gray-600 whitespace-pre-line">
@@ -259,10 +249,10 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
 
           {/* Cancellation Policy */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
               Cancellation Policy
             </h2>
-            <div className="p-4 bg-gray-50 rounded-lg">
+            <div className="p-4 bg-gray-50 rounded-lg border border-gray-100">
               <p className="font-medium text-gray-900">{cancellation.label}</p>
               <p className="text-gray-600 text-sm mt-1">
                 {cancellation.description}
@@ -276,7 +266,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
 
         {/* Booking Sidebar */}
         <div className="lg:col-span-1">
-          <div className="sticky top-4">
+          <div className="sticky top-20">
             <BookingForm space={space} />
           </div>
         </div>

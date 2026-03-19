@@ -5,18 +5,15 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import useBookingStore from "@/stores/bookingStore";
 import useAuthStore from "@/stores/authStore";
-import { Calendar, Clock, Users, MapPin, AlertCircle, Check } from "lucide-react";
-import StripePaymentForm from "@/components/StripePaymentForm";
+import { Calendar, Clock, Users, AlertCircle, Check } from "lucide-react";
 
 const CheckoutPage = () => {
   const router = useRouter();
   const { draft, hasHydrated, clearDraft } = useBookingStore();
   const { user, isAuthenticated, token } = useAuthStore();
-  const [bookingId, setBookingId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [step, setStep] = useState<"review" | "payment" | "success">("review");
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (hasHydrated && !draft) {
@@ -37,7 +34,6 @@ const CheckoutPage = () => {
     setError(null);
 
     try {
-      // Create booking
       const bookingRes = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings`,
         {
@@ -58,8 +54,6 @@ const CheckoutPage = () => {
             cleaningFee: draft.cleaningFee,
             serviceFee: draft.serviceFee,
             totalAmount: draft.totalAmount,
-            depositAmount: draft.depositAmount,
-            remainingAmount: draft.remainingAmount,
           }),
         }
       );
@@ -69,33 +63,8 @@ const CheckoutPage = () => {
         throw new Error(data.message || "Failed to create booking");
       }
 
-      const booking = await bookingRes.json();
-      setBookingId(booking.id);
-
-      // Create payment session for deposit
-      const paymentRes = await fetch(
-        `${process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL}/sessions/deposit`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            bookingId: booking.id,
-            amount: draft.depositAmount,
-            spaceName: draft.spaceName,
-          }),
-        }
-      );
-
-      if (!paymentRes.ok) {
-        throw new Error("Failed to create payment session");
-      }
-
-      const { clientSecret: secret } = await paymentRes.json();
-      setClientSecret(secret);
-      setStep("payment");
+      clearDraft();
+      setSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -103,20 +72,15 @@ const CheckoutPage = () => {
     }
   };
 
-  const handlePaymentSuccess = () => {
-    clearDraft();
-    setStep("success");
-  };
-
   if (!hasHydrated || !draft) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
       </div>
     );
   }
 
-  if (step === "success") {
+  if (success) {
     return (
       <div className="max-w-2xl mx-auto text-center py-12">
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -126,13 +90,13 @@ const CheckoutPage = () => {
           Booking Request Sent!
         </h1>
         <p className="text-gray-600 mb-8">
-          Your deposit has been processed. The host will review your booking
-          request and respond within 24 hours.
+          Your booking request has been sent. The host will review your request
+          and respond within 24 hours.
         </p>
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={() => router.push("/bookings")}
-            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
           >
             View My Bookings
           </button>
@@ -150,7 +114,7 @@ const CheckoutPage = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold text-gray-900 mb-8">
-        {step === "review" ? "Review Your Booking" : "Complete Payment"}
+        Review Your Booking
       </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -227,75 +191,37 @@ const CheckoutPage = () => {
               <span>${draft.totalAmount.toFixed(2)}</span>
             </div>
           </div>
-
-          {/* Payment Schedule */}
-          <div className="bg-blue-50 rounded-lg p-4 mt-4">
-            <h4 className="font-medium text-blue-900 mb-2">Payment Schedule</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-blue-800">
-                <span>Deposit (due now)</span>
-                <span className="font-semibold">${draft.depositAmount.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-blue-700">
-                <span>Remaining (due at check-in)</span>
-                <span>${draft.remainingAmount.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Action Panel */}
         <div>
-          {step === "review" ? (
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">
-                Confirm and Pay Deposit
-              </h3>
+          <div className="bg-white border border-gray-200 rounded-xl p-6">
+            <h3 className="font-semibold text-gray-900 mb-4">
+              Confirm Your Booking
+            </h3>
 
-              {error && (
-                <div className="flex items-start gap-2 p-4 bg-red-50 text-red-700 rounded-lg mb-4">
-                  <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-                  <p>{error}</p>
-                </div>
-              )}
-
-              <div className="space-y-4 text-sm text-gray-600 mb-6">
-                <p>
-                  By clicking &quot;Confirm Booking&quot;, you agree to the host&apos;s house
-                  rules and cancellation policy.
-                </p>
-                <p>
-                  Your deposit of <strong>${draft.depositAmount.toFixed(2)}</strong> will
-                  be charged immediately. The remaining balance will be due at
-                  check-in.
-                </p>
+            {error && (
+              <div className="flex items-start gap-2 p-4 bg-red-50 text-red-700 rounded-lg mb-4">
+                <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                <p>{error}</p>
               </div>
+            )}
 
-              <button
-                onClick={createBooking}
-                disabled={loading}
-                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {loading ? "Processing..." : "Confirm Booking"}
-              </button>
-            </div>
-          ) : (
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">
-                Pay Deposit
-              </h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Amount: <strong>${draft.depositAmount.toFixed(2)}</strong>
+            <div className="space-y-4 text-sm text-gray-600 mb-6">
+              <p>
+                By clicking &quot;Confirm Booking&quot;, you agree to the host&apos;s house
+                rules and cancellation policy.
               </p>
-
-              {clientSecret && (
-                <StripePaymentForm
-                  clientSecret={clientSecret}
-                  onSuccess={handlePaymentSuccess}
-                />
-              )}
             </div>
-          )}
+
+            <button
+              onClick={createBooking}
+              disabled={loading}
+              className="w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-indigo-500/20"
+            >
+              {loading ? "Processing..." : "Confirm Booking"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

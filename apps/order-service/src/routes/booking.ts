@@ -5,7 +5,7 @@ import {
   shouldBeHost,
 } from "@repo/auth-middleware/fastify";
 import { prisma, BookingStatus } from "@repo/db";
-import { startOfMonth, subMonths, differenceInHours, differenceInDays } from "date-fns";
+import { startOfMonth, subMonths, differenceInDays } from "date-fns";
 import { CreateBookingSchema } from "@repo/types";
 import { producer } from "../utils/kafka.js";
 
@@ -71,7 +71,7 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         });
       }
 
-      const { spaceId, startDate, endDate, startTime, endTime, guests, message } = result.data;
+      const { spaceId, startDate, endDate, startTime, endTime, guests, isHourly, message } = result.data;
 
       // Get space details
       const space = await prisma.space.findUnique({
@@ -99,7 +99,7 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         where: {
           spaceId,
           status: {
-            in: ["PENDING", "APPROVED", "DEPOSIT_PAID"],
+            in: ["PENDING", "CONFIRMED"],
           },
           startDate: { lte: new Date(endDate) },
           endDate: { gte: new Date(startDate) },
@@ -121,9 +121,6 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         endTime || null
       );
 
-      const depositAmount = Math.round(pricing.total * 0.3); // 30% deposit
-      const remainingAmount = pricing.total - depositAmount;
-
       // Create booking
       const booking = await prisma.booking.create({
         data: {
@@ -135,13 +132,12 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
           startTime,
           endTime,
           guests: guests || 1,
-          status: space.instantBook ? "APPROVED" : "PENDING",
+          isHourly,
+          status: space.instantBook ? "CONFIRMED" : "PENDING",
           subtotal: pricing.subtotal,
           cleaningFee: pricing.cleaningFee,
           serviceFee: pricing.serviceFee,
           totalAmount: pricing.total,
-          depositAmount,
-          remainingAmount,
           guestMessage: message,
         },
         include: {
@@ -244,13 +240,13 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         include: {
           space: {
             include: {
-              host: {
-                select: { id: true, name: true, email: true, image: true },
-              },
               amenities: { include: { amenity: true } },
             },
           },
           guest: {
+            select: { id: true, name: true, email: true, image: true },
+          },
+          host: {
             select: { id: true, name: true, email: true, image: true },
           },
         },
@@ -306,7 +302,7 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
 
       const updatedBooking = await prisma.booking.update({
         where: { id },
-        data: { status: "APPROVED" },
+        data: { status: "CONFIRMED" },
         include: { space: true, guest: true },
       });
 
@@ -316,7 +312,6 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
           guestEmail: booking.guest.email,
           guestName: booking.guest.name,
           spaceName: booking.space.name,
-          depositAmount: booking.depositAmount,
         },
       });
 
@@ -399,27 +394,11 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         return reply.status(403).send({ message: "Not authorized" });
       }
 
-      const cancellableStatuses: BookingStatus[] = ["PENDING", "APPROVED", "DEPOSIT_PAID"];
+      const cancellableStatuses: BookingStatus[] = ["PENDING", "CONFIRMED"];
       if (!cancellableStatuses.includes(booking.status)) {
         return reply.status(400).send({
           message: `Cannot cancel booking with status ${booking.status}`,
         });
-      }
-
-      // Calculate refund based on cancellation policy
-      let refundAmount = 0;
-      if (booking.depositPaid) {
-        const policy = booking.space.cancellationPolicy;
-        const daysUntilBooking = differenceInDays(booking.startDate, new Date());
-
-        if (policy === "FLEXIBLE" || daysUntilBooking >= 7) {
-          refundAmount = booking.depositAmount; // Full refund
-        } else if (policy === "MODERATE" && daysUntilBooking >= 3) {
-          refundAmount = Math.round(booking.depositAmount * 0.5); // 50% refund
-        } else if (policy === "STRICT") {
-          refundAmount = 0; // No refund
-        }
-        // NON_REFUNDABLE = 0
       }
 
       const updatedBooking = await prisma.booking.update({
@@ -436,11 +415,10 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         value: {
           bookingId: id,
           cancelledBy: isGuest ? "GUEST" : isHost ? "HOST" : "ADMIN",
-          refundAmount,
         },
       });
 
-      return reply.send({ ...updatedBooking, refundAmount });
+      return reply.send(updatedBooking);
     }
   );
 
@@ -465,16 +443,9 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         return reply.status(403).send({ message: "Not authorized" });
       }
 
-      if (booking.status !== "DEPOSIT_PAID") {
+      if (booking.status !== "CONFIRMED") {
         return reply.status(400).send({
-          message: "Booking must have deposit paid to be completed",
-        });
-      }
-
-      // Check if remaining payment is made (or if it's $0)
-      if (!booking.remainingPaid && booking.remainingAmount > 0) {
-        return reply.status(400).send({
-          message: "Remaining payment must be made before completing",
+          message: "Booking must be confirmed to be completed",
         });
       }
 

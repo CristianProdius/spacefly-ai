@@ -5,7 +5,6 @@ import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import useAuthStore from "@/stores/authStore";
-import StripePaymentForm from "@/components/StripePaymentForm";
 import {
   Calendar,
   Clock,
@@ -34,10 +33,6 @@ interface Booking {
   cleaningFee: number;
   serviceFee: number;
   totalAmount: number;
-  depositAmount: number;
-  remainingAmount: number;
-  depositPaid: boolean;
-  remainingPaid: boolean;
   createdAt: string;
   approvedAt: string | null;
   cancelledAt: string | null;
@@ -70,13 +65,13 @@ const statusConfig: Record<
     icon: Loader2,
   },
   APPROVED: {
-    label: "Approved - Awaiting Deposit",
-    color: "text-blue-700",
-    bgColor: "bg-blue-50",
+    label: "Approved",
+    color: "text-indigo-700",
+    bgColor: "bg-indigo-50",
     icon: CheckCircle,
   },
-  DEPOSIT_PAID: {
-    label: "Deposit Paid - Confirmed",
+  CONFIRMED: {
+    label: "Confirmed",
     color: "text-green-700",
     bgColor: "bg-green-50",
     icon: CheckCircle,
@@ -114,9 +109,6 @@ const BookingDetailPage = () => {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showPayment, setShowPayment] = useState(false);
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [paymentType, setPaymentType] = useState<"deposit" | "remaining">("deposit");
   const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
@@ -154,50 +146,6 @@ const BookingDetailPage = () => {
     }
   };
 
-  const initiatePayment = async (type: "deposit" | "remaining") => {
-    if (!booking || !token) return;
-
-    try {
-      const endpoint =
-        type === "deposit"
-          ? `${process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL}/sessions/deposit`
-          : `${process.env.NEXT_PUBLIC_PAYMENT_SERVICE_URL}/sessions/remaining`;
-
-      const amount =
-        type === "deposit" ? booking.depositAmount : booking.remainingAmount;
-
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          bookingId: booking.id,
-          amount,
-          spaceName: booking.space.name,
-        }),
-      });
-
-      if (!res.ok) {
-        throw new Error("Failed to create payment session");
-      }
-
-      const { clientSecret: secret } = await res.json();
-      setClientSecret(secret);
-      setPaymentType(type);
-      setShowPayment(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to initiate payment");
-    }
-  };
-
-  const handlePaymentSuccess = () => {
-    setShowPayment(false);
-    setClientSecret(null);
-    fetchBooking(); // Refresh booking data
-  };
-
   const cancelBooking = async () => {
     if (!booking || !token || cancelling) return;
 
@@ -232,7 +180,7 @@ const BookingDetailPage = () => {
   if (authLoading || isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
       </div>
     );
   }
@@ -257,13 +205,7 @@ const BookingDetailPage = () => {
 
   const status = statusConfig[booking.status] || statusConfig.PENDING;
   const StatusIcon = status.icon;
-  const canCancel = ["PENDING", "APPROVED", "DEPOSIT_PAID"].includes(
-    booking.status
-  );
-  const needsDepositPayment =
-    booking.status === "APPROVED" && !booking.depositPaid;
-  const needsRemainingPayment =
-    booking.status === "DEPOSIT_PAID" && !booking.remainingPaid;
+  const canCancel = ["PENDING", "CONFIRMED"].includes(booking.status);
   const canReview = booking.status === "COMPLETED";
 
   return (
@@ -289,36 +231,6 @@ const BookingDetailPage = () => {
         )}
       </div>
 
-      {/* Payment Modal */}
-      {showPayment && clientSecret && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl p-6 max-w-md w-full">
-            <h3 className="text-lg font-semibold mb-4">
-              Pay {paymentType === "deposit" ? "Deposit" : "Remaining Balance"}
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Amount: $
-              {paymentType === "deposit"
-                ? booking.depositAmount.toFixed(2)
-                : booking.remainingAmount.toFixed(2)}
-            </p>
-            <StripePaymentForm
-              clientSecret={clientSecret}
-              onSuccess={handlePaymentSuccess}
-            />
-            <button
-              onClick={() => {
-                setShowPayment(false);
-                setClientSecret(null);
-              }}
-              className="w-full mt-4 py-2 text-gray-600 hover:text-gray-900"
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
@@ -336,7 +248,7 @@ const BookingDetailPage = () => {
               <div>
                 <Link
                   href={`/spaces/${booking.space.id}`}
-                  className="font-semibold text-gray-900 hover:text-blue-600"
+                  className="font-semibold text-gray-900 hover:text-indigo-600"
                 >
                   {booking.space.name}
                 </Link>
@@ -450,61 +362,10 @@ const BookingDetailPage = () => {
                 <span>${booking.totalAmount.toFixed(2)}</span>
               </div>
             </div>
-
-            <div className="mt-4 pt-4 border-t space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Deposit</span>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={
-                      booking.depositPaid ? "text-green-600" : "text-gray-900"
-                    }
-                  >
-                    ${booking.depositAmount.toFixed(2)}
-                  </span>
-                  {booking.depositPaid && (
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                  )}
-                </div>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Remaining</span>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={
-                      booking.remainingPaid ? "text-green-600" : "text-gray-900"
-                    }
-                  >
-                    ${booking.remainingAmount.toFixed(2)}
-                  </span>
-                  {booking.remainingPaid && (
-                    <CheckCircle className="w-4 h-4 text-green-600" />
-                  )}
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Actions */}
           <div className="space-y-3">
-            {needsDepositPayment && (
-              <button
-                onClick={() => initiatePayment("deposit")}
-                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Pay Deposit (${booking.depositAmount.toFixed(2)})
-              </button>
-            )}
-
-            {needsRemainingPayment && (
-              <button
-                onClick={() => initiatePayment("remaining")}
-                className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Pay Remaining (${booking.remainingAmount.toFixed(2)})
-              </button>
-            )}
-
             {canReview && (
               <Link
                 href={`/bookings/${booking.id}/review`}

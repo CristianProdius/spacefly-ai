@@ -106,7 +106,7 @@ export type PricingType = (typeof PricingType)[keyof typeof PricingType]
 export const BookingStatus: {
   PENDING: 'PENDING',
   APPROVED: 'APPROVED',
-  DEPOSIT_PAID: 'DEPOSIT_PAID',
+  CONFIRMED: 'CONFIRMED',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED',
   REJECTED: 'REJECTED',
@@ -1864,7 +1864,8 @@ export namespace Prisma {
   export type UserCountOutputType = {
     sessions: number
     spaces: number
-    bookings: number
+    bookingsAsGuest: number
+    bookingsAsHost: number
     reviews: number
     payouts: number
   }
@@ -1872,7 +1873,8 @@ export namespace Prisma {
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     spaces?: boolean | UserCountOutputTypeCountSpacesArgs
-    bookings?: boolean | UserCountOutputTypeCountBookingsArgs
+    bookingsAsGuest?: boolean | UserCountOutputTypeCountBookingsAsGuestArgs
+    bookingsAsHost?: boolean | UserCountOutputTypeCountBookingsAsHostArgs
     reviews?: boolean | UserCountOutputTypeCountReviewsArgs
     payouts?: boolean | UserCountOutputTypeCountPayoutsArgs
   }
@@ -1905,7 +1907,14 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountBookingsAsGuestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BookingWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBookingsAsHostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BookingWhereInput
   }
 
@@ -2082,7 +2091,6 @@ export namespace Prisma {
     updatedAt: Date | null
     hostVerified: boolean | null
     hostingSince: Date | null
-    stripeAccountId: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -2100,7 +2108,6 @@ export namespace Prisma {
     updatedAt: Date | null
     hostVerified: boolean | null
     hostingSince: Date | null
-    stripeAccountId: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -2118,7 +2125,6 @@ export namespace Prisma {
     updatedAt: number
     hostVerified: number
     hostingSince: number
-    stripeAccountId: number
     _all: number
   }
 
@@ -2138,7 +2144,6 @@ export namespace Prisma {
     updatedAt?: true
     hostVerified?: true
     hostingSince?: true
-    stripeAccountId?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -2156,7 +2161,6 @@ export namespace Prisma {
     updatedAt?: true
     hostVerified?: true
     hostingSince?: true
-    stripeAccountId?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -2174,7 +2178,6 @@ export namespace Prisma {
     updatedAt?: true
     hostVerified?: true
     hostingSince?: true
-    stripeAccountId?: true
     _all?: true
   }
 
@@ -2265,7 +2268,6 @@ export namespace Prisma {
     updatedAt: Date
     hostVerified: boolean
     hostingSince: Date | null
-    stripeAccountId: string | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -2300,10 +2302,10 @@ export namespace Prisma {
     updatedAt?: boolean
     hostVerified?: boolean
     hostingSince?: boolean
-    stripeAccountId?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     spaces?: boolean | User$spacesArgs<ExtArgs>
-    bookings?: boolean | User$bookingsArgs<ExtArgs>
+    bookingsAsGuest?: boolean | User$bookingsAsGuestArgs<ExtArgs>
+    bookingsAsHost?: boolean | User$bookingsAsHostArgs<ExtArgs>
     reviews?: boolean | User$reviewsArgs<ExtArgs>
     payouts?: boolean | User$payoutsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2324,7 +2326,6 @@ export namespace Prisma {
     updatedAt?: boolean
     hostVerified?: boolean
     hostingSince?: boolean
-    stripeAccountId?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -2342,7 +2343,6 @@ export namespace Prisma {
     updatedAt?: boolean
     hostVerified?: boolean
     hostingSince?: boolean
-    stripeAccountId?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -2360,14 +2360,14 @@ export namespace Prisma {
     updatedAt?: boolean
     hostVerified?: boolean
     hostingSince?: boolean
-    stripeAccountId?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "name" | "password" | "role" | "emailVerified" | "image" | "phone" | "bio" | "createdAt" | "updatedAt" | "hostVerified" | "hostingSince" | "stripeAccountId", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "name" | "password" | "role" | "emailVerified" | "image" | "phone" | "bio" | "createdAt" | "updatedAt" | "hostVerified" | "hostingSince", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
     spaces?: boolean | User$spacesArgs<ExtArgs>
-    bookings?: boolean | User$bookingsArgs<ExtArgs>
+    bookingsAsGuest?: boolean | User$bookingsAsGuestArgs<ExtArgs>
+    bookingsAsHost?: boolean | User$bookingsAsHostArgs<ExtArgs>
     reviews?: boolean | User$reviewsArgs<ExtArgs>
     payouts?: boolean | User$payoutsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2380,7 +2380,8 @@ export namespace Prisma {
     objects: {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
       spaces: Prisma.$SpacePayload<ExtArgs>[]
-      bookings: Prisma.$BookingPayload<ExtArgs>[]
+      bookingsAsGuest: Prisma.$BookingPayload<ExtArgs>[]
+      bookingsAsHost: Prisma.$BookingPayload<ExtArgs>[]
       reviews: Prisma.$ReviewPayload<ExtArgs>[]
       payouts: Prisma.$PayoutPayload<ExtArgs>[]
     }
@@ -2399,7 +2400,6 @@ export namespace Prisma {
       updatedAt: Date
       hostVerified: boolean
       hostingSince: Date | null
-      stripeAccountId: string | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2796,7 +2796,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     spaces<T extends User$spacesArgs<ExtArgs> = {}>(args?: Subset<T, User$spacesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    bookings<T extends User$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, User$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    bookingsAsGuest<T extends User$bookingsAsGuestArgs<ExtArgs> = {}>(args?: Subset<T, User$bookingsAsGuestArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    bookingsAsHost<T extends User$bookingsAsHostArgs<ExtArgs> = {}>(args?: Subset<T, User$bookingsAsHostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     reviews<T extends User$reviewsArgs<ExtArgs> = {}>(args?: Subset<T, User$reviewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     payouts<T extends User$payoutsArgs<ExtArgs> = {}>(args?: Subset<T, User$payoutsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2842,7 +2843,6 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<"User", 'DateTime'>
     readonly hostVerified: FieldRef<"User", 'Boolean'>
     readonly hostingSince: FieldRef<"User", 'DateTime'>
-    readonly stripeAccountId: FieldRef<"User", 'String'>
   }
     
 
@@ -3279,9 +3279,33 @@ export namespace Prisma {
   }
 
   /**
-   * User.bookings
+   * User.bookingsAsGuest
    */
-  export type User$bookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$bookingsAsGuestArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Booking
+     */
+    select?: BookingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Booking
+     */
+    omit?: BookingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BookingInclude<ExtArgs> | null
+    where?: BookingWhereInput
+    orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
+    cursor?: BookingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
+  }
+
+  /**
+   * User.bookingsAsHost
+   */
+  export type User$bookingsAsHostArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Booking
      */
@@ -4443,7 +4467,7 @@ export namespace Prisma {
     id: number | null
     pricePerHour: number | null
     pricePerDay: number | null
-    depositPercent: number | null
+    cleaningFee: number | null
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -4455,7 +4479,7 @@ export namespace Prisma {
     id: number | null
     pricePerHour: number | null
     pricePerDay: number | null
-    depositPercent: number | null
+    cleaningFee: number | null
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -4472,7 +4496,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType | null
     pricePerHour: number | null
     pricePerDay: number | null
-    depositPercent: number | null
+    cleaningFee: number | null
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -4502,7 +4526,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType | null
     pricePerHour: number | null
     pricePerDay: number | null
-    depositPercent: number | null
+    cleaningFee: number | null
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -4532,7 +4556,7 @@ export namespace Prisma {
     pricingType: number
     pricePerHour: number
     pricePerDay: number
-    depositPercent: number
+    cleaningFee: number
     capacity: number
     minBookingHours: number
     maxBookingHours: number
@@ -4560,7 +4584,7 @@ export namespace Prisma {
     id?: true
     pricePerHour?: true
     pricePerDay?: true
-    depositPercent?: true
+    cleaningFee?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -4572,7 +4596,7 @@ export namespace Prisma {
     id?: true
     pricePerHour?: true
     pricePerDay?: true
-    depositPercent?: true
+    cleaningFee?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -4589,7 +4613,7 @@ export namespace Prisma {
     pricingType?: true
     pricePerHour?: true
     pricePerDay?: true
-    depositPercent?: true
+    cleaningFee?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -4619,7 +4643,7 @@ export namespace Prisma {
     pricingType?: true
     pricePerHour?: true
     pricePerDay?: true
-    depositPercent?: true
+    cleaningFee?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -4649,7 +4673,7 @@ export namespace Prisma {
     pricingType?: true
     pricePerHour?: true
     pricePerDay?: true
-    depositPercent?: true
+    cleaningFee?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -4767,7 +4791,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour: number | null
     pricePerDay: number | null
-    depositPercent: number
+    cleaningFee: number
     capacity: number
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -4817,7 +4841,7 @@ export namespace Prisma {
     pricingType?: boolean
     pricePerHour?: boolean
     pricePerDay?: boolean
-    depositPercent?: boolean
+    cleaningFee?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -4856,7 +4880,7 @@ export namespace Prisma {
     pricingType?: boolean
     pricePerHour?: boolean
     pricePerDay?: boolean
-    depositPercent?: boolean
+    cleaningFee?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -4889,7 +4913,7 @@ export namespace Prisma {
     pricingType?: boolean
     pricePerHour?: boolean
     pricePerDay?: boolean
-    depositPercent?: boolean
+    cleaningFee?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -4922,7 +4946,7 @@ export namespace Prisma {
     pricingType?: boolean
     pricePerHour?: boolean
     pricePerDay?: boolean
-    depositPercent?: boolean
+    cleaningFee?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -4944,7 +4968,7 @@ export namespace Prisma {
     categorySlug?: boolean
   }
 
-  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "depositPercent" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "categorySlug", ExtArgs["result"]["space"]>
+  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "categorySlug", ExtArgs["result"]["space"]>
   export type SpaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
@@ -4984,7 +5008,7 @@ export namespace Prisma {
       pricingType: $Enums.PricingType
       pricePerHour: number | null
       pricePerDay: number | null
-      depositPercent: number
+      cleaningFee: number
       capacity: number
       minBookingHours: number | null
       maxBookingHours: number | null
@@ -5442,7 +5466,7 @@ export namespace Prisma {
     readonly pricingType: FieldRef<"Space", 'PricingType'>
     readonly pricePerHour: FieldRef<"Space", 'Int'>
     readonly pricePerDay: FieldRef<"Space", 'Int'>
-    readonly depositPercent: FieldRef<"Space", 'Int'>
+    readonly cleaningFee: FieldRef<"Space", 'Int'>
     readonly capacity: FieldRef<"Space", 'Int'>
     readonly minBookingHours: FieldRef<"Space", 'Int'>
     readonly maxBookingHours: FieldRef<"Space", 'Int'>
@@ -11482,52 +11506,43 @@ export namespace Prisma {
   }
 
   export type BookingAvgAggregateOutputType = {
-    numberOfGuests: number | null
     spaceId: number | null
+    guests: number | null
     subtotal: number | null
+    cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
-    depositAmount: number | null
-    remainingAmount: number | null
   }
 
   export type BookingSumAggregateOutputType = {
-    numberOfGuests: number | null
     spaceId: number | null
+    guests: number | null
     subtotal: number | null
+    cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
-    depositAmount: number | null
-    remainingAmount: number | null
   }
 
   export type BookingMinAggregateOutputType = {
     id: string | null
-    userId: string | null
-    guestEmail: string | null
-    guestName: string | null
-    guestPhone: string | null
-    numberOfGuests: number | null
+    guestId: string | null
+    hostId: string | null
     spaceId: number | null
-    startDateTime: Date | null
-    endDateTime: Date | null
+    startDate: Date | null
+    endDate: Date | null
+    startTime: string | null
+    endTime: string | null
+    guests: number | null
     isHourly: boolean | null
     subtotal: number | null
+    cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
-    depositAmount: number | null
-    remainingAmount: number | null
-    depositPaid: boolean | null
-    depositPaidAt: Date | null
-    remainingPaid: boolean | null
-    remainingPaidAt: Date | null
-    depositSessionId: string | null
-    remainingSessionId: string | null
-    depositPaymentIntentId: string | null
-    remainingPaymentIntentId: string | null
     status: $Enums.BookingStatus | null
-    hostNote: string | null
-    guestNote: string | null
+    guestMessage: string | null
+    hostMessage: string | null
+    cancelledBy: string | null
+    cancellationReason: string | null
     createdAt: Date | null
     updatedAt: Date | null
     approvedAt: Date | null
@@ -11537,31 +11552,24 @@ export namespace Prisma {
 
   export type BookingMaxAggregateOutputType = {
     id: string | null
-    userId: string | null
-    guestEmail: string | null
-    guestName: string | null
-    guestPhone: string | null
-    numberOfGuests: number | null
+    guestId: string | null
+    hostId: string | null
     spaceId: number | null
-    startDateTime: Date | null
-    endDateTime: Date | null
+    startDate: Date | null
+    endDate: Date | null
+    startTime: string | null
+    endTime: string | null
+    guests: number | null
     isHourly: boolean | null
     subtotal: number | null
+    cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
-    depositAmount: number | null
-    remainingAmount: number | null
-    depositPaid: boolean | null
-    depositPaidAt: Date | null
-    remainingPaid: boolean | null
-    remainingPaidAt: Date | null
-    depositSessionId: string | null
-    remainingSessionId: string | null
-    depositPaymentIntentId: string | null
-    remainingPaymentIntentId: string | null
     status: $Enums.BookingStatus | null
-    hostNote: string | null
-    guestNote: string | null
+    guestMessage: string | null
+    hostMessage: string | null
+    cancelledBy: string | null
+    cancellationReason: string | null
     createdAt: Date | null
     updatedAt: Date | null
     approvedAt: Date | null
@@ -11571,31 +11579,24 @@ export namespace Prisma {
 
   export type BookingCountAggregateOutputType = {
     id: number
-    userId: number
-    guestEmail: number
-    guestName: number
-    guestPhone: number
-    numberOfGuests: number
+    guestId: number
+    hostId: number
     spaceId: number
-    startDateTime: number
-    endDateTime: number
+    startDate: number
+    endDate: number
+    startTime: number
+    endTime: number
+    guests: number
     isHourly: number
     subtotal: number
+    cleaningFee: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid: number
-    depositPaidAt: number
-    remainingPaid: number
-    remainingPaidAt: number
-    depositSessionId: number
-    remainingSessionId: number
-    depositPaymentIntentId: number
-    remainingPaymentIntentId: number
     status: number
-    hostNote: number
-    guestNote: number
+    guestMessage: number
+    hostMessage: number
+    cancelledBy: number
+    cancellationReason: number
     createdAt: number
     updatedAt: number
     approvedAt: number
@@ -11606,52 +11607,43 @@ export namespace Prisma {
 
 
   export type BookingAvgAggregateInputType = {
-    numberOfGuests?: true
     spaceId?: true
+    guests?: true
     subtotal?: true
+    cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
-    depositAmount?: true
-    remainingAmount?: true
   }
 
   export type BookingSumAggregateInputType = {
-    numberOfGuests?: true
     spaceId?: true
+    guests?: true
     subtotal?: true
+    cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
-    depositAmount?: true
-    remainingAmount?: true
   }
 
   export type BookingMinAggregateInputType = {
     id?: true
-    userId?: true
-    guestEmail?: true
-    guestName?: true
-    guestPhone?: true
-    numberOfGuests?: true
+    guestId?: true
+    hostId?: true
     spaceId?: true
-    startDateTime?: true
-    endDateTime?: true
+    startDate?: true
+    endDate?: true
+    startTime?: true
+    endTime?: true
+    guests?: true
     isHourly?: true
     subtotal?: true
+    cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
-    depositAmount?: true
-    remainingAmount?: true
-    depositPaid?: true
-    depositPaidAt?: true
-    remainingPaid?: true
-    remainingPaidAt?: true
-    depositSessionId?: true
-    remainingSessionId?: true
-    depositPaymentIntentId?: true
-    remainingPaymentIntentId?: true
     status?: true
-    hostNote?: true
-    guestNote?: true
+    guestMessage?: true
+    hostMessage?: true
+    cancelledBy?: true
+    cancellationReason?: true
     createdAt?: true
     updatedAt?: true
     approvedAt?: true
@@ -11661,31 +11653,24 @@ export namespace Prisma {
 
   export type BookingMaxAggregateInputType = {
     id?: true
-    userId?: true
-    guestEmail?: true
-    guestName?: true
-    guestPhone?: true
-    numberOfGuests?: true
+    guestId?: true
+    hostId?: true
     spaceId?: true
-    startDateTime?: true
-    endDateTime?: true
+    startDate?: true
+    endDate?: true
+    startTime?: true
+    endTime?: true
+    guests?: true
     isHourly?: true
     subtotal?: true
+    cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
-    depositAmount?: true
-    remainingAmount?: true
-    depositPaid?: true
-    depositPaidAt?: true
-    remainingPaid?: true
-    remainingPaidAt?: true
-    depositSessionId?: true
-    remainingSessionId?: true
-    depositPaymentIntentId?: true
-    remainingPaymentIntentId?: true
     status?: true
-    hostNote?: true
-    guestNote?: true
+    guestMessage?: true
+    hostMessage?: true
+    cancelledBy?: true
+    cancellationReason?: true
     createdAt?: true
     updatedAt?: true
     approvedAt?: true
@@ -11695,31 +11680,24 @@ export namespace Prisma {
 
   export type BookingCountAggregateInputType = {
     id?: true
-    userId?: true
-    guestEmail?: true
-    guestName?: true
-    guestPhone?: true
-    numberOfGuests?: true
+    guestId?: true
+    hostId?: true
     spaceId?: true
-    startDateTime?: true
-    endDateTime?: true
+    startDate?: true
+    endDate?: true
+    startTime?: true
+    endTime?: true
+    guests?: true
     isHourly?: true
     subtotal?: true
+    cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
-    depositAmount?: true
-    remainingAmount?: true
-    depositPaid?: true
-    depositPaidAt?: true
-    remainingPaid?: true
-    remainingPaidAt?: true
-    depositSessionId?: true
-    remainingSessionId?: true
-    depositPaymentIntentId?: true
-    remainingPaymentIntentId?: true
     status?: true
-    hostNote?: true
-    guestNote?: true
+    guestMessage?: true
+    hostMessage?: true
+    cancelledBy?: true
+    cancellationReason?: true
     createdAt?: true
     updatedAt?: true
     approvedAt?: true
@@ -11816,31 +11794,24 @@ export namespace Prisma {
 
   export type BookingGroupByOutputType = {
     id: string
-    userId: string
-    guestEmail: string
-    guestName: string
-    guestPhone: string | null
-    numberOfGuests: number
+    guestId: string
+    hostId: string
     spaceId: number
-    startDateTime: Date
-    endDateTime: Date
+    startDate: Date
+    endDate: Date
+    startTime: string | null
+    endTime: string | null
+    guests: number
     isHourly: boolean
     subtotal: number
+    cleaningFee: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid: boolean
-    depositPaidAt: Date | null
-    remainingPaid: boolean
-    remainingPaidAt: Date | null
-    depositSessionId: string | null
-    remainingSessionId: string | null
-    depositPaymentIntentId: string | null
-    remainingPaymentIntentId: string | null
     status: $Enums.BookingStatus
-    hostNote: string | null
-    guestNote: string | null
+    guestMessage: string | null
+    hostMessage: string | null
+    cancelledBy: string | null
+    cancellationReason: string | null
     createdAt: Date
     updatedAt: Date
     approvedAt: Date | null
@@ -11869,140 +11840,115 @@ export namespace Prisma {
 
   export type BookingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    guestEmail?: boolean
-    guestName?: boolean
-    guestPhone?: boolean
-    numberOfGuests?: boolean
+    guestId?: boolean
+    hostId?: boolean
     spaceId?: boolean
-    startDateTime?: boolean
-    endDateTime?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    guests?: boolean
     isHourly?: boolean
     subtotal?: boolean
+    cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
-    depositAmount?: boolean
-    remainingAmount?: boolean
-    depositPaid?: boolean
-    depositPaidAt?: boolean
-    remainingPaid?: boolean
-    remainingPaidAt?: boolean
-    depositSessionId?: boolean
-    remainingSessionId?: boolean
-    depositPaymentIntentId?: boolean
-    remainingPaymentIntentId?: boolean
     status?: boolean
-    hostNote?: boolean
-    guestNote?: boolean
+    guestMessage?: boolean
+    hostMessage?: boolean
+    cancelledBy?: boolean
+    cancellationReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     approvedAt?: boolean
     cancelledAt?: boolean
     completedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    guest?: boolean | UserDefaultArgs<ExtArgs>
+    host?: boolean | UserDefaultArgs<ExtArgs>
     space?: boolean | SpaceDefaultArgs<ExtArgs>
     review?: boolean | Booking$reviewArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
 
   export type BookingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    guestEmail?: boolean
-    guestName?: boolean
-    guestPhone?: boolean
-    numberOfGuests?: boolean
+    guestId?: boolean
+    hostId?: boolean
     spaceId?: boolean
-    startDateTime?: boolean
-    endDateTime?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    guests?: boolean
     isHourly?: boolean
     subtotal?: boolean
+    cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
-    depositAmount?: boolean
-    remainingAmount?: boolean
-    depositPaid?: boolean
-    depositPaidAt?: boolean
-    remainingPaid?: boolean
-    remainingPaidAt?: boolean
-    depositSessionId?: boolean
-    remainingSessionId?: boolean
-    depositPaymentIntentId?: boolean
-    remainingPaymentIntentId?: boolean
     status?: boolean
-    hostNote?: boolean
-    guestNote?: boolean
+    guestMessage?: boolean
+    hostMessage?: boolean
+    cancelledBy?: boolean
+    cancellationReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     approvedAt?: boolean
     cancelledAt?: boolean
     completedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    guest?: boolean | UserDefaultArgs<ExtArgs>
+    host?: boolean | UserDefaultArgs<ExtArgs>
     space?: boolean | SpaceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
 
   export type BookingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    userId?: boolean
-    guestEmail?: boolean
-    guestName?: boolean
-    guestPhone?: boolean
-    numberOfGuests?: boolean
+    guestId?: boolean
+    hostId?: boolean
     spaceId?: boolean
-    startDateTime?: boolean
-    endDateTime?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    guests?: boolean
     isHourly?: boolean
     subtotal?: boolean
+    cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
-    depositAmount?: boolean
-    remainingAmount?: boolean
-    depositPaid?: boolean
-    depositPaidAt?: boolean
-    remainingPaid?: boolean
-    remainingPaidAt?: boolean
-    depositSessionId?: boolean
-    remainingSessionId?: boolean
-    depositPaymentIntentId?: boolean
-    remainingPaymentIntentId?: boolean
     status?: boolean
-    hostNote?: boolean
-    guestNote?: boolean
+    guestMessage?: boolean
+    hostMessage?: boolean
+    cancelledBy?: boolean
+    cancellationReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     approvedAt?: boolean
     cancelledAt?: boolean
     completedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    guest?: boolean | UserDefaultArgs<ExtArgs>
+    host?: boolean | UserDefaultArgs<ExtArgs>
     space?: boolean | SpaceDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
 
   export type BookingSelectScalar = {
     id?: boolean
-    userId?: boolean
-    guestEmail?: boolean
-    guestName?: boolean
-    guestPhone?: boolean
-    numberOfGuests?: boolean
+    guestId?: boolean
+    hostId?: boolean
     spaceId?: boolean
-    startDateTime?: boolean
-    endDateTime?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    guests?: boolean
     isHourly?: boolean
     subtotal?: boolean
+    cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
-    depositAmount?: boolean
-    remainingAmount?: boolean
-    depositPaid?: boolean
-    depositPaidAt?: boolean
-    remainingPaid?: boolean
-    remainingPaidAt?: boolean
-    depositSessionId?: boolean
-    remainingSessionId?: boolean
-    depositPaymentIntentId?: boolean
-    remainingPaymentIntentId?: boolean
     status?: boolean
-    hostNote?: boolean
-    guestNote?: boolean
+    guestMessage?: boolean
+    hostMessage?: boolean
+    cancelledBy?: boolean
+    cancellationReason?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     approvedAt?: boolean
@@ -12010,55 +11956,52 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "guestEmail" | "guestName" | "guestPhone" | "numberOfGuests" | "spaceId" | "startDateTime" | "endDateTime" | "isHourly" | "subtotal" | "serviceFee" | "totalAmount" | "depositAmount" | "remainingAmount" | "depositPaid" | "depositPaidAt" | "remainingPaid" | "remainingPaidAt" | "depositSessionId" | "remainingSessionId" | "depositPaymentIntentId" | "remainingPaymentIntentId" | "status" | "hostNote" | "guestNote" | "createdAt" | "updatedAt" | "approvedAt" | "cancelledAt" | "completedAt", ExtArgs["result"]["booking"]>
+  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "guestId" | "hostId" | "spaceId" | "startDate" | "endDate" | "startTime" | "endTime" | "guests" | "isHourly" | "subtotal" | "cleaningFee" | "serviceFee" | "totalAmount" | "status" | "guestMessage" | "hostMessage" | "cancelledBy" | "cancellationReason" | "createdAt" | "updatedAt" | "approvedAt" | "cancelledAt" | "completedAt", ExtArgs["result"]["booking"]>
   export type BookingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    guest?: boolean | UserDefaultArgs<ExtArgs>
+    host?: boolean | UserDefaultArgs<ExtArgs>
     space?: boolean | SpaceDefaultArgs<ExtArgs>
     review?: boolean | Booking$reviewArgs<ExtArgs>
   }
   export type BookingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    guest?: boolean | UserDefaultArgs<ExtArgs>
+    host?: boolean | UserDefaultArgs<ExtArgs>
     space?: boolean | SpaceDefaultArgs<ExtArgs>
   }
   export type BookingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    guest?: boolean | UserDefaultArgs<ExtArgs>
+    host?: boolean | UserDefaultArgs<ExtArgs>
     space?: boolean | SpaceDefaultArgs<ExtArgs>
   }
 
   export type $BookingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Booking"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      guest: Prisma.$UserPayload<ExtArgs>
+      host: Prisma.$UserPayload<ExtArgs>
       space: Prisma.$SpacePayload<ExtArgs>
       review: Prisma.$ReviewPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      userId: string
-      guestEmail: string
-      guestName: string
-      guestPhone: string | null
-      numberOfGuests: number
+      guestId: string
+      hostId: string
       spaceId: number
-      startDateTime: Date
-      endDateTime: Date
+      startDate: Date
+      endDate: Date
+      startTime: string | null
+      endTime: string | null
+      guests: number
       isHourly: boolean
       subtotal: number
+      cleaningFee: number
       serviceFee: number
       totalAmount: number
-      depositAmount: number
-      remainingAmount: number
-      depositPaid: boolean
-      depositPaidAt: Date | null
-      remainingPaid: boolean
-      remainingPaidAt: Date | null
-      depositSessionId: string | null
-      remainingSessionId: string | null
-      depositPaymentIntentId: string | null
-      remainingPaymentIntentId: string | null
       status: $Enums.BookingStatus
-      hostNote: string | null
-      guestNote: string | null
+      guestMessage: string | null
+      hostMessage: string | null
+      cancelledBy: string | null
+      cancellationReason: string | null
       createdAt: Date
       updatedAt: Date
       approvedAt: Date | null
@@ -12458,7 +12401,8 @@ export namespace Prisma {
    */
   export interface Prisma__BookingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    guest<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    host<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     space<T extends SpaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpaceDefaultArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     review<T extends Booking$reviewArgs<ExtArgs> = {}>(args?: Subset<T, Booking$reviewArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
@@ -12491,31 +12435,24 @@ export namespace Prisma {
    */
   interface BookingFieldRefs {
     readonly id: FieldRef<"Booking", 'String'>
-    readonly userId: FieldRef<"Booking", 'String'>
-    readonly guestEmail: FieldRef<"Booking", 'String'>
-    readonly guestName: FieldRef<"Booking", 'String'>
-    readonly guestPhone: FieldRef<"Booking", 'String'>
-    readonly numberOfGuests: FieldRef<"Booking", 'Int'>
+    readonly guestId: FieldRef<"Booking", 'String'>
+    readonly hostId: FieldRef<"Booking", 'String'>
     readonly spaceId: FieldRef<"Booking", 'Int'>
-    readonly startDateTime: FieldRef<"Booking", 'DateTime'>
-    readonly endDateTime: FieldRef<"Booking", 'DateTime'>
+    readonly startDate: FieldRef<"Booking", 'DateTime'>
+    readonly endDate: FieldRef<"Booking", 'DateTime'>
+    readonly startTime: FieldRef<"Booking", 'String'>
+    readonly endTime: FieldRef<"Booking", 'String'>
+    readonly guests: FieldRef<"Booking", 'Int'>
     readonly isHourly: FieldRef<"Booking", 'Boolean'>
     readonly subtotal: FieldRef<"Booking", 'Int'>
+    readonly cleaningFee: FieldRef<"Booking", 'Int'>
     readonly serviceFee: FieldRef<"Booking", 'Int'>
     readonly totalAmount: FieldRef<"Booking", 'Int'>
-    readonly depositAmount: FieldRef<"Booking", 'Int'>
-    readonly remainingAmount: FieldRef<"Booking", 'Int'>
-    readonly depositPaid: FieldRef<"Booking", 'Boolean'>
-    readonly depositPaidAt: FieldRef<"Booking", 'DateTime'>
-    readonly remainingPaid: FieldRef<"Booking", 'Boolean'>
-    readonly remainingPaidAt: FieldRef<"Booking", 'DateTime'>
-    readonly depositSessionId: FieldRef<"Booking", 'String'>
-    readonly remainingSessionId: FieldRef<"Booking", 'String'>
-    readonly depositPaymentIntentId: FieldRef<"Booking", 'String'>
-    readonly remainingPaymentIntentId: FieldRef<"Booking", 'String'>
     readonly status: FieldRef<"Booking", 'BookingStatus'>
-    readonly hostNote: FieldRef<"Booking", 'String'>
-    readonly guestNote: FieldRef<"Booking", 'String'>
+    readonly guestMessage: FieldRef<"Booking", 'String'>
+    readonly hostMessage: FieldRef<"Booking", 'String'>
+    readonly cancelledBy: FieldRef<"Booking", 'String'>
+    readonly cancellationReason: FieldRef<"Booking", 'String'>
     readonly createdAt: FieldRef<"Booking", 'DateTime'>
     readonly updatedAt: FieldRef<"Booking", 'DateTime'>
     readonly approvedAt: FieldRef<"Booking", 'DateTime'>
@@ -14166,7 +14103,6 @@ export namespace Prisma {
     platformFee: number | null
     netAmount: number | null
     status: $Enums.PayoutStatus | null
-    stripeTransferId: string | null
     processedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -14179,7 +14115,6 @@ export namespace Prisma {
     platformFee: number | null
     netAmount: number | null
     status: $Enums.PayoutStatus | null
-    stripeTransferId: string | null
     processedAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -14193,7 +14128,6 @@ export namespace Prisma {
     netAmount: number
     status: number
     bookingIds: number
-    stripeTransferId: number
     processedAt: number
     createdAt: number
     updatedAt: number
@@ -14220,7 +14154,6 @@ export namespace Prisma {
     platformFee?: true
     netAmount?: true
     status?: true
-    stripeTransferId?: true
     processedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -14233,7 +14166,6 @@ export namespace Prisma {
     platformFee?: true
     netAmount?: true
     status?: true
-    stripeTransferId?: true
     processedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -14247,7 +14179,6 @@ export namespace Prisma {
     netAmount?: true
     status?: true
     bookingIds?: true
-    stripeTransferId?: true
     processedAt?: true
     createdAt?: true
     updatedAt?: true
@@ -14348,7 +14279,6 @@ export namespace Prisma {
     netAmount: number
     status: $Enums.PayoutStatus
     bookingIds: string[]
-    stripeTransferId: string | null
     processedAt: Date | null
     createdAt: Date
     updatedAt: Date
@@ -14381,7 +14311,6 @@ export namespace Prisma {
     netAmount?: boolean
     status?: boolean
     bookingIds?: boolean
-    stripeTransferId?: boolean
     processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -14396,7 +14325,6 @@ export namespace Prisma {
     netAmount?: boolean
     status?: boolean
     bookingIds?: boolean
-    stripeTransferId?: boolean
     processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -14411,7 +14339,6 @@ export namespace Prisma {
     netAmount?: boolean
     status?: boolean
     bookingIds?: boolean
-    stripeTransferId?: boolean
     processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -14426,13 +14353,12 @@ export namespace Prisma {
     netAmount?: boolean
     status?: boolean
     bookingIds?: boolean
-    stripeTransferId?: boolean
     processedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PayoutOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "hostId" | "amount" | "platformFee" | "netAmount" | "status" | "bookingIds" | "stripeTransferId" | "processedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payout"]>
+  export type PayoutOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "hostId" | "amount" | "platformFee" | "netAmount" | "status" | "bookingIds" | "processedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payout"]>
   export type PayoutInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -14456,7 +14382,6 @@ export namespace Prisma {
       netAmount: number
       status: $Enums.PayoutStatus
       bookingIds: string[]
-      stripeTransferId: string | null
       processedAt: Date | null
       createdAt: Date
       updatedAt: Date
@@ -14891,7 +14816,6 @@ export namespace Prisma {
     readonly netAmount: FieldRef<"Payout", 'Int'>
     readonly status: FieldRef<"Payout", 'PayoutStatus'>
     readonly bookingIds: FieldRef<"Payout", 'String[]'>
-    readonly stripeTransferId: FieldRef<"Payout", 'String'>
     readonly processedAt: FieldRef<"Payout", 'DateTime'>
     readonly createdAt: FieldRef<"Payout", 'DateTime'>
     readonly updatedAt: FieldRef<"Payout", 'DateTime'>
@@ -15337,8 +15261,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     hostVerified: 'hostVerified',
-    hostingSince: 'hostingSince',
-    stripeAccountId: 'stripeAccountId'
+    hostingSince: 'hostingSince'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -15364,7 +15287,7 @@ export namespace Prisma {
     pricingType: 'pricingType',
     pricePerHour: 'pricePerHour',
     pricePerDay: 'pricePerDay',
-    depositPercent: 'depositPercent',
+    cleaningFee: 'cleaningFee',
     capacity: 'capacity',
     minBookingHours: 'minBookingHours',
     maxBookingHours: 'maxBookingHours',
@@ -15443,31 +15366,24 @@ export namespace Prisma {
 
   export const BookingScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
-    guestEmail: 'guestEmail',
-    guestName: 'guestName',
-    guestPhone: 'guestPhone',
-    numberOfGuests: 'numberOfGuests',
+    guestId: 'guestId',
+    hostId: 'hostId',
     spaceId: 'spaceId',
-    startDateTime: 'startDateTime',
-    endDateTime: 'endDateTime',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    guests: 'guests',
     isHourly: 'isHourly',
     subtotal: 'subtotal',
+    cleaningFee: 'cleaningFee',
     serviceFee: 'serviceFee',
     totalAmount: 'totalAmount',
-    depositAmount: 'depositAmount',
-    remainingAmount: 'remainingAmount',
-    depositPaid: 'depositPaid',
-    depositPaidAt: 'depositPaidAt',
-    remainingPaid: 'remainingPaid',
-    remainingPaidAt: 'remainingPaidAt',
-    depositSessionId: 'depositSessionId',
-    remainingSessionId: 'remainingSessionId',
-    depositPaymentIntentId: 'depositPaymentIntentId',
-    remainingPaymentIntentId: 'remainingPaymentIntentId',
     status: 'status',
-    hostNote: 'hostNote',
-    guestNote: 'guestNote',
+    guestMessage: 'guestMessage',
+    hostMessage: 'hostMessage',
+    cancelledBy: 'cancelledBy',
+    cancellationReason: 'cancellationReason',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     approvedAt: 'approvedAt',
@@ -15502,7 +15418,6 @@ export namespace Prisma {
     netAmount: 'netAmount',
     status: 'status',
     bookingIds: 'bookingIds',
-    stripeTransferId: 'stripeTransferId',
     processedAt: 'processedAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -15738,10 +15653,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     hostVerified?: BoolFilter<"User"> | boolean
     hostingSince?: DateTimeNullableFilter<"User"> | Date | string | null
-    stripeAccountId?: StringNullableFilter<"User"> | string | null
     sessions?: SessionListRelationFilter
     spaces?: SpaceListRelationFilter
-    bookings?: BookingListRelationFilter
+    bookingsAsGuest?: BookingListRelationFilter
+    bookingsAsHost?: BookingListRelationFilter
     reviews?: ReviewListRelationFilter
     payouts?: PayoutListRelationFilter
   }
@@ -15761,10 +15676,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
     hostVerified?: SortOrder
     hostingSince?: SortOrderInput | SortOrder
-    stripeAccountId?: SortOrderInput | SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     spaces?: SpaceOrderByRelationAggregateInput
-    bookings?: BookingOrderByRelationAggregateInput
+    bookingsAsGuest?: BookingOrderByRelationAggregateInput
+    bookingsAsHost?: BookingOrderByRelationAggregateInput
     reviews?: ReviewOrderByRelationAggregateInput
     payouts?: PayoutOrderByRelationAggregateInput
   }
@@ -15787,10 +15702,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"User"> | Date | string
     hostVerified?: BoolFilter<"User"> | boolean
     hostingSince?: DateTimeNullableFilter<"User"> | Date | string | null
-    stripeAccountId?: StringNullableFilter<"User"> | string | null
     sessions?: SessionListRelationFilter
     spaces?: SpaceListRelationFilter
-    bookings?: BookingListRelationFilter
+    bookingsAsGuest?: BookingListRelationFilter
+    bookingsAsHost?: BookingListRelationFilter
     reviews?: ReviewListRelationFilter
     payouts?: PayoutListRelationFilter
   }, "id" | "email" | "username">
@@ -15810,7 +15725,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     hostVerified?: SortOrder
     hostingSince?: SortOrderInput | SortOrder
-    stripeAccountId?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -15834,7 +15748,6 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     hostVerified?: BoolWithAggregatesFilter<"User"> | boolean
     hostingSince?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
-    stripeAccountId?: StringNullableWithAggregatesFilter<"User"> | string | null
   }
 
   export type SessionWhereInput = {
@@ -15904,7 +15817,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
     pricePerHour?: IntNullableFilter<"Space"> | number | null
     pricePerDay?: IntNullableFilter<"Space"> | number | null
-    depositPercent?: IntFilter<"Space"> | number
+    cleaningFee?: IntFilter<"Space"> | number
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -15942,7 +15855,7 @@ export namespace Prisma {
     pricingType?: SortOrder
     pricePerHour?: SortOrderInput | SortOrder
     pricePerDay?: SortOrderInput | SortOrder
-    depositPercent?: SortOrder
+    cleaningFee?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrderInput | SortOrder
     maxBookingHours?: SortOrderInput | SortOrder
@@ -15983,7 +15896,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
     pricePerHour?: IntNullableFilter<"Space"> | number | null
     pricePerDay?: IntNullableFilter<"Space"> | number | null
-    depositPercent?: IntFilter<"Space"> | number
+    cleaningFee?: IntFilter<"Space"> | number
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -16021,7 +15934,7 @@ export namespace Prisma {
     pricingType?: SortOrder
     pricePerHour?: SortOrderInput | SortOrder
     pricePerDay?: SortOrderInput | SortOrder
-    depositPercent?: SortOrder
+    cleaningFee?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrderInput | SortOrder
     maxBookingHours?: SortOrderInput | SortOrder
@@ -16060,7 +15973,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeWithAggregatesFilter<"Space"> | $Enums.PricingType
     pricePerHour?: IntNullableWithAggregatesFilter<"Space"> | number | null
     pricePerDay?: IntNullableWithAggregatesFilter<"Space"> | number | null
-    depositPercent?: IntWithAggregatesFilter<"Space"> | number
+    cleaningFee?: IntWithAggregatesFilter<"Space"> | number
     capacity?: IntWithAggregatesFilter<"Space"> | number
     minBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
     maxBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
@@ -16362,74 +16275,62 @@ export namespace Prisma {
     OR?: BookingWhereInput[]
     NOT?: BookingWhereInput | BookingWhereInput[]
     id?: StringFilter<"Booking"> | string
-    userId?: StringFilter<"Booking"> | string
-    guestEmail?: StringFilter<"Booking"> | string
-    guestName?: StringFilter<"Booking"> | string
-    guestPhone?: StringNullableFilter<"Booking"> | string | null
-    numberOfGuests?: IntFilter<"Booking"> | number
+    guestId?: StringFilter<"Booking"> | string
+    hostId?: StringFilter<"Booking"> | string
     spaceId?: IntFilter<"Booking"> | number
-    startDateTime?: DateTimeFilter<"Booking"> | Date | string
-    endDateTime?: DateTimeFilter<"Booking"> | Date | string
+    startDate?: DateTimeFilter<"Booking"> | Date | string
+    endDate?: DateTimeFilter<"Booking"> | Date | string
+    startTime?: StringNullableFilter<"Booking"> | string | null
+    endTime?: StringNullableFilter<"Booking"> | string | null
+    guests?: IntFilter<"Booking"> | number
     isHourly?: BoolFilter<"Booking"> | boolean
     subtotal?: IntFilter<"Booking"> | number
+    cleaningFee?: IntFilter<"Booking"> | number
     serviceFee?: IntFilter<"Booking"> | number
     totalAmount?: IntFilter<"Booking"> | number
-    depositAmount?: IntFilter<"Booking"> | number
-    remainingAmount?: IntFilter<"Booking"> | number
-    depositPaid?: BoolFilter<"Booking"> | boolean
-    depositPaidAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    remainingPaid?: BoolFilter<"Booking"> | boolean
-    remainingPaidAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    depositSessionId?: StringNullableFilter<"Booking"> | string | null
-    remainingSessionId?: StringNullableFilter<"Booking"> | string | null
-    depositPaymentIntentId?: StringNullableFilter<"Booking"> | string | null
-    remainingPaymentIntentId?: StringNullableFilter<"Booking"> | string | null
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
-    hostNote?: StringNullableFilter<"Booking"> | string | null
-    guestNote?: StringNullableFilter<"Booking"> | string | null
+    guestMessage?: StringNullableFilter<"Booking"> | string | null
+    hostMessage?: StringNullableFilter<"Booking"> | string | null
+    cancelledBy?: StringNullableFilter<"Booking"> | string | null
+    cancellationReason?: StringNullableFilter<"Booking"> | string | null
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
     approvedAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    guest?: XOR<UserScalarRelationFilter, UserWhereInput>
+    host?: XOR<UserScalarRelationFilter, UserWhereInput>
     space?: XOR<SpaceScalarRelationFilter, SpaceWhereInput>
     review?: XOR<ReviewNullableScalarRelationFilter, ReviewWhereInput> | null
   }
 
   export type BookingOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    guestEmail?: SortOrder
-    guestName?: SortOrder
-    guestPhone?: SortOrderInput | SortOrder
-    numberOfGuests?: SortOrder
+    guestId?: SortOrder
+    hostId?: SortOrder
     spaceId?: SortOrder
-    startDateTime?: SortOrder
-    endDateTime?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    startTime?: SortOrderInput | SortOrder
+    endTime?: SortOrderInput | SortOrder
+    guests?: SortOrder
     isHourly?: SortOrder
     subtotal?: SortOrder
+    cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
-    depositAmount?: SortOrder
-    remainingAmount?: SortOrder
-    depositPaid?: SortOrder
-    depositPaidAt?: SortOrderInput | SortOrder
-    remainingPaid?: SortOrder
-    remainingPaidAt?: SortOrderInput | SortOrder
-    depositSessionId?: SortOrderInput | SortOrder
-    remainingSessionId?: SortOrderInput | SortOrder
-    depositPaymentIntentId?: SortOrderInput | SortOrder
-    remainingPaymentIntentId?: SortOrderInput | SortOrder
     status?: SortOrder
-    hostNote?: SortOrderInput | SortOrder
-    guestNote?: SortOrderInput | SortOrder
+    guestMessage?: SortOrderInput | SortOrder
+    hostMessage?: SortOrderInput | SortOrder
+    cancelledBy?: SortOrderInput | SortOrder
+    cancellationReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     approvedAt?: SortOrderInput | SortOrder
     cancelledAt?: SortOrderInput | SortOrder
     completedAt?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
+    guest?: UserOrderByWithRelationInput
+    host?: UserOrderByWithRelationInput
     space?: SpaceOrderByWithRelationInput
     review?: ReviewOrderByWithRelationInput
   }
@@ -16439,68 +16340,55 @@ export namespace Prisma {
     AND?: BookingWhereInput | BookingWhereInput[]
     OR?: BookingWhereInput[]
     NOT?: BookingWhereInput | BookingWhereInput[]
-    userId?: StringFilter<"Booking"> | string
-    guestEmail?: StringFilter<"Booking"> | string
-    guestName?: StringFilter<"Booking"> | string
-    guestPhone?: StringNullableFilter<"Booking"> | string | null
-    numberOfGuests?: IntFilter<"Booking"> | number
+    guestId?: StringFilter<"Booking"> | string
+    hostId?: StringFilter<"Booking"> | string
     spaceId?: IntFilter<"Booking"> | number
-    startDateTime?: DateTimeFilter<"Booking"> | Date | string
-    endDateTime?: DateTimeFilter<"Booking"> | Date | string
+    startDate?: DateTimeFilter<"Booking"> | Date | string
+    endDate?: DateTimeFilter<"Booking"> | Date | string
+    startTime?: StringNullableFilter<"Booking"> | string | null
+    endTime?: StringNullableFilter<"Booking"> | string | null
+    guests?: IntFilter<"Booking"> | number
     isHourly?: BoolFilter<"Booking"> | boolean
     subtotal?: IntFilter<"Booking"> | number
+    cleaningFee?: IntFilter<"Booking"> | number
     serviceFee?: IntFilter<"Booking"> | number
     totalAmount?: IntFilter<"Booking"> | number
-    depositAmount?: IntFilter<"Booking"> | number
-    remainingAmount?: IntFilter<"Booking"> | number
-    depositPaid?: BoolFilter<"Booking"> | boolean
-    depositPaidAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    remainingPaid?: BoolFilter<"Booking"> | boolean
-    remainingPaidAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    depositSessionId?: StringNullableFilter<"Booking"> | string | null
-    remainingSessionId?: StringNullableFilter<"Booking"> | string | null
-    depositPaymentIntentId?: StringNullableFilter<"Booking"> | string | null
-    remainingPaymentIntentId?: StringNullableFilter<"Booking"> | string | null
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
-    hostNote?: StringNullableFilter<"Booking"> | string | null
-    guestNote?: StringNullableFilter<"Booking"> | string | null
+    guestMessage?: StringNullableFilter<"Booking"> | string | null
+    hostMessage?: StringNullableFilter<"Booking"> | string | null
+    cancelledBy?: StringNullableFilter<"Booking"> | string | null
+    cancellationReason?: StringNullableFilter<"Booking"> | string | null
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
     approvedAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    guest?: XOR<UserScalarRelationFilter, UserWhereInput>
+    host?: XOR<UserScalarRelationFilter, UserWhereInput>
     space?: XOR<SpaceScalarRelationFilter, SpaceWhereInput>
     review?: XOR<ReviewNullableScalarRelationFilter, ReviewWhereInput> | null
   }, "id">
 
   export type BookingOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
-    guestEmail?: SortOrder
-    guestName?: SortOrder
-    guestPhone?: SortOrderInput | SortOrder
-    numberOfGuests?: SortOrder
+    guestId?: SortOrder
+    hostId?: SortOrder
     spaceId?: SortOrder
-    startDateTime?: SortOrder
-    endDateTime?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    startTime?: SortOrderInput | SortOrder
+    endTime?: SortOrderInput | SortOrder
+    guests?: SortOrder
     isHourly?: SortOrder
     subtotal?: SortOrder
+    cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
-    depositAmount?: SortOrder
-    remainingAmount?: SortOrder
-    depositPaid?: SortOrder
-    depositPaidAt?: SortOrderInput | SortOrder
-    remainingPaid?: SortOrder
-    remainingPaidAt?: SortOrderInput | SortOrder
-    depositSessionId?: SortOrderInput | SortOrder
-    remainingSessionId?: SortOrderInput | SortOrder
-    depositPaymentIntentId?: SortOrderInput | SortOrder
-    remainingPaymentIntentId?: SortOrderInput | SortOrder
     status?: SortOrder
-    hostNote?: SortOrderInput | SortOrder
-    guestNote?: SortOrderInput | SortOrder
+    guestMessage?: SortOrderInput | SortOrder
+    hostMessage?: SortOrderInput | SortOrder
+    cancelledBy?: SortOrderInput | SortOrder
+    cancellationReason?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     approvedAt?: SortOrderInput | SortOrder
@@ -16518,31 +16406,24 @@ export namespace Prisma {
     OR?: BookingScalarWhereWithAggregatesInput[]
     NOT?: BookingScalarWhereWithAggregatesInput | BookingScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Booking"> | string
-    userId?: StringWithAggregatesFilter<"Booking"> | string
-    guestEmail?: StringWithAggregatesFilter<"Booking"> | string
-    guestName?: StringWithAggregatesFilter<"Booking"> | string
-    guestPhone?: StringNullableWithAggregatesFilter<"Booking"> | string | null
-    numberOfGuests?: IntWithAggregatesFilter<"Booking"> | number
+    guestId?: StringWithAggregatesFilter<"Booking"> | string
+    hostId?: StringWithAggregatesFilter<"Booking"> | string
     spaceId?: IntWithAggregatesFilter<"Booking"> | number
-    startDateTime?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
-    endDateTime?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
+    startDate?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
+    endDate?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
+    startTime?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    endTime?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    guests?: IntWithAggregatesFilter<"Booking"> | number
     isHourly?: BoolWithAggregatesFilter<"Booking"> | boolean
     subtotal?: IntWithAggregatesFilter<"Booking"> | number
+    cleaningFee?: IntWithAggregatesFilter<"Booking"> | number
     serviceFee?: IntWithAggregatesFilter<"Booking"> | number
     totalAmount?: IntWithAggregatesFilter<"Booking"> | number
-    depositAmount?: IntWithAggregatesFilter<"Booking"> | number
-    remainingAmount?: IntWithAggregatesFilter<"Booking"> | number
-    depositPaid?: BoolWithAggregatesFilter<"Booking"> | boolean
-    depositPaidAt?: DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
-    remainingPaid?: BoolWithAggregatesFilter<"Booking"> | boolean
-    remainingPaidAt?: DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
-    depositSessionId?: StringNullableWithAggregatesFilter<"Booking"> | string | null
-    remainingSessionId?: StringNullableWithAggregatesFilter<"Booking"> | string | null
-    depositPaymentIntentId?: StringNullableWithAggregatesFilter<"Booking"> | string | null
-    remainingPaymentIntentId?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     status?: EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
-    hostNote?: StringNullableWithAggregatesFilter<"Booking"> | string | null
-    guestNote?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    guestMessage?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    hostMessage?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    cancelledBy?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    cancellationReason?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     approvedAt?: DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
@@ -16649,7 +16530,6 @@ export namespace Prisma {
     netAmount?: IntFilter<"Payout"> | number
     status?: EnumPayoutStatusFilter<"Payout"> | $Enums.PayoutStatus
     bookingIds?: StringNullableListFilter<"Payout">
-    stripeTransferId?: StringNullableFilter<"Payout"> | string | null
     processedAt?: DateTimeNullableFilter<"Payout"> | Date | string | null
     createdAt?: DateTimeFilter<"Payout"> | Date | string
     updatedAt?: DateTimeFilter<"Payout"> | Date | string
@@ -16664,7 +16544,6 @@ export namespace Prisma {
     netAmount?: SortOrder
     status?: SortOrder
     bookingIds?: SortOrder
-    stripeTransferId?: SortOrderInput | SortOrder
     processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16682,7 +16561,6 @@ export namespace Prisma {
     netAmount?: IntFilter<"Payout"> | number
     status?: EnumPayoutStatusFilter<"Payout"> | $Enums.PayoutStatus
     bookingIds?: StringNullableListFilter<"Payout">
-    stripeTransferId?: StringNullableFilter<"Payout"> | string | null
     processedAt?: DateTimeNullableFilter<"Payout"> | Date | string | null
     createdAt?: DateTimeFilter<"Payout"> | Date | string
     updatedAt?: DateTimeFilter<"Payout"> | Date | string
@@ -16697,7 +16575,6 @@ export namespace Prisma {
     netAmount?: SortOrder
     status?: SortOrder
     bookingIds?: SortOrder
-    stripeTransferId?: SortOrderInput | SortOrder
     processedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16719,7 +16596,6 @@ export namespace Prisma {
     netAmount?: IntWithAggregatesFilter<"Payout"> | number
     status?: EnumPayoutStatusWithAggregatesFilter<"Payout"> | $Enums.PayoutStatus
     bookingIds?: StringNullableListFilter<"Payout">
-    stripeTransferId?: StringNullableWithAggregatesFilter<"Payout"> | string | null
     processedAt?: DateTimeNullableWithAggregatesFilter<"Payout"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Payout"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Payout"> | Date | string
@@ -16740,10 +16616,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
-    bookings?: BookingCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
     payouts?: PayoutCreateNestedManyWithoutHostInput
   }
@@ -16763,10 +16639,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
-    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     payouts?: PayoutUncheckedCreateNestedManyWithoutHostInput
   }
@@ -16786,10 +16662,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
-    bookings?: BookingUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
     payouts?: PayoutUpdateManyWithoutHostNestedInput
   }
@@ -16809,10 +16685,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
-    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
   }
@@ -16832,7 +16708,6 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -16850,7 +16725,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -16868,7 +16742,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SessionCreateInput = {
@@ -16934,7 +16807,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -16970,7 +16843,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -17005,7 +16878,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17041,7 +16914,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17077,7 +16950,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -17107,7 +16980,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17136,7 +17009,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17409,66 +17282,52 @@ export namespace Prisma {
 
   export type BookingCreateInput = {
     id?: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
     cancelledAt?: Date | string | null
     completedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutBookingsInput
+    guest: UserCreateNestedOneWithoutBookingsAsGuestInput
+    host: UserCreateNestedOneWithoutBookingsAsHostInput
     space: SpaceCreateNestedOneWithoutBookingsInput
     review?: ReviewCreateNestedOneWithoutBookingInput
   }
 
   export type BookingUncheckedCreateInput = {
     id?: string
-    userId: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
+    guestId: string
+    hostId: string
     spaceId: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
@@ -17479,66 +17338,52 @@ export namespace Prisma {
 
   export type BookingUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutBookingsNestedInput
+    guest?: UserUpdateOneRequiredWithoutBookingsAsGuestNestedInput
+    host?: UserUpdateOneRequiredWithoutBookingsAsHostNestedInput
     space?: SpaceUpdateOneRequiredWithoutBookingsNestedInput
     review?: ReviewUpdateOneWithoutBookingNestedInput
   }
 
   export type BookingUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
+    guestId?: StringFieldUpdateOperationsInput | string
+    hostId?: StringFieldUpdateOperationsInput | string
     spaceId?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17549,31 +17394,24 @@ export namespace Prisma {
 
   export type BookingCreateManyInput = {
     id?: string
-    userId: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
+    guestId: string
+    hostId: string
     spaceId: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
@@ -17583,29 +17421,21 @@ export namespace Prisma {
 
   export type BookingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17615,31 +17445,24 @@ export namespace Prisma {
 
   export type BookingUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
+    guestId?: StringFieldUpdateOperationsInput | string
+    hostId?: StringFieldUpdateOperationsInput | string
     spaceId?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17739,7 +17562,6 @@ export namespace Prisma {
     netAmount: number
     status?: $Enums.PayoutStatus
     bookingIds?: PayoutCreatebookingIdsInput | string[]
-    stripeTransferId?: string | null
     processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17754,7 +17576,6 @@ export namespace Prisma {
     netAmount: number
     status?: $Enums.PayoutStatus
     bookingIds?: PayoutCreatebookingIdsInput | string[]
-    stripeTransferId?: string | null
     processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17767,7 +17588,6 @@ export namespace Prisma {
     netAmount?: IntFieldUpdateOperationsInput | number
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
     bookingIds?: PayoutUpdatebookingIdsInput | string[]
-    stripeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17782,7 +17602,6 @@ export namespace Prisma {
     netAmount?: IntFieldUpdateOperationsInput | number
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
     bookingIds?: PayoutUpdatebookingIdsInput | string[]
-    stripeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17796,7 +17615,6 @@ export namespace Prisma {
     netAmount: number
     status?: $Enums.PayoutStatus
     bookingIds?: PayoutCreatebookingIdsInput | string[]
-    stripeTransferId?: string | null
     processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17809,7 +17627,6 @@ export namespace Prisma {
     netAmount?: IntFieldUpdateOperationsInput | number
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
     bookingIds?: PayoutUpdatebookingIdsInput | string[]
-    stripeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17823,7 +17640,6 @@ export namespace Prisma {
     netAmount?: IntFieldUpdateOperationsInput | number
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
     bookingIds?: PayoutUpdatebookingIdsInput | string[]
-    stripeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17963,7 +17779,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     hostVerified?: SortOrder
     hostingSince?: SortOrder
-    stripeAccountId?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -17981,7 +17796,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     hostVerified?: SortOrder
     hostingSince?: SortOrder
-    stripeAccountId?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -17999,7 +17813,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
     hostVerified?: SortOrder
     hostingSince?: SortOrder
-    stripeAccountId?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -18234,7 +18047,7 @@ export namespace Prisma {
     pricingType?: SortOrder
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
-    depositPercent?: SortOrder
+    cleaningFee?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -18260,7 +18073,7 @@ export namespace Prisma {
     id?: SortOrder
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
-    depositPercent?: SortOrder
+    cleaningFee?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -18277,7 +18090,7 @@ export namespace Prisma {
     pricingType?: SortOrder
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
-    depositPercent?: SortOrder
+    cleaningFee?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -18307,7 +18120,7 @@ export namespace Prisma {
     pricingType?: SortOrder
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
-    depositPercent?: SortOrder
+    cleaningFee?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -18332,7 +18145,7 @@ export namespace Prisma {
     id?: SortOrder
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
-    depositPercent?: SortOrder
+    cleaningFee?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -18639,31 +18452,24 @@ export namespace Prisma {
 
   export type BookingCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    guestEmail?: SortOrder
-    guestName?: SortOrder
-    guestPhone?: SortOrder
-    numberOfGuests?: SortOrder
+    guestId?: SortOrder
+    hostId?: SortOrder
     spaceId?: SortOrder
-    startDateTime?: SortOrder
-    endDateTime?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    guests?: SortOrder
     isHourly?: SortOrder
     subtotal?: SortOrder
+    cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
-    depositAmount?: SortOrder
-    remainingAmount?: SortOrder
-    depositPaid?: SortOrder
-    depositPaidAt?: SortOrder
-    remainingPaid?: SortOrder
-    remainingPaidAt?: SortOrder
-    depositSessionId?: SortOrder
-    remainingSessionId?: SortOrder
-    depositPaymentIntentId?: SortOrder
-    remainingPaymentIntentId?: SortOrder
     status?: SortOrder
-    hostNote?: SortOrder
-    guestNote?: SortOrder
+    guestMessage?: SortOrder
+    hostMessage?: SortOrder
+    cancelledBy?: SortOrder
+    cancellationReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     approvedAt?: SortOrder
@@ -18672,42 +18478,34 @@ export namespace Prisma {
   }
 
   export type BookingAvgOrderByAggregateInput = {
-    numberOfGuests?: SortOrder
     spaceId?: SortOrder
+    guests?: SortOrder
     subtotal?: SortOrder
+    cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
-    depositAmount?: SortOrder
-    remainingAmount?: SortOrder
   }
 
   export type BookingMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    guestEmail?: SortOrder
-    guestName?: SortOrder
-    guestPhone?: SortOrder
-    numberOfGuests?: SortOrder
+    guestId?: SortOrder
+    hostId?: SortOrder
     spaceId?: SortOrder
-    startDateTime?: SortOrder
-    endDateTime?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    guests?: SortOrder
     isHourly?: SortOrder
     subtotal?: SortOrder
+    cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
-    depositAmount?: SortOrder
-    remainingAmount?: SortOrder
-    depositPaid?: SortOrder
-    depositPaidAt?: SortOrder
-    remainingPaid?: SortOrder
-    remainingPaidAt?: SortOrder
-    depositSessionId?: SortOrder
-    remainingSessionId?: SortOrder
-    depositPaymentIntentId?: SortOrder
-    remainingPaymentIntentId?: SortOrder
     status?: SortOrder
-    hostNote?: SortOrder
-    guestNote?: SortOrder
+    guestMessage?: SortOrder
+    hostMessage?: SortOrder
+    cancelledBy?: SortOrder
+    cancellationReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     approvedAt?: SortOrder
@@ -18717,31 +18515,24 @@ export namespace Prisma {
 
   export type BookingMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
-    guestEmail?: SortOrder
-    guestName?: SortOrder
-    guestPhone?: SortOrder
-    numberOfGuests?: SortOrder
+    guestId?: SortOrder
+    hostId?: SortOrder
     spaceId?: SortOrder
-    startDateTime?: SortOrder
-    endDateTime?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    guests?: SortOrder
     isHourly?: SortOrder
     subtotal?: SortOrder
+    cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
-    depositAmount?: SortOrder
-    remainingAmount?: SortOrder
-    depositPaid?: SortOrder
-    depositPaidAt?: SortOrder
-    remainingPaid?: SortOrder
-    remainingPaidAt?: SortOrder
-    depositSessionId?: SortOrder
-    remainingSessionId?: SortOrder
-    depositPaymentIntentId?: SortOrder
-    remainingPaymentIntentId?: SortOrder
     status?: SortOrder
-    hostNote?: SortOrder
-    guestNote?: SortOrder
+    guestMessage?: SortOrder
+    hostMessage?: SortOrder
+    cancelledBy?: SortOrder
+    cancellationReason?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     approvedAt?: SortOrder
@@ -18750,13 +18541,12 @@ export namespace Prisma {
   }
 
   export type BookingSumOrderByAggregateInput = {
-    numberOfGuests?: SortOrder
     spaceId?: SortOrder
+    guests?: SortOrder
     subtotal?: SortOrder
+    cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
-    depositAmount?: SortOrder
-    remainingAmount?: SortOrder
   }
 
   export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -18848,7 +18638,6 @@ export namespace Prisma {
     netAmount?: SortOrder
     status?: SortOrder
     bookingIds?: SortOrder
-    stripeTransferId?: SortOrder
     processedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18867,7 +18656,6 @@ export namespace Prisma {
     platformFee?: SortOrder
     netAmount?: SortOrder
     status?: SortOrder
-    stripeTransferId?: SortOrder
     processedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18880,7 +18668,6 @@ export namespace Prisma {
     platformFee?: SortOrder
     netAmount?: SortOrder
     status?: SortOrder
-    stripeTransferId?: SortOrder
     processedAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -18916,10 +18703,17 @@ export namespace Prisma {
     connect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
   }
 
-  export type BookingCreateNestedManyWithoutUserInput = {
-    create?: XOR<BookingCreateWithoutUserInput, BookingUncheckedCreateWithoutUserInput> | BookingCreateWithoutUserInput[] | BookingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingCreateOrConnectWithoutUserInput | BookingCreateOrConnectWithoutUserInput[]
-    createMany?: BookingCreateManyUserInputEnvelope
+  export type BookingCreateNestedManyWithoutGuestInput = {
+    create?: XOR<BookingCreateWithoutGuestInput, BookingUncheckedCreateWithoutGuestInput> | BookingCreateWithoutGuestInput[] | BookingUncheckedCreateWithoutGuestInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutGuestInput | BookingCreateOrConnectWithoutGuestInput[]
+    createMany?: BookingCreateManyGuestInputEnvelope
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+  }
+
+  export type BookingCreateNestedManyWithoutHostInput = {
+    create?: XOR<BookingCreateWithoutHostInput, BookingUncheckedCreateWithoutHostInput> | BookingCreateWithoutHostInput[] | BookingUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutHostInput | BookingCreateOrConnectWithoutHostInput[]
+    createMany?: BookingCreateManyHostInputEnvelope
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
@@ -18951,10 +18745,17 @@ export namespace Prisma {
     connect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
   }
 
-  export type BookingUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<BookingCreateWithoutUserInput, BookingUncheckedCreateWithoutUserInput> | BookingCreateWithoutUserInput[] | BookingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingCreateOrConnectWithoutUserInput | BookingCreateOrConnectWithoutUserInput[]
-    createMany?: BookingCreateManyUserInputEnvelope
+  export type BookingUncheckedCreateNestedManyWithoutGuestInput = {
+    create?: XOR<BookingCreateWithoutGuestInput, BookingUncheckedCreateWithoutGuestInput> | BookingCreateWithoutGuestInput[] | BookingUncheckedCreateWithoutGuestInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutGuestInput | BookingCreateOrConnectWithoutGuestInput[]
+    createMany?: BookingCreateManyGuestInputEnvelope
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+  }
+
+  export type BookingUncheckedCreateNestedManyWithoutHostInput = {
+    create?: XOR<BookingCreateWithoutHostInput, BookingUncheckedCreateWithoutHostInput> | BookingCreateWithoutHostInput[] | BookingUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutHostInput | BookingCreateOrConnectWithoutHostInput[]
+    createMany?: BookingCreateManyHostInputEnvelope
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
@@ -19024,17 +18825,31 @@ export namespace Prisma {
     deleteMany?: SpaceScalarWhereInput | SpaceScalarWhereInput[]
   }
 
-  export type BookingUpdateManyWithoutUserNestedInput = {
-    create?: XOR<BookingCreateWithoutUserInput, BookingUncheckedCreateWithoutUserInput> | BookingCreateWithoutUserInput[] | BookingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingCreateOrConnectWithoutUserInput | BookingCreateOrConnectWithoutUserInput[]
-    upsert?: BookingUpsertWithWhereUniqueWithoutUserInput | BookingUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: BookingCreateManyUserInputEnvelope
+  export type BookingUpdateManyWithoutGuestNestedInput = {
+    create?: XOR<BookingCreateWithoutGuestInput, BookingUncheckedCreateWithoutGuestInput> | BookingCreateWithoutGuestInput[] | BookingUncheckedCreateWithoutGuestInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutGuestInput | BookingCreateOrConnectWithoutGuestInput[]
+    upsert?: BookingUpsertWithWhereUniqueWithoutGuestInput | BookingUpsertWithWhereUniqueWithoutGuestInput[]
+    createMany?: BookingCreateManyGuestInputEnvelope
     set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
     disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
     delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
-    update?: BookingUpdateWithWhereUniqueWithoutUserInput | BookingUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: BookingUpdateManyWithWhereWithoutUserInput | BookingUpdateManyWithWhereWithoutUserInput[]
+    update?: BookingUpdateWithWhereUniqueWithoutGuestInput | BookingUpdateWithWhereUniqueWithoutGuestInput[]
+    updateMany?: BookingUpdateManyWithWhereWithoutGuestInput | BookingUpdateManyWithWhereWithoutGuestInput[]
+    deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
+  }
+
+  export type BookingUpdateManyWithoutHostNestedInput = {
+    create?: XOR<BookingCreateWithoutHostInput, BookingUncheckedCreateWithoutHostInput> | BookingCreateWithoutHostInput[] | BookingUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutHostInput | BookingCreateOrConnectWithoutHostInput[]
+    upsert?: BookingUpsertWithWhereUniqueWithoutHostInput | BookingUpsertWithWhereUniqueWithoutHostInput[]
+    createMany?: BookingCreateManyHostInputEnvelope
+    set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    update?: BookingUpdateWithWhereUniqueWithoutHostInput | BookingUpdateWithWhereUniqueWithoutHostInput[]
+    updateMany?: BookingUpdateManyWithWhereWithoutHostInput | BookingUpdateManyWithWhereWithoutHostInput[]
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
@@ -19094,17 +18909,31 @@ export namespace Prisma {
     deleteMany?: SpaceScalarWhereInput | SpaceScalarWhereInput[]
   }
 
-  export type BookingUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<BookingCreateWithoutUserInput, BookingUncheckedCreateWithoutUserInput> | BookingCreateWithoutUserInput[] | BookingUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingCreateOrConnectWithoutUserInput | BookingCreateOrConnectWithoutUserInput[]
-    upsert?: BookingUpsertWithWhereUniqueWithoutUserInput | BookingUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: BookingCreateManyUserInputEnvelope
+  export type BookingUncheckedUpdateManyWithoutGuestNestedInput = {
+    create?: XOR<BookingCreateWithoutGuestInput, BookingUncheckedCreateWithoutGuestInput> | BookingCreateWithoutGuestInput[] | BookingUncheckedCreateWithoutGuestInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutGuestInput | BookingCreateOrConnectWithoutGuestInput[]
+    upsert?: BookingUpsertWithWhereUniqueWithoutGuestInput | BookingUpsertWithWhereUniqueWithoutGuestInput[]
+    createMany?: BookingCreateManyGuestInputEnvelope
     set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
     disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
     delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
-    update?: BookingUpdateWithWhereUniqueWithoutUserInput | BookingUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: BookingUpdateManyWithWhereWithoutUserInput | BookingUpdateManyWithWhereWithoutUserInput[]
+    update?: BookingUpdateWithWhereUniqueWithoutGuestInput | BookingUpdateWithWhereUniqueWithoutGuestInput[]
+    updateMany?: BookingUpdateManyWithWhereWithoutGuestInput | BookingUpdateManyWithWhereWithoutGuestInput[]
+    deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
+  }
+
+  export type BookingUncheckedUpdateManyWithoutHostNestedInput = {
+    create?: XOR<BookingCreateWithoutHostInput, BookingUncheckedCreateWithoutHostInput> | BookingCreateWithoutHostInput[] | BookingUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutHostInput | BookingCreateOrConnectWithoutHostInput[]
+    upsert?: BookingUpsertWithWhereUniqueWithoutHostInput | BookingUpsertWithWhereUniqueWithoutHostInput[]
+    createMany?: BookingCreateManyHostInputEnvelope
+    set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    update?: BookingUpdateWithWhereUniqueWithoutHostInput | BookingUpdateWithWhereUniqueWithoutHostInput[]
+    updateMany?: BookingUpdateManyWithWhereWithoutHostInput | BookingUpdateManyWithWhereWithoutHostInput[]
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
@@ -19564,9 +19393,15 @@ export namespace Prisma {
     update?: XOR<XOR<SpaceUpdateToOneWithWhereWithoutBlockedDatesInput, SpaceUpdateWithoutBlockedDatesInput>, SpaceUncheckedUpdateWithoutBlockedDatesInput>
   }
 
-  export type UserCreateNestedOneWithoutBookingsInput = {
-    create?: XOR<UserCreateWithoutBookingsInput, UserUncheckedCreateWithoutBookingsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutBookingsInput
+  export type UserCreateNestedOneWithoutBookingsAsGuestInput = {
+    create?: XOR<UserCreateWithoutBookingsAsGuestInput, UserUncheckedCreateWithoutBookingsAsGuestInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBookingsAsGuestInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutBookingsAsHostInput = {
+    create?: XOR<UserCreateWithoutBookingsAsHostInput, UserUncheckedCreateWithoutBookingsAsHostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBookingsAsHostInput
     connect?: UserWhereUniqueInput
   }
 
@@ -19592,12 +19427,20 @@ export namespace Prisma {
     set?: $Enums.BookingStatus
   }
 
-  export type UserUpdateOneRequiredWithoutBookingsNestedInput = {
-    create?: XOR<UserCreateWithoutBookingsInput, UserUncheckedCreateWithoutBookingsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutBookingsInput
-    upsert?: UserUpsertWithoutBookingsInput
+  export type UserUpdateOneRequiredWithoutBookingsAsGuestNestedInput = {
+    create?: XOR<UserCreateWithoutBookingsAsGuestInput, UserUncheckedCreateWithoutBookingsAsGuestInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBookingsAsGuestInput
+    upsert?: UserUpsertWithoutBookingsAsGuestInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBookingsInput, UserUpdateWithoutBookingsInput>, UserUncheckedUpdateWithoutBookingsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBookingsAsGuestInput, UserUpdateWithoutBookingsAsGuestInput>, UserUncheckedUpdateWithoutBookingsAsGuestInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutBookingsAsHostNestedInput = {
+    create?: XOR<UserCreateWithoutBookingsAsHostInput, UserUncheckedCreateWithoutBookingsAsHostInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBookingsAsHostInput
+    upsert?: UserUpsertWithoutBookingsAsHostInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBookingsAsHostInput, UserUpdateWithoutBookingsAsHostInput>, UserUncheckedUpdateWithoutBookingsAsHostInput>
   }
 
   export type SpaceUpdateOneRequiredWithoutBookingsNestedInput = {
@@ -20071,7 +19914,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -20106,7 +19949,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -20142,66 +19985,52 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BookingCreateWithoutUserInput = {
+  export type BookingCreateWithoutGuestInput = {
     id?: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
     cancelledAt?: Date | string | null
     completedAt?: Date | string | null
+    host: UserCreateNestedOneWithoutBookingsAsHostInput
     space: SpaceCreateNestedOneWithoutBookingsInput
     review?: ReviewCreateNestedOneWithoutBookingInput
   }
 
-  export type BookingUncheckedCreateWithoutUserInput = {
+  export type BookingUncheckedCreateWithoutGuestInput = {
     id?: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
+    hostId: string
     spaceId: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
@@ -20210,13 +20039,77 @@ export namespace Prisma {
     review?: ReviewUncheckedCreateNestedOneWithoutBookingInput
   }
 
-  export type BookingCreateOrConnectWithoutUserInput = {
+  export type BookingCreateOrConnectWithoutGuestInput = {
     where: BookingWhereUniqueInput
-    create: XOR<BookingCreateWithoutUserInput, BookingUncheckedCreateWithoutUserInput>
+    create: XOR<BookingCreateWithoutGuestInput, BookingUncheckedCreateWithoutGuestInput>
   }
 
-  export type BookingCreateManyUserInputEnvelope = {
-    data: BookingCreateManyUserInput | BookingCreateManyUserInput[]
+  export type BookingCreateManyGuestInputEnvelope = {
+    data: BookingCreateManyGuestInput | BookingCreateManyGuestInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BookingCreateWithoutHostInput = {
+    id?: string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
+    isHourly: boolean
+    subtotal: number
+    cleaningFee?: number
+    serviceFee: number
+    totalAmount: number
+    status?: $Enums.BookingStatus
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    completedAt?: Date | string | null
+    guest: UserCreateNestedOneWithoutBookingsAsGuestInput
+    space: SpaceCreateNestedOneWithoutBookingsInput
+    review?: ReviewCreateNestedOneWithoutBookingInput
+  }
+
+  export type BookingUncheckedCreateWithoutHostInput = {
+    id?: string
+    guestId: string
+    spaceId: number
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
+    isHourly: boolean
+    subtotal: number
+    cleaningFee?: number
+    serviceFee: number
+    totalAmount: number
+    status?: $Enums.BookingStatus
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    completedAt?: Date | string | null
+    review?: ReviewUncheckedCreateNestedOneWithoutBookingInput
+  }
+
+  export type BookingCreateOrConnectWithoutHostInput = {
+    where: BookingWhereUniqueInput
+    create: XOR<BookingCreateWithoutHostInput, BookingUncheckedCreateWithoutHostInput>
+  }
+
+  export type BookingCreateManyHostInputEnvelope = {
+    data: BookingCreateManyHostInput | BookingCreateManyHostInput[]
     skipDuplicates?: boolean
   }
 
@@ -20260,7 +20153,6 @@ export namespace Prisma {
     netAmount: number
     status?: $Enums.PayoutStatus
     bookingIds?: PayoutCreatebookingIdsInput | string[]
-    stripeTransferId?: string | null
     processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20273,7 +20165,6 @@ export namespace Prisma {
     netAmount: number
     status?: $Enums.PayoutStatus
     bookingIds?: PayoutCreatebookingIdsInput | string[]
-    stripeTransferId?: string | null
     processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -20344,7 +20235,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
     pricePerHour?: IntNullableFilter<"Space"> | number | null
     pricePerDay?: IntNullableFilter<"Space"> | number | null
-    depositPercent?: IntFilter<"Space"> | number
+    cleaningFee?: IntFilter<"Space"> | number
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -20366,20 +20257,20 @@ export namespace Prisma {
     categorySlug?: StringFilter<"Space"> | string
   }
 
-  export type BookingUpsertWithWhereUniqueWithoutUserInput = {
+  export type BookingUpsertWithWhereUniqueWithoutGuestInput = {
     where: BookingWhereUniqueInput
-    update: XOR<BookingUpdateWithoutUserInput, BookingUncheckedUpdateWithoutUserInput>
-    create: XOR<BookingCreateWithoutUserInput, BookingUncheckedCreateWithoutUserInput>
+    update: XOR<BookingUpdateWithoutGuestInput, BookingUncheckedUpdateWithoutGuestInput>
+    create: XOR<BookingCreateWithoutGuestInput, BookingUncheckedCreateWithoutGuestInput>
   }
 
-  export type BookingUpdateWithWhereUniqueWithoutUserInput = {
+  export type BookingUpdateWithWhereUniqueWithoutGuestInput = {
     where: BookingWhereUniqueInput
-    data: XOR<BookingUpdateWithoutUserInput, BookingUncheckedUpdateWithoutUserInput>
+    data: XOR<BookingUpdateWithoutGuestInput, BookingUncheckedUpdateWithoutGuestInput>
   }
 
-  export type BookingUpdateManyWithWhereWithoutUserInput = {
+  export type BookingUpdateManyWithWhereWithoutGuestInput = {
     where: BookingScalarWhereInput
-    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutUserInput>
+    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutGuestInput>
   }
 
   export type BookingScalarWhereInput = {
@@ -20387,36 +20278,45 @@ export namespace Prisma {
     OR?: BookingScalarWhereInput[]
     NOT?: BookingScalarWhereInput | BookingScalarWhereInput[]
     id?: StringFilter<"Booking"> | string
-    userId?: StringFilter<"Booking"> | string
-    guestEmail?: StringFilter<"Booking"> | string
-    guestName?: StringFilter<"Booking"> | string
-    guestPhone?: StringNullableFilter<"Booking"> | string | null
-    numberOfGuests?: IntFilter<"Booking"> | number
+    guestId?: StringFilter<"Booking"> | string
+    hostId?: StringFilter<"Booking"> | string
     spaceId?: IntFilter<"Booking"> | number
-    startDateTime?: DateTimeFilter<"Booking"> | Date | string
-    endDateTime?: DateTimeFilter<"Booking"> | Date | string
+    startDate?: DateTimeFilter<"Booking"> | Date | string
+    endDate?: DateTimeFilter<"Booking"> | Date | string
+    startTime?: StringNullableFilter<"Booking"> | string | null
+    endTime?: StringNullableFilter<"Booking"> | string | null
+    guests?: IntFilter<"Booking"> | number
     isHourly?: BoolFilter<"Booking"> | boolean
     subtotal?: IntFilter<"Booking"> | number
+    cleaningFee?: IntFilter<"Booking"> | number
     serviceFee?: IntFilter<"Booking"> | number
     totalAmount?: IntFilter<"Booking"> | number
-    depositAmount?: IntFilter<"Booking"> | number
-    remainingAmount?: IntFilter<"Booking"> | number
-    depositPaid?: BoolFilter<"Booking"> | boolean
-    depositPaidAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    remainingPaid?: BoolFilter<"Booking"> | boolean
-    remainingPaidAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
-    depositSessionId?: StringNullableFilter<"Booking"> | string | null
-    remainingSessionId?: StringNullableFilter<"Booking"> | string | null
-    depositPaymentIntentId?: StringNullableFilter<"Booking"> | string | null
-    remainingPaymentIntentId?: StringNullableFilter<"Booking"> | string | null
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
-    hostNote?: StringNullableFilter<"Booking"> | string | null
-    guestNote?: StringNullableFilter<"Booking"> | string | null
+    guestMessage?: StringNullableFilter<"Booking"> | string | null
+    hostMessage?: StringNullableFilter<"Booking"> | string | null
+    cancelledBy?: StringNullableFilter<"Booking"> | string | null
+    cancellationReason?: StringNullableFilter<"Booking"> | string | null
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
     approvedAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
     cancelledAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
     completedAt?: DateTimeNullableFilter<"Booking"> | Date | string | null
+  }
+
+  export type BookingUpsertWithWhereUniqueWithoutHostInput = {
+    where: BookingWhereUniqueInput
+    update: XOR<BookingUpdateWithoutHostInput, BookingUncheckedUpdateWithoutHostInput>
+    create: XOR<BookingCreateWithoutHostInput, BookingUncheckedCreateWithoutHostInput>
+  }
+
+  export type BookingUpdateWithWhereUniqueWithoutHostInput = {
+    where: BookingWhereUniqueInput
+    data: XOR<BookingUpdateWithoutHostInput, BookingUncheckedUpdateWithoutHostInput>
+  }
+
+  export type BookingUpdateManyWithWhereWithoutHostInput = {
+    where: BookingScalarWhereInput
+    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutHostInput>
   }
 
   export type ReviewUpsertWithWhereUniqueWithoutUserInput = {
@@ -20478,7 +20378,6 @@ export namespace Prisma {
     netAmount?: IntFilter<"Payout"> | number
     status?: EnumPayoutStatusFilter<"Payout"> | $Enums.PayoutStatus
     bookingIds?: StringNullableListFilter<"Payout">
-    stripeTransferId?: StringNullableFilter<"Payout"> | string | null
     processedAt?: DateTimeNullableFilter<"Payout"> | Date | string | null
     createdAt?: DateTimeFilter<"Payout"> | Date | string
     updatedAt?: DateTimeFilter<"Payout"> | Date | string
@@ -20499,9 +20398,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     spaces?: SpaceCreateNestedManyWithoutHostInput
-    bookings?: BookingCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
     payouts?: PayoutCreateNestedManyWithoutHostInput
   }
@@ -20521,9 +20420,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
-    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     payouts?: PayoutUncheckedCreateNestedManyWithoutHostInput
   }
@@ -20559,9 +20458,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     spaces?: SpaceUpdateManyWithoutHostNestedInput
-    bookings?: BookingUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
     payouts?: PayoutUpdateManyWithoutHostNestedInput
   }
@@ -20581,9 +20480,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
-    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
   }
@@ -20603,9 +20502,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
-    bookings?: BookingCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
     payouts?: PayoutCreateNestedManyWithoutHostInput
   }
@@ -20625,9 +20524,9 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     payouts?: PayoutUncheckedCreateNestedManyWithoutHostInput
   }
@@ -20724,64 +20623,50 @@ export namespace Prisma {
 
   export type BookingCreateWithoutSpaceInput = {
     id?: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
     cancelledAt?: Date | string | null
     completedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutBookingsInput
+    guest: UserCreateNestedOneWithoutBookingsAsGuestInput
+    host: UserCreateNestedOneWithoutBookingsAsHostInput
     review?: ReviewCreateNestedOneWithoutBookingInput
   }
 
   export type BookingUncheckedCreateWithoutSpaceInput = {
     id?: string
-    userId: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    guestId: string
+    hostId: string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
@@ -20859,9 +20744,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
-    bookings?: BookingUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
     payouts?: PayoutUpdateManyWithoutHostNestedInput
   }
@@ -20881,9 +20766,9 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
   }
@@ -21033,7 +20918,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21068,7 +20953,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21163,7 +21048,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21198,7 +21083,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21266,7 +21151,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21301,7 +21186,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21359,7 +21244,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21394,7 +21279,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21444,7 +21329,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21479,7 +21364,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21513,7 +21398,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21548,7 +21433,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21598,7 +21483,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21633,7 +21518,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21659,7 +21544,7 @@ export namespace Prisma {
     reviews?: ReviewUncheckedUpdateManyWithoutSpaceNestedInput
   }
 
-  export type UserCreateWithoutBookingsInput = {
+  export type UserCreateWithoutBookingsAsGuestInput = {
     id?: string
     email: string
     username: string
@@ -21674,14 +21559,14 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
+    bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
     payouts?: PayoutCreateNestedManyWithoutHostInput
   }
 
-  export type UserUncheckedCreateWithoutBookingsInput = {
+  export type UserUncheckedCreateWithoutBookingsAsGuestInput = {
     id?: string
     email: string
     username: string
@@ -21696,16 +21581,65 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
+    bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
     payouts?: PayoutUncheckedCreateNestedManyWithoutHostInput
   }
 
-  export type UserCreateOrConnectWithoutBookingsInput = {
+  export type UserCreateOrConnectWithoutBookingsAsGuestInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutBookingsInput, UserUncheckedCreateWithoutBookingsInput>
+    create: XOR<UserCreateWithoutBookingsAsGuestInput, UserUncheckedCreateWithoutBookingsAsGuestInput>
+  }
+
+  export type UserCreateWithoutBookingsAsHostInput = {
+    id?: string
+    email: string
+    username: string
+    name?: string | null
+    password: string
+    role?: $Enums.Role
+    emailVerified?: boolean
+    image?: string | null
+    phone?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hostVerified?: boolean
+    hostingSince?: Date | string | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    spaces?: SpaceCreateNestedManyWithoutHostInput
+    bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    payouts?: PayoutCreateNestedManyWithoutHostInput
+  }
+
+  export type UserUncheckedCreateWithoutBookingsAsHostInput = {
+    id?: string
+    email: string
+    username: string
+    name?: string | null
+    password: string
+    role?: $Enums.Role
+    emailVerified?: boolean
+    image?: string | null
+    phone?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hostVerified?: boolean
+    hostingSince?: Date | string | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
+    bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    payouts?: PayoutUncheckedCreateNestedManyWithoutHostInput
+  }
+
+  export type UserCreateOrConnectWithoutBookingsAsHostInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBookingsAsHostInput, UserUncheckedCreateWithoutBookingsAsHostInput>
   }
 
   export type SpaceCreateWithoutBookingsInput = {
@@ -21716,7 +21650,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21751,7 +21685,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -21810,18 +21744,18 @@ export namespace Prisma {
     create: XOR<ReviewCreateWithoutBookingInput, ReviewUncheckedCreateWithoutBookingInput>
   }
 
-  export type UserUpsertWithoutBookingsInput = {
-    update: XOR<UserUpdateWithoutBookingsInput, UserUncheckedUpdateWithoutBookingsInput>
-    create: XOR<UserCreateWithoutBookingsInput, UserUncheckedCreateWithoutBookingsInput>
+  export type UserUpsertWithoutBookingsAsGuestInput = {
+    update: XOR<UserUpdateWithoutBookingsAsGuestInput, UserUncheckedUpdateWithoutBookingsAsGuestInput>
+    create: XOR<UserCreateWithoutBookingsAsGuestInput, UserUncheckedCreateWithoutBookingsAsGuestInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutBookingsInput = {
+  export type UserUpdateToOneWithWhereWithoutBookingsAsGuestInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutBookingsInput, UserUncheckedUpdateWithoutBookingsInput>
+    data: XOR<UserUpdateWithoutBookingsAsGuestInput, UserUncheckedUpdateWithoutBookingsAsGuestInput>
   }
 
-  export type UserUpdateWithoutBookingsInput = {
+  export type UserUpdateWithoutBookingsAsGuestInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
@@ -21836,14 +21770,14 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
+    bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
     payouts?: PayoutUpdateManyWithoutHostNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutBookingsInput = {
+  export type UserUncheckedUpdateWithoutBookingsAsGuestInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
@@ -21858,9 +21792,64 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
+    bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
+  }
+
+  export type UserUpsertWithoutBookingsAsHostInput = {
+    update: XOR<UserUpdateWithoutBookingsAsHostInput, UserUncheckedUpdateWithoutBookingsAsHostInput>
+    create: XOR<UserCreateWithoutBookingsAsHostInput, UserUncheckedCreateWithoutBookingsAsHostInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBookingsAsHostInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBookingsAsHostInput, UserUncheckedUpdateWithoutBookingsAsHostInput>
+  }
+
+  export type UserUpdateWithoutBookingsAsHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hostVerified?: BoolFieldUpdateOperationsInput | boolean
+    hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    spaces?: SpaceUpdateManyWithoutHostNestedInput
+    bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    payouts?: PayoutUpdateManyWithoutHostNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBookingsAsHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hostVerified?: BoolFieldUpdateOperationsInput | boolean
+    hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
+    bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
   }
@@ -21884,7 +21873,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21919,7 +21908,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21994,10 +21983,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
-    bookings?: BookingCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     payouts?: PayoutCreateNestedManyWithoutHostInput
   }
 
@@ -22016,10 +22005,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
-    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     payouts?: PayoutUncheckedCreateNestedManyWithoutHostInput
   }
 
@@ -22036,7 +22025,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -22071,7 +22060,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -22104,65 +22093,51 @@ export namespace Prisma {
 
   export type BookingCreateWithoutReviewInput = {
     id?: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
     cancelledAt?: Date | string | null
     completedAt?: Date | string | null
-    user: UserCreateNestedOneWithoutBookingsInput
+    guest: UserCreateNestedOneWithoutBookingsAsGuestInput
+    host: UserCreateNestedOneWithoutBookingsAsHostInput
     space: SpaceCreateNestedOneWithoutBookingsInput
   }
 
   export type BookingUncheckedCreateWithoutReviewInput = {
     id?: string
-    userId: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
+    guestId: string
+    hostId: string
     spaceId: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
@@ -22201,10 +22176,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
-    bookings?: BookingUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     payouts?: PayoutUpdateManyWithoutHostNestedInput
   }
 
@@ -22223,10 +22198,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
-    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
   }
 
@@ -22249,7 +22224,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22284,7 +22259,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22323,65 +22298,51 @@ export namespace Prisma {
 
   export type BookingUpdateWithoutReviewInput = {
     id?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutBookingsNestedInput
+    guest?: UserUpdateOneRequiredWithoutBookingsAsGuestNestedInput
+    host?: UserUpdateOneRequiredWithoutBookingsAsHostNestedInput
     space?: SpaceUpdateOneRequiredWithoutBookingsNestedInput
   }
 
   export type BookingUncheckedUpdateWithoutReviewInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
+    guestId?: StringFieldUpdateOperationsInput | string
+    hostId?: StringFieldUpdateOperationsInput | string
     spaceId?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22404,10 +22365,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
-    bookings?: BookingCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
   }
 
@@ -22426,10 +22387,10 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
-    stripeAccountId?: string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
-    bookings?: BookingUncheckedCreateNestedManyWithoutUserInput
+    bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -22464,10 +22425,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
-    bookings?: BookingUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
   }
 
@@ -22486,10 +22447,10 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    stripeAccountId?: NullableStringFieldUpdateOperationsInput | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
-    bookings?: BookingUncheckedUpdateManyWithoutUserNestedInput
+    bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -22509,7 +22470,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -22530,32 +22491,51 @@ export namespace Prisma {
     categorySlug: string
   }
 
-  export type BookingCreateManyUserInput = {
+  export type BookingCreateManyGuestInput = {
     id?: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
+    hostId: string
     spaceId: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    approvedAt?: Date | string | null
+    cancelledAt?: Date | string | null
+    completedAt?: Date | string | null
+  }
+
+  export type BookingCreateManyHostInput = {
+    id?: string
+    guestId: string
+    spaceId: number
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
+    isHourly: boolean
+    subtotal: number
+    cleaningFee?: number
+    serviceFee: number
+    totalAmount: number
+    status?: $Enums.BookingStatus
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
@@ -22582,7 +22562,6 @@ export namespace Prisma {
     netAmount: number
     status?: $Enums.PayoutStatus
     bookingIds?: PayoutCreatebookingIdsInput | string[]
-    stripeTransferId?: string | null
     processedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -22617,7 +22596,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22652,7 +22631,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22687,7 +22666,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22708,66 +22687,52 @@ export namespace Prisma {
     categorySlug?: StringFieldUpdateOperationsInput | string
   }
 
-  export type BookingUpdateWithoutUserInput = {
+  export type BookingUpdateWithoutGuestInput = {
     id?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    host?: UserUpdateOneRequiredWithoutBookingsAsHostNestedInput
     space?: SpaceUpdateOneRequiredWithoutBookingsNestedInput
     review?: ReviewUpdateOneWithoutBookingNestedInput
   }
 
-  export type BookingUncheckedUpdateWithoutUserInput = {
+  export type BookingUncheckedUpdateWithoutGuestInput = {
     id?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
+    hostId?: StringFieldUpdateOperationsInput | string
     spaceId?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22776,32 +22741,105 @@ export namespace Prisma {
     review?: ReviewUncheckedUpdateOneWithoutBookingNestedInput
   }
 
-  export type BookingUncheckedUpdateManyWithoutUserInput = {
+  export type BookingUncheckedUpdateManyWithoutGuestInput = {
     id?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
+    hostId?: StringFieldUpdateOperationsInput | string
     spaceId?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type BookingUpdateWithoutHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
+    isHourly?: BoolFieldUpdateOperationsInput | boolean
+    subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
+    serviceFee?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    guest?: UserUpdateOneRequiredWithoutBookingsAsGuestNestedInput
+    space?: SpaceUpdateOneRequiredWithoutBookingsNestedInput
+    review?: ReviewUpdateOneWithoutBookingNestedInput
+  }
+
+  export type BookingUncheckedUpdateWithoutHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guestId?: StringFieldUpdateOperationsInput | string
+    spaceId?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
+    isHourly?: BoolFieldUpdateOperationsInput | boolean
+    subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
+    serviceFee?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    review?: ReviewUncheckedUpdateOneWithoutBookingNestedInput
+  }
+
+  export type BookingUncheckedUpdateManyWithoutHostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    guestId?: StringFieldUpdateOperationsInput | string
+    spaceId?: IntFieldUpdateOperationsInput | number
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
+    isHourly?: BoolFieldUpdateOperationsInput | boolean
+    subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
+    serviceFee?: IntFieldUpdateOperationsInput | number
+    totalAmount?: IntFieldUpdateOperationsInput | number
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22851,7 +22889,6 @@ export namespace Prisma {
     netAmount?: IntFieldUpdateOperationsInput | number
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
     bookingIds?: PayoutUpdatebookingIdsInput | string[]
-    stripeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22864,7 +22901,6 @@ export namespace Prisma {
     netAmount?: IntFieldUpdateOperationsInput | number
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
     bookingIds?: PayoutUpdatebookingIdsInput | string[]
-    stripeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22877,7 +22913,6 @@ export namespace Prisma {
     netAmount?: IntFieldUpdateOperationsInput | number
     status?: EnumPayoutStatusFieldUpdateOperationsInput | $Enums.PayoutStatus
     bookingIds?: PayoutUpdatebookingIdsInput | string[]
-    stripeTransferId?: NullableStringFieldUpdateOperationsInput | string | null
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22904,30 +22939,23 @@ export namespace Prisma {
 
   export type BookingCreateManySpaceInput = {
     id?: string
-    userId: string
-    guestEmail: string
-    guestName: string
-    guestPhone?: string | null
-    numberOfGuests?: number
-    startDateTime: Date | string
-    endDateTime: Date | string
+    guestId: string
+    hostId: string
+    startDate: Date | string
+    endDate: Date | string
+    startTime?: string | null
+    endTime?: string | null
+    guests?: number
     isHourly: boolean
     subtotal: number
+    cleaningFee?: number
     serviceFee: number
     totalAmount: number
-    depositAmount: number
-    remainingAmount: number
-    depositPaid?: boolean
-    depositPaidAt?: Date | string | null
-    remainingPaid?: boolean
-    remainingPaidAt?: Date | string | null
-    depositSessionId?: string | null
-    remainingSessionId?: string | null
-    depositPaymentIntentId?: string | null
-    remainingPaymentIntentId?: string | null
     status?: $Enums.BookingStatus
-    hostNote?: string | null
-    guestNote?: string | null
+    guestMessage?: string | null
+    hostMessage?: string | null
+    cancelledBy?: string | null
+    cancellationReason?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     approvedAt?: Date | string | null
@@ -23003,64 +23031,50 @@ export namespace Prisma {
 
   export type BookingUpdateWithoutSpaceInput = {
     id?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutBookingsNestedInput
+    guest?: UserUpdateOneRequiredWithoutBookingsAsGuestNestedInput
+    host?: UserUpdateOneRequiredWithoutBookingsAsHostNestedInput
     review?: ReviewUpdateOneWithoutBookingNestedInput
   }
 
   export type BookingUncheckedUpdateWithoutSpaceInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    guestId?: StringFieldUpdateOperationsInput | string
+    hostId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23071,30 +23085,23 @@ export namespace Prisma {
 
   export type BookingUncheckedUpdateManyWithoutSpaceInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    guestEmail?: StringFieldUpdateOperationsInput | string
-    guestName?: StringFieldUpdateOperationsInput | string
-    guestPhone?: NullableStringFieldUpdateOperationsInput | string | null
-    numberOfGuests?: IntFieldUpdateOperationsInput | number
-    startDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDateTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    guestId?: StringFieldUpdateOperationsInput | string
+    hostId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
     subtotal?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     serviceFee?: IntFieldUpdateOperationsInput | number
     totalAmount?: IntFieldUpdateOperationsInput | number
-    depositAmount?: IntFieldUpdateOperationsInput | number
-    remainingAmount?: IntFieldUpdateOperationsInput | number
-    depositPaid?: BoolFieldUpdateOperationsInput | boolean
-    depositPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    remainingPaid?: BoolFieldUpdateOperationsInput | boolean
-    remainingPaidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    depositSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingSessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    depositPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
-    remainingPaymentIntentId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
-    hostNote?: NullableStringFieldUpdateOperationsInput | string | null
-    guestNote?: NullableStringFieldUpdateOperationsInput | string | null
+    guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
+    cancelledBy?: NullableStringFieldUpdateOperationsInput | string | null
+    cancellationReason?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -23146,7 +23153,7 @@ export namespace Prisma {
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
     pricePerDay?: number | null
-    depositPercent?: number
+    cleaningFee?: number
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -23175,7 +23182,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23210,7 +23217,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23245,7 +23252,7 @@ export namespace Prisma {
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    depositPercent?: IntFieldUpdateOperationsInput | number
+    cleaningFee?: IntFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null

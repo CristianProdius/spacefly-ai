@@ -11,7 +11,6 @@ export interface Payout {
   netAmount: number;
   status: PayoutStatus;
   bookingIds: string[];
-  stripeTransferId: string | null;
   processedAt: string | null;
   createdAt: string;
   updatedAt: string;
@@ -34,9 +33,7 @@ export const CreatePayoutSchema = z.object({
   bookingIds: z.array(z.string()).min(1, "At least one booking is required"),
 });
 
-export const ProcessPayoutSchema = z.object({
-  stripeTransferId: z.string().optional(),
-});
+export const ProcessPayoutSchema = z.object({});
 
 export type CreatePayoutInput = z.infer<typeof CreatePayoutSchema>;
 export type ProcessPayoutInput = z.infer<typeof ProcessPayoutSchema>;

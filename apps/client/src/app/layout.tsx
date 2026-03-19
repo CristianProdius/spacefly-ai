@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trendlama - Best Clothes",
-  description: "Trendlama is the best place to find the best clothes",
+  title: "FlexiSpace - Find Your Perfect Workspace",
+  description: "Discover and book unique workspaces, meeting rooms, and event venues. From cozy coworking spots to grand wedding venues.",
 };
 
 export default function RootLayout({
@@ -29,10 +29,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
         <AuthProvider>
-          <div className="mx-auto p-4 sm:px-0 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-6xl">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <Navbar />
             {children}
             <Footer />

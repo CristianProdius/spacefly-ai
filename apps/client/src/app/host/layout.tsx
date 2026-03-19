@@ -42,7 +42,7 @@ export default function HostLayout({
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function HostLayout({
                   href={item.href}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                     isActive
-                      ? "bg-blue-50 text-blue-700"
+                      ? "bg-indigo-50 text-indigo-700"
                       : "text-gray-600 hover:bg-gray-50"
                   }`}
                 >
@@ -88,7 +88,7 @@ export default function HostLayout({
           <div className="pt-4">
             <Link
               href="/host/spaces/new"
-              className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center justify-center gap-2 w-full py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
             >
               <Plus className="w-5 h-5" />
               Add New Space
@@ -109,7 +109,7 @@ export default function HostLayout({
                 key={item.href}
                 href={item.href}
                 className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg ${
-                  isActive ? "text-blue-600" : "text-gray-500"
+                  isActive ? "text-indigo-600" : "text-gray-500"
                 }`}
               >
                 <Icon className="w-5 h-5" />

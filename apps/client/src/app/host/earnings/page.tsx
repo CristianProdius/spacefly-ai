@@ -61,7 +61,7 @@ const HostEarningsPage = () => {
           (b) => b.status === "COMPLETED"
         );
         const pendingBookings = data.filter((b) =>
-          ["DEPOSIT_PAID"].includes(b.status)
+          ["CONFIRMED"].includes(b.status)
         );
 
         const calculateNetEarnings = (booking: Booking) =>
@@ -119,7 +119,7 @@ const HostEarningsPage = () => {
 
   const completedBookings = bookings.filter((b) => b.status === "COMPLETED");
   const pendingPayoutBookings = bookings.filter((b) =>
-    ["DEPOSIT_PAID"].includes(b.status)
+    ["CONFIRMED"].includes(b.status)
   );
 
   return (
@@ -157,7 +157,7 @@ const HostEarningsPage = () => {
 
         <div className="p-6 bg-white border border-gray-200 rounded-xl">
           <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-blue-100 text-blue-600 rounded-lg">
+            <div className="p-2 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-lg">
               <Calendar className="w-5 h-5" />
             </div>
             <span className="text-sm text-gray-500">This Month</span>

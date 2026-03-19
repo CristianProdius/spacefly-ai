@@ -149,7 +149,7 @@ const HostSpacesPage = () => {
         </div>
         <Link
           href="/host/spaces/new"
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
         >
           <Plus className="w-5 h-5" />
           Add Space
@@ -163,7 +163,7 @@ const HostSpacesPage = () => {
           </p>
           <Link
             href="/host/spaces/new"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
           >
             <Plus className="w-5 h-5" />
             Add Your First Space

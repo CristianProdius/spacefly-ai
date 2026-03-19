@@ -61,7 +61,7 @@ export interface Space {
   pricingType: PricingType;
   pricePerHour: number | null;
   pricePerDay: number | null;
-  depositPercent: number;
+  cleaningFee: number;
   capacity: number;
   minBookingHours: number | null;
   maxBookingHours: number | null;
@@ -121,7 +121,7 @@ export const SpaceFormSchema = z.object({
   pricingType: z.enum(["HOURLY", "DAILY", "BOTH"]),
   pricePerHour: z.number().nullable(),
   pricePerDay: z.number().nullable(),
-  depositPercent: z.number().min(0).max(100).default(30),
+  cleaningFee: z.number().min(0).default(0),
   capacity: z.number().min(1, "Capacity must be at least 1"),
   minBookingHours: z.number().nullable(),
   maxBookingHours: z.number().nullable(),

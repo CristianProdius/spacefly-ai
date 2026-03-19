@@ -28,10 +28,6 @@ interface Booking {
   guests: number;
   isHourly: boolean;
   totalAmount: number;
-  depositAmount: number;
-  remainingAmount: number;
-  depositPaid: boolean;
-  remainingPaid: boolean;
   createdAt: string;
   space: {
     id: number;
@@ -59,11 +55,11 @@ const statusConfig: Record<
   },
   APPROVED: {
     label: "Approved",
-    color: "bg-blue-100 text-blue-700",
+    color: "bg-indigo-50 text-indigo-700",
     icon: CheckCircle,
   },
-  DEPOSIT_PAID: {
-    label: "Deposit Paid",
+  CONFIRMED: {
+    label: "Confirmed",
     color: "bg-green-100 text-green-700",
     icon: CheckCircle,
   },
@@ -159,7 +155,7 @@ const BookingsPage = () => {
   if (authLoading || isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600" />
       </div>
     );
   }
@@ -177,7 +173,7 @@ const BookingsPage = () => {
 
   return (
     <div className="">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">My Bookings</h1>
+      <h1 className="text-2xl font-bold text-gray-900 mb-6 tracking-tight">My Bookings</h1>
 
       {/* Filter Tabs */}
       <div className="flex gap-2 mb-6">
@@ -185,10 +181,10 @@ const BookingsPage = () => {
           <button
             key={f}
             onClick={() => setFilter(f)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
               filter === f
-                ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
+                : "bg-white text-gray-600 border border-gray-200 hover:border-indigo-300"
             }`}
           >
             {f.charAt(0).toUpperCase() + f.slice(1)}
@@ -197,7 +193,7 @@ const BookingsPage = () => {
       </div>
 
       {filteredBookings.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl">
+        <div className="text-center py-12 bg-gray-50 rounded-xl border border-gray-100">
           <p className="text-gray-500 text-lg">No bookings found</p>
           <p className="text-gray-400 mt-2">
             {filter === "upcoming"
@@ -206,7 +202,7 @@ const BookingsPage = () => {
           </p>
           <Link
             href="/spaces"
-            className="inline-block mt-4 px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-block mt-4 px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
           >
             Browse Spaces
           </Link>
@@ -221,7 +217,7 @@ const BookingsPage = () => {
               <Link
                 key={booking.id}
                 href={`/bookings/${booking.id}`}
-                className="block bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
+                className="block bg-white border border-gray-200 rounded-2xl p-4 hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all duration-200"
               >
                 <div className="flex gap-4">
                   {/* Space Image */}

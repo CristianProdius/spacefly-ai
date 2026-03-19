@@ -45,15 +45,15 @@ const SpaceFilter = () => {
               name="city"
               placeholder="Search by city..."
               defaultValue={searchParams.get("city") || ""}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             />
           </div>
         </form>
 
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className={`flex items-center gap-2 px-4 py-3 border rounded-lg transition-colors ${
-            showFilters ? "bg-gray-900 text-white border-gray-900" : "border-gray-200 hover:bg-gray-50"
+          className={`flex items-center gap-2 px-4 py-3 border rounded-lg transition-all ${
+            showFilters ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white border-transparent" : "border-gray-200 hover:bg-gray-50"
           }`}
         >
           <SlidersHorizontal className="w-5 h-5" />
@@ -73,14 +73,14 @@ const SpaceFilter = () => {
 
       {/* Extended Filters */}
       {showFilters && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-gray-50 rounded-lg">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-white border border-gray-200 rounded-lg shadow-[var(--shadow-md)]">
           {/* Capacity */}
           <div className="flex flex-col gap-1">
             <label className="text-sm font-medium text-gray-700">Min Capacity</label>
             <select
               value={searchParams.get("capacity") || ""}
               onChange={(e) => updateParams("capacity", e.target.value || null)}
-              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             >
               <option value="">Any</option>
               <option value="1">1+ person</option>
@@ -100,7 +100,7 @@ const SpaceFilter = () => {
               placeholder="$0"
               value={searchParams.get("minPrice") || ""}
               onChange={(e) => updateParams("minPrice", e.target.value || null)}
-              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             />
           </div>
 
@@ -112,7 +112,7 @@ const SpaceFilter = () => {
               placeholder="Any"
               value={searchParams.get("maxPrice") || ""}
               onChange={(e) => updateParams("maxPrice", e.target.value || null)}
-              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             />
           </div>
 
@@ -122,7 +122,7 @@ const SpaceFilter = () => {
             <select
               value={searchParams.get("instantBook") || ""}
               onChange={(e) => updateParams("instantBook", e.target.value || null)}
-              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             >
               <option value="">Any</option>
               <option value="true">Instant Book Only</option>
@@ -136,7 +136,7 @@ const SpaceFilter = () => {
             <select
               value={searchParams.get("sort") || "newest"}
               onChange={(e) => updateParams("sort", e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             >
               <option value="newest">Newest First</option>
               <option value="price_asc">Price: Low to High</option>

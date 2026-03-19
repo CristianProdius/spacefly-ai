@@ -55,7 +55,7 @@ const SpaceCard = ({ space }: { space: Space }) => {
 
   return (
     <Link href={`/spaces/${space.id}`}>
-      <div className="bg-white shadow-lg rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+      <div className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-[var(--shadow-md)] hover:shadow-[var(--shadow-lg)] hover:-translate-y-1 transition-all duration-300 group">
         {/* IMAGE */}
         <div className="relative aspect-[4/3]">
           <Image
@@ -65,11 +65,11 @@ const SpaceCard = ({ space }: { space: Space }) => {
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {space.instantBook && (
-            <span className="absolute top-3 left-3 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+            <span className="absolute top-3 left-3 bg-green-500/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
               Instant Book
             </span>
           )}
-          <span className="absolute top-3 right-3 bg-white/90 text-gray-700 text-xs px-2 py-1 rounded-full">
+          <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-700 text-xs px-2 py-1 rounded-full border border-gray-200/50">
             {spaceTypeLabels[space.spaceType] || space.spaceType}
           </span>
         </div>
@@ -123,7 +123,7 @@ const SpaceCard = ({ space }: { space: Space }) => {
             <p className="text-lg font-bold text-gray-900">
               {getPriceDisplay()}
             </p>
-            <span className="text-sm text-blue-600 font-medium group-hover:underline">
+            <span className="text-sm text-indigo-600 font-medium group-hover:underline">
               View Details
             </span>
           </div>
