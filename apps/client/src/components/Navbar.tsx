@@ -1,12 +1,15 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Building2, CalendarDays, Search } from "lucide-react";
 import ProfileButton from "./ProfileButton";
+import LanguageSwitcher from "./LanguageSwitcher";
 import useAuthStore from "@/stores/authStore";
+import { useTranslations } from "next-intl";
 
 const Navbar = () => {
   const { isAuthenticated, isLoading, user } = useAuthStore();
+  const t = useTranslations("common");
 
   return (
     <nav className="sticky top-0 z-50 w-full flex items-center justify-between border-b border-gray-200/60 pb-4 pt-4 backdrop-blur-xl bg-white/80">
@@ -26,14 +29,14 @@ const Navbar = () => {
           href="/spaces"
           className="relative text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-0 after:bg-indigo-600 after:transition-all after:duration-200 hover:after:w-full"
         >
-          Browse Spaces
+          {t("browseSpaces")}
         </Link>
         {isAuthenticated && (
           <Link
             href="/bookings"
             className="relative text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-0 after:bg-indigo-600 after:transition-all after:duration-200 hover:after:w-full"
           >
-            My Bookings
+            {t("myBookings")}
           </Link>
         )}
         {isAuthenticated && user?.role === "HOST" && (
@@ -41,7 +44,7 @@ const Navbar = () => {
             href="/host"
             className="relative text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors after:absolute after:left-0 after:bottom-[-4px] after:h-[2px] after:w-0 after:bg-indigo-600 after:transition-all after:duration-200 hover:after:w-full"
           >
-            Host Dashboard
+            {t("hostDashboard")}
           </Link>
         )}
       </div>
@@ -64,6 +67,8 @@ const Navbar = () => {
           </Link>
         )}
 
+        <LanguageSwitcher />
+
         {!isLoading && (
           <>
             {!isAuthenticated ? (
@@ -72,13 +77,13 @@ const Navbar = () => {
                   href="/become-host"
                   className="hidden sm:block text-sm font-medium text-gray-600 hover:text-gray-900"
                 >
-                  Become a Host
+                  {t("becomeAHost")}
                 </Link>
                 <Link
                   href="/login"
                   className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-violet-600 rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
                 >
-                  Sign In
+                  {t("signIn")}
                 </Link>
               </div>
             ) : (

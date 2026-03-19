@@ -2,7 +2,8 @@ import { Space } from "@repo/types";
 import SpaceCategories from "./SpaceCategories";
 import SpaceCard from "./SpaceCard";
 import SpaceFilter from "./SpaceFilter";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
+import { getTranslations } from "next-intl/server";
 
 interface FetchParams {
   type?: string;
@@ -77,6 +78,9 @@ const SpaceList = async ({
     limit: variant === "homepage" ? "8" : undefined,
   });
 
+  const t = await getTranslations("spaces");
+  const tc = await getTranslations("common");
+
   return (
     <div className="w-full">
       <SpaceCategories />
@@ -84,8 +88,8 @@ const SpaceList = async ({
 
       {spaces.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No spaces found matching your criteria.</p>
-          <p className="text-gray-400 mt-2">Try adjusting your filters or search terms.</p>
+          <p className="text-gray-500 text-lg">{t("noSpacesFound")}</p>
+          <p className="text-gray-400 mt-2">{t("tryAdjusting")}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -101,7 +105,7 @@ const SpaceList = async ({
             href="/spaces"
             className="px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
           >
-            View All Spaces
+            {tc("viewAllSpaces")}
           </Link>
         </div>
       )}

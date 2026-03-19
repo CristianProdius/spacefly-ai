@@ -1,14 +1,17 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import { useState } from "react";
 import { Search, SlidersHorizontal, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const SpaceFilter = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const [showFilters, setShowFilters] = useState(false);
+  const t = useTranslations("filters");
 
   const updateParams = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams);
@@ -17,7 +20,7 @@ const SpaceFilter = () => {
     } else {
       params.delete(key);
     }
-    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    router.push(`${pathname}?${params.toString()}` as any, { scroll: false });
   };
 
   const handleCitySearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,7 +46,7 @@ const SpaceFilter = () => {
             <input
               type="text"
               name="city"
-              placeholder="Search by city..."
+              placeholder={t("searchByCity")}
               defaultValue={searchParams.get("city") || ""}
               className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             />
@@ -57,7 +60,7 @@ const SpaceFilter = () => {
           }`}
         >
           <SlidersHorizontal className="w-5 h-5" />
-          Filters
+          {t("filters")}
         </button>
 
         {hasActiveFilters && (
@@ -66,7 +69,7 @@ const SpaceFilter = () => {
             className="flex items-center gap-2 px-4 py-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
-            Clear
+            {t("clear")}
           </button>
         )}
       </div>
@@ -76,25 +79,25 @@ const SpaceFilter = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-white border border-gray-200 rounded-lg shadow-[var(--shadow-md)]">
           {/* Capacity */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Min Capacity</label>
+            <label className="text-sm font-medium text-gray-700">{t("minCapacity")}</label>
             <select
               value={searchParams.get("capacity") || ""}
               onChange={(e) => updateParams("capacity", e.target.value || null)}
               className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             >
-              <option value="">Any</option>
-              <option value="1">1+ person</option>
-              <option value="5">5+ people</option>
-              <option value="10">10+ people</option>
-              <option value="20">20+ people</option>
-              <option value="50">50+ people</option>
-              <option value="100">100+ people</option>
+              <option value="">{t("any")}</option>
+              <option value="1">{t("onePlus")}</option>
+              <option value="5">{t("fivePlus")}</option>
+              <option value="10">{t("tenPlus")}</option>
+              <option value="20">{t("twentyPlus")}</option>
+              <option value="50">{t("fiftyPlus")}</option>
+              <option value="100">{t("hundredPlus")}</option>
             </select>
           </div>
 
           {/* Min Price */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Min Price</label>
+            <label className="text-sm font-medium text-gray-700">{t("minPrice")}</label>
             <input
               type="number"
               placeholder="$0"
@@ -106,10 +109,10 @@ const SpaceFilter = () => {
 
           {/* Max Price */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Max Price</label>
+            <label className="text-sm font-medium text-gray-700">{t("maxPrice")}</label>
             <input
               type="number"
-              placeholder="Any"
+              placeholder={t("any")}
               value={searchParams.get("maxPrice") || ""}
               onChange={(e) => updateParams("maxPrice", e.target.value || null)}
               className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
@@ -118,30 +121,30 @@ const SpaceFilter = () => {
 
           {/* Instant Book */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Booking Type</label>
+            <label className="text-sm font-medium text-gray-700">{t("bookingType")}</label>
             <select
               value={searchParams.get("instantBook") || ""}
               onChange={(e) => updateParams("instantBook", e.target.value || null)}
               className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             >
-              <option value="">Any</option>
-              <option value="true">Instant Book Only</option>
-              <option value="false">Request to Book</option>
+              <option value="">{t("any")}</option>
+              <option value="true">{t("instantBookOnly")}</option>
+              <option value="false">{t("requestToBook")}</option>
             </select>
           </div>
 
           {/* Sort */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Sort By</label>
+            <label className="text-sm font-medium text-gray-700">{t("sortBy")}</label>
             <select
               value={searchParams.get("sort") || "newest"}
               onChange={(e) => updateParams("sort", e.target.value)}
               className="px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
             >
-              <option value="newest">Newest First</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
+              <option value="newest">{t("newestFirst")}</option>
+              <option value="price_asc">{t("priceLowToHigh")}</option>
+              <option value="price_desc">{t("priceHighToLow")}</option>
+              <option value="rating">{t("highestRated")}</option>
             </select>
           </div>
         </div>

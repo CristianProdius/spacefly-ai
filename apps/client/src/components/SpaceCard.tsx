@@ -3,16 +3,8 @@
 import { Space } from "@repo/types";
 import { MapPin, Users, Star, Clock, Calendar } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-
-const spaceTypeLabels: Record<string, string> = {
-  OFFICE_DESK: "Office Desk",
-  PRIVATE_OFFICE: "Private Office",
-  MEETING_ROOM: "Meeting Room",
-  EVENT_VENUE: "Event Venue",
-  WEDDING_VENUE: "Wedding Venue",
-  COWORKING_SPACE: "Coworking Space",
-};
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 // Parse images field - handles both array and stringified array
 const parseImages = (images: unknown): string[] => {
@@ -30,6 +22,8 @@ const parseImages = (images: unknown): string[] => {
 
 const SpaceCard = ({ space }: { space: Space }) => {
   const images = parseImages(space.images);
+  const t = useTranslations("spaces");
+  const tc = useTranslations("common");
 
   // Prices are stored in cents, convert to dollars
   const formatPrice = (priceInCents: number | null) => {
@@ -39,18 +33,18 @@ const SpaceCard = ({ space }: { space: Space }) => {
 
   const getPriceDisplay = () => {
     if (space.pricingType === "HOURLY" && space.pricePerHour) {
-      return `${formatPrice(space.pricePerHour)}/hr`;
+      return `${formatPrice(space.pricePerHour)}${tc("perHrShort")}`;
     }
     if (space.pricingType === "DAILY" && space.pricePerDay) {
-      return `${formatPrice(space.pricePerDay)}/day`;
+      return `${formatPrice(space.pricePerDay)}${tc("perDayShort")}`;
     }
     if (space.pricingType === "BOTH") {
       if (space.pricePerHour) {
-        return `From ${formatPrice(space.pricePerHour)}/hr`;
+        return `${tc("from")} ${formatPrice(space.pricePerHour)}${tc("perHrShort")}`;
       }
-      return `${formatPrice(space.pricePerDay)}/day`;
+      return `${formatPrice(space.pricePerDay)}${tc("perDayShort")}`;
     }
-    return "Contact for pricing";
+    return tc("contactForPricing");
   };
 
   return (
@@ -66,11 +60,11 @@ const SpaceCard = ({ space }: { space: Space }) => {
           />
           {space.instantBook && (
             <span className="absolute top-3 left-3 bg-green-500/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
-              Instant Book
+              {tc("instantBook")}
             </span>
           )}
           <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-700 text-xs px-2 py-1 rounded-full border border-gray-200/50">
-            {spaceTypeLabels[space.spaceType] || space.spaceType}
+            {t(`spaceTypes.${space.spaceType}` as any) || space.spaceType}
           </span>
         </div>
 
@@ -103,17 +97,17 @@ const SpaceCard = ({ space }: { space: Space }) => {
           <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
             <div className="flex items-center gap-1">
               <Users className="w-4 h-4" />
-              <span>Up to {space.capacity}</span>
+              <span>{t("upTo", { capacity: space.capacity })}</span>
             </div>
             {space.pricingType === "HOURLY" || space.pricingType === "BOTH" ? (
               <div className="flex items-center gap-1">
                 <Clock className="w-4 h-4" />
-                <span>Hourly</span>
+                <span>{tc("hourly")}</span>
               </div>
             ) : (
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                <span>Daily</span>
+                <span>{tc("daily")}</span>
               </div>
             )}
           </div>
@@ -124,7 +118,7 @@ const SpaceCard = ({ space }: { space: Space }) => {
               {getPriceDisplay()}
             </p>
             <span className="text-sm text-indigo-600 font-medium group-hover:underline">
-              View Details
+              {tc("viewDetails")}
             </span>
           </div>
         </div>

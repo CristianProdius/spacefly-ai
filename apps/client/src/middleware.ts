@@ -1,11 +1,7 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import createMiddleware from "next-intl/middleware";
+import { routing } from "./i18n/routing";
 
-export function middleware(request: NextRequest) {
-  // Client-side auth handling via zustand store
-  // This middleware can be extended for server-side auth checks if needed
-  return NextResponse.next();
-}
+export default createMiddleware(routing);
 
 export const config = {
   matcher: [

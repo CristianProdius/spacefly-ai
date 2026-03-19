@@ -15,17 +15,20 @@ import {
 
 interface AuthState {
   user: User | null;
+  token: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, username: string, password: string, name?: string) => Promise<void>;
   logout: () => Promise<void>;
   getToken: () => Promise<string | null>;
+  setUser: (user: User) => void;
   initialize: () => void;
 }
 
 const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
+  token: null,
   isLoading: true,
   isAuthenticated: false,
 
@@ -34,9 +37,15 @@ const useAuthStore = create<AuthState>((set, get) => ({
     const token = getAccessToken();
     set({
       user,
+      token,
       isAuthenticated: !!token && !!user,
       isLoading: false,
     });
+  },
+
+  setUser: (user: User) => {
+    saveUser(user);
+    set({ user });
   },
 
   login: async (email: string, password: string) => {
@@ -45,6 +54,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     saveUser(response.user);
     set({
       user: response.user,
+      token: response.accessToken,
       isAuthenticated: true,
     });
   },
@@ -55,6 +65,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     saveUser(response.user);
     set({
       user: response.user,
+      token: response.accessToken,
       isAuthenticated: true,
     });
   },
@@ -71,6 +82,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
       clearAuth();
       set({
         user: null,
+        token: null,
         isAuthenticated: false,
       });
     }

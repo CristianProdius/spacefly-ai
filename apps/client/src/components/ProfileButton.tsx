@@ -1,15 +1,17 @@
 "use client";
 
 import { LogOut, CalendarDays, User, Building2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
 import { useState, useRef, useEffect } from "react";
 import useAuthStore from "@/stores/authStore";
+import { useTranslations } from "next-intl";
 
 const ProfileButton = () => {
   const router = useRouter();
   const { user, logout } = useAuthStore();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations("common");
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -39,7 +41,7 @@ const ProfileButton = () => {
         {user?.image ? (
           <img
             src={user.image}
-            alt={user.name || "User"}
+            alt={user.name || t("user")}
             className="w-9 h-9 rounded-full object-cover"
           />
         ) : (
@@ -50,7 +52,7 @@ const ProfileButton = () => {
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 backdrop-blur-xl bg-white/95 rounded-xl shadow-[var(--shadow-lg)] border border-gray-200 py-2 z-50">
           <div className="px-4 py-3 border-b border-gray-100">
-            <p className="font-medium text-gray-900">{user?.name || "User"}</p>
+            <p className="font-medium text-gray-900">{user?.name || t("user")}</p>
             <p className="text-sm text-gray-500">{user?.email}</p>
             {user?.role && (
               <span className="inline-block mt-1 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
@@ -68,7 +70,7 @@ const ProfileButton = () => {
               className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
             >
               <CalendarDays className="w-4 h-4" />
-              My Bookings
+              {t("myBookings")}
             </button>
 
             {isHost && (
@@ -80,7 +82,7 @@ const ProfileButton = () => {
                 className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
               >
                 <Building2 className="w-4 h-4" />
-                Host Dashboard
+                {t("hostDashboard")}
               </button>
             )}
 
@@ -93,7 +95,7 @@ const ProfileButton = () => {
                 className="w-full px-4 py-2 text-left text-sm text-indigo-600 hover:bg-indigo-50 flex items-center gap-3"
               >
                 <Building2 className="w-4 h-4" />
-                Become a Host
+                {t("becomeAHost")}
               </button>
             )}
           </div>
@@ -104,7 +106,7 @@ const ProfileButton = () => {
               className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3"
             >
               <LogOut className="w-4 h-4" />
-              Sign Out
+              {t("signOut")}
             </button>
           </div>
         </div>
