@@ -85,7 +85,7 @@ const CheckoutPage = () => {
 
   if (success) {
     return (
-      <div className="max-w-2xl mx-auto text-center py-12">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-12">
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <Check className="w-8 h-8 text-green-600" />
         </div>
@@ -114,7 +114,7 @@ const CheckoutPage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-8">
         {t("reviewYourBooking")}
       </h1>

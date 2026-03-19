@@ -54,11 +54,9 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              <Navbar />
-              {children}
+            <Navbar />
+              <main>{children}</main>
               <Footer />
-            </div>
             <ToastContainer position="bottom-right" />
           </AuthProvider>
         </NextIntlClientProvider>

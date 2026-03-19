@@ -56,7 +56,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-indigo-50/50 via-white to-violet-50/50">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[60vh] flex items-center justify-center bg-gradient-to-br from-indigo-50/50 via-white to-violet-50/50">
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-[var(--shadow-lg)] border border-gray-100">
         <div className="flex justify-center mb-6">
           <div className="w-12 h-12 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center">

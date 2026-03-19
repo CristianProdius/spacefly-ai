@@ -12,7 +12,8 @@ const Navbar = () => {
   const t = useTranslations("common");
 
   return (
-    <nav className="sticky top-0 z-50 w-full flex items-center justify-between border-b border-gray-200/60 pb-4 pt-4 backdrop-blur-xl bg-white/80">
+    <nav className="sticky top-0 z-50 w-full border-b border-gray-200/60 backdrop-blur-xl bg-white/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-4">
       {/* LEFT */}
       <Link href="/" className="flex items-center gap-2">
         <div className="w-8 h-8 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-lg flex items-center justify-center">
@@ -91,6 +92,7 @@ const Navbar = () => {
             )}
           </>
         )}
+      </div>
       </div>
     </nav>
   );

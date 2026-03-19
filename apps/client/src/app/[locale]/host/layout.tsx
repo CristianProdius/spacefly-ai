@@ -55,7 +55,7 @@ export default function HostLayout({
   }
 
   return (
-    <div className="flex gap-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex gap-8">
       {/* Sidebar */}
       <aside className="w-64 shrink-0 hidden lg:block">
         <div className="sticky top-4 space-y-2">

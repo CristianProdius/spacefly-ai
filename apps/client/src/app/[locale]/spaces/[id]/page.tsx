@@ -67,7 +67,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
     : t("contactHostForDetails");
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Image Gallery */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8 rounded-xl overflow-hidden shadow-[var(--shadow-lg)]">
         <div className="relative aspect-[4/3] md:aspect-auto md:row-span-2">

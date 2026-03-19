@@ -55,6 +55,7 @@ interface SpaceListProps {
   instantBook?: string;
   sort?: string;
   variant: "homepage" | "browse";
+  showCategories?: boolean;
 }
 
 const SpaceList = async ({
@@ -66,6 +67,7 @@ const SpaceList = async ({
   instantBook,
   sort,
   variant,
+  showCategories = true,
 }: SpaceListProps) => {
   const spaces = await fetchSpaces({
     type,
@@ -83,7 +85,7 @@ const SpaceList = async ({
 
   return (
     <div className="w-full">
-      <SpaceCategories />
+      {showCategories && <SpaceCategories />}
       {variant === "browse" && <SpaceFilter />}
 
       {spaces.length === 0 ? (
