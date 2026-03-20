@@ -399,21 +399,29 @@
     "highestRated": "Highest Rated"
   },
   "footer": {
-    "explore": "Explore",
+    "explore": "Browse",
     "browseSpaces": "Browse Spaces",
     "meetingRooms": "Meeting Rooms",
     "coworking": "Coworking",
     "eventVenues": "Event Venues",
-    "hosting": "Hosting",
+    "tagline": "Find and book workspaces, meeting rooms, and event venues.",
+    "spaceTypes": "Space Types",
+    "officeDesks": "Office Desks",
+    "privateOffices": "Private Offices",
+    "weddingVenues": "Wedding Venues",
+    "forHosts": "For Hosts",
     "becomeAHost": "Become a Host",
     "hostDashboard": "Host Dashboard",
     "listYourSpace": "List Your Space",
+    "hostBookings": "Host Bookings",
+    "hostEarnings": "Host Earnings",
     "company": "Company",
     "about": "About",
     "contact": "Contact",
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
-    "copyright": "© 2026 FlexiSpace.",
+    "trustLine": "Trusted by 1,000+ hosts across 50+ cities",
+    "copyright": "© 2026 KINN.",
     "allRightsReserved": "All rights reserved."
   }
 }

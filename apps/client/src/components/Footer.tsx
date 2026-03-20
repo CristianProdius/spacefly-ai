@@ -1,52 +1,169 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import { Building2 } from "lucide-react";
+import { Instagram, Facebook, Linkedin, Twitter, ChevronDown } from "lucide-react";
+import { Accordion } from "@base-ui/react/accordion";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
 const Footer = () => {
   const t = useTranslations("footer");
 
+  const columns = [
+    {
+      title: t("explore"),
+      links: [
+        { href: "/spaces", label: t("browseSpaces") },
+        { href: "/spaces?type=MEETING_ROOM", label: t("meetingRooms") },
+        { href: "/spaces?type=COWORKING_SPACE", label: t("coworking") },
+        { href: "/spaces?type=EVENT_VENUE", label: t("eventVenues") },
+      ],
+    },
+    {
+      title: t("spaceTypes"),
+      links: [
+        { href: "/spaces?type=OFFICE_DESK", label: t("officeDesks") },
+        { href: "/spaces?type=PRIVATE_OFFICE", label: t("privateOffices") },
+        { href: "/spaces?type=WEDDING_VENUE", label: t("weddingVenues") },
+      ],
+    },
+    {
+      title: t("forHosts"),
+      links: [
+        { href: "/become-host", label: t("becomeAHost") },
+        { href: "/host", label: t("hostDashboard") },
+        { href: "/host/spaces/new", label: t("listYourSpace") },
+        { href: "/host/bookings", label: t("hostBookings") },
+        { href: "/host/earnings", label: t("hostEarnings") },
+      ],
+    },
+    {
+      title: t("company"),
+      links: [
+        { href: "/", label: t("about") },
+        { href: "/", label: t("contact") },
+        { href: "/", label: t("termsOfService") },
+        { href: "/", label: t("privacyPolicy") },
+      ],
+    },
+  ];
+
+  const socialLinks = [
+    { icon: Instagram, label: "Instagram", href: "#" },
+    { icon: Facebook, label: "Facebook", href: "#" },
+    { icon: Linkedin, label: "LinkedIn", href: "#" },
+    { icon: Twitter, label: "Twitter", href: "#" },
+  ];
+
   return (
-    <footer className="bg-gradient-to-b from-gray-900 to-gray-950 border-t border-gray-800">
+    <footer className="bg-white border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="flex flex-col items-center gap-8 md:flex-row md:items-start md:justify-between md:gap-0">
-          <div className="flex flex-col gap-4 items-center md:items-start">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-lg flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-white" />
-              </div>
-              <p className="hidden md:block text-md font-medium tracking-wider text-white">
-                FLEXISPACE
-              </p>
+        {/* Brand + socials row */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+          <div>
+            <Link
+              href="/"
+              className="text-lg font-extrabold tracking-widest text-foreground"
+            >
+              KINN
             </Link>
+            <p className="text-sm text-muted mt-1 text-pretty">
+              {t("tagline")}
+            </p>
           </div>
-          <div className="flex flex-col gap-4 text-sm text-gray-400 items-center md:items-start">
-            <p className="text-sm text-amber-50">{t("explore")}</p>
-            <Link href="/spaces" className="hover:text-gray-300 transition-colors">{t("browseSpaces")}</Link>
-            <Link href="/spaces?type=MEETING_ROOM" className="hover:text-gray-300 transition-colors">{t("meetingRooms")}</Link>
-            <Link href="/spaces?type=COWORKING_SPACE" className="hover:text-gray-300 transition-colors">{t("coworking")}</Link>
-            <Link href="/spaces?type=EVENT_VENUE" className="hover:text-gray-300 transition-colors">{t("eventVenues")}</Link>
-          </div>
-          <div className="flex flex-col gap-4 text-sm text-gray-400 items-center md:items-start">
-            <p className="text-sm text-amber-50">{t("hosting")}</p>
-            <Link href="/become-host" className="hover:text-gray-300 transition-colors">{t("becomeAHost")}</Link>
-            <Link href="/host" className="hover:text-gray-300 transition-colors">{t("hostDashboard")}</Link>
-            <Link href="/host/spaces/new" className="hover:text-gray-300 transition-colors">{t("listYourSpace")}</Link>
-          </div>
-          <div className="flex flex-col gap-4 text-sm text-gray-400 items-center md:items-start">
-            <p className="text-sm text-amber-50">{t("company")}</p>
-            <Link href="/" className="hover:text-gray-300 transition-colors">{t("about")}</Link>
-            <Link href="/" className="hover:text-gray-300 transition-colors">{t("contact")}</Link>
-            <Link href="/" className="hover:text-gray-300 transition-colors">{t("termsOfService")}</Link>
-            <Link href="/" className="hover:text-gray-300 transition-colors">{t("privacyPolicy")}</Link>
+          <div className="flex items-center gap-3">
+            {socialLinks.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                className="text-muted hover:text-primary transition-colors"
+              >
+                <social.icon className="size-5" />
+              </a>
+            ))}
           </div>
         </div>
-      </div>
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-sm text-gray-500">{t("copyright")}</p>
-          <p className="text-sm text-gray-500">{t("allRightsReserved")}</p>
+
+        {/* Desktop: bordered grid cells */}
+        <div className="hidden md:grid md:grid-cols-4 rounded-xl border border-border overflow-hidden">
+          {columns.map((column, i) => (
+            <nav
+              key={column.title}
+              aria-label={column.title}
+              className={cn("p-6", i > 0 && "border-l border-border")}
+            >
+              <p className="text-sm font-semibold text-foreground mb-4">
+                {column.title}
+              </p>
+              <ul className="space-y-3">
+                {column.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-muted hover:text-primary transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
+        </div>
+
+        {/* Mobile: accordion */}
+        <div className="md:hidden">
+          <Accordion.Root>
+            {columns.map((column) => (
+              <Accordion.Item key={column.title} className="border-t border-border">
+                <Accordion.Header>
+                  <Accordion.Trigger className="flex w-full items-center justify-between py-3 text-sm font-semibold text-foreground cursor-pointer">
+                    {column.title}
+                    <ChevronDown className="size-4 text-muted transition-transform data-[panel-open]:rotate-180" />
+                  </Accordion.Trigger>
+                </Accordion.Header>
+                <Accordion.Panel>
+                  <nav aria-label={column.title}>
+                    <ul className="pb-3 space-y-2">
+                      {column.links.map((link) => (
+                        <li key={link.label}>
+                          <Link
+                            href={link.href}
+                            className="text-sm text-muted hover:text-primary transition-colors"
+                          >
+                            {link.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </Accordion.Panel>
+              </Accordion.Item>
+            ))}
+          </Accordion.Root>
+        </div>
+
+        {/* Trust + copyright bottom row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 pt-6 border-t border-border">
+          <p className="text-sm text-muted text-pretty">{t("trustLine")}</p>
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted">
+            <span>{t("copyright")}</span>
+            <Link
+              href="/"
+              className="hover:text-foreground transition-colors"
+            >
+              {t("termsOfService")}
+            </Link>
+            <Link
+              href="/"
+              className="hover:text-foreground transition-colors"
+            >
+              {t("privacyPolicy")}
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
