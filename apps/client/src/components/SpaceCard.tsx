@@ -117,7 +117,7 @@ const SpaceCard = ({ space }: { space: Space }) => {
             <p className="text-lg font-bold text-gray-900">
               {getPriceDisplay()}
             </p>
-            <span className="text-sm text-indigo-600 font-medium group-hover:underline">
+            <span className="text-sm text-primary font-medium group-hover:underline">
               {tc("viewDetails")}
             </span>
           </div>
