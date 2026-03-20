@@ -41,7 +41,10 @@
     "addNewSpace": "Adauga Spatiu Nou",
     "addSpace": "Adauga Spatiu",
     "backToBookings": "Inapoi la Rezervari",
-    "backToSpaces": "Inapoi la Spatii"
+    "backToSpaces": "Inapoi la Spatii",
+    "menu": "Meniu",
+    "closeMenu": "Inchide meniul",
+    "navigation": "Navigare"
   },
   "home": {
     "label": "Piata spatiilor de lucru",

@@ -2,116 +2,108 @@
 
 import { LogOut, CalendarDays, User, Building2 } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
-import { useState, useRef, useEffect } from "react";
+import { Menu } from "@base-ui/react/menu";
 import useAuthStore from "@/stores/authStore";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
 const ProfileButton = () => {
   const router = useRouter();
   const { user, logout } = useAuthStore();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("common");
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handleLogout = async () => {
     await logout();
-    setIsOpen(false);
     router.push("/");
   };
 
   const isHost = user?.role === "HOST" || user?.role === "ADMIN";
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors border border-gray-200 hover:ring-2 hover:ring-indigo-500/20"
+    <Menu.Root>
+      <Menu.Trigger
+        aria-label={t("user")}
+        className="size-9 rounded-full bg-subtle flex items-center justify-center hover:bg-border transition-colors border border-border hover:ring-2 hover:ring-primary/20 cursor-pointer"
       >
         {user?.image ? (
           <img
             src={user.image}
             alt={user.name || t("user")}
-            className="w-9 h-9 rounded-full object-cover"
+            className="size-9 rounded-full object-cover"
           />
         ) : (
-          <User className="w-5 h-5 text-gray-600" />
+          <User className="size-5 text-muted" />
         )}
-      </button>
+      </Menu.Trigger>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 backdrop-blur-xl bg-white/95 rounded-xl shadow-[var(--shadow-lg)] border border-gray-200 py-2 z-50">
-          <div className="px-4 py-3 border-b border-gray-100">
-            <p className="font-medium text-gray-900">{user?.name || t("user")}</p>
-            <p className="text-sm text-gray-500">{user?.email}</p>
-            {user?.role && (
-              <span className="inline-block mt-1 px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
-                {user.role}
-              </span>
-            )}
-          </div>
+      <Menu.Portal>
+        <Menu.Positioner side="bottom" align="end" sideOffset={8}>
+          <Menu.Popup className="w-56 backdrop-blur-xl bg-white/95 rounded-xl shadow-[var(--shadow-lg)] border border-border py-2 z-50">
+            <div className="px-4 py-3 border-b border-border">
+              <p className="font-medium text-foreground">{user?.name || t("user")}</p>
+              <p className="text-sm text-muted">{user?.email}</p>
+              {user?.role && (
+                <span className="inline-block mt-1 px-2 py-0.5 bg-subtle text-muted text-xs rounded-full">
+                  {user.role}
+                </span>
+              )}
+            </div>
 
-          <div className="py-1">
-            <button
-              onClick={() => {
-                router.push("/bookings");
-                setIsOpen(false);
-              }}
-              className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
-            >
-              <CalendarDays className="w-4 h-4" />
-              {t("myBookings")}
-            </button>
-
-            {isHost && (
-              <button
-                onClick={() => {
-                  router.push("/host");
-                  setIsOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3"
+            <div className="py-1">
+              <Menu.Item
+                onClick={() => router.push("/bookings")}
+                className={cn(
+                  "w-full px-4 py-2 text-left text-sm text-foreground flex items-center gap-3 cursor-pointer",
+                  "data-[highlighted]:bg-subtle"
+                )}
               >
-                <Building2 className="w-4 h-4" />
-                {t("hostDashboard")}
-              </button>
-            )}
+                <CalendarDays className="size-4" />
+                {t("myBookings")}
+              </Menu.Item>
 
-            {!isHost && (
-              <button
-                onClick={() => {
-                  router.push("/become-host");
-                  setIsOpen(false);
-                }}
-                className="w-full px-4 py-2 text-left text-sm text-indigo-600 hover:bg-indigo-50 flex items-center gap-3"
+              {isHost && (
+                <Menu.Item
+                  onClick={() => router.push("/host")}
+                  className={cn(
+                    "w-full px-4 py-2 text-left text-sm text-foreground flex items-center gap-3 cursor-pointer",
+                    "data-[highlighted]:bg-subtle"
+                  )}
+                >
+                  <Building2 className="size-4" />
+                  {t("hostDashboard")}
+                </Menu.Item>
+              )}
+
+              {!isHost && (
+                <Menu.Item
+                  onClick={() => router.push("/become-host")}
+                  className={cn(
+                    "w-full px-4 py-2 text-left text-sm text-primary flex items-center gap-3 cursor-pointer",
+                    "data-[highlighted]:bg-primary-light"
+                  )}
+                >
+                  <Building2 className="size-4" />
+                  {t("becomeAHost")}
+                </Menu.Item>
+              )}
+            </div>
+
+            <div className="border-t border-border pt-1">
+              <Menu.Item
+                onClick={handleLogout}
+                className={cn(
+                  "w-full px-4 py-2 text-left text-sm text-danger flex items-center gap-3 cursor-pointer",
+                  "data-[highlighted]:bg-danger/10"
+                )}
               >
-                <Building2 className="w-4 h-4" />
-                {t("becomeAHost")}
-              </button>
-            )}
-          </div>
-
-          <div className="border-t border-gray-100 pt-1">
-            <button
-              onClick={handleLogout}
-              className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3"
-            >
-              <LogOut className="w-4 h-4" />
-              {t("signOut")}
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+                <LogOut className="size-4" />
+                {t("signOut")}
+              </Menu.Item>
+            </div>
+          </Menu.Popup>
+        </Menu.Positioner>
+      </Menu.Portal>
+    </Menu.Root>
   );
 };
 

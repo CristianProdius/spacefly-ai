@@ -41,7 +41,10 @@
     "addNewSpace": "Add New Space",
     "addSpace": "Add Space",
     "backToBookings": "Back to Bookings",
-    "backToSpaces": "Back to Spaces"
+    "backToSpaces": "Back to Spaces",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "navigation": "Navigation"
   },
   "home": {
     "label": "Workspace marketplace",

@@ -4,7 +4,8 @@ import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { Globe } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { Menu } from "@base-ui/react/menu";
+import { cn } from "@/lib/utils";
 
 const localeLabels: Record<string, string> = {
   ro: "RO",
@@ -13,66 +14,53 @@ const localeLabels: Record<string, string> = {
 };
 
 const localeFlags: Record<string, string> = {
-  ro: "🇷🇴",
-  ru: "🇷🇺",
-  en: "🇬🇧",
+  ro: "\u{1F1F7}\u{1F1F4}",
+  ru: "\u{1F1F7}\u{1F1FA}",
+  en: "\u{1F1EC}\u{1F1E7}",
 };
 
 const LanguageSwitcher = () => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handleChange = (newLocale: string) => {
     router.replace(pathname, { locale: newLocale as any });
-    setIsOpen(false);
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-2.5 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+    <Menu.Root>
+      <Menu.Trigger
+        aria-label="Language"
+        className="flex items-center gap-1.5 px-2.5 py-1.5 text-sm font-medium text-muted hover:text-foreground hover:bg-subtle rounded-lg transition-colors cursor-pointer"
       >
-        <Globe className="w-4 h-4" />
+        <Globe className="size-4" />
         <span>{localeFlags[locale]} {localeLabels[locale]}</span>
-      </button>
+      </Menu.Trigger>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-1 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1">
-          {routing.locales.map((l) => (
-            <button
-              key={l}
-              onClick={() => handleChange(l)}
-              className={`w-full px-3 py-2 text-left text-sm flex items-center gap-2 hover:bg-gray-50 ${
-                l === locale
-                  ? "text-indigo-600 font-medium bg-indigo-50"
-                  : "text-gray-700"
-              }`}
-            >
-              <span>{localeFlags[l]}</span>
-              <span>{localeLabels[l]}</span>
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+      <Menu.Portal>
+        <Menu.Positioner side="bottom" align="end" sideOffset={4}>
+          <Menu.Popup className="w-32 bg-white border border-border rounded-lg shadow-lg z-50 py-1">
+            {routing.locales.map((l) => (
+              <Menu.Item
+                key={l}
+                onClick={() => handleChange(l)}
+                className={cn(
+                  "w-full px-3 py-2 text-left text-sm flex items-center gap-2 cursor-pointer",
+                  "data-[highlighted]:bg-subtle",
+                  l === locale
+                    ? "text-primary font-medium bg-primary-light"
+                    : "text-foreground"
+                )}
+              >
+                <span>{localeFlags[l]}</span>
+                <span>{localeLabels[l]}</span>
+              </Menu.Item>
+            ))}
+          </Menu.Popup>
+        </Menu.Positioner>
+      </Menu.Portal>
+    </Menu.Root>
   );
 };
 
