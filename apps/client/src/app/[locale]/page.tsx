@@ -1,7 +1,7 @@
 import SpaceList from "@/components/SpaceList";
-import HeroSearch from "@/components/HeroSearch";
+import HeroMapFade from "@/components/hero/HeroMapFade";
 import { Link } from "@/i18n/navigation";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 const Homepage = async ({
@@ -15,40 +15,7 @@ const Homepage = async ({
 
   return (
     <div>
-      {/* Hero Section — full bleed */}
-      <section className="bg-gradient-to-b from-indigo-50/40 via-white to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 md:pt-24 md:pb-28">
-          <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs font-semibold tracking-widest uppercase text-indigo-600 mb-4">
-              {t("label")}
-            </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.1] mb-5">
-              {t("heroTitle")}
-            </h1>
-            <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-10">
-              {t("heroDescription")}
-            </p>
-
-            <HeroSearch />
-
-            {/* Trust pills */}
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-sm text-gray-500">
-              <span className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-indigo-600" />
-                {t("trustSpaces")}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-indigo-600" />
-                {t("trustHosts")}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-indigo-600" />
-                {t("trustFree")}
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroMapFade />
 
       {/* How It Works */}
       <section className="py-16 md:py-24">
