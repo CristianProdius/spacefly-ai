@@ -14,13 +14,13 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 const spaceTypeIcons = [
-  { icon: <Grid3X3 className="w-5 h-5" />, slug: "all", key: "allSpaces" as const },
-  { icon: <LayoutGrid className="w-5 h-5" />, slug: "OFFICE_DESK", key: "spaceTypes.OFFICE_DESK" as const },
-  { icon: <DoorOpen className="w-5 h-5" />, slug: "PRIVATE_OFFICE", key: "spaceTypes.PRIVATE_OFFICE" as const },
-  { icon: <Users className="w-5 h-5" />, slug: "MEETING_ROOM", key: "spaceTypes.MEETING_ROOM" as const },
-  { icon: <PartyPopper className="w-5 h-5" />, slug: "EVENT_VENUE", key: "spaceTypes.EVENT_VENUE" as const },
-  { icon: <Heart className="w-5 h-5" />, slug: "WEDDING_VENUE", key: "spaceTypes.WEDDING_VENUE" as const },
-  { icon: <Building2 className="w-5 h-5" />, slug: "COWORKING_SPACE", key: "spaceTypes.COWORKING_SPACE" as const },
+  { icon: <Grid3X3 className="size-4" />, slug: "all", key: "allSpaces" as const },
+  { icon: <LayoutGrid className="size-4" />, slug: "OFFICE_DESK", key: "spaceTypes.OFFICE_DESK" as const },
+  { icon: <DoorOpen className="size-4" />, slug: "PRIVATE_OFFICE", key: "spaceTypes.PRIVATE_OFFICE" as const },
+  { icon: <Users className="size-4" />, slug: "MEETING_ROOM", key: "spaceTypes.MEETING_ROOM" as const },
+  { icon: <PartyPopper className="size-4" />, slug: "EVENT_VENUE", key: "spaceTypes.EVENT_VENUE" as const },
+  { icon: <Heart className="size-4" />, slug: "WEDDING_VENUE", key: "spaceTypes.WEDDING_VENUE" as const },
+  { icon: <Building2 className="size-4" />, slug: "COWORKING_SPACE", key: "spaceTypes.COWORKING_SPACE" as const },
 ];
 
 const SpaceCategories = () => {
@@ -48,9 +48,9 @@ const SpaceCategories = () => {
           <button
             key={type.slug}
             onClick={() => handleChange(type.slug)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shrink-0 ${
+            className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors shrink-0 md:shrink md:flex-1 ${
               type.slug === selectedType || (type.slug === "all" && !searchParams.get("type"))
-                ? "bg-primary text-white shadow-md shadow-primary/20"
+                ? "bg-primary text-white shadow-sm shadow-primary/20"
                 : "bg-white text-muted border border-border hover:border-primary/30"
             }`}
           >

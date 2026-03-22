@@ -214,7 +214,7 @@ const SpaceFilter = () => {
         {/* Search */}
         <form onSubmit={handleCitySearch} className="flex-1 min-w-0">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted" />
             <input
               type="text"
               name="city"
@@ -235,9 +235,9 @@ const SpaceFilter = () => {
             aria-label={t("capacity")}
             className={cn(pillBase, activeCapacity ? pillActive : pillInactive)}
           >
-            <Users className="w-4 h-4" />
+            <Users className="size-4" />
             <span>{capacityLabel ? t(capacityLabel) : t("capacity")}</span>
-            <ChevronDown className="w-3.5 h-3.5" />
+            <ChevronDown className="size-3.5" />
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Positioner side="bottom" align="start" sideOffset={4}>
@@ -271,9 +271,9 @@ const SpaceFilter = () => {
               activeMinPrice || activeMaxPrice ? pillActive : pillInactive
             )}
           >
-            <DollarSign className="w-4 h-4" />
+            <DollarSign className="size-4" />
             <span>{priceLabel || t("priceRange")}</span>
-            <ChevronDown className="w-3.5 h-3.5" />
+            <ChevronDown className="size-3.5" />
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Positioner side="bottom" align="start" sideOffset={4}>
@@ -313,11 +313,11 @@ const SpaceFilter = () => {
               activeInstantBook ? pillActive : pillInactive
             )}
           >
-            <Zap className="w-4 h-4" />
+            <Zap className="size-4" />
             <span>
               {bookingLabel ? t(bookingLabel) : t("bookingType")}
             </span>
-            <ChevronDown className="w-3.5 h-3.5" />
+            <ChevronDown className="size-3.5" />
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Positioner side="bottom" align="start" sideOffset={4}>
@@ -356,9 +356,9 @@ const SpaceFilter = () => {
               activeSort !== "newest" ? pillActive : pillInactive
             )}
           >
-            <ArrowUpDown className="w-4 h-4" />
+            <ArrowUpDown className="size-4" />
             <span>{sortLabel ? t(sortLabel) : t("sort")}</span>
-            <ChevronDown className="w-3.5 h-3.5" />
+            <ChevronDown className="size-3.5" />
           </Popover.Trigger>
           <Popover.Portal>
             <Popover.Positioner side="bottom" align="end" sideOffset={4}>
@@ -390,7 +390,7 @@ const SpaceFilter = () => {
       <div className="flex md:hidden items-center gap-2">
         <form onSubmit={handleCitySearch} className="flex-1 min-w-0">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted" />
             <input
               type="text"
               name="city"
@@ -417,7 +417,7 @@ const SpaceFilter = () => {
                 : "border-border text-muted"
             )}
           >
-            <SlidersHorizontal className="w-4 h-4" />
+            <SlidersHorizontal className="size-4" />
             {t("filters")}
             {activeFilterCount > 0 && (
               <span className="flex items-center justify-center bg-primary text-white size-5 rounded-full text-xs font-medium">
@@ -585,7 +585,7 @@ const SpaceFilter = () => {
                 aria-label={t("removeFilter", { filter: chip.label })}
                 className="ml-0.5 p-0.5 rounded-full hover:bg-primary/10 transition-colors cursor-pointer"
               >
-                <X className="w-3 h-3" />
+                <X className="size-3" />
               </button>
             </span>
           ))}
