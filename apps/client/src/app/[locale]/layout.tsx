@@ -1,7 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
-import Navbar from "@/components/navbar/NavbarV4";
-import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
 import AuthProvider from "@/components/AuthProvider";
 import { NextIntlClientProvider } from "next-intl";
@@ -54,9 +52,7 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
           <AuthProvider>
-            <Navbar />
-              <main>{children}</main>
-              <Footer />
+            {children}
             <ToastContainer position="bottom-right" />
           </AuthProvider>
         </NextIntlClientProvider>
