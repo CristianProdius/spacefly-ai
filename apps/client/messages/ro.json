@@ -44,10 +44,14 @@
     "backToSpaces": "Inapoi la Spatii",
     "menu": "Meniu",
     "closeMenu": "Inchide meniul",
-    "navigation": "Navigare"
+    "navigation": "Navigare",
+    "anonymous": "Anonim",
+    "noImage": "Fara imagine",
+    "unknown": "Necunoscut"
   },
   "home": {
     "label": "Piata spatiilor de lucru",
+    "featuredBadge": "Recomandat",
     "logoBarTitle": "Apreciat de echipe din companii de top",
     "heroTitle": "Gaseste Spatiul de Lucru Perfect",
     "heroDescription": "Birouri, oficii private, sali de sedinte si locatii pentru evenimente — rezerva pe ora sau pe zi in peste 50 de orase.",
@@ -436,7 +440,15 @@
     "newestFirst": "Cele Mai Noi",
     "priceLowToHigh": "Pret: Mic la Mare",
     "priceHighToLow": "Pret: Mare la Mic",
-    "highestRated": "Cele Mai Apreciate"
+    "highestRated": "Cele Mai Apreciate",
+    "capacity": "Capacitate",
+    "priceRange": "Pret",
+    "clearAll": "Sterge tot",
+    "showResults": "Arata rezultatele",
+    "close": "Inchide",
+    "sort": "Sorteaza",
+    "activeFilters": "Filtre active",
+    "removeFilter": "Sterge filtrul {filter}"
   },
   "footer": {
     "explore": "Exploreaza",

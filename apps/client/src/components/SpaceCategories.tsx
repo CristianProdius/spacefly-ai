@@ -51,7 +51,7 @@ const SpaceCategories = () => {
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shrink-0 ${
               type.slug === selectedType || (type.slug === "all" && !searchParams.get("type"))
                 ? "bg-primary text-white shadow-md shadow-primary/20"
-                : "bg-white text-gray-600 border border-gray-200 hover:border-primary/30"
+                : "bg-white text-muted border border-border hover:border-primary/30"
             }`}
           >
             {type.icon}

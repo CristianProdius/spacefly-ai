@@ -31,6 +31,8 @@ const BookingForm = ({ space }: BookingFormProps) => {
   const canBookHourly = space.pricingType === "HOURLY" || space.pricingType === "BOTH";
   const canBookDaily = space.pricingType === "DAILY" || space.pricingType === "BOTH";
 
+  const startHour = parseInt(startTime.split(":")[0]!);
+
   const pricing = useMemo(() => {
     if (!startDate) return null;
 
@@ -39,9 +41,8 @@ const BookingForm = ({ space }: BookingFormProps) => {
     let days = 0;
 
     if (bookingType === "hourly" && space.pricePerHour) {
-      const start = parseInt(startTime.split(":")[0]!);
       const end = parseInt(endTime.split(":")[0]!);
-      hours = end - start;
+      hours = end - startHour;
       if (hours <= 0) hours = 1;
       subtotal = hours * space.pricePerHour;
     } else if (bookingType === "daily" && space.pricePerDay && startDate && endDate) {
@@ -64,7 +65,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
       serviceFee,
       totalAmount,
     };
-  }, [bookingType, startDate, endDate, startTime, endTime, space]);
+  }, [bookingType, startDate, endDate, startTime, endTime, space, startHour]);
 
   const handleBooking = () => {
     if (!isAuthenticated) {
@@ -79,7 +80,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
       spaceName: space.name,
       spaceImage: space.images?.[0] || "",
       hostId: space.hostId,
-      hostName: space.host?.name || "Unknown",
+      hostName: space.host?.name || tCommon("unknown"),
       startDate,
       endDate: bookingType === "daily" ? endDate : startDate,
       startTime: bookingType === "hourly" ? startTime : undefined,
@@ -100,22 +101,22 @@ const BookingForm = ({ space }: BookingFormProps) => {
   const minDate = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-[var(--shadow-lg)]">
+    <div className="bg-white border border-border rounded-2xl p-6 shadow-[var(--shadow-lg)]">
       {/* Price Display */}
       <div className="flex items-baseline gap-1 mb-6">
         {bookingType === "hourly" && space.pricePerHour ? (
           <>
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-2xl font-bold text-foreground">
               ${space.pricePerHour}
             </span>
-            <span className="text-gray-500">{tCommon("perHour")}</span>
+            <span className="text-muted">{tCommon("perHour")}</span>
           </>
         ) : (
           <>
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-2xl font-bold text-foreground">
               ${space.pricePerDay}
             </span>
-            <span className="text-gray-500">{tCommon("perDay")}</span>
+            <span className="text-muted">{tCommon("perDay")}</span>
           </>
         )}
       </div>
@@ -127,8 +128,8 @@ const BookingForm = ({ space }: BookingFormProps) => {
             onClick={() => setBookingType("hourly")}
             className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
               bookingType === "hourly"
-                ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-primary text-white shadow-md shadow-primary/20"
+                : "bg-subtle text-muted hover:bg-border"
             }`}
           >
             {tCommon("hourly")}
@@ -137,8 +138,8 @@ const BookingForm = ({ space }: BookingFormProps) => {
             onClick={() => setBookingType("daily")}
             className={`flex-1 py-2 rounded-lg text-sm font-medium transition-all ${
               bookingType === "daily"
-                ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md shadow-indigo-500/20"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                ? "bg-primary text-white shadow-md shadow-primary/20"
+                : "bg-subtle text-muted hover:bg-border"
             }`}
           >
             {tCommon("daily")}
@@ -149,12 +150,13 @@ const BookingForm = ({ space }: BookingFormProps) => {
       {/* Date Selection */}
       <div className="space-y-4 mb-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="booking-start-date" className="block text-sm font-medium text-muted mb-1">
             {bookingType === "hourly" ? t("date") : t("checkIn")}
           </label>
           <div className="relative">
-            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
             <input
+              id="booking-start-date"
               type="date"
               value={startDate}
               min={minDate}
@@ -164,24 +166,25 @@ const BookingForm = ({ space }: BookingFormProps) => {
                   setEndDate(e.target.value);
                 }
               }}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+              className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </div>
         </div>
 
         {bookingType === "daily" && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="booking-end-date" className="block text-sm font-medium text-muted mb-1">
               {t("checkOut")}
             </label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
               <input
+                id="booking-end-date"
                 type="date"
                 value={endDate}
                 min={startDate || minDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
               />
             </div>
           </div>
@@ -190,43 +193,55 @@ const BookingForm = ({ space }: BookingFormProps) => {
         {bookingType === "hourly" && (
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="booking-start-time" className="block text-sm font-medium text-muted mb-1">
                 {t("startTime")}
               </label>
               <div className="relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
                 <select
+                  id="booking-start-time"
                   value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 appearance-none"
+                  onChange={(e) => {
+                    setStartTime(e.target.value);
+                    const newStart = parseInt(e.target.value.split(":")[0]!);
+                    const currentEnd = parseInt(endTime.split(":")[0]!);
+                    if (currentEnd <= newStart) {
+                      setEndTime(`${(newStart + 1).toString().padStart(2, "0")}:00`);
+                    }
+                  }}
+                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary appearance-none"
                 >
-                  {Array.from({ length: 24 }, (_, i) => (
+                  {Array.from({ length: 23 }, (_, i) => (
                     <option key={i} value={`${i.toString().padStart(2, "0")}:00`}>
                       {i.toString().padStart(2, "0")}:00
                     </option>
                   ))}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted pointer-events-none" />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="booking-end-time" className="block text-sm font-medium text-muted mb-1">
                 {t("endTime")}
               </label>
               <div className="relative">
-                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
                 <select
+                  id="booking-end-time"
                   value={endTime}
                   onChange={(e) => setEndTime(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 appearance-none"
+                  className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary appearance-none"
                 >
-                  {Array.from({ length: 24 }, (_, i) => (
-                    <option key={i} value={`${i.toString().padStart(2, "0")}:00`}>
-                      {i.toString().padStart(2, "0")}:00
-                    </option>
-                  ))}
+                  {Array.from({ length: 24 - startHour - 1 }, (_, i) => {
+                    const hour = startHour + 1 + i;
+                    return (
+                      <option key={hour} value={`${hour.toString().padStart(2, "0")}:00`}>
+                        {hour.toString().padStart(2, "0")}:00
+                      </option>
+                    );
+                  })}
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted pointer-events-none" />
               </div>
             </div>
           </div>
@@ -234,15 +249,16 @@ const BookingForm = ({ space }: BookingFormProps) => {
 
         {/* Guests */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="booking-guests" className="block text-sm font-medium text-muted mb-1">
             {t("numberOfGuests")}
           </label>
           <div className="relative">
-            <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
             <select
+              id="booking-guests"
               value={guests}
               onChange={(e) => setGuests(parseInt(e.target.value))}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 appearance-none"
+              className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary appearance-none"
             >
               {Array.from({ length: space.capacity }, (_, i) => (
                 <option key={i + 1} value={i + 1}>
@@ -250,15 +266,15 @@ const BookingForm = ({ space }: BookingFormProps) => {
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted pointer-events-none" />
           </div>
         </div>
       </div>
 
       {/* Pricing Breakdown */}
       {pricing && startDate && (
-        <div className="border-t border-gray-200 pt-4 mb-6 space-y-2">
-          <div className="flex justify-between text-gray-600">
+        <div className="border-t border-border pt-4 mb-6 space-y-2">
+          <div className="flex justify-between text-muted">
             <span>
               {bookingType === "hourly"
                 ? t("hoursCalc", { price: space.pricePerHour ?? 0, count: pricing.hours })
@@ -266,15 +282,15 @@ const BookingForm = ({ space }: BookingFormProps) => {
             </span>
             <span>${pricing.subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-gray-600">
+          <div className="flex justify-between text-muted">
             <span>{tCommon("cleaningFee")}</span>
             <span>${pricing.cleaningFee.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-gray-600">
+          <div className="flex justify-between text-muted">
             <span>{tCommon("serviceFee")}</span>
             <span>${pricing.serviceFee.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between font-semibold text-gray-900 pt-2 border-t">
+          <div className="flex justify-between font-semibold text-foreground pt-2 border-t border-border">
             <span>{tCommon("total")}</span>
             <span>${pricing.totalAmount.toFixed(2)}</span>
           </div>
@@ -285,13 +301,13 @@ const BookingForm = ({ space }: BookingFormProps) => {
       <button
         onClick={handleBooking}
         disabled={!startDate || (bookingType === "daily" && !endDate)}
-        className="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-xl hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-indigo-500/20"
+        className="w-full py-3.5 bg-primary text-white font-semibold rounded-xl hover:bg-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-primary/20"
       >
         {space.instantBook ? t("bookNow") : t("requestToBook")}
       </button>
 
       {!space.instantBook && (
-        <p className="text-center text-sm text-gray-500 mt-2">
+        <p className="text-center text-sm text-muted mt-2">
           {t("depositDisclaimer")}
         </p>
       )}

@@ -85,20 +85,20 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
         <div className="lg:col-span-2 space-y-8">
           {/* Header */}
           <div>
-            <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-              <span className="bg-gray-100 px-2 py-1 rounded border border-gray-200">
+            <div className="flex items-center gap-2 text-sm text-muted mb-2">
+              <span className="bg-subtle px-2 py-1 rounded border border-border">
                 {t(`spaceTypes.${space.spaceType}`)}
               </span>
               {space.instantBook && (
-                <span className="bg-green-50 text-green-700 px-2 py-1 rounded border border-green-200">
+                <span className="bg-success/10 text-success px-2 py-1 rounded border border-success/20">
                   {tCommon("instantBook")}
                 </span>
               )}
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2 tracking-tight">
+            <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">
               {space.name}
             </h1>
-            <div className="flex items-center gap-4 text-gray-600">
+            <div className="flex items-center gap-4 text-muted">
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" />
                 <span>
@@ -107,9 +107,9 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
               </div>
               {space.averageRating && (
                 <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  <Star className="w-4 h-4 fill-primary text-primary" />
                   <span className="font-medium">{space.averageRating.toFixed(1)}</span>
-                  <span className="text-gray-400">
+                  <span className="text-muted">
                     ({t("reviewsLabel", { count: space.totalReviews ?? 0 })})
                   </span>
                 </div>
@@ -118,7 +118,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           </div>
 
           {/* Host Info */}
-          <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-100">
+          <div className="flex items-center gap-4 p-4 bg-subtle rounded-xl border border-border">
             <div className="relative w-14 h-14 rounded-full overflow-hidden">
               <Image
                 src={space.host?.image || "/default-avatar.png"}
@@ -128,11 +128,11 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
               />
             </div>
             <div>
-              <p className="font-semibold text-gray-900">
-                {t("hostedBy", { name: space.host?.name || "Unknown" })}
+              <p className="font-semibold text-foreground">
+                {t("hostedBy", { name: space.host?.name || tCommon("unknown") })}
               </p>
               {space.host?.hostingSince && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted">
                   {t("hostingSince", {
                     year: new Date(space.host.hostingSince).getFullYear(),
                   })}
@@ -143,32 +143,32 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
 
           {/* Key Features */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
-              <Users className="w-6 h-6 text-gray-600" />
+            <div className="flex items-center gap-3 p-4 bg-subtle rounded-lg border border-border hover:border-muted transition-colors">
+              <Users className="w-6 h-6 text-muted" />
               <div>
-                <p className="font-medium text-gray-900">{space.capacity}</p>
-                <p className="text-sm text-gray-500">{t("capacity")}</p>
+                <p className="font-medium text-foreground">{space.capacity}</p>
+                <p className="text-sm text-muted">{t("capacity")}</p>
               </div>
             </div>
             {space.pricingType === "HOURLY" || space.pricingType === "BOTH" ? (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
-                <Clock className="w-6 h-6 text-gray-600" />
+              <div className="flex items-center gap-3 p-4 bg-subtle rounded-lg border border-border hover:border-muted transition-colors">
+                <Clock className="w-6 h-6 text-muted" />
                 <div>
-                  <p className="font-medium text-gray-900">
+                  <p className="font-medium text-foreground">
                     ${space.pricePerHour}{tCommon("perHrShort")}
                   </p>
-                  <p className="text-sm text-gray-500">{t("hourlyRate")}</p>
+                  <p className="text-sm text-muted">{t("hourlyRate")}</p>
                 </div>
               </div>
             ) : null}
             {space.pricingType === "DAILY" || space.pricingType === "BOTH" ? (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors">
-                <Calendar className="w-6 h-6 text-gray-600" />
+              <div className="flex items-center gap-3 p-4 bg-subtle rounded-lg border border-border hover:border-muted transition-colors">
+                <Calendar className="w-6 h-6 text-muted" />
                 <div>
-                  <p className="font-medium text-gray-900">
+                  <p className="font-medium text-foreground">
                     ${space.pricePerDay}{tCommon("perDayShort")}
                   </p>
-                  <p className="text-sm text-gray-500">{t("dailyRate")}</p>
+                  <p className="text-sm text-muted">{t("dailyRate")}</p>
                 </div>
               </div>
             ) : null}
@@ -176,10 +176,10 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
 
           {/* Description */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
+            <h2 className="text-xl font-bold text-foreground mb-4 tracking-tight">
               {t("aboutThisSpace")}
             </h2>
-            <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+            <p className="text-muted leading-relaxed whitespace-pre-line">
               {space.description}
             </p>
           </div>
@@ -187,16 +187,16 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           {/* Amenities */}
           {space.amenities && space.amenities.length > 0 && (
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
+              <h2 className="text-xl font-bold text-foreground mb-4 tracking-tight">
                 {t("amenities")}
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {space.amenities.map((sa) => (
                   <div
                     key={sa.id}
-                    className="flex items-center gap-2 text-gray-600"
+                    className="flex items-center gap-2 text-muted"
                   >
-                    <Check className="w-5 h-5 text-green-500" />
+                    <Check className="w-5 h-5 text-success" />
                     <span>{sa.amenity.name}</span>
                   </div>
                 ))}
@@ -207,10 +207,10 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           {/* House Rules */}
           {space.houseRules && (
             <div>
-              <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
+              <h2 className="text-xl font-bold text-foreground mb-4 tracking-tight">
                 {t("houseRules")}
               </h2>
-              <p className="text-gray-600 whitespace-pre-line">
+              <p className="text-muted whitespace-pre-line">
                 {space.houseRules}
               </p>
             </div>
@@ -218,12 +218,12 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
 
           {/* Cancellation Policy */}
           <div>
-            <h2 className="text-xl font-bold text-gray-900 mb-4 tracking-tight">
+            <h2 className="text-xl font-bold text-foreground mb-4 tracking-tight">
               {t("cancellationPolicy")}
             </h2>
-            <div className="p-4 bg-gray-50 rounded-lg border border-gray-100">
-              <p className="font-medium text-gray-900">{cancellationLabel}</p>
-              <p className="text-gray-600 text-sm mt-1">
+            <div className="p-4 bg-subtle rounded-lg border border-border">
+              <p className="font-medium text-foreground">{cancellationLabel}</p>
+              <p className="text-muted text-sm mt-1">
                 {cancellationDesc}
               </p>
             </div>

@@ -20,10 +20,10 @@ export const parseImages = (images: unknown): string[] => {
   return [];
 };
 
-/** Convert price stored in cents to a display string (e.g. "$25") */
-export const formatPrice = (priceInCents: number | null): string | null => {
-  if (!priceInCents) return null;
-  return `$${(priceInCents / 100).toFixed(0)}`;
+/** Convert price to a display string (e.g. "$25") */
+export const formatPrice = (price: number | null): string | null => {
+  if (!price) return null;
+  return `$${price.toFixed(0)}`;
 };
 
 export interface PriceLabels {

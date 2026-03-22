@@ -30,11 +30,11 @@ const SpaceCard = ({ space }: { space: Space }) => {
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
           {space.instantBook && (
-            <span className="absolute top-3 left-3 bg-green-500/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
+            <span className="absolute top-3 left-3 bg-success/90 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full">
               {tc("instantBook")}
             </span>
           )}
-          <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-700 text-xs px-2 py-1 rounded-full border border-gray-200/50">
+          <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-foreground text-xs px-2 py-1 rounded-full border border-border/50">
             {t(`spaceTypes.${space.spaceType}`) || space.spaceType}
           </span>
         </div>
@@ -53,7 +53,7 @@ const SpaceCard = ({ space }: { space: Space }) => {
             )}
           </div>
 
-          <p className="text-sm text-gray-500 line-clamp-1">
+          <p className="text-sm text-muted line-clamp-1">
             {space.city}, {space.country}
           </p>
 

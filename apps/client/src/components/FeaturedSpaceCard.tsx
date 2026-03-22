@@ -62,7 +62,7 @@ const FeaturedSpaceCard = async () => {
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center text-muted text-sm">
-              No image
+              {tCommon("noImage")}
             </div>
           )}
           <span className="absolute top-3 left-3 px-2 py-0.5 bg-primary text-white text-[10px] font-semibold rounded-full">

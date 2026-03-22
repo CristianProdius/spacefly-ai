@@ -44,10 +44,14 @@
     "backToSpaces": "Back to Spaces",
     "menu": "Menu",
     "closeMenu": "Close menu",
-    "navigation": "Navigation"
+    "navigation": "Navigation",
+    "anonymous": "Anonymous",
+    "noImage": "No image",
+    "unknown": "Unknown"
   },
   "home": {
     "label": "Workspace marketplace",
+    "featuredBadge": "Featured",
     "logoBarTitle": "Trusted by teams at leading companies",
     "heroTitle": "Find Your Perfect Workspace",
     "heroDescription": "Desks, private offices, meeting rooms, and event venues — book by the hour or the day in 50+ cities.",
@@ -436,7 +440,15 @@
     "newestFirst": "Newest First",
     "priceLowToHigh": "Price: Low to High",
     "priceHighToLow": "Price: High to Low",
-    "highestRated": "Highest Rated"
+    "highestRated": "Highest Rated",
+    "capacity": "Capacity",
+    "priceRange": "Price",
+    "clearAll": "Clear all",
+    "showResults": "Show results",
+    "close": "Close",
+    "sort": "Sort",
+    "activeFilters": "Active filters",
+    "removeFilter": "Remove {filter} filter"
   },
   "footer": {
     "explore": "Browse",

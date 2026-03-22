@@ -94,8 +94,8 @@ const SpaceList = async ({
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-subtle flex items-center justify-center">
             <Search className="w-8 h-8 text-muted" />
           </div>
-          <p className="text-gray-500 text-lg">{t("noSpacesFound")}</p>
-          <p className="text-gray-400 mt-2">{t("tryAdjusting")}</p>
+          <p className="text-muted text-lg">{t("noSpacesFound")}</p>
+          <p className="text-muted mt-2">{t("tryAdjusting")}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
