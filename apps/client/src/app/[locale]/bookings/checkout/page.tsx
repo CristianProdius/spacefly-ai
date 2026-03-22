@@ -7,6 +7,7 @@ import useBookingStore from "@/stores/bookingStore";
 import useAuthStore from "@/stores/authStore";
 import { useTranslations } from "next-intl";
 import { Calendar, Clock, Users, AlertCircle, Check } from "lucide-react";
+import { formatPriceFull } from "@/lib/utils";
 
 const CheckoutPage = () => {
   const router = useRouter();
@@ -178,19 +179,19 @@ const CheckoutPage = () => {
           <div className="border-t border-gray-200 mt-4 pt-4 space-y-2">
             <div className="flex justify-between text-gray-600">
               <span>{tCommon("subtotal")}</span>
-              <span>${draft.subtotal.toFixed(2)}</span>
+              <span>{formatPriceFull(draft.subtotal)}</span>
             </div>
             <div className="flex justify-between text-gray-600">
               <span>{tCommon("cleaningFee")}</span>
-              <span>${draft.cleaningFee.toFixed(2)}</span>
+              <span>{formatPriceFull(draft.cleaningFee)}</span>
             </div>
             <div className="flex justify-between text-gray-600">
               <span>{tCommon("serviceFee")}</span>
-              <span>${draft.serviceFee.toFixed(2)}</span>
+              <span>{formatPriceFull(draft.serviceFee)}</span>
             </div>
             <div className="flex justify-between font-semibold text-gray-900 pt-2 border-t">
               <span>{tCommon("total")}</span>
-              <span>${draft.totalAmount.toFixed(2)}</span>
+              <span>{formatPriceFull(draft.totalAmount)}</span>
             </div>
           </div>
         </div>

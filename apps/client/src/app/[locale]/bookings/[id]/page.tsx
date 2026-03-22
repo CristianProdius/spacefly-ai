@@ -20,6 +20,7 @@ import {
   MessageSquare,
   Star,
 } from "lucide-react";
+import { formatPriceFull } from "@/lib/utils";
 
 interface Booking {
   id: string;
@@ -354,19 +355,19 @@ const BookingDetailPage = () => {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between text-gray-600">
                 <span>{tCommon("subtotal")}</span>
-                <span>${booking.subtotal.toFixed(2)}</span>
+                <span>{formatPriceFull(booking.subtotal)}</span>
               </div>
               <div className="flex justify-between text-gray-600">
                 <span>{tCommon("cleaningFee")}</span>
-                <span>${booking.cleaningFee.toFixed(2)}</span>
+                <span>{formatPriceFull(booking.cleaningFee)}</span>
               </div>
               <div className="flex justify-between text-gray-600">
                 <span>{tCommon("serviceFee")}</span>
-                <span>${booking.serviceFee.toFixed(2)}</span>
+                <span>{formatPriceFull(booking.serviceFee)}</span>
               </div>
               <div className="flex justify-between font-semibold text-gray-900 pt-2 border-t">
                 <span>{tCommon("total")}</span>
-                <span>${booking.totalAmount.toFixed(2)}</span>
+                <span>{formatPriceFull(booking.totalAmount)}</span>
               </div>
             </div>
           </div>

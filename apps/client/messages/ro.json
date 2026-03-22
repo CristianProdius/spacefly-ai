@@ -188,12 +188,14 @@
     "allSpaces": "Toate Spatiile",
     "upTo": "Pana la {capacity}",
     "capacity": "Capacitate",
+    "upToGuests": "Până la {count, plural, one {# oaspete} few {# oaspeți} other {# oaspeți}}",
     "hourlyRate": "Tarif pe Ora",
     "dailyRate": "Tarif pe Zi",
     "aboutThisSpace": "Despre acest spatiu",
     "amenities": "Facilitati",
     "houseRules": "Regulile Casei",
     "cancellationPolicy": "Politica de Anulare",
+    "location": "Locație",
     "hostedBy": "Gazda: {name}",
     "hostingSince": "Gazda din {year}",
     "reviews": "Recenzii",
@@ -201,7 +203,8 @@
     "noReviews": "Inca nu exista recenzii. Fii primul care lasa o recenzie!",
     "reviewsLabel": "{count} recenzii",
     "responseFromHost": "Raspunsul gazdei",
-    "contactHostForDetails": "Contacteaza gazda pentru detalii"
+    "contactHostForDetails": "Contacteaza gazda pentru detalii",
+    "noReviewsYet": "Nicio recenzie"
   },
   "booking": {
     "date": "Data",

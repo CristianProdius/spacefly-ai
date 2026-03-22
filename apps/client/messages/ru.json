@@ -188,12 +188,14 @@
     "allSpaces": "Все Пространства",
     "upTo": "До {capacity}",
     "capacity": "Вместимость",
+    "upToGuests": "До {count, plural, one {# гостя} few {# гостей} many {# гостей} other {# гостей}}",
     "hourlyRate": "Почасовая Ставка",
     "dailyRate": "Дневная Ставка",
     "aboutThisSpace": "Об этом пространстве",
     "amenities": "Удобства",
     "houseRules": "Правила Дома",
     "cancellationPolicy": "Политика Отмены",
+    "location": "Расположение",
     "hostedBy": "Хост: {name}",
     "hostingSince": "Хост с {year}",
     "reviews": "Отзывы",
@@ -201,7 +203,8 @@
     "noReviews": "Отзывов пока нет. Будьте первым!",
     "reviewsLabel": "{count} отзывов",
     "responseFromHost": "Ответ хоста",
-    "contactHostForDetails": "Свяжитесь с хостом для деталей"
+    "contactHostForDetails": "Свяжитесь с хостом для деталей",
+    "noReviewsYet": "Пока нет отзывов"
   },
   "booking": {
     "date": "Дата",

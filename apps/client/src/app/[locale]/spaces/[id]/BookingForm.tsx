@@ -3,10 +3,12 @@
 import { SpaceWithHost } from "@repo/types";
 import { useState, useMemo } from "react";
 import { useRouter } from "@/i18n/navigation";
-import { Calendar, Clock, Users, ChevronDown } from "lucide-react";
+import { Clock, Users, ChevronDown } from "lucide-react";
+import DatePicker from "@/components/DatePicker";
 import useBookingStore from "@/stores/bookingStore";
 import useAuthStore from "@/stores/authStore";
 import { useTranslations } from "next-intl";
+import { formatPrice, formatPriceFull } from "@/lib/utils";
 
 interface BookingFormProps {
   space: SpaceWithHost;
@@ -107,14 +109,14 @@ const BookingForm = ({ space }: BookingFormProps) => {
         {bookingType === "hourly" && space.pricePerHour ? (
           <>
             <span className="text-2xl font-bold text-foreground">
-              ${space.pricePerHour}
+              {formatPrice(space.pricePerHour)}
             </span>
             <span className="text-muted">{tCommon("perHour")}</span>
           </>
         ) : (
           <>
             <span className="text-2xl font-bold text-foreground">
-              ${space.pricePerDay}
+              {formatPrice(space.pricePerDay)}
             </span>
             <span className="text-muted">{tCommon("perDay")}</span>
           </>
@@ -154,19 +156,15 @@ const BookingForm = ({ space }: BookingFormProps) => {
             {bookingType === "hourly" ? t("date") : t("checkIn")}
           </label>
           <div className="relative">
-            <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
-            <input
+            <DatePicker
               id="booking-start-date"
-              type="date"
               value={startDate}
-              min={minDate}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-                if (!endDate || e.target.value > endDate) {
-                  setEndDate(e.target.value);
-                }
+              minDate={minDate}
+              placeholder={bookingType === "hourly" ? t("date") : t("checkIn")}
+              onChange={(date) => {
+                setStartDate(date);
+                if (!endDate || date > endDate) setEndDate(date);
               }}
-              className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
             />
           </div>
         </div>
@@ -177,14 +175,12 @@ const BookingForm = ({ space }: BookingFormProps) => {
               {t("checkOut")}
             </label>
             <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted" />
-              <input
+              <DatePicker
                 id="booking-end-date"
-                type="date"
                 value={endDate}
-                min={startDate || minDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
+                minDate={startDate || minDate}
+                placeholder={t("checkOut")}
+                onChange={(date) => setEndDate(date)}
               />
             </div>
           </div>
@@ -277,22 +273,22 @@ const BookingForm = ({ space }: BookingFormProps) => {
           <div className="flex justify-between text-muted">
             <span>
               {bookingType === "hourly"
-                ? t("hoursCalc", { price: space.pricePerHour ?? 0, count: pricing.hours })
-                : t("daysCalc", { price: space.pricePerDay ?? 0, count: pricing.days })}
+                ? t("hoursCalc", { price: (space.pricePerHour ?? 0) / 100, count: pricing.hours })
+                : t("daysCalc", { price: (space.pricePerDay ?? 0) / 100, count: pricing.days })}
             </span>
-            <span>${pricing.subtotal.toFixed(2)}</span>
+            <span>{formatPriceFull(pricing.subtotal)}</span>
           </div>
           <div className="flex justify-between text-muted">
             <span>{tCommon("cleaningFee")}</span>
-            <span>${pricing.cleaningFee.toFixed(2)}</span>
+            <span>{formatPriceFull(pricing.cleaningFee)}</span>
           </div>
           <div className="flex justify-between text-muted">
             <span>{tCommon("serviceFee")}</span>
-            <span>${pricing.serviceFee.toFixed(2)}</span>
+            <span>{formatPriceFull(pricing.serviceFee)}</span>
           </div>
           <div className="flex justify-between font-semibold text-foreground pt-2 border-t border-border">
             <span>{tCommon("total")}</span>
-            <span>${pricing.totalAmount.toFixed(2)}</span>
+            <span>{formatPriceFull(pricing.totalAmount)}</span>
           </div>
         </div>
       )}

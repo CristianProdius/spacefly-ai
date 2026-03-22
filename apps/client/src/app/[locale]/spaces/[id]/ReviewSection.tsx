@@ -179,14 +179,20 @@ const ReviewSection = ({ spaceId }: ReviewSectionProps) => {
         {reviews.map((review) => (
           <div key={review.id} className="border-b border-border pb-6">
             <div className="flex items-start gap-4">
-              <div className="relative w-10 h-10 rounded-full overflow-hidden shrink-0">
-                <Image
-                  src={review.user.image || "/default-avatar.png"}
-                  alt={review.user.name || tCommon("user")}
-                  fill
-                  className="object-cover"
-                />
-              </div>
+              {review.user.image ? (
+                <div className="relative size-10 rounded-full overflow-hidden shrink-0">
+                  <Image
+                    src={review.user.image}
+                    alt={review.user.name || tCommon("user")}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="size-10 rounded-full bg-primary-light text-primary flex items-center justify-center font-semibold text-sm shrink-0">
+                  {(review.user.name ?? "?").charAt(0).toUpperCase()}
+                </div>
+              )}
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="font-medium text-foreground">

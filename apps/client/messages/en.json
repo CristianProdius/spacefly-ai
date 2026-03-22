@@ -188,12 +188,14 @@
     "allSpaces": "All Spaces",
     "upTo": "Up to {capacity}",
     "capacity": "Capacity",
+    "upToGuests": "Up to {count, plural, one {# guest} other {# guests}}",
     "hourlyRate": "Hourly Rate",
     "dailyRate": "Daily Rate",
     "aboutThisSpace": "About this space",
     "amenities": "Amenities",
     "houseRules": "House Rules",
     "cancellationPolicy": "Cancellation Policy",
+    "location": "Location",
     "hostedBy": "Hosted by {name}",
     "hostingSince": "Hosting since {year}",
     "reviews": "Reviews",
@@ -201,7 +203,8 @@
     "noReviews": "No reviews yet. Be the first to review!",
     "reviewsLabel": "{count} reviews",
     "responseFromHost": "Response from host",
-    "contactHostForDetails": "Contact host for details"
+    "contactHostForDetails": "Contact host for details",
+    "noReviewsYet": "No reviews yet"
   },
   "booking": {
     "date": "Date",

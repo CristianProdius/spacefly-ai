@@ -17,6 +17,7 @@ import {
   Users,
   Star,
 } from "lucide-react";
+import { getPriceDisplay, type PriceLabels } from "@/lib/utils";
 
 interface Space {
   id: number;
@@ -27,7 +28,7 @@ interface Space {
   capacity: number;
   pricePerHour: number | null;
   pricePerDay: number | null;
-  pricingType: string;
+  pricingType: "HOURLY" | "DAILY" | "BOTH";
   isActive: boolean;
   averageRating: number | null;
   totalReviews: number;
@@ -115,19 +116,11 @@ const HostSpacesPage = () => {
     setMenuOpen(null);
   };
 
-  const getPriceDisplay = (space: Space) => {
-    if (space.pricingType === "HOURLY" && space.pricePerHour) {
-      return `$${space.pricePerHour}${tCommon("perHrShort")}`;
-    }
-    if (space.pricingType === "DAILY" && space.pricePerDay) {
-      return `$${space.pricePerDay}${tCommon("perDayShort")}`;
-    }
-    if (space.pricingType === "BOTH") {
-      return space.pricePerHour
-        ? `$${space.pricePerHour}${tCommon("perHrShort")}`
-        : `$${space.pricePerDay}${tCommon("perDayShort")}`;
-    }
-    return "—";
+  const priceLabels: PriceLabels = {
+    perHr: tCommon("perHrShort"),
+    perDay: tCommon("perDayShort"),
+    from: "",
+    contactForPricing: "—",
   };
 
   if (loading) {
@@ -275,9 +268,9 @@ const HostSpacesPage = () => {
                       <span>{space.capacity}</span>
                     </div>
                     <span className="font-medium text-gray-900">
-                      {getPriceDisplay(space)}
+                      {getPriceDisplay(space, priceLabels)}
                     </span>
-                    {space.averageRating && (
+                    {space.averageRating != null && space.averageRating > 0 && (
                       <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                         <span className="text-gray-900">
