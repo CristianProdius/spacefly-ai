@@ -2,9 +2,9 @@ import { Star } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 const testimonials = [
-  { quoteKey: "testimonial1Quote", nameKey: "testimonial1Name", roleKey: "testimonial1Role" },
-  { quoteKey: "testimonial2Quote", nameKey: "testimonial2Name", roleKey: "testimonial2Role" },
-  { quoteKey: "testimonial3Quote", nameKey: "testimonial3Name", roleKey: "testimonial3Role" },
+  { quoteKey: "testimonial1Quote", nameKey: "testimonial1Name", roleKey: "testimonial1Role", companyKey: "testimonial1Company", initials: "AM" },
+  { quoteKey: "testimonial2Quote", nameKey: "testimonial2Name", roleKey: "testimonial2Role", companyKey: "testimonial2Company", initials: "SK" },
+  { quoteKey: "testimonial3Quote", nameKey: "testimonial3Name", roleKey: "testimonial3Role", companyKey: "testimonial3Company", initials: "DR" },
 ] as const;
 
 const Testimonials = async () => {
@@ -30,16 +30,21 @@ const Testimonials = async () => {
                   />
                 ))}
               </div>
-              <p className="text-foreground leading-relaxed mb-4">
-                &ldquo;{t(item.quoteKey as any)}&rdquo;
+              <p className="text-foreground leading-relaxed mb-6">
+                &ldquo;{t(item.quoteKey)}&rdquo;
               </p>
-              <div>
-                <p className="font-semibold text-foreground text-sm">
-                  {t(item.nameKey as any)}
-                </p>
-                <p className="text-sm text-muted">
-                  {t(item.roleKey as any)}
-                </p>
+              <div className="flex items-center gap-3">
+                <div className="shrink-0 w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center text-sm font-semibold">
+                  {item.initials}
+                </div>
+                <div>
+                  <p className="font-semibold text-foreground text-sm">
+                    {t(item.nameKey)}
+                  </p>
+                  <p className="text-sm text-muted">
+                    {t(item.roleKey)}, {t(item.companyKey)}
+                  </p>
+                </div>
               </div>
             </div>
           ))}

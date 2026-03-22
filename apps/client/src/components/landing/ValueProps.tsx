@@ -27,10 +27,10 @@ const ValueProps = async () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground">
-                    {t(prop.titleKey as any)}
+                    {t(prop.titleKey)}
                   </h3>
                   <p className="text-sm text-muted mt-1">
-                    {t(prop.descKey as any)}
+                    {t(prop.descKey)}
                   </p>
                 </div>
               </div>

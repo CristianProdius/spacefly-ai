@@ -23,31 +23,28 @@ const SpaceTypeShowcase = async () => {
   const ts = await getTranslations("spaces");
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-12 md:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-bold text-foreground tracking-tight mb-10">
+        <h2 className="text-sm font-medium tracking-widest uppercase text-muted mb-8">
           {t("spaceTypeTitle")}
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-none">
           {spaceTypes.map((type) => {
             const Icon = type.icon;
             return (
               <Link
                 key={type.slug}
                 href={`/spaces?type=${type.slug}`}
-                className="group flex items-start gap-4 p-5 rounded-xl border border-border bg-white hover:border-primary/30 hover:shadow-[var(--shadow-md)] transition-all duration-200"
+                className="group flex flex-col items-center gap-2.5 shrink-0 w-28 sm:w-auto sm:flex-1 py-4 px-3 rounded-xl hover:bg-subtle transition-colors text-center"
               >
-                <div className="shrink-0 w-10 h-10 rounded-lg bg-primary-light flex items-center justify-center text-primary">
+                <div className="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                   <Icon className="w-5 h-5" />
                 </div>
-                <div className="min-w-0">
-                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">
-                    {ts(`spaceTypes.${type.slug}` as any)}
-                  </h3>
-                  <p className="text-sm text-muted mt-0.5">
-                    {t(`spaceTypeTagline${type.slug}` as any)}
+                <div>
+                  <p className="text-sm font-medium text-foreground whitespace-nowrap">
+                    {ts(`spaceTypes.${type.slug}`)}
                   </p>
-                  <p className="text-sm font-medium text-primary mt-1">
+                  <p className="text-xs text-muted mt-0.5">
                     {t("spaceTypeFrom", { price: type.price })}
                   </p>
                 </div>

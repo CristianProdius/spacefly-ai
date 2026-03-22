@@ -2,6 +2,7 @@ import { Space } from "@repo/types";
 import SpaceCategories from "./SpaceCategories";
 import SpaceCard from "./SpaceCard";
 import SpaceFilter from "./SpaceFilter";
+import { Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 
@@ -89,7 +90,10 @@ const SpaceList = async ({
       {variant === "browse" && <SpaceFilter />}
 
       {spaces.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-16">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-subtle flex items-center justify-center">
+            <Search className="w-8 h-8 text-muted" />
+          </div>
           <p className="text-gray-500 text-lg">{t("noSpacesFound")}</p>
           <p className="text-gray-400 mt-2">{t("tryAdjusting")}</p>
         </div>
@@ -105,7 +109,7 @@ const SpaceList = async ({
         <div className="flex justify-center mt-8">
           <Link
             href="/spaces"
-            className="px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+            className="px-6 py-3 border border-foreground text-foreground rounded-lg font-medium hover:bg-foreground hover:text-white transition-colors"
           >
             {tc("viewAllSpaces")}
           </Link>

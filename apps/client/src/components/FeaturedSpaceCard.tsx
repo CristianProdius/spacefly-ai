@@ -3,19 +3,7 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { MapPin, Star } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-
-const parseImages = (images: unknown): string[] => {
-  if (Array.isArray(images)) return images;
-  if (typeof images === "string") {
-    try {
-      const parsed = JSON.parse(images);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-  return [];
-};
+import { parseImages } from "@/lib/utils";
 
 const fetchFeaturedSpace = async (): Promise<Space | null> => {
   try {

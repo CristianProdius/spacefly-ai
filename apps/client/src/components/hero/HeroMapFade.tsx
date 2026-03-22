@@ -37,7 +37,7 @@ const HeroMapFade = async () => {
         <HeroSearch />
 
         <p className="text-sm text-muted mt-6">
-          {t("trustSpaces")} &middot; {t("trustHosts")} &middot; {t("trustFree")}
+          {t("trustSpaces")} &middot; {t("trustCities")} &middot; {t("trustRating")} &middot; {t("trustFree")}
         </p>
       </div>
     </section>

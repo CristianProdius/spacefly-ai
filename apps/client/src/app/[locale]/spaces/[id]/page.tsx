@@ -12,20 +12,7 @@ import {
 import BookingForm from "./BookingForm";
 import ReviewSection from "./ReviewSection";
 import { getTranslations } from "next-intl/server";
-
-// Parse images field - handles both array and stringified array
-const parseImages = (images: unknown): string[] => {
-  if (Array.isArray(images)) return images;
-  if (typeof images === "string") {
-    try {
-      const parsed = JSON.parse(images);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
-      return [];
-    }
-  }
-  return [];
-};
+import { parseImages } from "@/lib/utils";
 
 async function getSpace(id: string): Promise<SpaceWithHost | null> {
   try {

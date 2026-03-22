@@ -14,13 +14,13 @@ import { usePathname, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
 const spaceTypeIcons = [
-  { icon: <Grid3X3 className="w-5 h-5" />, slug: "all", key: "allSpaces" },
-  { icon: <LayoutGrid className="w-5 h-5" />, slug: "OFFICE_DESK", key: "spaceTypes.OFFICE_DESK" },
-  { icon: <DoorOpen className="w-5 h-5" />, slug: "PRIVATE_OFFICE", key: "spaceTypes.PRIVATE_OFFICE" },
-  { icon: <Users className="w-5 h-5" />, slug: "MEETING_ROOM", key: "spaceTypes.MEETING_ROOM" },
-  { icon: <PartyPopper className="w-5 h-5" />, slug: "EVENT_VENUE", key: "spaceTypes.EVENT_VENUE" },
-  { icon: <Heart className="w-5 h-5" />, slug: "WEDDING_VENUE", key: "spaceTypes.WEDDING_VENUE" },
-  { icon: <Building2 className="w-5 h-5" />, slug: "COWORKING_SPACE", key: "spaceTypes.COWORKING_SPACE" },
+  { icon: <Grid3X3 className="w-5 h-5" />, slug: "all", key: "allSpaces" as const },
+  { icon: <LayoutGrid className="w-5 h-5" />, slug: "OFFICE_DESK", key: "spaceTypes.OFFICE_DESK" as const },
+  { icon: <DoorOpen className="w-5 h-5" />, slug: "PRIVATE_OFFICE", key: "spaceTypes.PRIVATE_OFFICE" as const },
+  { icon: <Users className="w-5 h-5" />, slug: "MEETING_ROOM", key: "spaceTypes.MEETING_ROOM" as const },
+  { icon: <PartyPopper className="w-5 h-5" />, slug: "EVENT_VENUE", key: "spaceTypes.EVENT_VENUE" as const },
+  { icon: <Heart className="w-5 h-5" />, slug: "WEDDING_VENUE", key: "spaceTypes.WEDDING_VENUE" as const },
+  { icon: <Building2 className="w-5 h-5" />, slug: "COWORKING_SPACE", key: "spaceTypes.COWORKING_SPACE" as const },
 ];
 
 const SpaceCategories = () => {
@@ -42,21 +42,24 @@ const SpaceCategories = () => {
   };
 
   return (
-    <div className="flex flex-wrap gap-2 mb-6">
-      {spaceTypeIcons.map((type) => (
-        <button
-          key={type.slug}
-          onClick={() => handleChange(type.slug)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-            type.slug === selectedType || (type.slug === "all" && !searchParams.get("type"))
-              ? "bg-primary text-white shadow-md shadow-primary/20"
-              : "bg-white text-gray-600 border border-gray-200 hover:border-primary/30"
-          }`}
-        >
-          {type.icon}
-          {t(type.key as any)}
-        </button>
-      ))}
+    <div className="relative mb-6">
+      <div className="flex gap-2 overflow-x-auto scrollbar-none px-0.5 pb-1">
+        {spaceTypeIcons.map((type) => (
+          <button
+            key={type.slug}
+            onClick={() => handleChange(type.slug)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 shrink-0 ${
+              type.slug === selectedType || (type.slug === "all" && !searchParams.get("type"))
+                ? "bg-primary text-white shadow-md shadow-primary/20"
+                : "bg-white text-gray-600 border border-gray-200 hover:border-primary/30"
+            }`}
+          >
+            {type.icon}
+            {t(type.key)}
+          </button>
+        ))}
+      </div>
+      <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
     </div>
   );
 };
