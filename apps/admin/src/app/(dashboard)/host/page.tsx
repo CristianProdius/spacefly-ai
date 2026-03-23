@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import useAuthStore from "@/stores/authStore";
-import { useTranslations } from "next-intl";
 import {
   Building2,
   CalendarDays,
   DollarSign,
-  TrendingUp,
   Clock,
   Check,
   AlertCircle,
+  TrendingUp,
 } from "lucide-react";
 
 interface DashboardStats {
@@ -27,13 +26,10 @@ const HostDashboardPage = () => {
   const { token, user } = useAuthStore();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const t = useTranslations("host");
-  const tCommon = useTranslations("common");
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Fetch spaces count
         const spacesRes = await fetch(
           `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/host/my`,
           {
@@ -42,7 +38,6 @@ const HostDashboardPage = () => {
         );
         const spaces = spacesRes.ok ? await spacesRes.json() : [];
 
-        // Fetch bookings
         const bookingsRes = await fetch(
           `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
           {
@@ -61,20 +56,19 @@ const HostDashboardPage = () => {
             new Date(b.startDate) >= new Date()
         ).length;
 
-        // Calculate earnings
         const completedBookings = bookings.filter(
           (b: any) => b.status === "COMPLETED"
         );
         const totalEarnings = completedBookings.reduce(
           (sum: number, b: any) =>
-            sum + (b.totalAmount - b.serviceFee - b.cleaningFee),
+            sum + (b.totalAmount - b.serviceFee),
           0
         );
         const pendingEarnings = bookings
           .filter((b: any) => ["CONFIRMED"].includes(b.status))
           .reduce(
             (sum: number, b: any) =>
-              sum + (b.totalAmount - b.serviceFee - b.cleaningFee),
+              sum + (b.totalAmount - b.serviceFee),
             0
           );
 
@@ -115,21 +109,21 @@ const HostDashboardPage = () => {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-          {t("welcomeBack", { name: user?.name || "Host" })}
+          Welcome back, {user?.name || "Host"}
         </h1>
         <p className="text-gray-600 mt-1">
-          {t("overviewSubtitle")}
+          Here&apos;s an overview of your hosting activity
         </p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-lg">
               <Building2 className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("activeSpaces")}</span>
+            <span className="text-sm text-gray-500">Active Spaces</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             {stats?.activeSpaces || 0}
@@ -140,36 +134,36 @@ const HostDashboardPage = () => {
           </p>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-gradient-to-br from-yellow-50 to-yellow-100 text-yellow-600 rounded-lg">
               <Clock className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("pendingRequests")}</span>
+            <span className="text-sm text-gray-500">Pending Requests</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             {stats?.pendingBookings || 0}
           </p>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-lg">
               <CalendarDays className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("upcomingBookings")}</span>
+            <span className="text-sm text-gray-500">Upcoming Bookings</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             {stats?.upcomingBookings || 0}
           </p>
         </div>
 
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-shadow">
+        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
           <div className="flex items-center gap-3 mb-3">
             <div className="p-2 bg-gradient-to-br from-purple-50 to-purple-100 text-purple-600 rounded-lg">
               <DollarSign className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("totalEarnings")}</span>
+            <span className="text-sm text-gray-500">Total Earnings</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             ${stats?.totalEarnings?.toFixed(0) || 0}
@@ -179,7 +173,6 @@ const HostDashboardPage = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {/* Pending Bookings Alert */}
         {stats?.pendingBookings && stats.pendingBookings > 0 && (
           <Link
             href="/host/bookings?status=pending"
@@ -188,16 +181,16 @@ const HostDashboardPage = () => {
             <div className="flex items-center gap-3 mb-2">
               <AlertCircle className="w-5 h-5 text-yellow-600" />
               <span className="font-medium text-yellow-800">
-                {t("pendingAlert", { count: stats.pendingBookings })}
+                {stats.pendingBookings} pending booking
+                {stats.pendingBookings > 1 ? "s" : ""} need your attention
               </span>
             </div>
             <p className="text-sm text-yellow-700">
-              {t("pendingAlertDesc")}
+              Review and respond to booking requests
             </p>
           </Link>
         )}
 
-        {/* Earnings Summary */}
         {stats?.pendingEarnings && stats.pendingEarnings > 0 && (
           <Link
             href="/host/earnings"
@@ -206,11 +199,11 @@ const HostDashboardPage = () => {
             <div className="flex items-center gap-3 mb-2">
               <TrendingUp className="w-5 h-5 text-green-600" />
               <span className="font-medium text-green-800">
-                {t("pendingEarnings", { amount: stats.pendingEarnings.toFixed(0) })}
+                ${stats.pendingEarnings.toFixed(0)} in pending earnings
               </span>
             </div>
             <p className="text-sm text-green-700">
-              {t("pendingEarningsDesc")}
+              View your earnings breakdown
             </p>
           </Link>
         )}
@@ -223,7 +216,7 @@ const HostDashboardPage = () => {
           className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
         >
           <Building2 className="w-6 h-6 mx-auto text-gray-600 mb-2" />
-          <span className="font-medium text-gray-900">{tCommon("addNewSpace")}</span>
+          <span className="font-medium text-gray-900">Add New Space</span>
         </Link>
 
         <Link
@@ -231,7 +224,7 @@ const HostDashboardPage = () => {
           className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
         >
           <CalendarDays className="w-6 h-6 mx-auto text-gray-600 mb-2" />
-          <span className="font-medium text-gray-900">{t("viewAllBookings")}</span>
+          <span className="font-medium text-gray-900">View All Bookings</span>
         </Link>
 
         <Link
@@ -239,7 +232,7 @@ const HostDashboardPage = () => {
           className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
         >
           <Check className="w-6 h-6 mx-auto text-gray-600 mb-2" />
-          <span className="font-medium text-gray-900">{t("manageSpaces")}</span>
+          <span className="font-medium text-gray-900">Manage Spaces</span>
         </Link>
       </div>
     </div>

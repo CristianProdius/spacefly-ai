@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import useAuthStore from "@/stores/authStore";
-import { useTranslations } from "next-intl";
 import {
   DollarSign,
-  TrendingUp,
   Clock,
   CheckCircle,
   Calendar,
@@ -39,10 +37,9 @@ const HostEarningsPage = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [stats, setStats] = useState<EarningsStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const t = useTranslations("hostEarnings");
 
   useEffect(() => {
-    fetchEarnings();
+    if (token) fetchEarnings();
   }, [token]);
 
   const fetchEarnings = async () => {
@@ -58,7 +55,6 @@ const HostEarningsPage = () => {
         const data: Booking[] = await res.json();
         setBookings(data);
 
-        // Calculate stats
         const completedBookings = data.filter(
           (b) => b.status === "COMPLETED"
         );
@@ -78,7 +74,6 @@ const HostEarningsPage = () => {
           0
         );
 
-        // This month
         const now = new Date();
         const thisMonthBookings = completedBookings.filter((b) => {
           const endDate = new Date(b.endDate);
@@ -127,8 +122,8 @@ const HostEarningsPage = () => {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
-        <p className="text-gray-600 mt-1">{t("subtitle")}</p>
+        <h1 className="text-2xl font-bold text-gray-900">Earnings</h1>
+        <p className="text-gray-600 mt-1">Track your hosting income</p>
       </div>
 
       {/* Stats Grid */}
@@ -138,7 +133,7 @@ const HostEarningsPage = () => {
             <div className="p-2 bg-green-100 text-green-600 rounded-lg">
               <DollarSign className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("totalEarnings")}</span>
+            <span className="text-sm text-gray-500">Total Earnings</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             ${stats?.totalEarnings?.toFixed(2) || "0.00"}
@@ -150,7 +145,7 @@ const HostEarningsPage = () => {
             <div className="p-2 bg-yellow-100 text-yellow-600 rounded-lg">
               <Clock className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("pending")}</span>
+            <span className="text-sm text-gray-500">Pending</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             ${stats?.pendingEarnings?.toFixed(2) || "0.00"}
@@ -162,7 +157,7 @@ const HostEarningsPage = () => {
             <div className="p-2 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-lg">
               <Calendar className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("thisMonth")}</span>
+            <span className="text-sm text-gray-500">This Month</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             ${stats?.thisMonth?.toFixed(2) || "0.00"}
@@ -174,7 +169,7 @@ const HostEarningsPage = () => {
             <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
               <CheckCircle className="w-5 h-5" />
             </div>
-            <span className="text-sm text-gray-500">{t("completed")}</span>
+            <span className="text-sm text-gray-500">Completed</span>
           </div>
           <p className="text-2xl font-bold text-gray-900">
             {stats?.completedBookings || 0}
@@ -186,11 +181,12 @@ const HostEarningsPage = () => {
       {pendingPayoutBookings.length > 0 && (
         <div className="mb-8">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {t("pendingPayouts")}
+            Pending Payouts
           </h2>
           <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
             <p className="text-yellow-800 mb-4">
-              {t("pendingPayoutsDesc")}
+              These bookings are confirmed and earnings will be available after
+              completion.
             </p>
             <div className="space-y-3">
               {pendingPayoutBookings.map((booking) => (
@@ -220,12 +216,12 @@ const HostEarningsPage = () => {
       {/* Transaction History */}
       <div>
         <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          {t("completedBookings")}
+          Completed Bookings
         </h2>
 
         {completedBookings.length === 0 ? (
           <div className="text-center py-12 bg-gray-50 rounded-xl">
-            <p className="text-gray-500">{t("noCompletedBookings")}</p>
+            <p className="text-gray-500">No completed bookings yet</p>
           </div>
         ) : (
           <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
@@ -233,22 +229,22 @@ const HostEarningsPage = () => {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                    {t("tableSpace")}
+                    Space
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                    {t("tableGuest")}
+                    Guest
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                    {t("tableDate")}
+                    Date
                   </th>
                   <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">
-                    {t("tableTotal")}
+                    Total
                   </th>
                   <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">
-                    {t("tableFee")}
+                    Service Fee
                   </th>
                   <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">
-                    {t("tableNet")}
+                    Net Earnings
                   </th>
                 </tr>
               </thead>

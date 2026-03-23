@@ -50,15 +50,12 @@ export const NavbarV4 = () => {
                 </Link>
               )}
               {isAuthenticated && user?.role === "HOST" && (
-                <Link
-                  href="/host"
-                  className={cn(
-                    "text-sm font-semibold transition-colors",
-                    pathname.startsWith("/host") ? "text-primary" : "text-foreground hover:text-primary"
-                  )}
+                <a
+                  href={`${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003"}/host`}
+                  className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
                 >
                   {t("hostDashboard")}
-                </Link>
+                </a>
               )}
             </div>
 

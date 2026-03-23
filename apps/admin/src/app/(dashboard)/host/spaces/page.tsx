@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import Image from "next/image";
 import useAuthStore from "@/stores/authStore";
-import { useTranslations } from "next-intl";
 import {
   Plus,
   MoreVertical,
@@ -17,7 +16,6 @@ import {
   Users,
   Star,
 } from "lucide-react";
-import { getPriceDisplay, type PriceLabels } from "@/lib/utils";
 
 interface Space {
   id: number;
@@ -32,9 +30,6 @@ interface Space {
   isActive: boolean;
   averageRating: number | null;
   totalReviews: number;
-  _count?: {
-    bookings: number;
-  };
 }
 
 const HostSpacesPage = () => {
@@ -42,11 +37,9 @@ const HostSpacesPage = () => {
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
-  const t = useTranslations("hostSpaces");
-  const tCommon = useTranslations("common");
 
   useEffect(() => {
-    fetchSpaces();
+    if (token) fetchSpaces();
   }, [token]);
 
   const fetchSpaces = async () => {
@@ -96,7 +89,7 @@ const HostSpacesPage = () => {
   };
 
   const deleteSpace = async (spaceId: number) => {
-    if (!confirm(t("deleteConfirm"))) return;
+    if (!confirm("Are you sure you want to delete this space?")) return;
 
     try {
       const res = await fetch(
@@ -116,11 +109,18 @@ const HostSpacesPage = () => {
     setMenuOpen(null);
   };
 
-  const priceLabels: PriceLabels = {
-    perHr: tCommon("perHrShort"),
-    perDay: tCommon("perDayShort"),
-    from: "",
-    contactForPricing: "—",
+  const getPriceDisplay = (space: Space) => {
+    if (space.pricingType === "HOURLY" && space.pricePerHour) {
+      return `$${space.pricePerHour}/hr`;
+    }
+    if (space.pricingType === "DAILY" && space.pricePerDay) {
+      return `$${space.pricePerDay}/day`;
+    }
+    if (space.pricingType === "BOTH") {
+      if (space.pricePerHour) return `$${space.pricePerHour}/hr`;
+      if (space.pricePerDay) return `$${space.pricePerDay}/day`;
+    }
+    return "—";
   };
 
   if (loading) {
@@ -138,31 +138,29 @@ const HostSpacesPage = () => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
-          <p className="text-gray-600 mt-1">
-            {t("subtitle")}
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900">My Spaces</h1>
+          <p className="text-gray-600 mt-1">Manage your listed spaces</p>
         </div>
         <Link
           href="/host/spaces/new"
           className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
         >
           <Plus className="w-5 h-5" />
-          {tCommon("addSpace")}
+          Add Space
         </Link>
       </div>
 
       {spaces.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-xl">
           <p className="text-gray-500 text-lg mb-4">
-            {t("noSpaces")}
+            You haven&apos;t listed any spaces yet
           </p>
           <Link
             href="/host/spaces/new"
             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
           >
             <Plus className="w-5 h-5" />
-            {t("addFirstSpace")}
+            Add Your First Space
           </Link>
         </div>
       ) : (
@@ -173,7 +171,6 @@ const HostSpacesPage = () => {
               className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
             >
               <div className="flex gap-4">
-                {/* Image */}
                 <div className="relative w-32 h-24 rounded-lg overflow-hidden shrink-0">
                   <Image
                     src={space.images?.[0] || "/placeholder-space.jpg"}
@@ -184,13 +181,12 @@ const HostSpacesPage = () => {
                   {!space.isActive && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                       <span className="text-white text-xs font-medium">
-                        {tCommon("inactive")}
+                        Inactive
                       </span>
                     </div>
                   )}
                 </div>
 
-                {/* Details */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <div>
@@ -205,7 +201,6 @@ const HostSpacesPage = () => {
                       </div>
                     </div>
 
-                    {/* Actions Menu */}
                     <div className="relative">
                       <button
                         onClick={() =>
@@ -218,20 +213,6 @@ const HostSpacesPage = () => {
 
                       {menuOpen === space.id && (
                         <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                          <Link
-                            href={`/spaces/${space.id}`}
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                          >
-                            <Eye className="w-4 h-4" />
-                            {t("viewListing")}
-                          </Link>
-                          <Link
-                            href={`/host/spaces/${space.id}/edit`}
-                            className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                          >
-                            <Edit className="w-4 h-4" />
-                            {t("editSpace")}
-                          </Link>
                           <button
                             onClick={() =>
                               toggleSpaceStatus(space.id, space.isActive)
@@ -241,12 +222,12 @@ const HostSpacesPage = () => {
                             {space.isActive ? (
                               <>
                                 <PowerOff className="w-4 h-4" />
-                                {t("deactivate")}
+                                Deactivate
                               </>
                             ) : (
                               <>
                                 <Power className="w-4 h-4" />
-                                {t("activate")}
+                                Activate
                               </>
                             )}
                           </button>
@@ -255,7 +236,7 @@ const HostSpacesPage = () => {
                             className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                           >
                             <Trash2 className="w-4 h-4" />
-                            {t("delete")}
+                            Delete
                           </button>
                         </div>
                       )}
@@ -268,7 +249,7 @@ const HostSpacesPage = () => {
                       <span>{space.capacity}</span>
                     </div>
                     <span className="font-medium text-gray-900">
-                      {getPriceDisplay(space, priceLabels)}
+                      {getPriceDisplay(space)}
                     </span>
                     {space.averageRating != null && space.averageRating > 0 && (
                       <div className="flex items-center gap-1">
@@ -288,7 +269,7 @@ const HostSpacesPage = () => {
                           : "bg-gray-100 text-gray-600"
                       }`}
                     >
-                      {space.isActive ? tCommon("active") : tCommon("inactive")}
+                      {space.isActive ? "Active" : "Inactive"}
                     </span>
                   </div>
                 </div>

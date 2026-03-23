@@ -31,10 +31,10 @@ const Footer = () => {
       title: t("forHosts"),
       links: [
         { href: "/become-host", label: t("becomeAHost") },
-        { href: "/host", label: t("hostDashboard") },
-        { href: "/host/spaces/new", label: t("listYourSpace") },
-        { href: "/host/bookings", label: t("hostBookings") },
-        { href: "/host/earnings", label: t("hostEarnings") },
+        { href: (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") + "/host", label: t("hostDashboard"), external: true },
+        { href: (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") + "/host/spaces/new", label: t("listYourSpace"), external: true },
+        { href: (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") + "/host/bookings", label: t("hostBookings"), external: true },
+        { href: (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") + "/host/earnings", label: t("hostEarnings"), external: true },
       ],
     },
     {
@@ -101,12 +101,21 @@ const Footer = () => {
               <ul className="space-y-3">
                 {column.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-muted hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </Link>
+                    {"external" in link && link.external ? (
+                      <a
+                        href={link.href}
+                        className="text-sm text-muted hover:text-primary transition-colors"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted hover:text-primary transition-colors"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -130,12 +139,21 @@ const Footer = () => {
                     <ul className="pb-3 space-y-2">
                       {column.links.map((link) => (
                         <li key={link.label}>
-                          <Link
-                            href={link.href}
-                            className="text-sm text-muted hover:text-primary transition-colors"
-                          >
-                            {link.label}
-                          </Link>
+                          {"external" in link && link.external ? (
+                            <a
+                              href={link.href}
+                              className="text-sm text-muted hover:text-primary transition-colors"
+                            >
+                              {link.label}
+                            </a>
+                          ) : (
+                            <Link
+                              href={link.href}
+                              className="text-sm text-muted hover:text-primary transition-colors"
+                            >
+                              {link.label}
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>

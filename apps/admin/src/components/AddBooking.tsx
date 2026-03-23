@@ -31,17 +31,17 @@ import { Button } from "./ui/button";
 const formSchema = z.object({
   amount: z.number().min(1, { message: "Amount must be at least 1!" }),
   userId: z.string().min(1, { message: "User Id is required!" }),
-  status: z.enum(["pending", "processing", "success", "failed"]),
+  status: z.enum(["PENDING", "APPROVED", "CONFIRMED", "COMPLETED", "CANCELLED", "REJECTED"]),
 });
 
-const AddOrder = () => {
+const AddBooking = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
   return (
     <SheetContent>
       <SheetHeader>
-        <SheetTitle className="mb-4">Add Order</SheetTitle>
+        <SheetTitle className="mb-4">Add Booking</SheetTitle>
         <SheetDescription asChild>
           <Form {...form}>
             <form className="space-y-8">
@@ -55,7 +55,7 @@ const AddOrder = () => {
                       <Input {...field} />
                     </FormControl>
                     <FormDescription>
-                      Enter the amount of the order.
+                      Enter the booking amount.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -87,15 +87,17 @@ const AddOrder = () => {
                           <SelectValue placeholder="Select a status" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="pending">Pending</SelectItem>
-                          <SelectItem value="processing">Processing</SelectItem>
-                          <SelectItem value="success">Success</SelectItem>
-                          <SelectItem value="failed">Failed</SelectItem>
+                          <SelectItem value="PENDING">Pending</SelectItem>
+                          <SelectItem value="APPROVED">Approved</SelectItem>
+                          <SelectItem value="CONFIRMED">Confirmed</SelectItem>
+                          <SelectItem value="COMPLETED">Completed</SelectItem>
+                          <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                          <SelectItem value="REJECTED">Rejected</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
                     <FormDescription>
-                      Enter the status of the order.
+                      Select the booking status.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -110,4 +112,4 @@ const AddOrder = () => {
   );
 };
 
-export default AddOrder;
+export default AddBooking;

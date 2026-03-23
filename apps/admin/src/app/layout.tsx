@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ecom Admin Dashboard",
-  description: "Admin dashboard for e-commerce platform",
+  title: "KINN Dashboard",
+  description: "Host and admin dashboard for KINN workspace platform",
 };
 
 export default function RootLayout({

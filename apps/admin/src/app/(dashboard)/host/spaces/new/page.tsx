@@ -1,23 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "@/i18n/navigation";
+import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
-import { useTranslations } from "next-intl";
 import {
-  Building2,
-  MapPin,
-  DollarSign,
-  Users,
-  Clock,
-  Calendar,
   Upload,
   X,
   Loader2,
   ArrowLeft,
   Check,
 } from "lucide-react";
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import Image from "next/image";
 
 interface SpaceCategory {
@@ -33,6 +26,28 @@ interface Amenity {
   category: string | null;
 }
 
+const spaceTypes = [
+  { value: "OFFICE_DESK", label: "Office Desk" },
+  { value: "PRIVATE_OFFICE", label: "Private Office" },
+  { value: "MEETING_ROOM", label: "Meeting Room" },
+  { value: "EVENT_VENUE", label: "Event Venue" },
+  { value: "WEDDING_VENUE", label: "Wedding Venue" },
+  { value: "COWORKING_SPACE", label: "Coworking Space" },
+];
+
+const pricingTypes = [
+  { value: "HOURLY", label: "Hourly" },
+  { value: "DAILY", label: "Daily" },
+  { value: "BOTH", label: "Both" },
+];
+
+const cancellationPolicies = [
+  { value: "FLEXIBLE", label: "Flexible" },
+  { value: "MODERATE", label: "Moderate" },
+  { value: "STRICT", label: "Strict" },
+  { value: "NON_REFUNDABLE", label: "Non-Refundable" },
+];
+
 const NewSpacePage = () => {
   const router = useRouter();
   const { token } = useAuthStore();
@@ -41,31 +56,6 @@ const NewSpacePage = () => {
   const [categories, setCategories] = useState<SpaceCategory[]>([]);
   const [amenities, setAmenities] = useState<Amenity[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
-  const t = useTranslations("newSpace");
-  const tSpaces = useTranslations("spaces");
-  const tCommon = useTranslations("common");
-
-  const spaceTypes = [
-    { value: "OFFICE_DESK", label: tSpaces("spaceTypes.OFFICE_DESK") },
-    { value: "PRIVATE_OFFICE", label: tSpaces("spaceTypes.PRIVATE_OFFICE") },
-    { value: "MEETING_ROOM", label: tSpaces("spaceTypes.MEETING_ROOM") },
-    { value: "EVENT_VENUE", label: tSpaces("spaceTypes.EVENT_VENUE") },
-    { value: "WEDDING_VENUE", label: tSpaces("spaceTypes.WEDDING_VENUE") },
-    { value: "COWORKING_SPACE", label: tSpaces("spaceTypes.COWORKING_SPACE") },
-  ];
-
-  const pricingTypes = [
-    { value: "HOURLY", label: t("pricingTypes.HOURLY") },
-    { value: "DAILY", label: t("pricingTypes.DAILY") },
-    { value: "BOTH", label: t("pricingTypes.BOTH") },
-  ];
-
-  const cancellationPolicies = [
-    { value: "FLEXIBLE", label: t("cancellationPolicies.FLEXIBLE") },
-    { value: "MODERATE", label: t("cancellationPolicies.MODERATE") },
-    { value: "STRICT", label: t("cancellationPolicies.STRICT") },
-    { value: "NON_REFUNDABLE", label: t("cancellationPolicies.NON_REFUNDABLE") },
-  ];
 
   const [formData, setFormData] = useState({
     name: "",
@@ -121,15 +111,15 @@ const NewSpacePage = () => {
 
     try {
       for (const file of Array.from(files)) {
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", "flexispace");
+        const fd = new FormData();
+        fd.append("file", file);
+        fd.append("upload_preset", "flexispace");
 
         const res = await fetch(
           `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
           {
             method: "POST",
-            body: formData,
+            body: fd,
           }
         );
 
@@ -198,8 +188,7 @@ const NewSpacePage = () => {
         throw new Error(data.message || "Failed to create space");
       }
 
-      const space = await res.json();
-      router.push(`/host/spaces`);
+      router.push("/host/spaces");
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -214,31 +203,33 @@ const NewSpacePage = () => {
         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
       >
         <ArrowLeft className="w-5 h-5" />
-        {tCommon("backToSpaces")}
+        Back to Spaces
       </Link>
 
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Create New Space</h1>
         <p className="text-gray-600 mt-1">
-          {t("subtitle")}
+          Fill in the details to list your space
         </p>
       </div>
 
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-6">{error}</div>
+        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-6">
+          {error}
+        </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Basic Info */}
         <section className="bg-white border border-gray-200 rounded-xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            {t("basicInfo")}
+            Basic Information
           </h2>
 
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("spaceName")}
+                Space Name
               </label>
               <input
                 type="text"
@@ -248,13 +239,13 @@ const NewSpacePage = () => {
                   setFormData((prev) => ({ ...prev, name: e.target.value }))
                 }
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                placeholder={t("spaceNamePlaceholder")}
+                placeholder="e.g. Modern Downtown Meeting Room"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("shortDescription")}
+                Short Description
               </label>
               <input
                 type="text"
@@ -268,13 +259,13 @@ const NewSpacePage = () => {
                   }))
                 }
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                placeholder={t("shortDescPlaceholder")}
+                placeholder="Brief description for search results"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("fullDescription")}
+                Full Description
               </label>
               <textarea
                 required
@@ -288,14 +279,14 @@ const NewSpacePage = () => {
                   }))
                 }
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                placeholder={t("fullDescPlaceholder")}
+                placeholder="Detailed description of your space"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("spaceType")}
+                  Space Type
                 </label>
                 <select
                   required
@@ -318,7 +309,7 @@ const NewSpacePage = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("category")}
+                  Category
                 </label>
                 <select
                   required
@@ -331,7 +322,7 @@ const NewSpacePage = () => {
                   }
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 >
-                  <option value="">{t("selectCategory")}</option>
+                  <option value="">Select a category</option>
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.slug}>
                       {cat.name}
@@ -343,7 +334,7 @@ const NewSpacePage = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("capacity")}
+                Capacity
               </label>
               <input
                 type="number"
@@ -351,10 +342,13 @@ const NewSpacePage = () => {
                 min="1"
                 value={formData.capacity}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, capacity: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    capacity: e.target.value,
+                  }))
                 }
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                placeholder={t("capacityPlaceholder")}
+                placeholder="Maximum number of people"
               />
             </div>
           </div>
@@ -362,12 +356,20 @@ const NewSpacePage = () => {
 
         {/* Images */}
         <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t("images")}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Images</h2>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             {formData.images.map((img, idx) => (
-              <div key={idx} className="relative aspect-square rounded-lg overflow-hidden">
-                <Image src={img} alt={`Space ${idx + 1}`} fill className="object-cover" />
+              <div
+                key={idx}
+                className="relative aspect-square rounded-lg overflow-hidden"
+              >
+                <Image
+                  src={img}
+                  alt={`Space ${idx + 1}`}
+                  fill
+                  className="object-cover"
+                />
                 <button
                   type="button"
                   onClick={() => removeImage(idx)}
@@ -384,7 +386,7 @@ const NewSpacePage = () => {
               ) : (
                 <>
                   <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                  <span className="text-sm text-gray-500">{t("upload")}</span>
+                  <span className="text-sm text-gray-500">Upload</span>
                 </>
               )}
               <input
@@ -397,62 +399,74 @@ const NewSpacePage = () => {
             </label>
           </div>
           <p className="text-sm text-gray-500">
-            {t("imagesHint")}
+            Upload high-quality photos of your space. First image will be the
+            cover.
           </p>
         </section>
 
         {/* Location */}
         <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t("location")}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Location
+          </h2>
 
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("address")}
+                Address
               </label>
               <input
                 type="text"
                 required
                 value={formData.address}
                 onChange={(e) =>
-                  setFormData((prev) => ({ ...prev, address: e.target.value }))
+                  setFormData((prev) => ({
+                    ...prev,
+                    address: e.target.value,
+                  }))
                 }
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                placeholder={t("addressPlaceholder")}
+                placeholder="Street address"
               />
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("city")}
+                  City
                 </label>
                 <input
                   type="text"
                   required
                   value={formData.city}
                   onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, city: e.target.value }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      city: e.target.value,
+                    }))
                   }
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("state")}
+                  State
                 </label>
                 <input
                   type="text"
                   value={formData.state}
                   onChange={(e) =>
-                    setFormData((prev) => ({ ...prev, state: e.target.value }))
+                    setFormData((prev) => ({
+                      ...prev,
+                      state: e.target.value,
+                    }))
                   }
                   className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("country")}
+                  Country
                 </label>
                 <input
                   type="text"
@@ -469,7 +483,7 @@ const NewSpacePage = () => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t("postalCode")}
+                  Postal Code
                 </label>
                 <input
                   type="text"
@@ -489,12 +503,12 @@ const NewSpacePage = () => {
 
         {/* Pricing */}
         <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t("pricing")}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h2>
 
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("pricingType")}
+                Pricing Type
               </label>
               <select
                 required
@@ -520,7 +534,7 @@ const NewSpacePage = () => {
                 formData.pricingType === "BOTH") && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t("pricePerHour")}
+                    Price Per Hour
                   </label>
                   <input
                     type="number"
@@ -544,7 +558,7 @@ const NewSpacePage = () => {
                 formData.pricingType === "BOTH") && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    {t("pricePerDay")}
+                    Price Per Day
                   </label>
                   <input
                     type="number"
@@ -563,14 +577,15 @@ const NewSpacePage = () => {
                   />
                 </div>
               )}
-
             </div>
           </div>
         </section>
 
         {/* Amenities */}
         <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t("amenitiesTitle")}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Amenities
+          </h2>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {amenities.map((amenity) => (
@@ -595,12 +610,14 @@ const NewSpacePage = () => {
 
         {/* Settings */}
         <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t("settings")}</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">
+            Settings
+          </h2>
 
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("cancellationPolicy")}
+                Cancellation Policy
               </label>
               <select
                 required
@@ -623,7 +640,7 @@ const NewSpacePage = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("houseRules")}
+                House Rules
               </label>
               <textarea
                 rows={3}
@@ -635,7 +652,7 @@ const NewSpacePage = () => {
                   }))
                 }
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
-                placeholder={t("houseRulesPlaceholder")}
+                placeholder="Any rules guests should know about"
               />
             </div>
 
@@ -653,7 +670,7 @@ const NewSpacePage = () => {
                 className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
               />
               <label htmlFor="instantBook" className="text-sm text-gray-700">
-                {t("instantBook")}
+                Enable instant booking (guests can book without approval)
               </label>
             </div>
           </div>
@@ -665,7 +682,7 @@ const NewSpacePage = () => {
             href="/host/spaces"
             className="px-6 py-3 text-gray-600 font-medium hover:text-gray-900"
           >
-            {tCommon("cancel")}
+            Cancel
           </Link>
           <button
             type="submit"
@@ -675,10 +692,10 @@ const NewSpacePage = () => {
             {loading ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                {t("creating")}
+                Creating...
               </>
             ) : (
-              t("createSpace")
+              "Create Space"
             )}
           </button>
         </div>

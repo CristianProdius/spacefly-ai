@@ -19,7 +19,7 @@ import useAuthStore from "@/stores/authStore";
 
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
-  const { user, logout } = useAuthStore();
+  const { user, isAdmin, logout } = useAuthStore();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -33,7 +33,7 @@ const Navbar = () => {
       <SidebarTrigger />
       {/* RIGHT */}
       <div className="flex items-center gap-4">
-        <Link href="/">Dashboard</Link>
+        <Link href={isAdmin ? "/admin" : "/host"}>Dashboard</Link>
         {/* THEME MENU */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

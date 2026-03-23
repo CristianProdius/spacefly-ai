@@ -104,7 +104,7 @@ export const columns: ColumnDef<Space>[] = [
     },
     cell: ({ row }) => {
       const price = row.getValue("pricePerHour") as number | null;
-      return price ? `$${(price / 100).toFixed(0)}` : "-";
+      return price ? `$${price}` : "-";
     },
   },
   {
@@ -135,7 +135,7 @@ export const columns: ColumnDef<Space>[] = [
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/products/${space.id}`}>View space</Link>
+              <Link href={`/admin/spaces/${space.id}`}>View space</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

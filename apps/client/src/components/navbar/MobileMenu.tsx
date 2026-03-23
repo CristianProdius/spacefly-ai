@@ -64,10 +64,12 @@ const MobileMenu = () => {
             )}
 
             {isAuthenticated && isHost && (
-              <Dialog.Close render={<Link href="/host" />} className={cn(
-                "block px-4 py-3 text-sm font-medium",
-                pathname.startsWith("/host") ? "text-primary" : "text-foreground"
-              )}>
+              <Dialog.Close
+                render={
+                  <a href={`${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003"}/host`} />
+                }
+                className="block px-4 py-3 text-sm font-medium text-foreground"
+              >
                 {t("hostDashboard")}
               </Dialog.Close>
             )}

@@ -5,7 +5,7 @@ export interface User {
   email: string;
   username: string;
   name: string | null;
-  role: "USER" | "ADMIN";
+  role: "USER" | "HOST" | "ADMIN";
   image: string | null;
 }
 
@@ -112,4 +112,14 @@ export function isAuthenticated(): boolean {
 export function isAdmin(): boolean {
   const user = getStoredUser();
   return user?.role === "ADMIN";
+}
+
+export function isHost(): boolean {
+  const user = getStoredUser();
+  return user?.role === "HOST";
+}
+
+export function isHostOrAdmin(): boolean {
+  const user = getStoredUser();
+  return user?.role === "HOST" || user?.role === "ADMIN";
 }

@@ -8,15 +8,14 @@ import {
 } from "@/components/ui/sheet";
 
 // TODO: Replace with AddSpace component for FlexiSpace
-const AddProduct = () => {
+const AddSpace = () => {
   return (
     <SheetContent>
       <SheetHeader>
         <SheetTitle className="mb-4">Add Space</SheetTitle>
         <SheetDescription>
           <p className="text-gray-600">
-            Space management coming soon. For now, hosts can add spaces through
-            the client app at /host/spaces/new
+            Use the host dashboard at <a href="/host/spaces/new" className="text-blue-600 underline">/host/spaces/new</a> to create a new space.
           </p>
         </SheetDescription>
       </SheetHeader>
@@ -24,4 +23,4 @@ const AddProduct = () => {
   );
 };
 
-export default AddProduct;
+export default AddSpace;

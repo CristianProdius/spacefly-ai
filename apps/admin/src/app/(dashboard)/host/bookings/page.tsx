@@ -3,16 +3,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { Link } from "@/i18n/navigation";
 import useAuthStore from "@/stores/authStore";
-import { useTranslations } from "next-intl";
 import {
   Calendar,
   Clock,
   Users,
   Check,
   X,
-  ChevronRight,
   AlertCircle,
   Loader2,
 } from "lucide-react";
@@ -49,20 +46,18 @@ const HostBookingsPage = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(searchParams.get("status") || "all");
   const [actionLoading, setActionLoading] = useState<string | null>(null);
-  const t = useTranslations("hostBookings");
-  const tCommon = useTranslations("common");
 
   const statusFilters = [
-    { value: "all", label: t("filterAll") },
-    { value: "PENDING", label: t("filterPending") },
-    { value: "APPROVED", label: t("filterApproved") },
-    { value: "CONFIRMED", label: t("filterConfirmed") },
-    { value: "COMPLETED", label: t("filterCompleted") },
-    { value: "CANCELLED", label: t("filterCancelled") },
+    { value: "all", label: "All" },
+    { value: "PENDING", label: "Pending" },
+    { value: "APPROVED", label: "Approved" },
+    { value: "CONFIRMED", label: "Confirmed" },
+    { value: "COMPLETED", label: "Completed" },
+    { value: "CANCELLED", label: "Cancelled" },
   ];
 
   useEffect(() => {
-    fetchBookings();
+    if (token) fetchBookings();
   }, [token]);
 
   const fetchBookings = async () => {
@@ -110,7 +105,7 @@ const HostBookingsPage = () => {
   };
 
   const handleReject = async (bookingId: string) => {
-    const reason = prompt(t("rejectReason"));
+    const reason = prompt("Reason for rejection (optional):");
 
     setActionLoading(bookingId);
     try {
@@ -185,23 +180,22 @@ const HostBookingsPage = () => {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">{t("title")}</h1>
+        <h1 className="text-2xl font-bold text-gray-900">Bookings</h1>
         <p className="text-gray-600 mt-1">
-          {t("subtitle")}
+          Manage booking requests for your spaces
         </p>
       </div>
 
-      {/* Pending Alert */}
       {pendingCount > 0 && (
         <div className="flex items-center gap-3 p-4 bg-yellow-50 border border-yellow-200 rounded-lg mb-6">
           <AlertCircle className="w-5 h-5 text-yellow-600" />
           <p className="text-yellow-800">
-            {t("pendingAlert", { count: pendingCount })}
+            {pendingCount} booking{pendingCount > 1 ? "s" : ""} pending your
+            review
           </p>
         </div>
       )}
 
-      {/* Filter Tabs */}
       <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
         {statusFilters.map((f) => (
           <button
@@ -225,7 +219,7 @@ const HostBookingsPage = () => {
 
       {filteredBookings.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-xl">
-          <p className="text-gray-500">{t("noBookingsFound")}</p>
+          <p className="text-gray-500">No bookings found</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -235,7 +229,6 @@ const HostBookingsPage = () => {
               className="bg-white border border-gray-200 rounded-xl p-4"
             >
               <div className="flex gap-4">
-                {/* Space Image */}
                 <div className="relative w-24 h-20 rounded-lg overflow-hidden shrink-0">
                   <Image
                     src={booking.space.images?.[0] || "/placeholder-space.jpg"}
@@ -245,7 +238,6 @@ const HostBookingsPage = () => {
                   />
                 </div>
 
-                {/* Booking Details */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2 mb-2">
                     <div>
@@ -253,7 +245,8 @@ const HostBookingsPage = () => {
                         {booking.space.name}
                       </h3>
                       <p className="text-sm text-gray-500">
-                        {t("bookedBy", { name: booking.guest.name || booking.guest.email })}
+                        Booked by{" "}
+                        {booking.guest.name || booking.guest.email}
                       </p>
                     </div>
                     <span
@@ -279,20 +272,14 @@ const HostBookingsPage = () => {
                       <span>
                         {new Date(booking.startDate).toLocaleDateString(
                           undefined,
-                          {
-                            month: "short",
-                            day: "numeric",
-                          }
+                          { month: "short", day: "numeric" }
                         )}
                         {booking.endDate !== booking.startDate && (
                           <>
                             {" - "}
                             {new Date(booking.endDate).toLocaleDateString(
                               undefined,
-                              {
-                                month: "short",
-                                day: "numeric",
-                              }
+                              { month: "short", day: "numeric" }
                             )}
                           </>
                         )}
@@ -322,7 +309,6 @@ const HostBookingsPage = () => {
                 </div>
               </div>
 
-              {/* Actions */}
               {booking.status === "PENDING" && (
                 <div className="flex items-center gap-3 mt-4 pt-4 border-t">
                   <button
@@ -335,7 +321,7 @@ const HostBookingsPage = () => {
                     ) : (
                       <Check className="w-4 h-4" />
                     )}
-                    {t("approve")}
+                    Approve
                   </button>
                   <button
                     onClick={() => handleReject(booking.id)}
@@ -343,7 +329,7 @@ const HostBookingsPage = () => {
                     className="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 font-medium rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50"
                   >
                     <X className="w-4 h-4" />
-                    {t("reject")}
+                    Reject
                   </button>
                 </div>
               )}
@@ -360,7 +346,7 @@ const HostBookingsPage = () => {
                     ) : (
                       <Check className="w-4 h-4" />
                     )}
-                    {t("markCompleted")}
+                    Mark as Completed
                   </button>
                 </div>
               )}

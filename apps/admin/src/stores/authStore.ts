@@ -24,9 +24,12 @@ const getAuthFunctions = () => {
 
 interface AuthState {
   user: User | null;
+  token: string | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isHost: boolean;
+  isHostOrAdmin: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   getToken: () => Promise<string | null>;
@@ -35,9 +38,12 @@ interface AuthState {
 
 const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
+  token: null,
   isLoading: true,
   isAuthenticated: false,
   isAdmin: false,
+  isHost: false,
+  isHostOrAdmin: false,
 
   initialize: () => {
     // Only run on client side
@@ -51,8 +57,11 @@ const useAuthStore = create<AuthState>((set, get) => ({
     const token = auth.getAccessToken();
     set({
       user,
+      token,
       isAuthenticated: !!token && !!user,
       isAdmin: user?.role === "ADMIN",
+      isHost: user?.role === "HOST",
+      isHostOrAdmin: user?.role === "HOST" || user?.role === "ADMIN",
       isLoading: false,
     });
   },
@@ -61,16 +70,19 @@ const useAuthStore = create<AuthState>((set, get) => ({
     const auth = getAuthFunctions();
     const response = await auth.login(email, password);
 
-    if (response.user.role !== "ADMIN") {
-      throw new Error("Admin access required");
+    if (response.user.role !== "ADMIN" && response.user.role !== "HOST") {
+      throw new Error("Host or admin access required");
     }
 
     auth.saveTokens(response.accessToken, response.refreshToken);
     auth.saveUser(response.user);
     set({
       user: response.user,
+      token: response.accessToken,
       isAuthenticated: true,
-      isAdmin: true,
+      isAdmin: response.user.role === "ADMIN",
+      isHost: response.user.role === "HOST",
+      isHostOrAdmin: true,
     });
   },
 
@@ -87,8 +99,11 @@ const useAuthStore = create<AuthState>((set, get) => ({
       auth.clearAuth();
       set({
         user: null,
+        token: null,
         isAuthenticated: false,
         isAdmin: false,
+        isHost: false,
+        isHostOrAdmin: false,
       });
     }
   },
@@ -111,6 +126,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
       if (refreshToken) {
         const newToken = await auth.refreshAccessToken(refreshToken);
         auth.saveTokens(newToken, refreshToken);
+        set({ token: newToken });
         return newToken;
       }
     } catch {

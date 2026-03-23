@@ -11,12 +11,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { Booking } from "@repo/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
-export const columns: ColumnDef<Booking>[] = [
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  name: string | null;
+  role: string;
+  image: string | null;
+  createdAt: string;
+}
+
+export const columns: ColumnDef<User>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -36,67 +46,77 @@ export const columns: ColumnDef<Booking>[] = [
     ),
   },
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "avatar",
+    header: "Avatar",
     cell: ({ row }) => {
-      const id = row.getValue("id") as string;
-      return <span className="font-mono text-xs">{id.slice(0, 8)}...</span>;
+      const user = row.original;
+      return (
+        <div className="w-9 h-9 relative">
+          {user.image ? (
+            <Image
+              src={user.image}
+              alt={user.name || user.username || "-"}
+              fill
+              className="rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-medium">
+              {user.name?.charAt(0) || user.username?.charAt(0) || "-"}
+            </div>
+          )}
+        </div>
+      );
     },
   },
   {
-    accessorKey: "guestEmail",
+    accessorKey: "name",
+    header: "User",
+    cell: ({ row }) => {
+      const user = row.original;
+      return <div className="">{user.name || user.username || "-"}</div>;
+    },
+  },
+  {
+    accessorKey: "email",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Guest Email
+          Email
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const user = row.original;
+      return <div className="">{user.email}</div>;
+    },
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "role",
+    header: "Role",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string;
-
+      const user = row.original;
       return (
         <div
           className={cn(
             `p-1 rounded-md w-max text-xs`,
-            status === "PENDING" && "bg-yellow-500/40",
-            status === "APPROVED" && "bg-blue-500/40",
-            status === "CONFIRMED" && "bg-purple-500/40",
-            status === "COMPLETED" && "bg-green-500/40",
-            status === "CANCELLED" && "bg-red-500/40",
-            status === "REJECTED" && "bg-red-500/40"
+            user.role === "ADMIN" && "bg-purple-500/40",
+            user.role === "HOST" && "bg-orange-500/40",
+            user.role === "USER" && "bg-blue-500/40"
           )}
         >
-          {status}
+          {user.role}
         </div>
       );
     },
   },
   {
-    accessorKey: "totalAmount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("totalAmount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount / 100);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-  },
-  {
     id: "actions",
     cell: ({ row }) => {
-      const booking = row.original;
+      const user = row.original;
 
       return (
         <DropdownMenu>
@@ -109,15 +129,14 @@ export const columns: ColumnDef<Booking>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(booking.id)}
+              onClick={() => navigator.clipboard.writeText(user.id)}
             >
-              Copy booking ID
+              Copy user ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link href={`/users/${booking.userId}`}>View guest</Link>
+              <Link href={`/admin/users/${user.id}`}>View customer</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>View booking details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
