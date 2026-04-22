@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "FlexiSpace - Find Your Perfect Workspace",
+    "title": "Spacefly.ai - Find Your Perfect Workspace",
     "description": "Discover and book unique workspaces, meeting rooms, and event venues. From cozy coworking spots to grand wedding venues."
   },
   "common": {
@@ -417,8 +417,8 @@
     "weddingVenues": "Wedding Venues",
     "coworkingSpaces": "Coworking Spaces",
     "readyToStart": "Ready to Start Hosting?",
-    "readyToStartDesc": "Join FlexiSpace today and turn your space into an opportunity.",
-    "successTitle": "Welcome to FlexiSpace Hosting!",
+    "readyToStartDesc": "Join Spacefly.ai today and turn your space into an opportunity.",
+    "successTitle": "Welcome to Spacefly.ai Hosting!",
     "successDescription": "Your host account has been activated. You can now list your spaces and start earning.",
     "redirecting": "Redirecting to your dashboard..."
   },

@@ -113,7 +113,7 @@ const NewSpacePage = () => {
       for (const file of Array.from(files)) {
         const fd = new FormData();
         fd.append("file", file);
-        fd.append("upload_preset", "flexispace");
+        fd.append("upload_preset", "spacefly");
 
         const res = await fetch(
           `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,

@@ -7,7 +7,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-// TODO: Replace with AddSpace component for FlexiSpace
+// TODO: Replace with AddSpace component for Spacefly.ai
 const AddSpace = () => {
   return (
     <SheetContent>

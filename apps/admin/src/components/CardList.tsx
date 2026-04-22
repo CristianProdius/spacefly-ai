@@ -3,7 +3,7 @@
 import { Card, CardContent, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 
-// Placeholder component - needs update for FlexiSpace
+// Placeholder component - needs update for Spacefly.ai
 const CardList = ({ title }: { title: string }) => {
   return (
     <div className="">

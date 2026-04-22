@@ -1,5 +1,5 @@
 {
-  "name": "ecom",
+  "name": "spacefly",
   "private": true,
   "scripts": {
     "build": "turbo run build",

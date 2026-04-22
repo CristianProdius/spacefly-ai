@@ -66,10 +66,10 @@ async function main() {
   // Create Admin User
   const adminPassword = await hashPassword("admin123");
   await prisma.user.upsert({
-    where: { email: "admin@flexispace.com" },
+    where: { email: "admin@spacefly.ai" },
     update: {},
     create: {
-      email: "admin@flexispace.com",
+      email: "admin@spacefly.ai",
       username: "admin",
       name: "Admin User",
       password: adminPassword,
@@ -77,15 +77,15 @@ async function main() {
       emailVerified: true,
     },
   });
-  console.log("✓ Admin user created (admin@flexispace.com / admin123)");
+  console.log("✓ Admin user created (admin@spacefly.ai / admin123)");
 
   // Create Demo Host User
   const hostPassword = await hashPassword("host123");
   const host = await prisma.user.upsert({
-    where: { email: "host@flexispace.com" },
+    where: { email: "host@spacefly.ai" },
     update: {},
     create: {
-      email: "host@flexispace.com",
+      email: "host@spacefly.ai",
       username: "demohost",
       name: "Demo Host",
       password: hostPassword,
@@ -96,15 +96,15 @@ async function main() {
       bio: "Professional space provider with multiple venues",
     },
   });
-  console.log("✓ Demo host created (host@flexispace.com / host123)");
+  console.log("✓ Demo host created (host@spacefly.ai / host123)");
 
   // Create Demo User
   const userPassword = await hashPassword("user123");
   await prisma.user.upsert({
-    where: { email: "user@flexispace.com" },
+    where: { email: "user@spacefly.ai" },
     update: {},
     create: {
-      email: "user@flexispace.com",
+      email: "user@spacefly.ai",
       username: "demouser",
       name: "Demo User",
       password: userPassword,
@@ -112,7 +112,7 @@ async function main() {
       emailVerified: true,
     },
   });
-  console.log("✓ Demo user created (user@flexispace.com / user123)");
+  console.log("✓ Demo user created (user@spacefly.ai / user123)");
 
   // Create Demo Spaces
   const demoSpaces = [

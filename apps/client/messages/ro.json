@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "FlexiSpace - Gaseste Spatiul de Lucru Perfect",
+    "title": "Spacefly.ai - Gaseste Spatiul de Lucru Perfect",
     "description": "Descopera si rezerva spatii de lucru unice, sali de sedinte si locatii pentru evenimente. De la spatii coworking confortabile la locatii grandioase pentru nunti."
   },
   "common": {
@@ -417,8 +417,8 @@
     "weddingVenues": "Locatii Nunti",
     "coworkingSpaces": "Spatii Coworking",
     "readyToStart": "Pregatit sa Incepi sa Gazduiesti?",
-    "readyToStartDesc": "Alatura-te FlexiSpace astazi si transforma spatiul tau intr-o oportunitate.",
-    "successTitle": "Bine ai venit in FlexiSpace Hosting!",
+    "readyToStartDesc": "Alatura-te Spacefly.ai astazi si transforma spatiul tau intr-o oportunitate.",
+    "successTitle": "Bine ai venit in Spacefly.ai Hosting!",
     "successDescription": "Contul tau de gazda a fost activat. Acum poti lista spatiile tale si incepe sa castigi.",
     "redirecting": "Redirectionare catre panoul tau..."
   },
