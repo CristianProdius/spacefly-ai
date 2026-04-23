@@ -21,9 +21,9 @@ export default async function AuthLayout({
 
         {/* Content */}
         <div className="relative flex flex-col items-center justify-center w-full p-12">
-          <Link href="/" aria-label="KINN home">
+          <Link href="/" aria-label="Spacefly.ai home">
             <span className="text-3xl font-extrabold text-white tracking-widest font-[family-name:var(--font-geist-sans)]">
-              KINN
+              Spacefly.ai
             </span>
           </Link>
           <p className="mt-4 text-sm text-white/60 text-center text-pretty max-w-xs">
@@ -34,11 +34,11 @@ export default async function AuthLayout({
 
       {/* Form area */}
       <div className="flex-1 flex flex-col bg-subtle lg:bg-white">
-        {/* Mobile header — KINN logo */}
+        {/* Mobile header — Spacefly.ai logo */}
         <div className="px-4 pt-8 pb-4 flex justify-center lg:hidden">
-          <Link href="/" aria-label="KINN home">
+          <Link href="/" aria-label="Spacefly.ai home">
             <span className="text-lg font-extrabold text-foreground tracking-widest font-[family-name:var(--font-geist-sans)]">
-              KINN
+              Spacefly.ai
             </span>
           </Link>
         </div>

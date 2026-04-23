@@ -70,7 +70,7 @@ const AppSidebar = () => {
             <SidebarMenuButton asChild>
               <Link href="/">
                 <Building2 className="w-5 h-5" />
-                <span>KINN Dashboard</span>
+                <span>Spacefly.ai Dashboard</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

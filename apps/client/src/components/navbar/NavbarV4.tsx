@@ -21,9 +21,9 @@ export const NavbarV4 = () => {
         >
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" aria-label="KINN">
+            <Link href="/" aria-label="Spacefly.ai">
               <span className="text-lg font-extrabold text-foreground tracking-widest font-[family-name:var(--font-geist-sans)]">
-                KINN
+                Spacefly.ai
               </span>
             </Link>
 

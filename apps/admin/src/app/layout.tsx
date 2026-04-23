@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "KINN Dashboard",
-  description: "Host and admin dashboard for KINN workspace platform",
+  title: "Spacefly.ai Dashboard",
+  description: "Host and admin dashboard for Spacefly.ai workspace platform",
 };
 
 export default function RootLayout({

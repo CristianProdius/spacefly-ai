@@ -31,7 +31,7 @@ export default function FeaturedEditorialSpotlight({
             {title}
           </h2>
           <span className="text-xs font-medium tracking-wider uppercase text-primary bg-primary-light px-2.5 py-1 rounded-full">
-            Curated by KINN
+            Curated by Spacefly.ai
           </span>
         </div>
 
@@ -50,7 +50,7 @@ export default function FeaturedEditorialSpotlight({
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-6">
               <span className="inline-block text-xs font-medium tracking-wider uppercase text-primary bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-full mb-3">
-                Curated by KINN
+                Curated by Spacefly.ai
               </span>
               <h3 className="text-2xl font-bold text-white mb-1">
                 {hero.name}

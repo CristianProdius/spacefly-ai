@@ -107,7 +107,7 @@
     "citySydneyName": "Sydney",
     "citySydneyCountry": "Australia",
     "citySydneySpaces": "45+ spaces",
-    "whyBookTitle": "Why book with KINN",
+    "whyBookTitle": "Why book with Spacefly.ai",
     "valueProp1Title": "Instant Booking",
     "valueProp1Desc": "Book confirmed spaces in seconds. No back-and-forth emails.",
     "valueProp2Title": "Verified Hosts",
@@ -121,7 +121,7 @@
     "testimonial1Name": "Alex M.",
     "testimonial1Role": "Startup Founder",
     "testimonial1Company": "Petal Labs",
-    "testimonial2Quote": "We use KINN weekly for our team offsites. The variety of spaces is unmatched.",
+    "testimonial2Quote": "We use Spacefly.ai weekly for our team offsites. The variety of spaces is unmatched.",
     "testimonial2Name": "Sarah K.",
     "testimonial2Role": "Head of Operations",
     "testimonial2Company": "Threadline",
@@ -146,7 +146,7 @@
     "faq4A": "We accept all major credit and debit cards. Payments are processed securely through our platform — you will never need to pay the host directly.",
     "faq5Q": "Is there a minimum booking time?",
     "faq5A": "Most spaces can be booked by the hour with a one-hour minimum. Some spaces also offer full-day rates at a discount. Check individual listings for specific availability.",
-    "faq6Q": "How do I list my space on KINN?",
+    "faq6Q": "How do I list my space on Spacefly.ai?",
     "faq6A": "Click 'Become a Host', create your listing with photos and pricing, and publish. It is free to list — we only take a small service fee when you receive a booking.",
     "haveASpace": "Have a Space to Share?",
     "haveASpaceDesc": "Join thousands of hosts earning income from their unused spaces. List your office, meeting room, or venue and start earning today."
@@ -476,7 +476,7 @@
     "termsOfService": "Terms of Service",
     "privacyPolicy": "Privacy Policy",
     "trustLine": "Trusted by 1,000+ hosts across 50+ cities",
-    "copyright": "© 2026 KINN.",
+    "copyright": "© 2026 Spacefly.ai.",
     "allRightsReserved": "All rights reserved."
   }
 }

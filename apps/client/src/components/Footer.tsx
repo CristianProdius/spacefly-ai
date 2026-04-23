@@ -65,7 +65,7 @@ const Footer = () => {
               href="/"
               className="text-lg font-extrabold tracking-widest text-foreground"
             >
-              KINN
+              Spacefly.ai
             </Link>
             <p className="text-sm text-muted mt-1 text-pretty">
               {t("tagline")}

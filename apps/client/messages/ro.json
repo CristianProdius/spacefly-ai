@@ -107,7 +107,7 @@
     "citySydneyName": "Sydney",
     "citySydneyCountry": "Australia",
     "citySydneySpaces": "45+ spatii",
-    "whyBookTitle": "De ce sa rezervi cu KINN",
+    "whyBookTitle": "De ce sa rezervi cu Spacefly.ai",
     "valueProp1Title": "Rezervare Instantanee",
     "valueProp1Desc": "Rezerva spatii confirmate in cateva secunde. Fara emailuri inainte si inapoi.",
     "valueProp2Title": "Gazde Verificate",
@@ -121,7 +121,7 @@
     "testimonial1Name": "Alex M.",
     "testimonial1Role": "Fondator Startup",
     "testimonial1Company": "Petal Labs",
-    "testimonial2Quote": "Folosim KINN saptamanal pentru intalnirile echipei. Varietatea spatiilor este de neinlocuit.",
+    "testimonial2Quote": "Folosim Spacefly.ai saptamanal pentru intalnirile echipei. Varietatea spatiilor este de neinlocuit.",
     "testimonial2Name": "Sarah K.",
     "testimonial2Role": "Director Operatiuni",
     "testimonial2Company": "Threadline",
@@ -146,7 +146,7 @@
     "faq4A": "Acceptam toate cardurile de credit si debit principale. Platile sunt procesate in siguranta prin platforma noastra — nu va trebui niciodata sa platesti direct gazda.",
     "faq5Q": "Exista o durata minima de rezervare?",
     "faq5A": "Majoritatea spatiilor pot fi rezervate pe ora, cu un minim de o ora. Unele spatii ofera si tarife pe zi la un pret redus. Verifica listarile individuale pentru disponibilitate specifica.",
-    "faq6Q": "Cum imi listez spatiul pe KINN?",
+    "faq6Q": "Cum imi listez spatiul pe Spacefly.ai?",
     "faq6A": "Apasa pe 'Devino Gazda', creeaza listarea cu fotografii si preturi, si publica. Listarea este gratuita — percepem doar un mic comision de serviciu cand primesti o rezervare.",
     "haveASpace": "Ai un Spatiu de Impartasit?",
     "haveASpaceDesc": "Alatura-te miilor de gazde care castiga venituri din spatiile lor neutilizate. Listeaza biroul, sala de sedinte sau locatia si incepe sa castigi astazi."
@@ -476,7 +476,7 @@
     "termsOfService": "Termeni si Conditii",
     "privacyPolicy": "Politica de Confidentialitate",
     "trustLine": "Peste 1.000 de gazde in peste 50 de orase",
-    "copyright": "© 2026 KINN.",
+    "copyright": "© 2026 Spacefly.ai.",
     "allRightsReserved": "Toate drepturile rezervate."
   }
 }

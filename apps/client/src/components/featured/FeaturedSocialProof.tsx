@@ -30,7 +30,7 @@ const testimonials = [
     avatar: null,
     rating: 4,
     quote:
-      "We booked this for a client workshop. Professional setting, easy booking process through KINN.",
+      "We booked this for a client workshop. Professional setting, easy booking process through Spacefly.ai.",
   },
   {
     name: "Maria L.",
