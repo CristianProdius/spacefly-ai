@@ -31,7 +31,7 @@ Environment:
   If .env exists in the repository root, Docker Compose commands use --env-file .env.
   INGRESS_MODE=nginx uses docker-compose.nginx.yml and publishes only localhost ports for an existing Nginx proxy.
   INGRESS_MODE=caddy uses docker-compose.caddy.yml and lets this stack bind ports 80/443.
-  migrate runs locally with pnpm and loads .env if present.
+  migrate runs inside a Compose service container and loads .env if present.
   Fresh databases use normal Prisma deploy behavior by default.
   Existing databases that already match the init migration can be baselined with:
     BASELINE_EXISTING_DB=true BASELINE_CONFIRM=baseline-existing-db scripts/deploy.sh migrate
@@ -102,9 +102,9 @@ cmd_up_infra() {
 }
 
 cmd_migrate() {
-  require_cmd pnpm
+  require_cmd docker
 
-  log "Running Prisma migrations with local pnpm"
+  log "Running Prisma migrations inside the Compose network"
   load_env
   [[ -n "${DATABASE_URL:-}" ]] || die "DATABASE_URL is required for migrate. Set it in .env or the environment."
 
@@ -112,10 +112,10 @@ cmd_migrate() {
     [[ "${BASELINE_CONFIRM:-}" == "baseline-existing-db" ]] || die "BASELINE_CONFIRM=baseline-existing-db is required when BASELINE_EXISTING_DB=true"
     log "Baselining existing database by marking 20260423150000_init as applied"
     log "Only use this when the existing schema already matches the init migration"
-    (cd "$REPO_ROOT" && pnpm --filter @repo/db exec prisma migrate resolve --applied 20260423150000_init)
+    compose_cmd run --rm --entrypoint /app/packages/db/node_modules/.bin/prisma auth-service migrate resolve --applied 20260423150000_init --schema /app/packages/db/prisma/schema.prisma
   fi
 
-  (cd "$REPO_ROOT" && pnpm --filter @repo/db db:deploy)
+  compose_cmd run --rm --entrypoint /app/packages/db/node_modules/.bin/prisma auth-service migrate deploy --schema /app/packages/db/prisma/schema.prisma
 }
 
 service_health_state() {

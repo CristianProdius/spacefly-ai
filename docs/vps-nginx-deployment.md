@@ -70,10 +70,10 @@ No Spacefly containers were started on that temporary host during preparation.
 
    ```bash
    ./scripts/deploy.sh build
-   COMPOSE_PROFILES= docker compose --env-file .env -f docker-compose.yml -f docker-compose.nginx.yml up -d kafka
+   COMPOSE_PROFILES= docker compose --env-file .env -f docker-compose.yml -f docker-compose.nginx.yml up -d postgres kafka minio minio-init
    ```
 
-5. Run migrations against the fresh internal Spacefly Postgres database:
+5. Run migrations against the fresh internal Spacefly Postgres database from inside the Compose network:
 
    ```bash
    ./scripts/deploy.sh migrate
