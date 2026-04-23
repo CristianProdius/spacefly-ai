@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://spacefly:spacefly@localhost:5432/spacefly?schema=public
+      JWT_SECRET: ci-jwt-secret-placeholder
+      JWT_REFRESH_SECRET: ci-jwt-refresh-secret-placeholder
+      JWT_EXPIRES_IN: 15m
+      JWT_REFRESH_EXPIRES_IN: 7d
+      BCRYPT_ROUNDS: "12"
+      CORS_ORIGINS: https://spacefly.ai,https://admin.spacefly.ai
+      KAFKA_BROKERS: kafka:9092
+      KAFKA_ENABLED: "true"
+      RESEND_API_KEY: re_ci_placeholder
+      RESEND_FROM_EMAIL: noreply@example.com
+      NEXT_PUBLIC_AUTH_SERVICE_URL: https://api.spacefly.ai
+      NEXT_PUBLIC_PRODUCT_SERVICE_URL: https://api.spacefly.ai
+      NEXT_PUBLIC_ORDER_SERVICE_URL: https://api.spacefly.ai
+      NEXT_PUBLIC_ADMIN_URL: https://admin.spacefly.ai
+      NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ci-cloudinary-cloud
+      CADDY_EMAIL: admin@example.com
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm --filter @repo/db db:generate
+
+      - name: Type check
+        run: pnpm check-types
+
+      - name: Build
+        run: pnpm build
+
+      - name: Validate Docker Compose config
+        run: COMPOSE_PROFILES= INGRESS_MODE=nginx docker compose -f docker-compose.yml -f docker-compose.nginx.yml config --quiet
+
+      - name: Validate Caddy Docker Compose config
+        run: COMPOSE_PROFILES= INGRESS_MODE=caddy docker compose -f docker-compose.yml -f docker-compose.caddy.yml config --quiet
+
+      - name: Build Docker Compose images
+        run: COMPOSE_PROFILES= INGRESS_MODE=nginx docker compose -f docker-compose.yml -f docker-compose.nginx.yml build

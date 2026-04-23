@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import useAuthStore from "@/stores/authStore";
@@ -56,11 +56,7 @@ const HostBookingsPage = () => {
     { value: "CANCELLED", label: "Cancelled" },
   ];
 
-  useEffect(() => {
-    if (token) fetchBookings();
-  }, [token]);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
@@ -77,7 +73,11 @@ const HostBookingsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (token) fetchBookings();
+  }, [fetchBookings, token]);
 
   const handleApprove = async (bookingId: string) => {
     setActionLoading(bookingId);

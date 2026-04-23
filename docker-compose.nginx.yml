@@ -1,0 +1,24 @@
+services:
+  auth-service:
+    ports:
+      - "127.0.0.1:8103:8003"
+
+  product-service:
+    ports:
+      - "127.0.0.1:8100:8000"
+
+  order-service:
+    ports:
+      - "127.0.0.1:8101:8001"
+
+  email-service:
+    ports:
+      - "127.0.0.1:8104:8004"
+
+  client:
+    ports:
+      - "127.0.0.1:3100:3000"
+
+  admin:
+    ports:
+      - "127.0.0.1:3101:3000"

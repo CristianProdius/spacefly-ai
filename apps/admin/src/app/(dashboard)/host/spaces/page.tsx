@@ -1,14 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import useAuthStore from "@/stores/authStore";
 import {
   Plus,
   MoreVertical,
-  Eye,
-  Edit,
   Trash2,
   Power,
   PowerOff,
@@ -38,11 +36,7 @@ const HostSpacesPage = () => {
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (token) fetchSpaces();
-  }, [token]);
-
-  const fetchSpaces = async () => {
+  const fetchSpaces = useCallback(async () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/host/my`,
@@ -59,7 +53,11 @@ const HostSpacesPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (token) fetchSpaces();
+  }, [fetchSpaces, token]);
 
   const toggleSpaceStatus = async (spaceId: number, currentStatus: boolean) => {
     try {

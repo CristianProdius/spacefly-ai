@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
 import { columns } from "./columns";
@@ -22,18 +22,7 @@ const UsersPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading && (!isAuthenticated || !isAdmin)) {
-      router.push("/login");
-      return;
-    }
-
-    if (!authLoading && isAuthenticated && isAdmin) {
-      fetchUsers();
-    }
-  }, [authLoading, isAuthenticated, isAdmin, router]);
-
-  const fetchUsers = async () => {
+  const fetchUsers = useCallback(async () => {
     try {
       const token = await getToken();
       if (!token) {
@@ -61,7 +50,18 @@ const UsersPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [getToken, router]);
+
+  useEffect(() => {
+    if (!authLoading && (!isAuthenticated || !isAdmin)) {
+      router.push("/login");
+      return;
+    }
+
+    if (!authLoading && isAuthenticated && isAdmin) {
+      fetchUsers();
+    }
+  }, [authLoading, fetchUsers, isAuthenticated, isAdmin, router]);
 
   if (authLoading || isLoading) {
     return <div className="p-4">Loading...</div>;

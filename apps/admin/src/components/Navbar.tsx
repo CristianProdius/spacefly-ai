@@ -18,7 +18,7 @@ import { SidebarTrigger } from "./ui/sidebar";
 import useAuthStore from "@/stores/authStore";
 
 const Navbar = () => {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
   const { user, isAdmin, logout } = useAuthStore();
   const router = useRouter();
 

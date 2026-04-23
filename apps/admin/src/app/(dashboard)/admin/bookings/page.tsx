@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
 import { columns } from "./columns";
@@ -13,18 +13,7 @@ const BookingsPage = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading && (!isAuthenticated || !isAdmin)) {
-      router.push("/login");
-      return;
-    }
-
-    if (!authLoading && isAuthenticated && isAdmin) {
-      fetchBookings();
-    }
-  }, [authLoading, isAuthenticated, isAdmin, router]);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       const token = await getToken();
       if (!token) {
@@ -52,7 +41,18 @@ const BookingsPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [getToken, router]);
+
+  useEffect(() => {
+    if (!authLoading && (!isAuthenticated || !isAdmin)) {
+      router.push("/login");
+      return;
+    }
+
+    if (!authLoading && isAuthenticated && isAdmin) {
+      fetchBookings();
+    }
+  }, [authLoading, fetchBookings, isAuthenticated, isAdmin, router]);
 
   if (authLoading || isLoading) {
     return <div className="p-4">Loading...</div>;

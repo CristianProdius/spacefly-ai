@@ -38,7 +38,7 @@ import { useRouter } from "next/navigation";
 import { Badge } from "./ui/badge";
 
 const AppSidebar = () => {
-  const { user, isAdmin, isHost, logout } = useAuthStore();
+  const { user, isAdmin, logout } = useAuthStore();
   const router = useRouter();
 
   const handleLogout = async () => {

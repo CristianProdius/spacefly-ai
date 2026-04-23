@@ -25,7 +25,7 @@ export const createReview = async (req: Request, res: Response) => {
     where: {
       id: bookingId,
       spaceId,
-      userId,
+      guestId: userId,
       status: "COMPLETED",
     },
   });

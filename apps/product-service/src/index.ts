@@ -6,10 +6,18 @@ import categoryRouter from "./routes/category.route.js";
 import amenityRouter from "./routes/amenity.route.js";
 import { consumer, producer } from "./utils/kafka.js";
 
+const PORT = Number(process.env.PORT || 8000);
+const DEFAULT_CORS_ORIGINS = ["http://localhost:3002", "http://localhost:3003"];
+
+const configuredCorsOrigins = process.env.CORS_ORIGINS?.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const corsOrigins = configuredCorsOrigins?.length ? configuredCorsOrigins : DEFAULT_CORS_ORIGINS;
+
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:3002", "http://localhost:3003"],
+    origin: corsOrigins,
     credentials: true,
   })
 );
@@ -44,9 +52,31 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 const start = async () => {
   try {
     await Promise.all([producer.connect(), consumer.connect()]);
-    app.listen(8000, () => {
-      console.log("Space service is running on port 8000");
+    const server = app.listen(PORT, () => {
+      console.log(`Space service is running on port ${PORT}`);
     });
+
+    const shutdown = async (signal: NodeJS.Signals) => {
+      console.log(`${signal} received. Shutting down space service...`);
+
+      server.close(async (error) => {
+        if (error) {
+          console.error("Error closing space service HTTP server:", error);
+          process.exit(1);
+        }
+
+        try {
+          await Promise.all([producer.disconnect(), consumer.disconnect()]);
+          process.exit(0);
+        } catch (disconnectError) {
+          console.error("Error disconnecting space service Kafka clients:", disconnectError);
+          process.exit(1);
+        }
+      });
+    };
+
+    process.on("SIGTERM", shutdown);
+    process.on("SIGINT", shutdown);
   } catch (error) {
     console.error(error);
     process.exit(1);

@@ -1,0 +1,64 @@
+{
+	email {$CADDY_EMAIL}
+}
+
+spacefly.ai {
+	reverse_proxy client:3000
+}
+
+admin.spacefly.ai {
+	reverse_proxy admin:3000
+}
+
+api.spacefly.ai {
+	@authHealth path /health/auth
+	handle @authHealth {
+		rewrite * /health
+		reverse_proxy auth-service:8003
+	}
+
+	@productHealth path /health/product
+	handle @productHealth {
+		rewrite * /health
+		reverse_proxy product-service:8000
+	}
+
+	@orderHealth path /health/order
+	handle @orderHealth {
+		rewrite * /health
+		reverse_proxy order-service:8001
+	}
+
+	@auth path /auth /auth/*
+	handle @auth {
+		reverse_proxy auth-service:8003
+	}
+
+	@users path /users /users/*
+	handle @users {
+		reverse_proxy auth-service:8003
+	}
+
+	@spaces path /spaces /spaces/*
+	handle @spaces {
+		reverse_proxy product-service:8000
+	}
+
+	@categories path /categories /categories/*
+	handle @categories {
+		reverse_proxy product-service:8000
+	}
+
+	@amenities path /amenities /amenities/*
+	handle @amenities {
+		reverse_proxy product-service:8000
+	}
+
+	@bookings path /bookings /bookings/*
+	handle @bookings {
+		reverse_proxy order-service:8001
+	}
+
+	respond /health/caddy 200
+	respond 404
+}

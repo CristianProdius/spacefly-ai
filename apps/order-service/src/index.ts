@@ -5,10 +5,18 @@ import { bookingRoute } from "./routes/booking.js";
 import { consumer, producer } from "./utils/kafka.js";
 import { runKafkaSubscriptions } from "./utils/subscriptions.js";
 
+const PORT = Number(process.env.PORT || 8001);
+const DEFAULT_CORS_ORIGINS = ["http://localhost:3002", "http://localhost:3003"];
+
+const configuredCorsOrigins = process.env.CORS_ORIGINS?.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const corsOrigins = configuredCorsOrigins?.length ? configuredCorsOrigins : DEFAULT_CORS_ORIGINS;
+
 const fastify = Fastify();
 
 fastify.register(cors, {
-  origin: ["http://localhost:3002", "http://localhost:3003"],
+  origin: corsOrigins,
   credentials: true,
 });
 
@@ -34,8 +42,8 @@ const start = async () => {
   try {
     await Promise.all([producer.connect(), consumer.connect()]);
     await runKafkaSubscriptions();
-    await fastify.listen({ port: 8001 });
-    console.log("Booking service is running on port 8001");
+    await fastify.listen({ port: PORT, host: "0.0.0.0" });
+    console.log(`Booking service is running on port ${PORT}`);
   } catch (err) {
     console.error(err);
     process.exit(1);
@@ -43,3 +51,19 @@ const start = async () => {
 };
 
 start();
+
+const shutdown = async (signal: NodeJS.Signals) => {
+  console.log(`${signal} received. Shutting down booking service...`);
+
+  try {
+    await fastify.close();
+    await Promise.all([producer.disconnect(), consumer.disconnect()]);
+    process.exit(0);
+  } catch (error) {
+    console.error("Error shutting down booking service:", error);
+    process.exit(1);
+  }
+};
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);

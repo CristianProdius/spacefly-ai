@@ -5,10 +5,18 @@ import userRoute from "./routes/user.route.js";
 import authRoute from "./routes/auth.route.js";
 import { producer } from "./utils/kafka.js";
 
+const PORT = Number(process.env.PORT || 8003);
+const DEFAULT_CORS_ORIGINS = ["http://localhost:3002", "http://localhost:3003"];
+
+const configuredCorsOrigins = process.env.CORS_ORIGINS?.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const corsOrigins = configuredCorsOrigins?.length ? configuredCorsOrigins : DEFAULT_CORS_ORIGINS;
+
 const app = express();
 app.use(
   cors({
-    origin: ["http://localhost:3002", "http://localhost:3003"],
+    origin: corsOrigins,
     credentials: true,
   })
 );
@@ -38,9 +46,31 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 const start = async () => {
   try {
     await producer.connect();
-    app.listen(8003, () => {
-      console.log("Auth service is running on 8003");
+    const server = app.listen(PORT, () => {
+      console.log(`Auth service is running on ${PORT}`);
     });
+
+    const shutdown = async (signal: NodeJS.Signals) => {
+      console.log(`${signal} received. Shutting down auth service...`);
+
+      server.close(async (error) => {
+        if (error) {
+          console.error("Error closing auth service HTTP server:", error);
+          process.exit(1);
+        }
+
+        try {
+          await producer.disconnect();
+          process.exit(0);
+        } catch (disconnectError) {
+          console.error("Error disconnecting auth service Kafka producer:", disconnectError);
+          process.exit(1);
+        }
+      });
+    };
+
+    process.on("SIGTERM", shutdown);
+    process.on("SIGINT", shutdown);
   } catch (error) {
     console.log(error);
     process.exit(1);

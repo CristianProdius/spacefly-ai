@@ -1,15 +1,4 @@
-import nodemailer from "nodemailer";
-
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    type: "OAuth2",
-    user: "lamadevtest@gmail.com",
-    clientId: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    refreshToken: process.env.GOOGLE_REFRESH_TOKEN,
-  },
-});
+import { Resend } from "resend";
 
 const sendMail = async ({
   email,
@@ -20,14 +9,27 @@ const sendMail = async ({
   subject: string;
   text: string;
 }) => {
-  const res = await transporter.sendMail({
-    from: '"Lama Dev" <lamadev@gmail.com>',
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error("RESEND_API_KEY is required to send email");
+  }
+
+  if (!process.env.RESEND_FROM_EMAIL) {
+    throw new Error("RESEND_FROM_EMAIL is required to send email");
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { data, error } = await resend.emails.send({
+    from: `Spacefly.ai <${process.env.RESEND_FROM_EMAIL}>`,
     to: email,
     subject,
     text,
   });
 
-  console.log("MESSAGE SENT:", res);
+  if (error) {
+    throw new Error(`Failed to send email: ${error.message}`);
+  }
+
+  console.log("MESSAGE SENT:", data);
 };
 
 export default sendMail;

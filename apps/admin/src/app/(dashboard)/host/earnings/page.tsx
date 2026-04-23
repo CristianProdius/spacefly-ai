@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useAuthStore from "@/stores/authStore";
 import {
   DollarSign,
@@ -38,11 +38,7 @@ const HostEarningsPage = () => {
   const [stats, setStats] = useState<EarningsStats | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (token) fetchEarnings();
-  }, [token]);
-
-  const fetchEarnings = async () => {
+  const fetchEarnings = useCallback(async () => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
@@ -99,7 +95,11 @@ const HostEarningsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token]);
+
+  useEffect(() => {
+    if (token) fetchEarnings();
+  }, [fetchEarnings, token]);
 
   if (loading) {
     return (

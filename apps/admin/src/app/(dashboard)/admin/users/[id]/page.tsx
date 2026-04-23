@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
-import { Badge } from "@/components/ui/badge";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -34,18 +33,7 @@ const SingleUserPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    if (!authLoading && (!isAuthenticated || !isAdmin)) {
-      router.push("/login");
-      return;
-    }
-
-    if (!authLoading && isAuthenticated && isAdmin && id) {
-      fetchUser();
-    }
-  }, [authLoading, isAuthenticated, isAdmin, router, id]);
-
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
       const token = await getToken();
       if (!token) {
@@ -73,7 +61,18 @@ const SingleUserPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [getToken, id, router]);
+
+  useEffect(() => {
+    if (!authLoading && (!isAuthenticated || !isAdmin)) {
+      router.push("/login");
+      return;
+    }
+
+    if (!authLoading && isAuthenticated && isAdmin && id) {
+      fetchUser();
+    }
+  }, [authLoading, fetchUser, id, isAuthenticated, isAdmin, router]);
 
   if (authLoading || isLoading) {
     return <div className="p-4">Loading...</div>;

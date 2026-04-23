@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import useAuthStore from "@/stores/authStore";
 import {
@@ -22,75 +22,88 @@ interface DashboardStats {
   pendingEarnings: number;
 }
 
+interface HostSpaceSummary {
+  isActive: boolean;
+}
+
+interface HostBookingSummary {
+  status: string;
+  startDate: string;
+  totalAmount: number;
+  serviceFee: number;
+}
+
 const HostDashboardPage = () => {
   const { token, user } = useAuthStore();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const spacesRes = await fetch(
-          `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/host/my`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const spaces = spacesRes.ok ? await spacesRes.json() : [];
+  const fetchStats = useCallback(async () => {
+    try {
+      const spacesRes = await fetch(
+        `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/host/my`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const spaces: HostSpaceSummary[] = spacesRes.ok
+        ? await spacesRes.json()
+        : [];
 
-        const bookingsRes = await fetch(
-          `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const bookings = bookingsRes.ok ? await bookingsRes.json() : [];
+      const bookingsRes = await fetch(
+        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const bookings: HostBookingSummary[] = bookingsRes.ok
+        ? await bookingsRes.json()
+        : [];
 
-        const activeSpaces = spaces.filter((s: any) => s.isActive).length;
-        const pendingBookings = bookings.filter(
-          (b: any) => b.status === "PENDING"
-        ).length;
-        const upcomingBookings = bookings.filter(
-          (b: any) =>
-            ["CONFIRMED"].includes(b.status) &&
-            new Date(b.startDate) >= new Date()
-        ).length;
+      const activeSpaces = spaces.filter((space) => space.isActive).length;
+      const pendingBookings = bookings.filter(
+        (booking) => booking.status === "PENDING"
+      ).length;
+      const upcomingBookings = bookings.filter(
+        (booking) =>
+          ["CONFIRMED"].includes(booking.status) &&
+          new Date(booking.startDate) >= new Date()
+      ).length;
 
-        const completedBookings = bookings.filter(
-          (b: any) => b.status === "COMPLETED"
-        );
-        const totalEarnings = completedBookings.reduce(
-          (sum: number, b: any) =>
-            sum + (b.totalAmount - b.serviceFee),
+      const completedBookings = bookings.filter(
+        (booking) => booking.status === "COMPLETED"
+      );
+      const totalEarnings = completedBookings.reduce(
+        (sum, booking) => sum + (booking.totalAmount - booking.serviceFee),
+        0
+      );
+      const pendingEarnings = bookings
+        .filter((booking) => ["CONFIRMED"].includes(booking.status))
+        .reduce(
+          (sum, booking) => sum + (booking.totalAmount - booking.serviceFee),
           0
         );
-        const pendingEarnings = bookings
-          .filter((b: any) => ["CONFIRMED"].includes(b.status))
-          .reduce(
-            (sum: number, b: any) =>
-              sum + (b.totalAmount - b.serviceFee),
-            0
-          );
 
-        setStats({
-          totalSpaces: spaces.length,
-          activeSpaces,
-          pendingBookings,
-          upcomingBookings,
-          totalEarnings,
-          pendingEarnings,
-        });
-      } catch (error) {
-        console.error("Error fetching dashboard stats:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      setStats({
+        totalSpaces: spaces.length,
+        activeSpaces,
+        pendingBookings,
+        upcomingBookings,
+        totalEarnings,
+        pendingEarnings,
+      });
+    } catch (error) {
+      console.error("Error fetching dashboard stats:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
 
+  useEffect(() => {
     if (token) {
       fetchStats();
     }
-  }, [token]);
+  }, [fetchStats, token]);
 
   if (loading) {
     return (

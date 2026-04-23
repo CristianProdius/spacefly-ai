@@ -67,7 +67,7 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
       if (!result.success) {
         return reply.status(400).send({
           message: "Validation failed",
-          errors: result.error.errors,
+          errors: result.error.issues,
         });
       }
 
@@ -207,12 +207,17 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         status?: BookingStatus;
         spaceId?: string;
       };
+      const spaceIdFilter = spaceId ? Number(spaceId) : undefined;
+
+      if (spaceId && Number.isNaN(spaceIdFilter)) {
+        return reply.status(400).send({ message: "spaceId must be a number" });
+      }
 
       const bookings = await prisma.booking.findMany({
         where: {
           hostId,
           ...(status && { status }),
-          ...(spaceId && { spaceId }),
+          ...(spaceIdFilter !== undefined && { spaceId: spaceIdFilter }),
         },
         include: {
           space: true,
@@ -379,7 +384,11 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
 
       const booking = await prisma.booking.findUnique({
         where: { id },
-        include: { space: true },
+        include: {
+          space: true,
+          guest: { select: { email: true, name: true } },
+          host: { select: { email: true, name: true } },
+        },
       });
 
       if (!booking) {
@@ -415,6 +424,12 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         value: {
           bookingId: id,
           cancelledBy: isGuest ? "GUEST" : isHost ? "HOST" : "ADMIN",
+          guestEmail: booking.guest.email,
+          guestName: booking.guest.name,
+          hostEmail: booking.host.email,
+          hostName: booking.host.name,
+          spaceName: booking.space.name,
+          reason,
         },
       });
 
