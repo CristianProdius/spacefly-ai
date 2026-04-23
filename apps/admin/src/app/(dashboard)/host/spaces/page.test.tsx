@@ -172,6 +172,9 @@ describe("host spaces page", () => {
     });
 
     expect(container.textContent).toContain("Deactivate");
+    expect(container.querySelector('a[href="/host/spaces/42/edit"]')?.textContent).toContain(
+      "Edit"
+    );
 
     const classNames = getClassNames();
     expect(classNames.some((className) => className.includes("bg-popover"))).toBe(

@@ -241,7 +241,7 @@ describe("upload routes", () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.json).toEqual({ message: "Host access required" });
+    expect(response.json).toEqual({ message: "Host or Admin access required" });
   });
 
   it("rejects requests without a file", async () => {
@@ -358,6 +358,33 @@ describe("upload routes", () => {
     expect(command.input.ContentType).toBe("image/png");
     expect(command.input.Key).toMatch(/^spaces\/host-user-1\/.+\.png$/);
     expect(command.input.Key).not.toMatch(/\.txt$/);
+  });
+
+  it("allows admins to upload validated images", async () => {
+    const send = vi.fn().mockResolvedValue({});
+    const upload = createMultipartBody({
+      body: ONE_BY_ONE_PNG,
+      contentType: "image/png",
+      filename: "space.png",
+    });
+
+    vi.spyOn(uploadUtils, "getS3Client").mockReturnValue({
+      send,
+    } as unknown as ReturnType<typeof uploadUtils.getS3Client>);
+
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("ADMIN")}`,
+      body: upload.body,
+      contentType: upload.contentType,
+      method: "POST",
+      url: "/uploads/images",
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.json?.url).toMatch(
+      /^https:\/\/api\.spacefly\.ai\/uploads\/spaces\/host-user-1\/.+\.png$/
+    );
+    expect(send).toHaveBeenCalledTimes(1);
   });
 
   it("streams uploaded images with safe content headers", async () => {

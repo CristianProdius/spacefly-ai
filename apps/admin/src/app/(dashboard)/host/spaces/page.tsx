@@ -10,6 +10,7 @@ import {
   EyeOff,
   MapPin,
   MoreVertical,
+  Pencil,
   Plus,
   Power,
   PowerOff,
@@ -302,6 +303,14 @@ const HostSpacesPage = () => {
 
                         {menuOpen === space.id && (
                           <div className="absolute right-0 top-full z-10 mt-1 w-48 rounded-lg border border-border/60 bg-popover p-1 text-popover-foreground shadow-lg">
+                            <Link
+                              href={`/host/spaces/${space.id}/edit`}
+                              onClick={() => setMenuOpen(null)}
+                              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                            >
+                              <Pencil className="size-4" />
+                              Edit
+                            </Link>
                             <button
                               onClick={() =>
                                 toggleSpaceStatus(space.id, space.isActive)

@@ -134,8 +134,8 @@ export const columns: ColumnDef<Space>[] = [
               Copy space ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/admin/spaces/${space.id}`}>View space</Link>
+            <DropdownMenuItem asChild>
+              <Link href={`/admin/spaces/${space.id}/edit`}>Edit space</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

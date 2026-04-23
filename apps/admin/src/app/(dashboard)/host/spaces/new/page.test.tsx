@@ -67,6 +67,70 @@ describe("host new space page", () => {
     input.dispatchEvent(new Event("change", { bubbles: true }));
   };
 
+  const fillRequiredFields = async () => {
+    const nameInput = container.querySelector(
+      'input[placeholder="e.g. Modern Downtown Meeting Room"]'
+    ) as HTMLInputElement | null;
+    const shortDescriptionInput = container.querySelector(
+      'input[placeholder="Brief description for search results"]'
+    ) as HTMLInputElement | null;
+    const descriptionInput = container.querySelector(
+      'textarea[placeholder="Detailed description of your space"]'
+    ) as HTMLTextAreaElement | null;
+    const capacityInput = container.querySelector(
+      'input[placeholder="Maximum number of people"]'
+    ) as HTMLInputElement | null;
+    const addressInput = container.querySelector(
+      'input[placeholder="Street address"]'
+    ) as HTMLInputElement | null;
+    const cityInput = Array.from(container.querySelectorAll("input")).find(
+      (input) => input.previousElementSibling?.textContent === "City"
+    ) as HTMLInputElement | undefined;
+    const countryInput = Array.from(container.querySelectorAll("input")).find(
+      (input) => input.previousElementSibling?.textContent === "Country"
+    ) as HTMLInputElement | undefined;
+    const hourlyInput = Array.from(container.querySelectorAll("input")).find(
+      (input) => input.previousElementSibling?.textContent === "Price Per Hour"
+    ) as HTMLInputElement | undefined;
+    const dailyInput = Array.from(container.querySelectorAll("input")).find(
+      (input) => input.previousElementSibling?.textContent === "Price Per Day"
+    ) as HTMLInputElement | undefined;
+    const categorySelect = Array.from(container.querySelectorAll("select")).find(
+      (select) => select.textContent?.includes("Select a category")
+    ) as HTMLSelectElement | undefined;
+
+    if (
+      !nameInput ||
+      !shortDescriptionInput ||
+      !descriptionInput ||
+      !capacityInput ||
+      !addressInput ||
+      !cityInput ||
+      !countryInput ||
+      !hourlyInput ||
+      !dailyInput ||
+      !categorySelect
+    ) {
+      throw new Error("Required space form fields are missing");
+    }
+
+    await act(async () => {
+      setInputValue(nameInput, "Sunset Studio");
+      setInputValue(shortDescriptionInput, "A bright studio for workshops");
+      setInputValue(
+        descriptionInput,
+        "A bright studio for workshops and events with plenty of natural light."
+      );
+      setInputValue(categorySelect, "meeting-spaces");
+      setInputValue(capacityInput, "8");
+      setInputValue(addressInput, "Main Street 1");
+      setInputValue(cityInput, "Chisinau");
+      setInputValue(countryInput, "Moldova");
+      setInputValue(hourlyInput, "25");
+      setInputValue(dailyInput, "120");
+    });
+  };
+
   const getClassNames = () =>
     Array.from(container.querySelectorAll<HTMLElement>("*"))
       .map((element) => element.className)
@@ -310,69 +374,12 @@ describe("host new space page", () => {
       });
     }
 
-    const nameInput = container.querySelector(
-      'input[placeholder="e.g. Modern Downtown Meeting Room"]'
-    ) as HTMLInputElement | null;
-    const shortDescriptionInput = container.querySelector(
-      'input[placeholder="Brief description for search results"]'
-    ) as HTMLInputElement | null;
-    const descriptionInput = container.querySelector(
-      'textarea[placeholder="Detailed description of your space"]'
-    ) as HTMLTextAreaElement | null;
-    const capacityInput = container.querySelector(
-      'input[placeholder="Maximum number of people"]'
-    ) as HTMLInputElement | null;
-    const addressInput = container.querySelector(
-      'input[placeholder="Street address"]'
-    ) as HTMLInputElement | null;
-    const countryInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Country"
-    ) as HTMLInputElement | undefined;
-    const hourlyInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Price Per Hour"
-    ) as HTMLInputElement | undefined;
-    const dailyInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Price Per Day"
-    ) as HTMLInputElement | undefined;
-    const categorySelect = Array.from(container.querySelectorAll("select")).find(
-      (select) => select.textContent?.includes("Select a category")
-    ) as HTMLSelectElement | undefined;
-    const cityInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "City"
-    ) as HTMLInputElement | undefined;
     const form = container.querySelector("form");
 
     expect(container.querySelector('button[aria-label="Remove image 1"]')).not.toBeNull();
 
-    if (
-      nameInput &&
-      shortDescriptionInput &&
-      descriptionInput &&
-      capacityInput &&
-      addressInput &&
-      cityInput &&
-      countryInput &&
-      hourlyInput &&
-      dailyInput &&
-      categorySelect &&
-      form
-    ) {
-      await act(async () => {
-        setInputValue(nameInput, "Sunset Studio");
-        setInputValue(shortDescriptionInput, "A bright studio for workshops");
-        setInputValue(
-          descriptionInput,
-          "A bright studio for workshops and events with plenty of natural light."
-        );
-        setInputValue(categorySelect, "meeting-spaces");
-        setInputValue(capacityInput, "8");
-        setInputValue(addressInput, "Main Street 1");
-        setInputValue(cityInput, "Chisinau");
-        setInputValue(countryInput, "Moldova");
-        setInputValue(hourlyInput, "25");
-        setInputValue(dailyInput, "120");
-      });
-
+    if (form) {
+      await fillRequiredFields();
       await act(async () => {
         form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
         await Promise.resolve();
@@ -395,5 +402,123 @@ describe("host new space page", () => {
     expect(container.querySelector('a[href="/host/spaces"]')?.className).toContain(
       "hover:bg-accent"
     );
+  });
+
+  it("submits the current create payload shape and redirects back to host spaces", async () => {
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = input.toString();
+
+      if (url.endsWith("/categories")) {
+        return {
+          ok: true,
+          json: async () => [{ id: 1, name: "Meeting Spaces", slug: "meeting-spaces" }],
+        };
+      }
+
+      if (url.endsWith("/amenities")) {
+        return {
+          ok: true,
+          json: async () => [
+            { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
+            { id: 2, name: "Projector", icon: null, category: "Equipment" },
+          ],
+        };
+      }
+
+      if (url.endsWith("/uploads/images")) {
+        return {
+          ok: true,
+          json: async () => ({ url: "/uploaded-space.png" }),
+        };
+      }
+
+      if (url.endsWith("/spaces") && init?.method === "POST") {
+        return {
+          ok: true,
+          json: async () => ({ id: 99 }),
+        };
+      }
+
+      throw new Error(`Unexpected fetch call: ${url}`);
+    });
+
+    vi.stubGlobal("fetch", fetchMock);
+
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    const amenityButton = Array.from(container.querySelectorAll("button")).find(
+      (button) => button.textContent?.includes("Wi-Fi")
+    ) as HTMLButtonElement | undefined;
+    const fileInput = container.querySelector('input[type="file"]') as
+      | HTMLInputElement
+      | null;
+    const form = container.querySelector("form");
+
+    expect(fileInput).not.toBeNull();
+    expect(form).not.toBeNull();
+
+    if (fileInput) {
+      Object.defineProperty(fileInput, "files", {
+        configurable: true,
+        value: [new File(["x"], "space.png", { type: "image/png" })],
+      });
+
+      await act(async () => {
+        amenityButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        fileInput.dispatchEvent(new Event("change", { bubbles: true }));
+        await Promise.resolve();
+        await Promise.resolve();
+      });
+    }
+
+    await fillRequiredFields();
+
+    await act(async () => {
+      form?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    const createRequest = fetchMock.mock.calls.find(
+      ([url, init]) => url.toString().endsWith("/spaces") && init?.method === "POST"
+    );
+
+    expect(createRequest).toBeDefined();
+    expect(JSON.parse(createRequest?.[1]?.body as string)).toEqual({
+      name: "Sunset Studio",
+      shortDescription: "A bright studio for workshops",
+      description:
+        "A bright studio for workshops and events with plenty of natural light.",
+      spaceType: "MEETING_ROOM",
+      pricingType: "BOTH",
+      pricePerHour: 25,
+      pricePerDay: 120,
+      capacity: 8,
+      address: "Main Street 1",
+      city: "Chisinau",
+      state: "",
+      country: "Moldova",
+      postalCode: "",
+      instantBook: false,
+      cancellationPolicy: "MODERATE",
+      houseRules: "",
+      categorySlug: "meeting-spaces",
+      amenityIds: [1],
+      images: ["/uploaded-space.png"],
+    });
+    expect(createRequest?.[1]?.headers).toEqual({
+      "Content-Type": "application/json",
+      Authorization: "Bearer test-token",
+    });
+    expect(push).toHaveBeenCalledWith("/host/spaces");
   });
 });

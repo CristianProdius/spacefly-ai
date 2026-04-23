@@ -1,6 +1,6 @@
 import { Router, type RequestHandler } from "express";
 import multer, { type FileFilterCallback } from "multer";
-import { shouldBeHost } from "../middleware/authMiddleware.js";
+import { shouldBeHostOrAdmin } from "../middleware/authMiddleware.js";
 import { streamUploadedImage, uploadImage } from "../controllers/upload.controller.js";
 import { createHttpError } from "../utils/upload.js";
 
@@ -43,7 +43,7 @@ const handleSingleImageUpload: RequestHandler = (req, res, next) => {
 
 const router: Router = Router();
 
-router.post("/images", shouldBeHost, handleSingleImageUpload, uploadImage);
+router.post("/images", shouldBeHostOrAdmin, handleSingleImageUpload, uploadImage);
 router.get(/^\/(.+)$/, streamUploadedImage);
 
 export default router;

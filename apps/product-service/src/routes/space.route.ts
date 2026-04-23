@@ -17,7 +17,7 @@ import {
   deleteReview,
   respondToReview,
 } from "../controllers/review.controller.js";
-import { shouldBeUser, shouldBeHost, shouldBeAdmin } from "../middleware/authMiddleware.js";
+import { shouldBeUser, shouldBeHost, shouldBeHostOrAdmin } from "../middleware/authMiddleware.js";
 
 const router: Router = Router();
 
@@ -38,7 +38,7 @@ router.delete("/reviews/:reviewId", shouldBeUser, deleteReview);
 
 // Host routes (space management)
 router.post("/", shouldBeHost, createSpace);
-router.put("/:id", shouldBeHost, updateSpace);
+router.put("/:id", shouldBeHostOrAdmin, updateSpace);
 router.delete("/:id", shouldBeHost, deleteSpace);
 router.put("/:id/availability", shouldBeHost, updateAvailability);
 router.post("/reviews/:reviewId/respond", shouldBeHost, respondToReview);
