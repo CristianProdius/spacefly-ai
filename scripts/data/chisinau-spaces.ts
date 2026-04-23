@@ -270,7 +270,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
     latitude: null,
     longitude: null,
     imageSourceUrls: [
-      "https://media.radissonhotels.net/image/radisson-blu-leogrand-hotel-chisinau/ballroom/16256-114116-f82018764_3XL.jpg?impolicy=Card",
+      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/9e/e5/db/hotel-exterior-view.jpg?h=500&s=1&w=900",
     ],
     amenityNames: [
       "WiFi",
