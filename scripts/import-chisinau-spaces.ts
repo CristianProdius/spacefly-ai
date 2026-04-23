@@ -219,14 +219,6 @@ const main = async () => {
 
   await prisma.$executeRaw`SELECT pg_advisory_lock(${IMPORT_LOCK_ID})`;
 
-  await prisma.user.update({
-    where: { email: OWNER_EMAIL },
-    data: {
-      hostVerified: true,
-      hostingSince: owner.hostingSince ?? new Date(),
-    },
-  });
-
   for (const space of CHISINAU_SPACES) {
     console.log(`Importing ${space.name}...`);
     const uploadedImages = await Promise.all(
@@ -315,6 +307,14 @@ const main = async () => {
 
     console.log(`Imported ${space.name} as space #${savedSpace.id}`);
   }
+
+  await prisma.user.update({
+    where: { email: OWNER_EMAIL },
+    data: {
+      hostVerified: true,
+      hostingSince: owner.hostingSince ?? new Date(),
+    },
+  });
 
   const total = await prisma.space.count({
     where: {
