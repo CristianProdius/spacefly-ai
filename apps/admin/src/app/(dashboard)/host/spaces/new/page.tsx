@@ -13,6 +13,9 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 
+const PRODUCT_SERVICE_URL =
+  process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL || "http://localhost:8000";
+
 interface SpaceCategory {
   id: number;
   name: string;
@@ -56,6 +59,7 @@ const NewSpacePage = () => {
   const [categories, setCategories] = useState<SpaceCategory[]>([]);
   const [amenities, setAmenities] = useState<Amenity[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -83,8 +87,8 @@ const NewSpacePage = () => {
     const fetchData = async () => {
       try {
         const [catRes, amenRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/categories`),
-          fetch(`${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/amenities`),
+          fetch(`${PRODUCT_SERVICE_URL}/categories`),
+          fetch(`${PRODUCT_SERVICE_URL}/amenities`),
         ]);
 
         if (catRes.ok) {
@@ -108,33 +112,50 @@ const NewSpacePage = () => {
     if (!files || files.length === 0) return;
 
     setUploadingImage(true);
+    setUploadError(null);
 
     try {
+      if (!token) {
+        throw new Error("Please sign in again to upload images");
+      }
+
       for (const file of Array.from(files)) {
         const fd = new FormData();
         fd.append("file", file);
-        fd.append("upload_preset", "spacefly");
 
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          {
-            method: "POST",
-            body: fd,
+        const res = await fetch(`${PRODUCT_SERVICE_URL}/uploads/images`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: fd,
+        });
+
+        if (!res.ok) {
+          let message = "Failed to upload image";
+
+          try {
+            const data = await res.json();
+            message = data.message || message;
+          } catch {
+            // Keep the default message when the response is not JSON.
           }
-        );
 
-        if (res.ok) {
-          const data = await res.json();
-          setFormData((prev) => ({
-            ...prev,
-            images: [...prev.images, data.secure_url],
-          }));
+          throw new Error(message);
         }
+
+        const data = (await res.json()) as { url: string };
+        setFormData((prev) => ({
+          ...prev,
+          images: [...prev.images, data.url],
+        }));
       }
-    } catch (error) {
-      console.error("Error uploading image:", error);
+    } catch (err) {
+      console.error("Error uploading image:", err);
+      setUploadError(err instanceof Error ? err.message : "Failed to upload image");
     } finally {
       setUploadingImage(false);
+      e.target.value = "";
     }
   };
 
@@ -172,7 +193,7 @@ const NewSpacePage = () => {
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces`,
+        `${PRODUCT_SERVICE_URL}/spaces`,
         {
           method: "POST",
           headers: {
@@ -373,6 +394,7 @@ const NewSpacePage = () => {
                 <button
                   type="button"
                   onClick={() => removeImage(idx)}
+                  aria-label={`Remove image ${idx + 1}`}
                   className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
                 >
                   <X className="w-4 h-4" />
@@ -398,6 +420,9 @@ const NewSpacePage = () => {
               />
             </label>
           </div>
+          {uploadError && (
+            <p className="text-sm text-red-600 mb-3">{uploadError}</p>
+          )}
           <p className="text-sm text-gray-500">
             Upload high-quality photos of your space. First image will be the
             cover.

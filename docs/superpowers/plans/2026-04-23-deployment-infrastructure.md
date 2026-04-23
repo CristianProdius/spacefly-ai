@@ -79,7 +79,7 @@
 - Create: `.github/workflows/ci.yml`
 - Create: `scripts/deploy.sh`
 
-- [ ] Add root `.env.example` documenting production variables for Caddy, services, Next public URLs, Kafka, Prisma, JWT, Cloudinary, and Resend.
+- [ ] Add root `.env.example` documenting production variables for ingress, services, Next public URLs, Kafka, Prisma, JWT, storage, and Resend.
 - [ ] Align service `.env.example` files with Resend, `PORT`, `KAFKA_BROKERS`, and `CORS_ORIGINS`; do not edit secret `.env` files.
 - [ ] Generate a fresh initial Prisma migration from the current schema for a fresh database and commit the migration SQL.
 - [ ] Add a CI workflow for PRs and pushes to `main`: pnpm install, Prisma generate, type checks, Next builds, backend builds, and Docker config/build validation where feasible.

@@ -6,9 +6,12 @@ any registry.
 
 ## Server Layout
 
+- Recommended VPS: `138.197.178.212`
 - Repository path: `/root/spacefly-ai`
 - Compose mode: `INGRESS_MODE=nginx`
 - Public proxy: existing host Nginx
+- Database: dedicated internal `postgres` container and `postgres_data` volume
+- Upload storage: dedicated internal `minio` container and `minio_data` volume
 - Spacefly container ports: localhost only
   - client: `127.0.0.1:3100`
   - admin: `127.0.0.1:3101`
@@ -17,9 +20,27 @@ any registry.
   - order-service: `127.0.0.1:8101`
   - email-service health: `127.0.0.1:8104`
 
+Do not reuse Postgres, Redis, or MinIO containers owned by other projects on the
+same VPS.
+
+## Move From The Temporary VPS
+
+If Spacefly was prepared on `174.138.6.248`, remove only the Spacefly files from
+that host:
+
+```bash
+rm -f /etc/nginx/sites-enabled/spacefly
+rm -f /etc/nginx/sites-available/spacefly
+nginx -t
+systemctl reload nginx
+rm -rf /root/spacefly-ai
+```
+
+No Spacefly containers were started on that temporary host during preparation.
+
 ## First Deploy
 
-1. Point DNS A records to the VPS IP:
+1. Point DNS A records to the target VPS IP:
    - `spacefly.ai`
    - `admin.spacefly.ai`
    - `api.spacefly.ai`
@@ -52,10 +73,10 @@ any registry.
    COMPOSE_PROFILES= docker compose --env-file .env -f docker-compose.yml -f docker-compose.nginx.yml up -d kafka
    ```
 
-5. Baseline the existing database once if it was created with `db:push`:
+5. Run migrations against the fresh internal Spacefly Postgres database:
 
    ```bash
-   BASELINE_EXISTING_DB=true BASELINE_CONFIRM=baseline-existing-db ./scripts/deploy.sh migrate
+   ./scripts/deploy.sh migrate
    ```
 
 6. Start the stack:
@@ -102,3 +123,16 @@ git pull
 ./scripts/deploy.sh up
 HEALTH_MODE=local LOCAL_HEALTH_SCHEME=http LOCAL_HEALTH_PORT=80 ./scripts/deploy.sh health
 ```
+
+## Backups
+
+Create backups before treating this deployment as production. At minimum:
+
+```bash
+docker compose --env-file .env -f docker-compose.yml -f docker-compose.nginx.yml exec -T postgres \
+  pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" > "backups/spacefly-$(date +%F).sql"
+docker run --rm --volumes-from spacefly-minio-1 -v "$PWD/backups:/backups" alpine \
+  tar czf "/backups/spacefly-minio-$(date +%F).tgz" /data
+```
+
+Store backup artifacts off the VPS.

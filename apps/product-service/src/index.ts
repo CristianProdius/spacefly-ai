@@ -4,6 +4,7 @@ import { shouldBeUser } from "@repo/auth-middleware/express";
 import spaceRouter from "./routes/space.route.js";
 import categoryRouter from "./routes/category.route.js";
 import amenityRouter from "./routes/amenity.route.js";
+import uploadRouter from "./routes/upload.route.js";
 import { consumer, producer } from "./utils/kafka.js";
 
 const PORT = Number(process.env.PORT || 8000);
@@ -40,6 +41,7 @@ app.get("/test", shouldBeUser, (req, res) => {
 app.use("/spaces", spaceRouter);
 app.use("/categories", categoryRouter);
 app.use("/amenities", amenityRouter);
+app.use("/uploads", uploadRouter);
 
 // Error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

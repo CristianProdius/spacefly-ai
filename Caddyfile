@@ -54,6 +54,11 @@ api.spacefly.ai {
 		reverse_proxy product-service:8000
 	}
 
+	@uploads path /uploads /uploads/*
+	handle @uploads {
+		reverse_proxy product-service:8000
+	}
+
 	@bookings path /bookings /bookings/*
 	handle @bookings {
 		reverse_proxy order-service:8001

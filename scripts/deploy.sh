@@ -25,7 +25,7 @@ Commands:
   migrate  Run Prisma migrations with pnpm --filter @repo/db db:deploy
   health   Check Docker health status and Spacefly health endpoints
   logs     Follow Docker Compose logs
-  full     Run build, infra-only up, migrate, full up, and health
+  full     Run build, database/message-broker up, migrate, full up, and health
 
 Environment:
   If .env exists in the repository root, Docker Compose commands use --env-file .env.
@@ -97,8 +97,8 @@ cmd_up() {
 }
 
 cmd_up_infra() {
-  log "Starting migration prerequisites only: kafka"
-  compose_cmd up -d --no-deps kafka
+  log "Starting migration prerequisites only: postgres and kafka"
+  compose_cmd up -d --no-deps postgres kafka
 }
 
 cmd_migrate() {
@@ -182,7 +182,7 @@ wait_compose_health() {
 }
 
 cmd_compose_health() {
-  local services=(kafka auth-service product-service order-service email-service client admin)
+  local services=(postgres kafka minio auth-service product-service order-service email-service client admin)
   if [[ "${INGRESS_MODE:-nginx}" == "caddy" ]]; then
     services+=(caddy)
   fi
@@ -259,7 +259,7 @@ cmd_full() {
   cmd_build
   cmd_up_infra
   log "Checking migration prerequisites before applying database migrations"
-  wait_compose_health kafka
+  wait_compose_health postgres kafka
   cmd_migrate
   log "Starting full stack after migrations succeeded"
   cmd_up
