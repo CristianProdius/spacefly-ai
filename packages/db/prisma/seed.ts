@@ -122,8 +122,8 @@ async function main() {
       description: "A beautifully designed creative studio perfect for photo shoots, workshops, and small events. Features natural lighting, exposed brick walls, and modern amenities.",
       spaceType: "EVENT_VENUE" as const,
       pricingType: "BOTH" as const,
-      pricePerHour: 5000, // $50/hour
-      pricePerDay: 30000, // $300/day
+      pricePerHour: 50, // $50/hour
+      pricePerDay: 300, // $300/day
       capacity: 30,
       address: "123 Main Street",
       city: "New York",
@@ -142,7 +142,7 @@ async function main() {
       description: "Fully equipped executive meeting room with video conferencing, presentation tools, and comfortable seating. Perfect for board meetings and client presentations.",
       spaceType: "MEETING_ROOM" as const,
       pricingType: "HOURLY" as const,
-      pricePerHour: 7500, // $75/hour
+      pricePerHour: 75, // $75/hour
       capacity: 12,
       address: "456 Business Ave",
       city: "New York",
@@ -161,7 +161,7 @@ async function main() {
       description: "A serene private office space perfect for focused work. Features a standing desk option, ergonomic chair, and stunning city views.",
       spaceType: "PRIVATE_OFFICE" as const,
       pricingType: "DAILY" as const,
-      pricePerDay: 15000, // $150/day
+      pricePerDay: 150, // $150/day
       capacity: 4,
       address: "789 Tower Plaza",
       city: "Los Angeles",
@@ -180,8 +180,8 @@ async function main() {
       description: "Join our thriving community of remote workers and entrepreneurs. Includes high-speed WiFi, unlimited coffee, and networking events.",
       spaceType: "COWORKING_SPACE" as const,
       pricingType: "BOTH" as const,
-      pricePerHour: 1500, // $15/hour
-      pricePerDay: 5000, // $50/day
+      pricePerHour: 15, // $15/hour
+      pricePerDay: 50, // $50/day
       capacity: 50,
       address: "321 Innovation Blvd",
       city: "San Francisco",
@@ -200,7 +200,7 @@ async function main() {
       description: "A stunning garden venue perfect for weddings and celebrations. Features beautiful landscaping, outdoor ceremony space, and indoor reception hall.",
       spaceType: "WEDDING_VENUE" as const,
       pricingType: "DAILY" as const,
-      pricePerDay: 500000, // $5000/day
+      pricePerDay: 5000, // $5000/day
       capacity: 150,
       address: "555 Garden Lane",
       city: "Miami",

@@ -20,19 +20,22 @@ export const parseImages = (images: unknown): string[] => {
   return [];
 };
 
-const intFormatter = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+const priceFormatter = new Intl.NumberFormat("en-US", {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+});
 const decFormatter = new Intl.NumberFormat("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-/** Convert price (stored in cents) to a display string (e.g. "$5,000") */
+/** Convert price (stored in dollars) to a display string (e.g. "$5,000") */
 export const formatPrice = (price: number | null | undefined): string | null => {
   if (price == null) return null;
-  return `$${intFormatter.format(price / 100)}`;
+  return `$${priceFormatter.format(price)}`;
 };
 
-/** Convert price (stored in cents) to a full display string with cents (e.g. "$5,000.00") */
+/** Convert price (stored in dollars) to a full display string with cents (e.g. "$5,000.00") */
 export const formatPriceFull = (price: number | null | undefined): string => {
   if (price == null) return "$0.00";
-  return `$${decFormatter.format(price / 100)}`;
+  return `$${decFormatter.format(price)}`;
 };
 
 export interface PriceLabels {

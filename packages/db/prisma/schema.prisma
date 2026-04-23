@@ -111,9 +111,9 @@ model Space {
   description      String
   spaceType        SpaceType
   pricingType      PricingType
-  pricePerHour     Int?               // In cents
-  pricePerDay      Int?               // In cents
-  cleaningFee      Int                @default(0) // In cents
+  pricePerHour     Float?             // In dollars
+  pricePerDay      Float?             // In dollars
+  cleaningFee      Float              @default(0) // In dollars
   capacity         Int
   minBookingHours  Int?
   maxBookingHours  Int?
@@ -227,11 +227,11 @@ model Booking {
   guests    Int      @default(1)
   isHourly  Boolean
 
-  // Pricing (all in cents)
-  subtotal    Int
-  cleaningFee Int @default(0)
-  serviceFee  Int
-  totalAmount Int
+  // Pricing (all in dollars)
+  subtotal    Float
+  cleaningFee Float @default(0)
+  serviceFee  Float
+  totalAmount Float
 
   // Status
   status       BookingStatus @default(PENDING)

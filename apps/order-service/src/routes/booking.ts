@@ -9,6 +9,8 @@ import { startOfMonth, subMonths, differenceInDays } from "date-fns";
 import { CreateBookingSchema } from "@repo/types";
 import { producer } from "../utils/kafka.js";
 
+const roundCurrency = (amount: number) => Math.round(amount * 100) / 100;
+
 // Calculate booking price based on space pricing and duration
 const calculateBookingPrice = (
   space: {
@@ -30,10 +32,10 @@ const calculateBookingPrice = (
     const [endH, endM] = endTime.split(":").map(Number);
     const hours = (endH! - startH!) + (endM! - startM!) / 60;
     const days = differenceInDays(endDate, startDate) + 1;
-    subtotal = Math.round(space.pricePerHour * hours * days);
+    subtotal = roundCurrency(space.pricePerHour * hours * days);
   } else if (space.pricingType === "DAILY" && space.pricePerDay) {
     const days = differenceInDays(endDate, startDate) + 1;
-    subtotal = space.pricePerDay * days;
+    subtotal = roundCurrency(space.pricePerDay * days);
   } else if (space.pricingType === "BOTH") {
     // For BOTH, calculate based on what's provided
     if (startTime && endTime && space.pricePerHour) {
@@ -41,16 +43,16 @@ const calculateBookingPrice = (
       const [endH, endM] = endTime.split(":").map(Number);
       const hours = (endH! - startH!) + (endM! - startM!) / 60;
       const days = differenceInDays(endDate, startDate) + 1;
-      subtotal = Math.round(space.pricePerHour * hours * days);
+      subtotal = roundCurrency(space.pricePerHour * hours * days);
     } else if (space.pricePerDay) {
       const days = differenceInDays(endDate, startDate) + 1;
-      subtotal = space.pricePerDay * days;
+      subtotal = roundCurrency(space.pricePerDay * days);
     }
   }
 
-  const cleaningFee = space.cleaningFee;
-  const serviceFee = Math.round(subtotal * 0.1); // 10% service fee
-  const total = subtotal + cleaningFee + serviceFee;
+  const cleaningFee = roundCurrency(space.cleaningFee);
+  const serviceFee = roundCurrency(subtotal * 0.1); // 10% service fee
+  const total = roundCurrency(subtotal + cleaningFee + serviceFee);
 
   return { subtotal, cleaningFee, serviceFee, total };
 };

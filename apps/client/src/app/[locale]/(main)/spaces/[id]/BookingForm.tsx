@@ -34,6 +34,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
   const canBookDaily = space.pricingType === "DAILY" || space.pricingType === "BOTH";
 
   const startHour = parseInt(startTime.split(":")[0]!);
+  const roundCurrency = (amount: number) => Math.round(amount * 100) / 100;
 
   const pricing = useMemo(() => {
     if (!startDate) return null;
@@ -46,18 +47,18 @@ const BookingForm = ({ space }: BookingFormProps) => {
       const end = parseInt(endTime.split(":")[0]!);
       hours = end - startHour;
       if (hours <= 0) hours = 1;
-      subtotal = hours * space.pricePerHour;
+      subtotal = roundCurrency(hours * space.pricePerHour);
     } else if (bookingType === "daily" && space.pricePerDay && startDate && endDate) {
       const start = new Date(startDate);
       const end = new Date(endDate);
       days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
       if (days <= 0) days = 1;
-      subtotal = days * space.pricePerDay;
+      subtotal = roundCurrency(days * space.pricePerDay);
     }
 
-    const cleaningFee = subtotal * 0.05; // 5% cleaning fee
-    const serviceFee = subtotal * 0.1; // 10% service fee
-    const totalAmount = subtotal + cleaningFee + serviceFee;
+    const cleaningFee = roundCurrency(subtotal * 0.05); // 5% cleaning fee
+    const serviceFee = roundCurrency(subtotal * 0.1); // 10% service fee
+    const totalAmount = roundCurrency(subtotal + cleaningFee + serviceFee);
 
     return {
       hours,
@@ -273,8 +274,8 @@ const BookingForm = ({ space }: BookingFormProps) => {
           <div className="flex justify-between text-muted">
             <span>
               {bookingType === "hourly"
-                ? t("hoursCalc", { price: (space.pricePerHour ?? 0) / 100, count: pricing.hours })
-                : t("daysCalc", { price: (space.pricePerDay ?? 0) / 100, count: pricing.days })}
+                ? t("hoursCalc", { price: space.pricePerHour ?? 0, count: pricing.hours })
+                : t("daysCalc", { price: space.pricePerDay ?? 0, count: pricing.days })}
             </span>
             <span>{formatPriceFull(pricing.subtotal)}</span>
           </div>

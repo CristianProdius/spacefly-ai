@@ -5464,9 +5464,9 @@ export namespace Prisma {
     readonly description: FieldRef<"Space", 'String'>
     readonly spaceType: FieldRef<"Space", 'SpaceType'>
     readonly pricingType: FieldRef<"Space", 'PricingType'>
-    readonly pricePerHour: FieldRef<"Space", 'Int'>
-    readonly pricePerDay: FieldRef<"Space", 'Int'>
-    readonly cleaningFee: FieldRef<"Space", 'Int'>
+    readonly pricePerHour: FieldRef<"Space", 'Float'>
+    readonly pricePerDay: FieldRef<"Space", 'Float'>
+    readonly cleaningFee: FieldRef<"Space", 'Float'>
     readonly capacity: FieldRef<"Space", 'Int'>
     readonly minBookingHours: FieldRef<"Space", 'Int'>
     readonly maxBookingHours: FieldRef<"Space", 'Int'>
@@ -12444,10 +12444,10 @@ export namespace Prisma {
     readonly endTime: FieldRef<"Booking", 'String'>
     readonly guests: FieldRef<"Booking", 'Int'>
     readonly isHourly: FieldRef<"Booking", 'Boolean'>
-    readonly subtotal: FieldRef<"Booking", 'Int'>
-    readonly cleaningFee: FieldRef<"Booking", 'Int'>
-    readonly serviceFee: FieldRef<"Booking", 'Int'>
-    readonly totalAmount: FieldRef<"Booking", 'Int'>
+    readonly subtotal: FieldRef<"Booking", 'Float'>
+    readonly cleaningFee: FieldRef<"Booking", 'Float'>
+    readonly serviceFee: FieldRef<"Booking", 'Float'>
+    readonly totalAmount: FieldRef<"Booking", 'Float'>
     readonly status: FieldRef<"Booking", 'BookingStatus'>
     readonly guestMessage: FieldRef<"Booking", 'String'>
     readonly hostMessage: FieldRef<"Booking", 'String'>
@@ -15563,20 +15563,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Json'
-   */
-  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
-
-
-  /**
-   * Reference to a field of type 'QueryMode'
-   */
-  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -15587,6 +15573,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -15815,9 +15815,9 @@ export namespace Prisma {
     description?: StringFilter<"Space"> | string
     spaceType?: EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
-    pricePerHour?: IntNullableFilter<"Space"> | number | null
-    pricePerDay?: IntNullableFilter<"Space"> | number | null
-    cleaningFee?: IntFilter<"Space"> | number
+    pricePerHour?: FloatNullableFilter<"Space"> | number | null
+    pricePerDay?: FloatNullableFilter<"Space"> | number | null
+    cleaningFee?: FloatFilter<"Space"> | number
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -15894,9 +15894,9 @@ export namespace Prisma {
     description?: StringFilter<"Space"> | string
     spaceType?: EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
-    pricePerHour?: IntNullableFilter<"Space"> | number | null
-    pricePerDay?: IntNullableFilter<"Space"> | number | null
-    cleaningFee?: IntFilter<"Space"> | number
+    pricePerHour?: FloatNullableFilter<"Space"> | number | null
+    pricePerDay?: FloatNullableFilter<"Space"> | number | null
+    cleaningFee?: FloatFilter<"Space"> | number
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -15971,9 +15971,9 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Space"> | string
     spaceType?: EnumSpaceTypeWithAggregatesFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeWithAggregatesFilter<"Space"> | $Enums.PricingType
-    pricePerHour?: IntNullableWithAggregatesFilter<"Space"> | number | null
-    pricePerDay?: IntNullableWithAggregatesFilter<"Space"> | number | null
-    cleaningFee?: IntWithAggregatesFilter<"Space"> | number
+    pricePerHour?: FloatNullableWithAggregatesFilter<"Space"> | number | null
+    pricePerDay?: FloatNullableWithAggregatesFilter<"Space"> | number | null
+    cleaningFee?: FloatWithAggregatesFilter<"Space"> | number
     capacity?: IntWithAggregatesFilter<"Space"> | number
     minBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
     maxBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
@@ -16284,10 +16284,10 @@ export namespace Prisma {
     endTime?: StringNullableFilter<"Booking"> | string | null
     guests?: IntFilter<"Booking"> | number
     isHourly?: BoolFilter<"Booking"> | boolean
-    subtotal?: IntFilter<"Booking"> | number
-    cleaningFee?: IntFilter<"Booking"> | number
-    serviceFee?: IntFilter<"Booking"> | number
-    totalAmount?: IntFilter<"Booking"> | number
+    subtotal?: FloatFilter<"Booking"> | number
+    cleaningFee?: FloatFilter<"Booking"> | number
+    serviceFee?: FloatFilter<"Booking"> | number
+    totalAmount?: FloatFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableFilter<"Booking"> | string | null
     hostMessage?: StringNullableFilter<"Booking"> | string | null
@@ -16349,10 +16349,10 @@ export namespace Prisma {
     endTime?: StringNullableFilter<"Booking"> | string | null
     guests?: IntFilter<"Booking"> | number
     isHourly?: BoolFilter<"Booking"> | boolean
-    subtotal?: IntFilter<"Booking"> | number
-    cleaningFee?: IntFilter<"Booking"> | number
-    serviceFee?: IntFilter<"Booking"> | number
-    totalAmount?: IntFilter<"Booking"> | number
+    subtotal?: FloatFilter<"Booking"> | number
+    cleaningFee?: FloatFilter<"Booking"> | number
+    serviceFee?: FloatFilter<"Booking"> | number
+    totalAmount?: FloatFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableFilter<"Booking"> | string | null
     hostMessage?: StringNullableFilter<"Booking"> | string | null
@@ -16415,10 +16415,10 @@ export namespace Prisma {
     endTime?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     guests?: IntWithAggregatesFilter<"Booking"> | number
     isHourly?: BoolWithAggregatesFilter<"Booking"> | boolean
-    subtotal?: IntWithAggregatesFilter<"Booking"> | number
-    cleaningFee?: IntWithAggregatesFilter<"Booking"> | number
-    serviceFee?: IntWithAggregatesFilter<"Booking"> | number
-    totalAmount?: IntWithAggregatesFilter<"Booking"> | number
+    subtotal?: FloatWithAggregatesFilter<"Booking"> | number
+    cleaningFee?: FloatWithAggregatesFilter<"Booking"> | number
+    serviceFee?: FloatWithAggregatesFilter<"Booking"> | number
+    totalAmount?: FloatWithAggregatesFilter<"Booking"> | number
     status?: EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     hostMessage?: StringNullableWithAggregatesFilter<"Booking"> | string | null
@@ -16876,9 +16876,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -16912,9 +16912,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -16978,9 +16978,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17007,9 +17007,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -17344,10 +17344,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17375,10 +17375,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17427,10 +17427,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17454,10 +17454,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17951,6 +17951,28 @@ export namespace Prisma {
     not?: NestedEnumPricingTypeFilter<$PrismaModel> | $Enums.PricingType
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -17983,17 +18005,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
   export type EnumCancellationPolicyFilter<$PrismaModel = never> = {
@@ -18189,6 +18200,38 @@ export namespace Prisma {
     _max?: NestedEnumPricingTypeFilter<$PrismaModel>
   }
 
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -18229,22 +18272,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedJsonFilter<$PrismaModel>
     _max?: NestedJsonFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type EnumCancellationPolicyWithAggregatesFilter<$PrismaModel = never> = {
@@ -19069,8 +19096,16 @@ export namespace Prisma {
     set?: $Enums.PricingType
   }
 
-  export type NullableIntFieldUpdateOperationsInput = {
+  export type NullableFloatFieldUpdateOperationsInput = {
     set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
     increment?: number
     decrement?: number
     multiply?: number
@@ -19085,7 +19120,7 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type NullableFloatFieldUpdateOperationsInput = {
+  export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
     decrement?: number
@@ -19729,6 +19764,17 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
   export type NestedEnumCancellationPolicyFilter<$PrismaModel = never> = {
     equals?: $Enums.CancellationPolicy | EnumCancellationPolicyFieldRefInput<$PrismaModel>
     in?: $Enums.CancellationPolicy[] | ListEnumCancellationPolicyFieldRefInput<$PrismaModel>
@@ -19752,17 +19798,6 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedEnumSpaceTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel>
     in?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
@@ -19781,6 +19816,38 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPricingTypeFilter<$PrismaModel>
     _max?: NestedEnumPricingTypeFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -19820,22 +19887,6 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumCancellationPolicyWithAggregatesFilter<$PrismaModel = never> = {
@@ -20233,9 +20284,9 @@ export namespace Prisma {
     description?: StringFilter<"Space"> | string
     spaceType?: EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
-    pricePerHour?: IntNullableFilter<"Space"> | number | null
-    pricePerDay?: IntNullableFilter<"Space"> | number | null
-    cleaningFee?: IntFilter<"Space"> | number
+    pricePerHour?: FloatNullableFilter<"Space"> | number | null
+    pricePerDay?: FloatNullableFilter<"Space"> | number | null
+    cleaningFee?: FloatFilter<"Space"> | number
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -20287,10 +20338,10 @@ export namespace Prisma {
     endTime?: StringNullableFilter<"Booking"> | string | null
     guests?: IntFilter<"Booking"> | number
     isHourly?: BoolFilter<"Booking"> | boolean
-    subtotal?: IntFilter<"Booking"> | number
-    cleaningFee?: IntFilter<"Booking"> | number
-    serviceFee?: IntFilter<"Booking"> | number
-    totalAmount?: IntFilter<"Booking"> | number
+    subtotal?: FloatFilter<"Booking"> | number
+    cleaningFee?: FloatFilter<"Booking"> | number
+    serviceFee?: FloatFilter<"Booking"> | number
+    totalAmount?: FloatFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableFilter<"Booking"> | string | null
     hostMessage?: StringNullableFilter<"Booking"> | string | null
@@ -21149,9 +21200,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21184,9 +21235,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21327,9 +21378,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21362,9 +21413,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21481,9 +21532,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21516,9 +21567,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21871,9 +21922,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -21906,9 +21957,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22222,9 +22273,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22257,9 +22308,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22304,10 +22355,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22334,10 +22385,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22594,9 +22645,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22629,9 +22680,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22664,9 +22715,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -22695,10 +22746,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22724,10 +22775,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22751,10 +22802,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22775,10 +22826,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22804,10 +22855,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22831,10 +22882,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23037,10 +23088,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23066,10 +23117,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23093,10 +23144,10 @@ export namespace Prisma {
     endTime?: NullableStringFieldUpdateOperationsInput | string | null
     guests?: IntFieldUpdateOperationsInput | number
     isHourly?: BoolFieldUpdateOperationsInput | boolean
-    subtotal?: IntFieldUpdateOperationsInput | number
-    cleaningFee?: IntFieldUpdateOperationsInput | number
-    serviceFee?: IntFieldUpdateOperationsInput | number
-    totalAmount?: IntFieldUpdateOperationsInput | number
+    subtotal?: FloatFieldUpdateOperationsInput | number
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    serviceFee?: FloatFieldUpdateOperationsInput | number
+    totalAmount?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -23180,9 +23231,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23215,9 +23266,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -23250,9 +23301,9 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
-    pricePerHour?: NullableIntFieldUpdateOperationsInput | number | null
-    pricePerDay?: NullableIntFieldUpdateOperationsInput | number | null
-    cleaningFee?: IntFieldUpdateOperationsInput | number
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null

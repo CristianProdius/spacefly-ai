@@ -35,14 +35,14 @@ export const getSpaces = async (req: Request, res: Response) => {
       OR: [
         {
           pricePerHour: {
-            ...(minPrice && { gte: parseInt(minPrice as string) }),
-            ...(maxPrice && { lte: parseInt(maxPrice as string) }),
+            ...(minPrice && { gte: parseFloat(minPrice as string) }),
+            ...(maxPrice && { lte: parseFloat(maxPrice as string) }),
           },
         },
         {
           pricePerDay: {
-            ...(minPrice && { gte: parseInt(minPrice as string) }),
-            ...(maxPrice && { lte: parseInt(maxPrice as string) }),
+            ...(minPrice && { gte: parseFloat(minPrice as string) }),
+            ...(maxPrice && { lte: parseFloat(maxPrice as string) }),
           },
         },
       ],

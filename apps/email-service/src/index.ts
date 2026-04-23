@@ -34,8 +34,8 @@ type EmailEventMessage = {
   };
 };
 
-const formatCurrency = (amountInCents: number | undefined) =>
-  typeof amountInCents === "number" ? `$${(amountInCents / 100).toFixed(2)}` : undefined;
+const formatCurrency = (amountInDollars: number | undefined) =>
+  typeof amountInDollars === "number" ? `$${amountInDollars.toFixed(2)}` : undefined;
 
 const subscriptions = [
   {

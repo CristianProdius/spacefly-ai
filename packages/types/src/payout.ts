@@ -6,7 +6,7 @@ export type PayoutStatus = "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED";
 export interface Payout {
   id: string;
   hostId: string;
-  amount: number; // In cents
+  amount: number; // In dollars
   platformFee: number;
   netAmount: number;
   status: PayoutStatus;

@@ -27,7 +27,7 @@ export interface Booking {
   guests: number;
   isHourly: boolean;
 
-  // Pricing (all in cents)
+  // Pricing (all in dollars)
   subtotal: number;
   cleaningFee: number;
   serviceFee: number;
