@@ -4,14 +4,22 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import useAuthStore from "@/stores/authStore";
 import {
+  AlertCircle,
   Building2,
   CalendarDays,
-  DollarSign,
-  Clock,
   Check,
-  AlertCircle,
+  Clock,
+  DollarSign,
   TrendingUp,
 } from "lucide-react";
+
+import {
+  DashboardActionCard,
+  DashboardPageHeader,
+  DashboardSection,
+  DashboardStatCard,
+} from "@/components/dashboard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DashboardStats {
   totalSpaces: number;
@@ -107,147 +115,182 @@ const HostDashboardPage = () => {
 
   if (loading) {
     return (
-      <div className="animate-pulse space-y-6">
-        <div className="h-8 w-48 bg-gray-200 rounded" />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-32 bg-gray-200 rounded-xl" />
+      <div aria-busy="true" className="space-y-6">
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-56 max-w-full" />
+          <Skeleton className="h-4 w-80 max-w-full" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div
+              key={index}
+              className="rounded-xl border border-border/60 bg-card p-6 shadow-sm"
+            >
+              <div className="flex items-center gap-4">
+                <Skeleton className="size-12 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-8 w-16" />
+                </div>
+              </div>
+            </div>
           ))}
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {Array.from({ length: 2 }, (_, index) => (
+            <div
+              key={index}
+              className="rounded-xl border border-border/60 bg-card px-5 py-4 shadow-sm"
+            >
+              <div className="flex items-start gap-4">
+                <Skeleton className="size-10 rounded-md" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-5 w-40 max-w-full" />
+                  <Skeleton className="h-4 w-48 max-w-full" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+            {Array.from({ length: 3 }, (_, index) => (
+              <div
+                key={index}
+                className="rounded-lg border border-border/60 bg-card px-4 py-5"
+              >
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <Skeleton className="size-10 rounded-lg" />
+                  <Skeleton className="h-5 w-28 max-w-full" />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
+  const statCards = [
+    {
+      label: "Active Spaces",
+      value: `${stats?.activeSpaces || 0} / ${stats?.totalSpaces || 0}`,
+      icon: Building2,
+    },
+    {
+      label: "Pending Requests",
+      value: `${stats?.pendingBookings || 0}`,
+      icon: Clock,
+    },
+    {
+      label: "Upcoming Bookings",
+      value: `${stats?.upcomingBookings || 0}`,
+      icon: CalendarDays,
+    },
+    {
+      label: "Total Earnings",
+      value: `$${stats?.totalEarnings?.toFixed(0) || 0}`,
+      icon: DollarSign,
+    },
+  ];
+
+  const needsAttentionLinks = [
+    stats?.pendingBookings && stats.pendingBookings > 0
+      ? {
+          href: "/host/bookings?status=pending",
+          title: `${stats.pendingBookings} pending booking${
+            stats.pendingBookings > 1 ? "s" : ""
+          } need your attention`,
+          description: "Review and respond to booking requests",
+          icon: AlertCircle,
+        }
+      : null,
+    stats?.pendingEarnings && stats.pendingEarnings > 0
+      ? {
+          href: "/host/earnings",
+          title: `$${stats.pendingEarnings.toFixed(0)} in pending earnings`,
+          description: "View your earnings breakdown",
+          icon: TrendingUp,
+        }
+      : null,
+  ].filter((link) => link !== null);
+
+  const quickLinks = [
+    {
+      href: "/host/spaces/new",
+      label: "Add New Space",
+      icon: Building2,
+    },
+    {
+      href: "/host/bookings",
+      label: "View All Bookings",
+      icon: CalendarDays,
+    },
+    {
+      href: "/host/spaces",
+      label: "Manage Spaces",
+      icon: Check,
+    },
+  ];
+
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
-          Welcome back, {user?.name || "Host"}
-        </h1>
-        <p className="text-gray-600 mt-1">
-          Here&apos;s an overview of your hosting activity
-        </p>
+    <div className="space-y-6">
+      <DashboardPageHeader
+        title={`Welcome back, ${user?.name || "Host"}`}
+        description="Here's an overview of your hosting activity"
+      />
+
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {statCards.map((stat) => (
+          <DashboardStatCard key={stat.label} {...stat} />
+        ))}
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-lg">
-              <Building2 className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">Active Spaces</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            {stats?.activeSpaces || 0}
-            <span className="text-sm font-normal text-gray-500">
-              {" "}
-              / {stats?.totalSpaces || 0}
-            </span>
-          </p>
-        </div>
-
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-gradient-to-br from-yellow-50 to-yellow-100 text-yellow-600 rounded-lg">
-              <Clock className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">Pending Requests</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            {stats?.pendingBookings || 0}
-          </p>
-        </div>
-
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-gradient-to-br from-green-50 to-green-100 text-green-600 rounded-lg">
-              <CalendarDays className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">Upcoming Bookings</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            {stats?.upcomingBookings || 0}
-          </p>
-        </div>
-
-        <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-gradient-to-br from-purple-50 to-purple-100 text-purple-600 rounded-lg">
-              <DollarSign className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">Total Earnings</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            ${stats?.totalEarnings?.toFixed(0) || 0}
-          </p>
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        {stats?.pendingBookings && stats.pendingBookings > 0 && (
-          <Link
-            href="/host/bookings?status=pending"
-            className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl hover:bg-yellow-100 transition-colors"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <AlertCircle className="w-5 h-5 text-yellow-600" />
-              <span className="font-medium text-yellow-800">
-                {stats.pendingBookings} pending booking
-                {stats.pendingBookings > 1 ? "s" : ""} need your attention
-              </span>
-            </div>
-            <p className="text-sm text-yellow-700">
-              Review and respond to booking requests
-            </p>
-          </Link>
-        )}
-
-        {stats?.pendingEarnings && stats.pendingEarnings > 0 && (
-          <Link
-            href="/host/earnings"
-            className="p-6 bg-green-50 border border-green-200 rounded-xl hover:bg-green-100 transition-colors"
-          >
-            <div className="flex items-center gap-3 mb-2">
-              <TrendingUp className="w-5 h-5 text-green-600" />
-              <span className="font-medium text-green-800">
-                ${stats.pendingEarnings.toFixed(0)} in pending earnings
-              </span>
-            </div>
-            <p className="text-sm text-green-700">
-              View your earnings breakdown
-            </p>
-          </Link>
-        )}
-      </div>
-
-      {/* Quick Links */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Link
-          href="/host/spaces/new"
-          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
+      {needsAttentionLinks.length > 0 ? (
+        <DashboardSection
+          title="Needs attention"
+          description="Time-sensitive items in your hosting workflow."
         >
-          <Building2 className="w-6 h-6 mx-auto text-gray-600 mb-2" />
-          <span className="font-medium text-gray-900">Add New Space</span>
-        </Link>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {needsAttentionLinks.map((link) => (
+              <DashboardActionCard
+                key={link.href}
+                href={link.href}
+                title={link.title}
+                description={link.description}
+                icon={link.icon}
+              />
+            ))}
+          </div>
+        </DashboardSection>
+      ) : null}
 
-        <Link
-          href="/host/bookings"
-          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
-        >
-          <CalendarDays className="w-6 h-6 mx-auto text-gray-600 mb-2" />
-          <span className="font-medium text-gray-900">View All Bookings</span>
-        </Link>
+      <DashboardSection
+        title="Quick links"
+        description="Common host tasks and navigation shortcuts."
+      >
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {quickLinks.map((link) => {
+            const Icon = link.icon;
 
-        <Link
-          href="/host/spaces"
-          className="p-4 border border-gray-200 rounded-xl hover:bg-gray-50 hover:-translate-y-0.5 hover:border-indigo-300 transition-all text-center"
-        >
-          <Check className="w-6 h-6 mx-auto text-gray-600 mb-2" />
-          <span className="font-medium text-gray-900">Manage Spaces</span>
-        </Link>
-      </div>
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="flex min-h-28 flex-col items-center justify-center gap-3 rounded-lg border border-border/60 bg-card px-4 py-5 text-center text-card-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:bg-accent/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+              >
+                <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <Icon className="size-5" />
+                </div>
+                <span className="font-medium">{link.label}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </DashboardSection>
     </div>
   );
 };
