@@ -70,13 +70,13 @@ const AddCategory = () => {
   });
 
   return (
-    <SheetContent>
-      <SheetHeader>
+    <SheetContent className="border-l border-border/60 bg-background">
+      <SheetHeader className="gap-4 p-6">
         <SheetTitle className="mb-4">Add Category</SheetTitle>
         <SheetDescription asChild>
           <Form {...form}>
             <form
-              className="space-y-8"
+              className="space-y-6"
               onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
             >
               <FormField

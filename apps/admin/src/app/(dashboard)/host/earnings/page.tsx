@@ -3,11 +3,18 @@
 import { useCallback, useEffect, useState } from "react";
 import useAuthStore from "@/stores/authStore";
 import {
-  DollarSign,
-  Clock,
-  CheckCircle,
   Calendar,
+  CheckCircle,
+  Clock,
+  DollarSign,
 } from "lucide-react";
+
+import {
+  DashboardPageHeader,
+  DashboardSection,
+  DashboardStatCard,
+} from "@/components/dashboard";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Booking {
   id: string;
@@ -103,12 +110,35 @@ const HostEarningsPage = () => {
 
   if (loading) {
     return (
-      <div className="animate-pulse space-y-6">
-        <div className="h-8 w-48 bg-gray-200 rounded" />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-32 bg-gray-200 rounded-xl" />
+      <div aria-busy="true" className="space-y-6">
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-48 max-w-full" />
+          <Skeleton className="h-4 w-64 max-w-full" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div
+              key={index}
+              className="rounded-xl border border-border/60 bg-card p-6 shadow-sm"
+            >
+              <div className="flex items-center gap-4">
+                <Skeleton className="size-12 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-8 w-16" />
+                </div>
+              </div>
+            </div>
           ))}
+        </div>
+
+        <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+          <div className="space-y-3">
+            <Skeleton className="h-5 w-40 max-w-full" />
+            <Skeleton className="h-4 w-80 max-w-full" />
+            <Skeleton className="h-20 w-full rounded-lg" />
+          </div>
         </div>
       </div>
     );
@@ -118,73 +148,49 @@ const HostEarningsPage = () => {
   const pendingPayoutBookings = bookings.filter((b) =>
     ["CONFIRMED"].includes(b.status)
   );
+  const statCards = [
+    {
+      label: "Total Earnings",
+      value: `$${stats?.totalEarnings?.toFixed(2) || "0.00"}`,
+      icon: DollarSign,
+    },
+    {
+      label: "Pending",
+      value: `$${stats?.pendingEarnings?.toFixed(2) || "0.00"}`,
+      icon: Clock,
+    },
+    {
+      label: "This Month",
+      value: `$${stats?.thisMonth?.toFixed(2) || "0.00"}`,
+      icon: Calendar,
+    },
+    {
+      label: "Completed",
+      value: `${stats?.completedBookings || 0}`,
+      icon: CheckCircle,
+    },
+  ];
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Earnings</h1>
-        <p className="text-gray-600 mt-1">Track your hosting income</p>
+    <div className="space-y-8">
+      <DashboardPageHeader
+        title="Earnings"
+        description="Track your hosting income"
+      />
+
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {statCards.map((stat) => (
+          <DashboardStatCard key={stat.label} {...stat} />
+        ))}
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-green-100 text-green-600 rounded-lg">
-              <DollarSign className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">Total Earnings</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            ${stats?.totalEarnings?.toFixed(2) || "0.00"}
-          </p>
-        </div>
-
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-yellow-100 text-yellow-600 rounded-lg">
-              <Clock className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">Pending</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            ${stats?.pendingEarnings?.toFixed(2) || "0.00"}
-          </p>
-        </div>
-
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-gradient-to-br from-indigo-50 to-indigo-100 text-indigo-600 rounded-lg">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">This Month</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            ${stats?.thisMonth?.toFixed(2) || "0.00"}
-          </p>
-        </div>
-
-        <div className="p-6 bg-white border border-gray-200 rounded-xl">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="p-2 bg-purple-100 text-purple-600 rounded-lg">
-              <CheckCircle className="w-5 h-5" />
-            </div>
-            <span className="text-sm text-gray-500">Completed</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-900">
-            {stats?.completedBookings || 0}
-          </p>
-        </div>
-      </div>
-
-      {/* Pending Payouts */}
       {pendingPayoutBookings.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Pending Payouts
-          </h2>
-          <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
-            <p className="text-yellow-800 mb-4">
+        <DashboardSection
+          title="Pending Payouts"
+          description="Confirmed bookings that will pay out after completion."
+        >
+          <div className="rounded-lg border border-border/60 bg-accent/30 p-4">
+            <p className="mb-4 text-sm text-muted-foreground">
               These bookings are confirmed and earnings will be available after
               completion.
             </p>
@@ -192,81 +198,81 @@ const HostEarningsPage = () => {
               {pendingPayoutBookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="flex items-center justify-between p-3 bg-white rounded-lg"
+                  className="flex items-center justify-between rounded-lg border border-border/60 bg-card px-4 py-3 shadow-sm"
                 >
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-card-foreground">
                       {booking.space.name}
                     </p>
-                    <p className="text-sm text-gray-500">
+                    <p className="text-sm text-muted-foreground">
                       {new Date(booking.startDate).toLocaleDateString()} -{" "}
                       {booking.guest.name}
                     </p>
                   </div>
-                  <p className="font-semibold text-gray-900">
+                  <p className="font-semibold text-card-foreground">
                     ${(booking.totalAmount - booking.serviceFee).toFixed(2)}
                   </p>
                 </div>
               ))}
             </div>
           </div>
-        </div>
+        </DashboardSection>
       )}
 
-      {/* Transaction History */}
-      <div>
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">
-          Completed Bookings
-        </h2>
-
+      <DashboardSection
+        title="Completed Bookings"
+        description="Transaction history for completed stays."
+      >
         {completedBookings.length === 0 ? (
-          <div className="text-center py-12 bg-gray-50 rounded-xl">
-            <p className="text-gray-500">No completed bookings yet</p>
+          <div className="rounded-lg border border-dashed border-border/60 bg-accent/20 py-12 text-center">
+            <p className="text-sm text-muted-foreground">
+              No completed bookings yet
+            </p>
           </div>
         ) : (
-          <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+          <div className="overflow-hidden rounded-lg border border-border/60">
             <table className="w-full">
-              <thead className="bg-gray-50">
+              <thead className="bg-accent/30">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                     Space
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                     Guest
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
+                  <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">
                     Date
                   </th>
-                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">
+                  <th className="px-4 py-3 text-right text-sm font-medium text-muted-foreground">
                     Total
                   </th>
-                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">
+                  <th className="px-4 py-3 text-right text-sm font-medium text-muted-foreground">
                     Service Fee
                   </th>
-                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">
+                  <th className="px-4 py-3 text-right text-sm font-medium text-muted-foreground">
                     Net Earnings
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-border/60 bg-card">
                 {completedBookings.map((booking) => (
                   <tr key={booking.id}>
-                    <td className="px-4 py-3 text-sm text-gray-900">
+                    <td className="px-4 py-3 text-sm text-card-foreground">
                       {booking.space.name}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {booking.guest.name}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {new Date(booking.endDate).toLocaleDateString()}
                     </td>
-                    <td className="px-4 py-3 text-sm text-right text-gray-900">
+                    <td className="px-4 py-3 text-right text-sm text-card-foreground">
                       ${booking.totalAmount.toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-right text-red-600">
+                    <td className="px-4 py-3 text-right text-sm text-destructive">
                       -${booking.serviceFee.toFixed(2)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-right font-medium text-green-600">
+                    <td className="px-4 py-3 text-right text-sm font-medium text-primary">
                       ${(booking.totalAmount - booking.serviceFee).toFixed(2)}
                     </td>
                   </tr>
@@ -275,7 +281,7 @@ const HostEarningsPage = () => {
             </table>
           </div>
         )}
-      </div>
+      </DashboardSection>
     </div>
   );
 };

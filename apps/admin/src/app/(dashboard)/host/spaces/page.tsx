@@ -5,15 +5,27 @@ import Link from "next/link";
 import Image from "next/image";
 import useAuthStore from "@/stores/authStore";
 import {
-  Plus,
+  BadgeCheck,
+  Building2,
+  EyeOff,
+  MapPin,
   MoreVertical,
-  Trash2,
+  Plus,
   Power,
   PowerOff,
-  MapPin,
-  Users,
   Star,
+  Trash2,
+  Users,
 } from "lucide-react";
+
+import {
+  DashboardActionCard,
+  DashboardPageHeader,
+  DashboardSection,
+  DashboardStatCard,
+} from "@/components/dashboard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface Space {
   id: number;
@@ -75,8 +87,10 @@ const HostSpacesPage = () => {
 
       if (res.ok) {
         setSpaces((prev) =>
-          prev.map((s) =>
-            s.id === spaceId ? { ...s, isActive: !currentStatus } : s
+          prev.map((space) =>
+            space.id === spaceId
+              ? { ...space, isActive: !currentStatus }
+              : space
           )
         );
       }
@@ -99,7 +113,7 @@ const HostSpacesPage = () => {
       );
 
       if (res.ok) {
-        setSpaces((prev) => prev.filter((s) => s.id !== spaceId));
+        setSpaces((prev) => prev.filter((space) => space.id !== spaceId));
       }
     } catch (error) {
       console.error("Error deleting space:", error);
@@ -121,160 +135,239 @@ const HostSpacesPage = () => {
     return "—";
   };
 
+  const activeSpaces = spaces.filter((space) => space.isActive).length;
+  const inactiveSpaces = spaces.length - activeSpaces;
+  const reviewedSpaces = spaces.filter(
+    (space) => space.averageRating != null && space.averageRating > 0
+  ).length;
+
   if (loading) {
     return (
-      <div className="animate-pulse space-y-4">
-        <div className="h-8 w-48 bg-gray-200 rounded" />
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="h-24 bg-gray-200 rounded-xl" />
-        ))}
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Spaces</h1>
-          <p className="text-gray-600 mt-1">Manage your listed spaces</p>
+      <div aria-busy="true" className="space-y-6">
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-48 max-w-full" />
+          <Skeleton className="h-4 w-64 max-w-full" />
         </div>
-        <Link
-          href="/host/spaces/new"
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
-        >
-          <Plus className="w-5 h-5" />
-          Add Space
-        </Link>
-      </div>
 
-      {spaces.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl">
-          <p className="text-gray-500 text-lg mb-4">
-            You haven&apos;t listed any spaces yet
-          </p>
-          <Link
-            href="/host/spaces/new"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all shadow-md shadow-indigo-500/20"
-          >
-            <Plus className="w-5 h-5" />
-            Add Your First Space
-          </Link>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {spaces.map((space) => (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {Array.from({ length: 3 }, (_, index) => (
             <div
-              key={space.id}
-              className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
+              key={index}
+              className="rounded-xl border border-border/60 bg-card p-6 shadow-sm"
             >
-              <div className="flex gap-4">
-                <div className="relative w-32 h-24 rounded-lg overflow-hidden shrink-0">
-                  <Image
-                    src={space.images?.[0] || "/placeholder-space.jpg"}
-                    alt={space.name}
-                    fill
-                    className="object-cover"
-                  />
-                  {!space.isActive && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                      <span className="text-white text-xs font-medium">
-                        Inactive
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <div>
-                      <h3 className="font-semibold text-gray-900 truncate">
-                        {space.name}
-                      </h3>
-                      <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
-                        <MapPin className="w-4 h-4" />
-                        <span>
-                          {space.city}, {space.country}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="relative">
-                      <button
-                        onClick={() =>
-                          setMenuOpen(menuOpen === space.id ? null : space.id)
-                        }
-                        className="p-2 hover:bg-gray-100 rounded-lg"
-                      >
-                        <MoreVertical className="w-5 h-5 text-gray-500" />
-                      </button>
-
-                      {menuOpen === space.id && (
-                        <div className="absolute right-0 top-full mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
-                          <button
-                            onClick={() =>
-                              toggleSpaceStatus(space.id, space.isActive)
-                            }
-                            className="flex items-center gap-2 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                          >
-                            {space.isActive ? (
-                              <>
-                                <PowerOff className="w-4 h-4" />
-                                Deactivate
-                              </>
-                            ) : (
-                              <>
-                                <Power className="w-4 h-4" />
-                                Activate
-                              </>
-                            )}
-                          </button>
-                          <button
-                            onClick={() => deleteSpace(space.id)}
-                            className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-4 mt-3 text-sm">
-                    <div className="flex items-center gap-1 text-gray-600">
-                      <Users className="w-4 h-4" />
-                      <span>{space.capacity}</span>
-                    </div>
-                    <span className="font-medium text-gray-900">
-                      {getPriceDisplay(space)}
-                    </span>
-                    {space.averageRating != null && space.averageRating > 0 && (
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-gray-900">
-                          {space.averageRating.toFixed(1)}
-                        </span>
-                        <span className="text-gray-500">
-                          ({space.totalReviews})
-                        </span>
-                      </div>
-                    )}
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        space.isActive
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-600"
-                      }`}
-                    >
-                      {space.isActive ? "Active" : "Inactive"}
-                    </span>
-                  </div>
+              <div className="flex items-center gap-4">
+                <Skeleton className="size-12 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-8 w-12" />
                 </div>
               </div>
             </div>
           ))}
         </div>
+
+        <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+          <div className="space-y-4">
+            <Skeleton className="h-5 w-32" />
+            {Array.from({ length: 3 }, (_, index) => (
+              <div
+                key={index}
+                className="rounded-xl border border-border/60 bg-background px-4 py-5"
+              >
+                <div className="flex gap-4">
+                  <Skeleton className="h-24 w-32 rounded-lg" />
+                  <div className="flex-1 space-y-3">
+                    <Skeleton className="h-5 w-40 max-w-full" />
+                    <Skeleton className="h-4 w-48 max-w-full" />
+                    <Skeleton className="h-4 w-32 max-w-full" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <DashboardPageHeader
+        title="My Spaces"
+        description="Manage your listed spaces"
+        action={
+          <Link
+            href="/host/spaces/new"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+          >
+            <Plus className="size-4" />
+            Add Space
+          </Link>
+        }
+      />
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <DashboardStatCard
+          label="Total Spaces"
+          value={`${spaces.length}`}
+          icon={Building2}
+        />
+        <DashboardStatCard
+          label="Active Listings"
+          value={`${activeSpaces}`}
+          icon={BadgeCheck}
+        />
+        <DashboardStatCard
+          label="Inactive Listings"
+          value={`${inactiveSpaces}`}
+          icon={EyeOff}
+        />
+      </div>
+
+      {spaces.length === 0 ? (
+        <DashboardSection
+          title="Your listings"
+          description="Create your first listing to start receiving booking requests."
+        >
+          <div className="space-y-6 text-center">
+            <p className="text-sm text-muted-foreground">
+              You haven&apos;t listed any spaces yet
+            </p>
+            <div className="mx-auto max-w-sm">
+              <DashboardActionCard
+                href="/host/spaces/new"
+                title="Add Your First Space"
+                description="Set up a new listing with photos, capacity, and pricing."
+                icon={Plus}
+              />
+            </div>
+          </div>
+        </DashboardSection>
+      ) : (
+        <DashboardSection
+          title="Your listings"
+          description={
+            reviewedSpaces > 0
+              ? `${reviewedSpaces} space${reviewedSpaces > 1 ? "s" : ""} already have guest reviews.`
+              : "Review availability, pricing, and listing status."
+          }
+        >
+          <div className="space-y-4">
+            {spaces.map((space) => (
+              <article
+                key={space.id}
+                className="rounded-xl border border-border/60 bg-background p-4 shadow-sm transition-colors hover:bg-accent/20"
+              >
+                <div className="flex gap-4">
+                  <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-lg bg-muted">
+                    <Image
+                      src={space.images?.[0] || "/placeholder-space.jpg"}
+                      alt={space.name}
+                      fill
+                      className="object-cover"
+                    />
+                    {!space.isActive && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                        <span className="text-xs font-medium text-white">
+                          Inactive
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <h3 className="truncate font-semibold text-foreground">
+                          {space.name}
+                        </h3>
+                        <div className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
+                          <MapPin className="size-4" />
+                          <span>
+                            {space.city}, {space.country}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="relative">
+                        <button
+                          onClick={() =>
+                            setMenuOpen(menuOpen === space.id ? null : space.id)
+                          }
+                          aria-label={`Open actions for ${space.name}`}
+                          className="rounded-lg p-2 text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                        >
+                          <MoreVertical className="size-5" />
+                        </button>
+
+                        {menuOpen === space.id && (
+                          <div className="absolute right-0 top-full z-10 mt-1 w-48 rounded-lg border border-border/60 bg-popover p-1 text-popover-foreground shadow-lg">
+                            <button
+                              onClick={() =>
+                                toggleSpaceStatus(space.id, space.isActive)
+                              }
+                              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors hover:bg-accent hover:text-accent-foreground"
+                            >
+                              {space.isActive ? (
+                                <>
+                                  <PowerOff className="size-4" />
+                                  Deactivate
+                                </>
+                              ) : (
+                                <>
+                                  <Power className="size-4" />
+                                  Activate
+                                </>
+                              )}
+                            </button>
+                            <button
+                              onClick={() => deleteSpace(space.id)}
+                              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-600 transition-colors hover:bg-red-500/10 dark:text-red-300"
+                            >
+                              <Trash2 className="size-4" />
+                              Delete
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-sm">
+                      <div className="flex items-center gap-1 text-muted-foreground">
+                        <Users className="size-4" />
+                        <span>{space.capacity}</span>
+                      </div>
+                      <span className="font-medium text-foreground">
+                        {getPriceDisplay(space)}
+                      </span>
+                      {space.averageRating != null && space.averageRating > 0 && (
+                        <div className="flex items-center gap-1">
+                          <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                          <span className="text-foreground">
+                            {space.averageRating.toFixed(1)}
+                          </span>
+                          <span className="text-muted-foreground">
+                            ({space.totalReviews})
+                          </span>
+                        </div>
+                      )}
+                      <span
+                        className={cn(
+                          "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset",
+                          space.isActive
+                            ? "bg-green-500/10 text-green-700 ring-green-500/20 dark:text-green-300"
+                            : "bg-muted text-muted-foreground ring-border/60"
+                        )}
+                      >
+                        {space.isActive ? "Active" : "Inactive"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </DashboardSection>
       )}
     </div>
   );

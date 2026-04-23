@@ -2,7 +2,17 @@
 
 import { useEffect, useState } from "react";
 import useAuthStore from "@/stores/authStore";
+import { DashboardPageHeader } from "@/components/dashboard";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import AddCategory from "@/components/AddCategory";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
@@ -63,80 +73,79 @@ const CategoriesPage = () => {
   };
 
   if (loading) {
-    return <div className="p-4">Loading categories...</div>;
+    return (
+      <div className="rounded-xl border border-border/60 bg-card px-4 py-6 text-sm text-muted-foreground shadow-sm">
+        Loading categories...
+      </div>
+    );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Categories</h1>
-          <p className="text-gray-500">Manage space categories</p>
-        </div>
-        <Sheet>
-          <SheetTrigger asChild>
-            <button className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
-              <Plus className="w-4 h-4" />
-              Add Category
-            </button>
-          </SheetTrigger>
-          <AddCategory />
-        </Sheet>
-      </div>
+      <DashboardPageHeader
+        title="Categories"
+        description="Manage space categories"
+        action={
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button>
+                <Plus className="size-4" />
+                Add Category
+              </Button>
+            </SheetTrigger>
+            <AddCategory />
+          </Sheet>
+        }
+      />
 
-      <div className="bg-white border rounded-lg overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                Slug
-              </th>
-              <th className="px-4 py-3 text-left text-sm font-medium text-gray-500">
-                Description
-              </th>
-              <th className="px-4 py-3 text-right text-sm font-medium text-gray-500">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
+      <div className="overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm">
+        <Table>
+          <TableHeader className="bg-muted/40">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="px-4">Name</TableHead>
+              <TableHead className="px-4">Slug</TableHead>
+              <TableHead className="px-4">Description</TableHead>
+              <TableHead className="px-4 text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {categories.map((cat) => (
-              <tr key={cat.id}>
-                <td className="px-4 py-3 text-sm font-medium text-gray-900">
-                  {cat.icon && <span className="mr-2">{cat.icon}</span>}
+              <TableRow key={cat.id} className="hover:bg-accent/30">
+                <TableCell className="px-4 py-3 font-medium text-card-foreground">
+                  {cat.icon ? <span className="mr-2">{cat.icon}</span> : null}
                   {cat.name}
-                </td>
-                <td className="px-4 py-3 text-sm text-gray-500 font-mono">
+                </TableCell>
+                <TableCell className="px-4 py-3 font-mono text-muted-foreground">
                   {cat.slug}
-                </td>
-                <td className="px-4 py-3 text-sm text-gray-500">
+                </TableCell>
+                <TableCell className="px-4 py-3 text-muted-foreground">
                   {cat.description || "—"}
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <button
+                </TableCell>
+                <TableCell className="px-4 py-3 text-right">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Delete category ${cat.name}`}
                     onClick={() => deleteCategory(cat.id)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                   >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </td>
-              </tr>
+                    <Trash2 className="size-4" />
+                  </Button>
+                </TableCell>
+              </TableRow>
             ))}
-            {categories.length === 0 && (
-              <tr>
-                <td
+            {categories.length === 0 ? (
+              <TableRow>
+                <TableCell
                   colSpan={4}
-                  className="px-4 py-8 text-center text-gray-500"
+                  className="px-4 py-10 text-center text-muted-foreground"
                 >
                   No categories found
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                </TableCell>
+              </TableRow>
+            ) : null}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

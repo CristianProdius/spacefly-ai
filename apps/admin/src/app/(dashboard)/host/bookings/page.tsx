@@ -5,14 +5,23 @@ import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import useAuthStore from "@/stores/authStore";
 import {
-  Calendar,
-  Clock,
-  Users,
-  Check,
-  X,
   AlertCircle,
+  Calendar,
+  Check,
+  CheckCheck,
+  Clock,
   Loader2,
+  Users,
+  X,
 } from "lucide-react";
+
+import {
+  DashboardPageHeader,
+  DashboardSection,
+  DashboardStatCard,
+} from "@/components/dashboard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 interface Booking {
   id: string;
@@ -38,6 +47,20 @@ interface Booking {
     image: string | null;
   };
 }
+
+const statusBadgeClassName = (status: string) =>
+  cn(
+    "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset",
+    status === "PENDING"
+      ? "bg-amber-500/10 text-amber-700 ring-amber-500/20 dark:text-amber-300"
+      : status === "APPROVED"
+        ? "bg-sky-500/10 text-sky-700 ring-sky-500/20 dark:text-sky-300"
+        : status === "CONFIRMED"
+          ? "bg-green-500/10 text-green-700 ring-green-500/20 dark:text-green-300"
+          : status === "COMPLETED"
+            ? "bg-muted text-muted-foreground ring-border/60"
+            : "bg-red-500/10 text-red-700 ring-red-500/20 dark:text-red-300"
+  );
 
 const HostBookingsPage = () => {
   const searchParams = useSearchParams();
@@ -92,8 +115,10 @@ const HostBookingsPage = () => {
 
       if (res.ok) {
         setBookings((prev) =>
-          prev.map((b) =>
-            b.id === bookingId ? { ...b, status: "CONFIRMED" } : b
+          prev.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, status: "CONFIRMED" }
+              : booking
           )
         );
       }
@@ -123,8 +148,10 @@ const HostBookingsPage = () => {
 
       if (res.ok) {
         setBookings((prev) =>
-          prev.map((b) =>
-            b.id === bookingId ? { ...b, status: "REJECTED" } : b
+          prev.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, status: "REJECTED" }
+              : booking
           )
         );
       }
@@ -148,8 +175,10 @@ const HostBookingsPage = () => {
 
       if (res.ok) {
         setBookings((prev) =>
-          prev.map((b) =>
-            b.id === bookingId ? { ...b, status: "COMPLETED" } : b
+          prev.map((booking) =>
+            booking.id === bookingId
+              ? { ...booking, status: "COMPLETED" }
+              : booking
           )
         );
       }
@@ -160,200 +189,263 @@ const HostBookingsPage = () => {
     }
   };
 
-  const filteredBookings = bookings.filter((b) =>
-    filter === "all" ? true : b.status === filter
+  const filteredBookings = bookings.filter((booking) =>
+    filter === "all" ? true : booking.status === filter
   );
+  const pendingCount = bookings.filter(
+    (booking) => booking.status === "PENDING"
+  ).length;
+  const confirmedCount = bookings.filter(
+    (booking) => booking.status === "CONFIRMED"
+  ).length;
+  const completedCount = bookings.filter(
+    (booking) => booking.status === "COMPLETED"
+  ).length;
 
   if (loading) {
     return (
-      <div className="animate-pulse space-y-4">
-        <div className="h-8 w-48 bg-gray-200 rounded" />
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="h-32 bg-gray-200 rounded-xl" />
-        ))}
+      <div aria-busy="true" className="space-y-6">
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-40 max-w-full" />
+          <Skeleton className="h-4 w-72 max-w-full" />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {Array.from({ length: 4 }, (_, index) => (
+            <div
+              key={index}
+              className="rounded-xl border border-border/60 bg-card p-6 shadow-sm"
+            >
+              <div className="flex items-center gap-4">
+                <Skeleton className="size-12 rounded-lg" />
+                <div className="flex-1 space-y-2">
+                  <Skeleton className="h-4 w-20" />
+                  <Skeleton className="h-8 w-12" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-xl border border-border/60 bg-card p-6 shadow-sm">
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: 4 }, (_, index) => (
+              <Skeleton key={index} className="h-10 w-24 rounded-lg" />
+            ))}
+          </div>
+          <div className="mt-6 space-y-4">
+            {Array.from({ length: 3 }, (_, index) => (
+              <div
+                key={index}
+                className="rounded-xl border border-border/60 bg-background p-4"
+              >
+                <div className="flex gap-4">
+                  <Skeleton className="h-20 w-24 rounded-lg" />
+                  <div className="flex-1 space-y-3">
+                    <Skeleton className="h-5 w-40 max-w-full" />
+                    <Skeleton className="h-4 w-52 max-w-full" />
+                    <Skeleton className="h-4 w-36 max-w-full" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }
 
-  const pendingCount = bookings.filter((b) => b.status === "PENDING").length;
-
   return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Bookings</h1>
-        <p className="text-gray-600 mt-1">
-          Manage booking requests for your spaces
-        </p>
+    <div className="space-y-6">
+      <DashboardPageHeader
+        title="Bookings"
+        description="Manage booking requests for your spaces"
+      />
+
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <DashboardStatCard
+          label="Total Bookings"
+          value={`${bookings.length}`}
+          icon={Calendar}
+        />
+        <DashboardStatCard
+          label="Pending Review"
+          value={`${pendingCount}`}
+          icon={Clock}
+        />
+        <DashboardStatCard
+          label="Confirmed"
+          value={`${confirmedCount}`}
+          icon={CheckCheck}
+        />
+        <DashboardStatCard
+          label="Completed"
+          value={`${completedCount}`}
+          icon={Check}
+        />
       </div>
 
-      {pendingCount > 0 && (
-        <div className="flex items-center gap-3 p-4 bg-yellow-50 border border-yellow-200 rounded-lg mb-6">
-          <AlertCircle className="w-5 h-5 text-yellow-600" />
-          <p className="text-yellow-800">
+      {pendingCount > 0 ? (
+        <div className="flex items-center gap-3 rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-amber-700 dark:text-amber-300">
+          <AlertCircle className="size-5 shrink-0" />
+          <p className="text-sm font-medium">
             {pendingCount} booking{pendingCount > 1 ? "s" : ""} pending your
             review
           </p>
         </div>
-      )}
+      ) : null}
 
-      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
-        {statusFilters.map((f) => (
-          <button
-            key={f.value}
-            onClick={() => setFilter(f.value)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-              filter === f.value
-                ? "bg-gray-900 text-white"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-          >
-            {f.label}
-            {f.value === "PENDING" && pendingCount > 0 && (
-              <span className="ml-2 px-1.5 py-0.5 bg-yellow-500 text-white text-xs rounded-full">
-                {pendingCount}
-              </span>
-            )}
-          </button>
-        ))}
-      </div>
-
-      {filteredBookings.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl">
-          <p className="text-gray-500">No bookings found</p>
-        </div>
-      ) : (
-        <div className="space-y-4">
-          {filteredBookings.map((booking) => (
-            <div
-              key={booking.id}
-              className="bg-white border border-gray-200 rounded-xl p-4"
+      <DashboardSection
+        title="Booking requests"
+        description="Filter bookings by status and respond to incoming requests."
+      >
+        <div className="flex gap-2 overflow-x-auto pb-2">
+          {statusFilters.map((statusFilter) => (
+            <button
+              key={statusFilter.value}
+              onClick={() => setFilter(statusFilter.value)}
+              className={cn(
+                "inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
+                filter === statusFilter.value
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "border border-border/60 bg-accent/40 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+              )}
             >
-              <div className="flex gap-4">
-                <div className="relative w-24 h-20 rounded-lg overflow-hidden shrink-0">
-                  <Image
-                    src={booking.space.images?.[0] || "/placeholder-space.jpg"}
-                    alt={booking.space.name}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
+              {statusFilter.label}
+              {statusFilter.value === "PENDING" && pendingCount > 0 ? (
+                <span className="ml-2 rounded-full bg-amber-500 px-1.5 py-0.5 text-xs text-white">
+                  {pendingCount}
+                </span>
+              ) : null}
+            </button>
+          ))}
+        </div>
 
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div>
-                      <h3 className="font-semibold text-gray-900">
-                        {booking.space.name}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        Booked by{" "}
-                        {booking.guest.name || booking.guest.email}
-                      </p>
-                    </div>
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        booking.status === "PENDING"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : booking.status === "APPROVED"
-                            ? "bg-indigo-50 text-indigo-700"
-                            : booking.status === "CONFIRMED"
-                              ? "bg-green-100 text-green-700"
-                              : booking.status === "COMPLETED"
-                                ? "bg-gray-100 text-gray-700"
-                                : "bg-red-100 text-red-700"
-                      }`}
-                    >
-                      {booking.status.replace("_", " ")}
-                    </span>
+        {filteredBookings.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-border/60 bg-accent/20 py-12 text-center">
+            <p className="text-sm text-muted-foreground">No bookings found</p>
+          </div>
+        ) : (
+          <div className="mt-6 space-y-4">
+            {filteredBookings.map((booking) => (
+              <article
+                key={booking.id}
+                className="rounded-xl border border-border/60 bg-background p-4 shadow-sm"
+              >
+                <div className="flex gap-4">
+                  <div className="relative h-20 w-24 shrink-0 overflow-hidden rounded-lg bg-muted">
+                    <Image
+                      src={booking.space.images?.[0] || "/placeholder-space.jpg"}
+                      alt={booking.space.name}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>
-                        {new Date(booking.startDate).toLocaleDateString(
-                          undefined,
-                          { month: "short", day: "numeric" }
-                        )}
-                        {booking.endDate !== booking.startDate && (
-                          <>
-                            {" - "}
-                            {new Date(booking.endDate).toLocaleDateString(
-                              undefined,
-                              { month: "short", day: "numeric" }
-                            )}
-                          </>
-                        )}
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-2 flex items-start justify-between gap-2">
+                      <div>
+                        <h3 className="font-semibold text-foreground">
+                          {booking.space.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          Booked by {booking.guest.name || booking.guest.email}
+                        </p>
+                      </div>
+                      <span className={statusBadgeClassName(booking.status)}>
+                        {booking.status.replace("_", " ")}
                       </span>
                     </div>
 
-                    {booking.isHourly &&
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="size-4" />
+                        <span>
+                          {new Date(booking.startDate).toLocaleDateString(
+                            undefined,
+                            { month: "short", day: "numeric" }
+                          )}
+                          {booking.endDate !== booking.startDate ? (
+                            <>
+                              {" - "}
+                              {new Date(booking.endDate).toLocaleDateString(
+                                undefined,
+                                { month: "short", day: "numeric" }
+                              )}
+                            </>
+                          ) : null}
+                        </span>
+                      </div>
+
+                      {booking.isHourly &&
                       booking.startTime &&
-                      booking.endTime && (
+                      booking.endTime ? (
                         <div className="flex items-center gap-1">
-                          <Clock className="w-4 h-4" />
+                          <Clock className="size-4" />
                           <span>
                             {booking.startTime} - {booking.endTime}
                           </span>
                         </div>
-                      )}
+                      ) : null}
 
-                    <div className="flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      <span>{booking.guests}</span>
+                      <div className="flex items-center gap-1">
+                        <Users className="size-4" />
+                        <span>{booking.guests}</span>
+                      </div>
+
+                      <span className="font-medium text-foreground">
+                        ${booking.totalAmount.toFixed(2)}
+                      </span>
                     </div>
-
-                    <span className="font-medium text-gray-900">
-                      ${booking.totalAmount.toFixed(2)}
-                    </span>
                   </div>
                 </div>
-              </div>
 
-              {booking.status === "PENDING" && (
-                <div className="flex items-center gap-3 mt-4 pt-4 border-t">
-                  <button
-                    onClick={() => handleApprove(booking.id)}
-                    disabled={actionLoading === booking.id}
-                    className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
-                  >
-                    {actionLoading === booking.id ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Check className="w-4 h-4" />
-                    )}
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => handleReject(booking.id)}
-                    disabled={actionLoading === booking.id}
-                    className="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 font-medium rounded-lg hover:bg-red-50 transition-colors disabled:opacity-50"
-                  >
-                    <X className="w-4 h-4" />
-                    Reject
-                  </button>
-                </div>
-              )}
+                {booking.status === "PENDING" ? (
+                  <div className="mt-4 flex items-center gap-3 border-t border-border/60 pt-4">
+                    <button
+                      onClick={() => handleApprove(booking.id)}
+                      disabled={actionLoading === booking.id}
+                      className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-700 disabled:opacity-50"
+                    >
+                      {actionLoading === booking.id ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Check className="size-4" />
+                      )}
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handleReject(booking.id)}
+                      disabled={actionLoading === booking.id}
+                      className="inline-flex items-center gap-2 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 text-sm font-medium text-red-700 transition-colors hover:bg-red-500/15 disabled:opacity-50 dark:text-red-300"
+                    >
+                      <X className="size-4" />
+                      Reject
+                    </button>
+                  </div>
+                ) : null}
 
-              {booking.status === "CONFIRMED" && (
-                <div className="flex items-center gap-3 mt-4 pt-4 border-t">
-                  <button
-                    onClick={() => handleComplete(booking.id)}
-                    disabled={actionLoading === booking.id}
-                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-medium rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 shadow-md shadow-indigo-500/20"
-                  >
-                    {actionLoading === booking.id ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Check className="w-4 h-4" />
-                    )}
-                    Mark as Completed
-                  </button>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
+                {booking.status === "CONFIRMED" ? (
+                  <div className="mt-4 flex items-center gap-3 border-t border-border/60 pt-4">
+                    <button
+                      onClick={() => handleComplete(booking.id)}
+                      disabled={actionLoading === booking.id}
+                      className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+                    >
+                      {actionLoading === booking.id ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Check className="size-4" />
+                      )}
+                      Mark as Completed
+                    </button>
+                  </div>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        )}
+      </DashboardSection>
     </div>
   );
 };

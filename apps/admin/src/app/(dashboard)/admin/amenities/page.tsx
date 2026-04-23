@@ -2,6 +2,10 @@
 
 import { useEffect, useState } from "react";
 import useAuthStore from "@/stores/authStore";
+import { DashboardPageHeader } from "@/components/dashboard";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Plus, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -99,7 +103,11 @@ const AmenitiesPage = () => {
   };
 
   if (loading) {
-    return <div className="p-4">Loading amenities...</div>;
+    return (
+      <div className="rounded-xl border border-border/60 bg-card px-4 py-6 text-sm text-muted-foreground shadow-sm">
+        Loading amenities...
+      </div>
+    );
   }
 
   // Group amenities by category
@@ -115,88 +123,104 @@ const AmenitiesPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Amenities</h1>
-          <p className="text-gray-500">Manage space amenities</p>
-        </div>
-        <button
-          onClick={() => setShowAdd(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
-        >
-          <Plus className="w-4 h-4" />
-          Add Amenity
-        </button>
-      </div>
+      <DashboardPageHeader
+        title="Amenities"
+        description="Manage space amenities"
+        action={
+          <Button onClick={() => setShowAdd(true)}>
+            <Plus className="size-4" />
+            Add Amenity
+          </Button>
+        }
+      />
 
       {showAdd && (
-        <form
-          onSubmit={addAmenity}
-          className="bg-white border rounded-lg p-4 flex items-end gap-4"
-        >
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Name
-            </label>
-            <input
-              type="text"
-              required
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-              placeholder="e.g. Wi-Fi"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Category (optional)
-            </label>
-            <input
-              type="text"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-              placeholder="e.g. Technology"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={adding}
-            className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50"
-          >
-            {adding ? "Adding..." : "Add"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setShowAdd(false)}
-            className="px-4 py-2 text-gray-600 hover:text-gray-900"
-          >
-            Cancel
-          </button>
-        </form>
+        <Card className="gap-0 border-border/60 bg-card shadow-sm">
+          <CardHeader className="border-b border-border/60">
+            <CardTitle className="text-base">Add amenity</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <form
+              onSubmit={addAmenity}
+              className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto]"
+            >
+              <div className="space-y-2">
+                <label
+                  htmlFor="amenity-name"
+                  className="block text-sm font-medium text-muted-foreground"
+                >
+                  Name
+                </label>
+                <Input
+                  id="amenity-name"
+                  type="text"
+                  required
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  placeholder="e.g. Wi-Fi"
+                />
+              </div>
+              <div className="space-y-2">
+                <label
+                  htmlFor="amenity-category"
+                  className="block text-sm font-medium text-muted-foreground"
+                >
+                  Category (optional)
+                </label>
+                <Input
+                  id="amenity-category"
+                  type="text"
+                  value={newCategory}
+                  onChange={(e) => setNewCategory(e.target.value)}
+                  placeholder="e.g. Technology"
+                />
+              </div>
+              <div className="flex items-end">
+                <Button type="submit" disabled={adding}>
+                  {adding ? "Adding..." : "Add"}
+                </Button>
+              </div>
+              <div className="flex items-end">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={() => setShowAdd(false)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       )}
 
       {Object.entries(grouped).map(([category, items]) => (
-        <div key={category} className="bg-white border rounded-lg overflow-hidden">
-          <div className="px-4 py-3 bg-gray-50 border-b">
-            <h3 className="font-medium text-gray-700">{category}</h3>
+        <div
+          key={category}
+          className="overflow-hidden rounded-xl border border-border/60 bg-card shadow-sm"
+        >
+          <div className="border-b border-border/60 bg-muted/40 px-4 py-3">
+            <h3 className="font-medium text-card-foreground">{category}</h3>
           </div>
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-border/60">
             {items.map((amenity) => (
               <div
                 key={amenity.id}
-                className="flex items-center justify-between px-4 py-3"
+                className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-accent/30"
               >
-                <span className="text-sm text-gray-900">
-                  {amenity.icon && <span className="mr-2">{amenity.icon}</span>}
+                <span className="text-sm text-card-foreground">
+                  {amenity.icon ? <span className="mr-2">{amenity.icon}</span> : null}
                   {amenity.name}
                 </span>
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={`Delete amenity ${amenity.name}`}
                   onClick={() => deleteAmenity(amenity.id)}
-                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                  className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                 >
-                  <Trash2 className="w-4 h-4" />
-                </button>
+                  <Trash2 className="size-4" />
+                </Button>
               </div>
             ))}
           </div>
@@ -204,8 +228,8 @@ const AmenitiesPage = () => {
       ))}
 
       {amenities.length === 0 && (
-        <div className="text-center py-12 bg-gray-50 rounded-xl">
-          <p className="text-gray-500">No amenities found</p>
+        <div className="rounded-xl border border-dashed border-border/60 bg-card px-6 py-12 text-center shadow-sm">
+          <p className="text-muted-foreground">No amenities found</p>
         </div>
       )}
     </div>

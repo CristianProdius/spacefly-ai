@@ -13,6 +13,9 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 
+import { DashboardPageHeader, DashboardSection } from "@/components/dashboard";
+import { Button } from "@/components/ui/button";
+
 const PRODUCT_SERVICE_URL =
   process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL || "http://localhost:8000";
 
@@ -50,6 +53,11 @@ const cancellationPolicies = [
   { value: "STRICT", label: "Strict" },
   { value: "NON_REFUNDABLE", label: "Non-Refundable" },
 ];
+
+const fieldClassName =
+  "w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground shadow-xs outline-none transition-[color,box-shadow] placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30";
+
+const labelClassName = "mb-1 block text-sm font-medium text-foreground";
 
 const NewSpacePage = () => {
   const router = useRouter();
@@ -218,40 +226,32 @@ const NewSpacePage = () => {
   };
 
   return (
-    <div>
-      <Link
-        href="/host/spaces"
-        className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6"
-      >
-        <ArrowLeft className="w-5 h-5" />
-        Back to Spaces
-      </Link>
-
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Create New Space</h1>
-        <p className="text-gray-600 mt-1">
-          Fill in the details to list your space
-        </p>
-      </div>
+    <div className="space-y-8">
+      <DashboardPageHeader
+        title="Create New Space"
+        description="Fill in the details to list your space"
+        action={
+          <Link
+            href="/host/spaces"
+            className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+          >
+            <ArrowLeft className="size-4" />
+            Back to Spaces
+          </Link>
+        }
+      />
 
       {error && (
-        <div className="p-4 bg-red-50 text-red-700 rounded-lg mb-6">
+        <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Basic Info */}
-        <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Basic Information
-          </h2>
-
+        <DashboardSection title="Basic Information" contentClassName="space-y-4">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Space Name
-              </label>
+              <label className={labelClassName}>Space Name</label>
               <input
                 type="text"
                 required
@@ -259,15 +259,13 @@ const NewSpacePage = () => {
                 onChange={(e) =>
                   setFormData((prev) => ({ ...prev, name: e.target.value }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={fieldClassName}
                 placeholder="e.g. Modern Downtown Meeting Room"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Short Description
-              </label>
+              <label className={labelClassName}>Short Description</label>
               <input
                 type="text"
                 required
@@ -279,15 +277,13 @@ const NewSpacePage = () => {
                     shortDescription: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={fieldClassName}
                 placeholder="Brief description for search results"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Full Description
-              </label>
+              <label className={labelClassName}>Full Description</label>
               <textarea
                 required
                 minLength={50}
@@ -299,16 +295,14 @@ const NewSpacePage = () => {
                     description: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={`${fieldClassName} min-h-28 resize-y`}
                 placeholder="Detailed description of your space"
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Space Type
-                </label>
+                <label className={labelClassName}>Space Type</label>
                 <select
                   required
                   value={formData.spaceType}
@@ -318,7 +312,7 @@ const NewSpacePage = () => {
                       spaceType: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                  className={fieldClassName}
                 >
                   {spaceTypes.map((type) => (
                     <option key={type.value} value={type.value}>
@@ -329,9 +323,7 @@ const NewSpacePage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Category
-                </label>
+                <label className={labelClassName}>Category</label>
                 <select
                   required
                   value={formData.categorySlug}
@@ -341,7 +333,7 @@ const NewSpacePage = () => {
                       categorySlug: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                  className={fieldClassName}
                 >
                   <option value="">Select a category</option>
                   {categories.map((cat) => (
@@ -354,9 +346,7 @@ const NewSpacePage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Capacity
-              </label>
+              <label className={labelClassName}>Capacity</label>
               <input
                 type="number"
                 required
@@ -368,22 +358,19 @@ const NewSpacePage = () => {
                     capacity: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={fieldClassName}
                 placeholder="Maximum number of people"
               />
             </div>
           </div>
-        </section>
+        </DashboardSection>
 
-        {/* Images */}
-        <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Images</h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        <DashboardSection title="Images" contentClassName="space-y-4">
+          <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
             {formData.images.map((img, idx) => (
               <div
                 key={idx}
-                className="relative aspect-square rounded-lg overflow-hidden"
+                className="relative aspect-square overflow-hidden rounded-lg border border-border/60 bg-accent/20"
               >
                 <Image
                   src={img}
@@ -395,20 +382,22 @@ const NewSpacePage = () => {
                   type="button"
                   onClick={() => removeImage(idx)}
                   aria-label={`Remove image ${idx + 1}`}
-                  className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
+                  className="absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full bg-destructive text-white shadow-sm transition-colors hover:bg-destructive/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/30"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
             ))}
 
-            <label className="aspect-square border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50 transition-colors">
+            <label className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border/60 bg-accent/20 px-4 text-center transition-colors hover:border-primary/40 hover:bg-accent/30">
               {uploadingImage ? (
-                <Loader2 className="w-8 h-8 text-indigo-500 animate-spin" />
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
               ) : (
                 <>
-                  <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                  <span className="text-sm text-gray-500">Upload</span>
+                  <Upload className="mb-2 h-8 w-8 text-muted-foreground" />
+                  <span className="text-sm font-medium text-foreground">
+                    Upload
+                  </span>
                 </>
               )}
               <input
@@ -421,25 +410,20 @@ const NewSpacePage = () => {
             </label>
           </div>
           {uploadError && (
-            <p className="text-sm text-red-600 mb-3">{uploadError}</p>
+            <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              {uploadError}
+            </p>
           )}
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-muted-foreground">
             Upload high-quality photos of your space. First image will be the
             cover.
           </p>
-        </section>
+        </DashboardSection>
 
-        {/* Location */}
-        <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Location
-          </h2>
-
+        <DashboardSection title="Location" contentClassName="space-y-4">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Address
-              </label>
+              <label className={labelClassName}>Address</label>
               <input
                 type="text"
                 required
@@ -450,16 +434,14 @@ const NewSpacePage = () => {
                     address: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={fieldClassName}
                 placeholder="Street address"
               />
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  City
-                </label>
+                <label className={labelClassName}>City</label>
                 <input
                   type="text"
                   required
@@ -470,13 +452,11 @@ const NewSpacePage = () => {
                       city: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                  className={fieldClassName}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  State
-                </label>
+                <label className={labelClassName}>State</label>
                 <input
                   type="text"
                   value={formData.state}
@@ -486,13 +466,11 @@ const NewSpacePage = () => {
                       state: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                  className={fieldClassName}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Country
-                </label>
+                <label className={labelClassName}>Country</label>
                 <input
                   type="text"
                   required
@@ -503,13 +481,11 @@ const NewSpacePage = () => {
                       country: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                  className={fieldClassName}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Postal Code
-                </label>
+                <label className={labelClassName}>Postal Code</label>
                 <input
                   type="text"
                   value={formData.postalCode}
@@ -519,22 +495,17 @@ const NewSpacePage = () => {
                       postalCode: e.target.value,
                     }))
                   }
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                  className={fieldClassName}
                 />
               </div>
             </div>
           </div>
-        </section>
+        </DashboardSection>
 
-        {/* Pricing */}
-        <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Pricing</h2>
-
+        <DashboardSection title="Pricing" contentClassName="space-y-4">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Pricing Type
-              </label>
+              <label className={labelClassName}>Pricing Type</label>
               <select
                 required
                 value={formData.pricingType}
@@ -544,7 +515,7 @@ const NewSpacePage = () => {
                     pricingType: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={fieldClassName}
               >
                 {pricingTypes.map((type) => (
                   <option key={type.value} value={type.value}>
@@ -554,13 +525,11 @@ const NewSpacePage = () => {
               </select>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {(formData.pricingType === "HOURLY" ||
                 formData.pricingType === "BOTH") && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Price Per Hour
-                  </label>
+                  <label className={labelClassName}>Price Per Hour</label>
                   <input
                     type="number"
                     required
@@ -573,7 +542,7 @@ const NewSpacePage = () => {
                         pricePerHour: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                    className={fieldClassName}
                     placeholder="$"
                   />
                 </div>
@@ -582,9 +551,7 @@ const NewSpacePage = () => {
               {(formData.pricingType === "DAILY" ||
                 formData.pricingType === "BOTH") && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Price Per Day
-                  </label>
+                  <label className={labelClassName}>Price Per Day</label>
                   <input
                     type="number"
                     required
@@ -597,31 +564,26 @@ const NewSpacePage = () => {
                         pricePerDay: e.target.value,
                       }))
                     }
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                    className={fieldClassName}
                     placeholder="$"
                   />
                 </div>
               )}
             </div>
           </div>
-        </section>
+        </DashboardSection>
 
-        {/* Amenities */}
-        <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Amenities
-          </h2>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <DashboardSection title="Amenities">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {amenities.map((amenity) => (
               <button
                 key={amenity.id}
                 type="button"
                 onClick={() => toggleAmenity(amenity.id)}
-                className={`flex items-center gap-2 px-4 py-3 border rounded-lg transition-colors ${
+                className={`flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 ${
                   formData.amenityIds.includes(amenity.id)
-                    ? "border-indigo-500 bg-indigo-50 text-indigo-700"
-                    : "border-gray-200 hover:bg-gray-50"
+                    ? "border-primary/40 bg-primary/10 text-primary shadow-sm"
+                    : "border-border/60 bg-card text-card-foreground hover:bg-accent/30"
                 }`}
               >
                 {formData.amenityIds.includes(amenity.id) && (
@@ -631,19 +593,12 @@ const NewSpacePage = () => {
               </button>
             ))}
           </div>
-        </section>
+        </DashboardSection>
 
-        {/* Settings */}
-        <section className="bg-white border border-gray-200 rounded-xl p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">
-            Settings
-          </h2>
-
+        <DashboardSection title="Settings" contentClassName="space-y-4">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Cancellation Policy
-              </label>
+              <label className={labelClassName}>Cancellation Policy</label>
               <select
                 required
                 value={formData.cancellationPolicy}
@@ -653,7 +608,7 @@ const NewSpacePage = () => {
                     cancellationPolicy: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={fieldClassName}
               >
                 {cancellationPolicies.map((policy) => (
                   <option key={policy.value} value={policy.value}>
@@ -664,9 +619,7 @@ const NewSpacePage = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                House Rules
-              </label>
+              <label className={labelClassName}>House Rules</label>
               <textarea
                 rows={3}
                 value={formData.houseRules}
@@ -676,12 +629,12 @@ const NewSpacePage = () => {
                     houseRules: e.target.value,
                   }))
                 }
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
+                className={`${fieldClassName} min-h-24 resize-y`}
                 placeholder="Any rules guests should know about"
               />
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 rounded-lg border border-border/60 bg-accent/20 px-4 py-3">
               <input
                 type="checkbox"
                 id="instantBook"
@@ -692,27 +645,27 @@ const NewSpacePage = () => {
                     instantBook: e.target.checked,
                   }))
                 }
-                className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                className="h-5 w-5 rounded border-input text-primary focus:ring-2 focus:ring-ring/50 dark:bg-input/30"
               />
-              <label htmlFor="instantBook" className="text-sm text-gray-700">
+              <label
+                htmlFor="instantBook"
+                className="text-sm text-muted-foreground"
+              >
                 Enable instant booking (guests can book without approval)
               </label>
             </div>
           </div>
-        </section>
+        </DashboardSection>
 
-        {/* Submit */}
         <div className="flex items-center justify-end gap-4">
-          <Link
-            href="/host/spaces"
-            className="px-6 py-3 text-gray-600 font-medium hover:text-gray-900"
-          >
-            Cancel
-          </Link>
-          <button
+          <Button asChild variant="ghost">
+            <Link href="/host/spaces">Cancel</Link>
+          </Button>
+          <Button
             type="submit"
+            size="lg"
             disabled={loading || formData.images.length === 0}
-            className="px-6 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold rounded-lg hover:from-indigo-700 hover:to-violet-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-md shadow-indigo-500/20"
+            className="gap-2"
           >
             {loading ? (
               <>
@@ -722,7 +675,7 @@ const NewSpacePage = () => {
             ) : (
               "Create Space"
             )}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
