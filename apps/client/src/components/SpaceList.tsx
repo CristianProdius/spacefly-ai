@@ -5,9 +5,32 @@ import SpaceFilter from "./SpaceFilter";
 import { Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
+import { getBrowseTaxonomy } from "@/lib/taxonomy.server";
+import {
+  buildBrowseHref,
+  resolveBrowseSelection,
+  type BrowseTaxonomy,
+} from "@/lib/taxonomy";
+
+type SpaceWithCategory = Space & {
+  category?: {
+    group?: {
+      name?: string | null;
+      slug?: string | null;
+      sortOrder?: number | null;
+    } | null;
+    groupSlug?: string | null;
+    name?: string | null;
+    slug?: string | null;
+  } | null;
+};
 
 interface FetchParams {
+  category?: string;
+  categorySlug?: string;
   type?: string;
+  group?: string;
+  groupSlug?: string;
   city?: string;
   capacity?: string;
   minPrice?: string;
@@ -17,11 +40,36 @@ interface FetchParams {
   limit?: string;
 }
 
-const fetchSpaces = async (params: FetchParams): Promise<Space[]> => {
+const fetchSpaces = async (
+  params: FetchParams,
+  taxonomy: BrowseTaxonomy
+): Promise<SpaceWithCategory[]> => {
   const searchParams = new URLSearchParams();
+  const hasExplicitTaxonomyParams = Boolean(
+    params.category ||
+      params.categorySlug ||
+      params.group ||
+      params.groupSlug
+  );
+  const browseSelection = resolveBrowseSelection(
+    {
+      category: params.category,
+      categorySlug: params.categorySlug,
+      group: params.group,
+      groupSlug: params.groupSlug,
+      type: params.type,
+    },
+    taxonomy
+  );
 
-  if (params.type && params.type !== "all") {
+  if (params.type && !hasExplicitTaxonomyParams) {
     searchParams.set("spaceType", params.type);
+  } else if (browseSelection.categorySlug) {
+    searchParams.set("categorySlug", browseSelection.categorySlug);
+  } else if (browseSelection.groupSlug) {
+    searchParams.set("groupSlug", browseSelection.groupSlug);
+  } else if (browseSelection.legacySpaceType) {
+    searchParams.set("spaceType", browseSelection.legacySpaceType);
   }
   if (params.city) searchParams.set("city", params.city);
   if (params.capacity) searchParams.set("capacity", params.capacity);
@@ -48,7 +96,11 @@ const fetchSpaces = async (params: FetchParams): Promise<Space[]> => {
 };
 
 interface SpaceListProps {
+  category?: string;
+  categorySlug?: string;
   type?: string;
+  group?: string;
+  groupSlug?: string;
   city?: string;
   capacity?: string;
   minPrice?: string;
@@ -61,6 +113,10 @@ interface SpaceListProps {
 
 const SpaceList = async ({
   type,
+  category,
+  categorySlug,
+  group,
+  groupSlug,
   city,
   capacity,
   minPrice,
@@ -70,23 +126,34 @@ const SpaceList = async ({
   variant,
   showCategories = true,
 }: SpaceListProps) => {
+  const taxonomy = await getBrowseTaxonomy();
+  const browseSelection = resolveBrowseSelection(
+    { category, categorySlug, group, groupSlug, type },
+    taxonomy
+  );
   const spaces = await fetchSpaces({
-    type,
+    category,
+    categorySlug,
+    group,
+    groupSlug,
     city,
     capacity,
     minPrice,
     maxPrice,
     instantBook,
+    type,
     sort: sort || "newest",
     limit: variant === "homepage" ? "8" : undefined,
-  });
+  }, taxonomy);
 
   const t = await getTranslations("spaces");
   const tc = await getTranslations("common");
 
   return (
     <div className="w-full">
-      {showCategories && <SpaceCategories />}
+      {showCategories && (
+        <SpaceCategories selection={browseSelection} taxonomy={taxonomy} />
+      )}
       {variant === "browse" && <SpaceFilter />}
 
       {spaces.length === 0 ? (
@@ -108,7 +175,7 @@ const SpaceList = async ({
       {variant === "homepage" && spaces.length > 0 && (
         <div className="flex justify-center mt-8">
           <Link
-            href="/spaces"
+            href={buildBrowseHref(browseSelection)}
             className="px-6 py-3 border border-foreground text-foreground rounded-lg font-medium hover:bg-foreground hover:text-white transition-colors"
           >
             {tc("viewAllSpaces")}

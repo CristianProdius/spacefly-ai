@@ -6,11 +6,13 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { parseImages, getPriceDisplay, type PriceLabels } from "@/lib/utils";
+import { getSpaceCategoryLabel } from "@/lib/taxonomy";
 
 const SpaceCard = ({ space }: { space: Space }) => {
   const images = parseImages(space.images);
   const t = useTranslations("spaces");
   const tc = useTranslations("common");
+  const categoryLabel = getSpaceCategoryLabel(space);
 
   const priceLabels: PriceLabels = {
     perHr: tc("perHrShort"),
@@ -35,7 +37,7 @@ const SpaceCard = ({ space }: { space: Space }) => {
             </span>
           )}
           <span className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-foreground text-xs px-2 py-1 rounded-full border border-border/50">
-            {t(`spaceTypes.${space.spaceType}`) || space.spaceType}
+            {categoryLabel || t(`spaceTypes.${space.spaceType}`) || space.spaceType}
           </span>
         </div>
 

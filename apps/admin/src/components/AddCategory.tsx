@@ -23,18 +23,30 @@ import { Button } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import useAuthStore from "@/stores/authStore";
 import { toast } from "react-toastify";
+import { SPACE_CATEGORY_GROUPS, SPACE_CATEGORY_GROUP_SLUGS } from "@/lib/taxonomy";
 
 const CategoryFormSchema = z.object({
+  groupSlug: z.enum(SPACE_CATEGORY_GROUP_SLUGS, {
+    error: "Group is required",
+  }),
   name: z.string().min(1, "Name is required"),
   slug: z.string().min(1, "Slug is required"),
   description: z.string().optional(),
   icon: z.string().optional(),
 });
 
-const AddCategory = () => {
+const fieldClassName =
+  "w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground shadow-xs outline-none transition-[color,box-shadow] placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30";
+
+interface AddCategoryProps {
+  onCreated?: () => void;
+}
+
+const AddCategory = ({ onCreated }: AddCategoryProps) => {
   const form = useForm<z.infer<typeof CategoryFormSchema>>({
     resolver: zodResolver(CategoryFormSchema),
     defaultValues: {
+      groupSlug: "business-office",
       name: "",
       slug: "",
     },
@@ -63,6 +75,7 @@ const AddCategory = () => {
     onSuccess: () => {
       toast.success("Category created successfully");
       form.reset();
+      onCreated?.();
     },
     onError: (error) => {
       toast.error(error.message);
@@ -79,6 +92,28 @@ const AddCategory = () => {
               className="space-y-6"
               onSubmit={form.handleSubmit((data) => mutation.mutate(data))}
             >
+              <FormField
+                control={form.control}
+                name="groupSlug"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Group</FormLabel>
+                    <FormControl>
+                      <select {...field} className={fieldClassName}>
+                        {SPACE_CATEGORY_GROUPS.map((group) => (
+                          <option key={group.slug} value={group.slug}>
+                            {group.name}
+                          </option>
+                        ))}
+                      </select>
+                    </FormControl>
+                    <FormDescription>
+                      Assign the category to an existing taxonomy group.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="name"

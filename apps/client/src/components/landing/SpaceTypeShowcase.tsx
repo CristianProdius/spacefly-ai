@@ -4,23 +4,37 @@ import {
   Heart,
   LayoutGrid,
   PartyPopper,
+  Store,
   Users,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
+import { getBrowseTaxonomy } from "@/lib/taxonomy.server";
+import {
+  buildBrowseHref,
+  getFeaturedCategories,
+  getTaxonomyIconKey,
+} from "@/lib/taxonomy";
 
-const spaceTypes = [
-  { slug: "OFFICE_DESK", icon: LayoutGrid, price: "$15" },
-  { slug: "PRIVATE_OFFICE", icon: DoorOpen, price: "$25" },
-  { slug: "MEETING_ROOM", icon: Users, price: "$30" },
-  { slug: "EVENT_VENUE", icon: PartyPopper, price: "$75" },
-  { slug: "WEDDING_VENUE", icon: Heart, price: "$150" },
-  { slug: "COWORKING_SPACE", icon: Building2, price: "$10" },
-] as const;
+const taxonomyIcons = {
+  all: LayoutGrid,
+  building: Building2,
+  door: DoorOpen,
+  grid: LayoutGrid,
+  heart: Heart,
+  party: PartyPopper,
+  store: Store,
+  users: Users,
+} as const;
 
 const SpaceTypeShowcase = async () => {
   const t = await getTranslations("home");
-  const ts = await getTranslations("spaces");
+  const taxonomy = await getBrowseTaxonomy();
+  const featuredCategories = getFeaturedCategories(taxonomy);
+
+  if (featuredCategories.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-12 md:py-16">
@@ -29,12 +43,25 @@ const SpaceTypeShowcase = async () => {
           {t("spaceTypeTitle")}
         </h2>
         <div className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap scrollbar-none">
-          {spaceTypes.map((type) => {
-            const Icon = type.icon;
+          {featuredCategories.map((category) => {
+            const Icon =
+              taxonomyIcons[
+                getTaxonomyIconKey({
+                  groupName: category.group.name,
+                  groupSlug: category.groupSlug,
+                  icon: category.icon,
+                  name: category.name,
+                  slug: category.slug,
+                })
+              ];
+
             return (
               <Link
-                key={type.slug}
-                href={`/spaces?type=${type.slug}`}
+                key={category.slug}
+                href={buildBrowseHref({
+                  categorySlug: category.slug,
+                  groupSlug: category.groupSlug,
+                })}
                 className="group flex flex-col items-center gap-2.5 shrink-0 w-28 sm:w-auto sm:flex-1 py-4 px-3 rounded-xl hover:bg-subtle transition-colors text-center"
               >
                 <div className="w-12 h-12 rounded-full bg-primary-light flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
@@ -42,10 +69,10 @@ const SpaceTypeShowcase = async () => {
                 </div>
                 <div>
                   <p className="text-sm font-medium text-foreground whitespace-nowrap">
-                    {ts(`spaceTypes.${type.slug}`)}
+                    {category.name}
                   </p>
                   <p className="text-xs text-muted mt-0.5">
-                    {t("spaceTypeFrom", { price: type.price })}
+                    {category.group.name}
                   </p>
                 </div>
               </Link>

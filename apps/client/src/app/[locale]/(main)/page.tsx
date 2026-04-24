@@ -7,9 +7,15 @@ import FAQ from "@/components/landing/FAQ";
 const Homepage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ type?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    categorySlug?: string;
+    type?: string;
+    group?: string;
+    groupSlug?: string;
+  }>;
 }) => {
-  const { type } = await searchParams;
+  const { category, categorySlug, group, groupSlug, type } = await searchParams;
 
   return (
     <div>
@@ -18,7 +24,15 @@ const Homepage = async ({
 
       {/* 2. Browse Spaces */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <SpaceList type={type} variant="homepage" showCategories />
+        <SpaceList
+          category={category}
+          categorySlug={categorySlug}
+          group={group}
+          groupSlug={groupSlug}
+          type={type}
+          variant="homepage"
+          showCategories
+        />
       </section>
 
       {/* 3. How It Works */}

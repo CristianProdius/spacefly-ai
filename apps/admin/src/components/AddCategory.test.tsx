@@ -93,13 +93,17 @@ describe("add category sheet", () => {
     });
 
     expect(container.textContent).toContain("Add Category");
+    expect(container.textContent).toContain("Group");
     expect(container.textContent).toContain("Name");
     expect(container.textContent).toContain("Slug");
     expect(container.querySelector('[data-slot="sheet-content"]')).not.toBeNull();
     expect(container.querySelector("input")).not.toBeNull();
+    expect(container.querySelector("select")).not.toBeNull();
     expect(container.querySelector('button[type="submit"]')?.textContent).toContain(
       "Submit"
     );
+    expect(container.textContent).toContain("Business & Office");
+    expect(container.textContent).toContain("Industrial & Logistics");
 
     const sheetContent = container.querySelector('[data-slot="sheet-content"]');
     expect(sheetContent?.className).toContain("bg-background");

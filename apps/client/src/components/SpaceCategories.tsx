@@ -3,63 +3,153 @@
 import {
   Building2,
   DoorOpen,
-  Users,
-  PartyPopper,
+  Grid3X3,
   Heart,
   LayoutGrid,
-  Grid3X3,
+  PartyPopper,
+  Store,
+  Users,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import {
+  getFeaturedCategories,
+  getTaxonomyIconKey,
+  type BrowseSelection,
+  type BrowseTaxonomy,
+  withBrowseSelection,
+} from "@/lib/taxonomy";
 
-const spaceTypeIcons = [
-  { icon: <Grid3X3 className="size-4" />, slug: "all", key: "allSpaces" as const },
-  { icon: <LayoutGrid className="size-4" />, slug: "OFFICE_DESK", key: "spaceTypes.OFFICE_DESK" as const },
-  { icon: <DoorOpen className="size-4" />, slug: "PRIVATE_OFFICE", key: "spaceTypes.PRIVATE_OFFICE" as const },
-  { icon: <Users className="size-4" />, slug: "MEETING_ROOM", key: "spaceTypes.MEETING_ROOM" as const },
-  { icon: <PartyPopper className="size-4" />, slug: "EVENT_VENUE", key: "spaceTypes.EVENT_VENUE" as const },
-  { icon: <Heart className="size-4" />, slug: "WEDDING_VENUE", key: "spaceTypes.WEDDING_VENUE" as const },
-  { icon: <Building2 className="size-4" />, slug: "COWORKING_SPACE", key: "spaceTypes.COWORKING_SPACE" as const },
-];
+const taxonomyIcons = {
+  all: Grid3X3,
+  building: Building2,
+  door: DoorOpen,
+  grid: LayoutGrid,
+  heart: Heart,
+  party: PartyPopper,
+  store: Store,
+  users: Users,
+} as const;
 
-const SpaceCategories = () => {
+interface SpaceCategoriesProps {
+  selection: BrowseSelection;
+  taxonomy: BrowseTaxonomy;
+}
+
+const SpaceCategories = ({ selection, taxonomy }: SpaceCategoriesProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations("spaces");
 
-  const selectedType = searchParams.get("type") || "all";
+  const visibleCategories = selection.groupSlug
+    ? taxonomy.groups.find((group) => group.slug === selection.groupSlug)?.categories ?? []
+    : getFeaturedCategories(taxonomy, 8);
 
-  const handleChange = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value === "all") {
-      params.delete("type");
-    } else {
-      params.set("type", value);
-    }
-    router.push(`${pathname}?${params.toString()}` as any, { scroll: false });
+  const pushSelection = (nextSelection: BrowseSelection) => {
+    const nextParams = withBrowseSelection(
+      new URLSearchParams(searchParams.toString()),
+      nextSelection
+    );
+    const query = nextParams.toString();
+    const href = (query ? `${pathname}?${query}` : pathname) as Parameters<
+      typeof router.push
+    >[0];
+
+    router.push(href, {
+      scroll: false,
+    });
   };
 
+  if (taxonomy.groups.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="relative mb-6">
-      <div className="flex gap-2 overflow-x-auto scrollbar-none px-0.5 pb-1">
-        {spaceTypeIcons.map((type) => (
+    <div className="mb-6 space-y-3">
+      <div className="relative">
+        <div className="flex gap-2 overflow-x-auto scrollbar-none px-0.5 pb-1">
           <button
-            key={type.slug}
-            onClick={() => handleChange(type.slug)}
-            className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors shrink-0 md:shrink md:flex-1 ${
-              type.slug === selectedType || (type.slug === "all" && !searchParams.get("type"))
+            onClick={() => pushSelection({})}
+            className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors shrink-0 ${
+              !selection.groupSlug && !selection.categorySlug
                 ? "bg-primary text-white shadow-sm shadow-primary/20"
                 : "bg-white text-muted border border-border hover:border-primary/30"
             }`}
           >
-            {type.icon}
-            {t(type.key)}
+            <Grid3X3 className="size-4" />
+            {t("allSpaces")}
           </button>
-        ))}
+
+          {taxonomy.groups.map((group) => {
+            const Icon = taxonomyIcons[
+              getTaxonomyIconKey({
+                groupName: group.name,
+                groupSlug: group.slug,
+                name: group.name,
+                slug: group.slug,
+              })
+            ];
+
+            return (
+              <button
+                key={group.slug}
+                onClick={() => pushSelection({ groupSlug: group.slug })}
+                className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors shrink-0 ${
+                  selection.groupSlug === group.slug && !selection.categorySlug
+                    ? "bg-primary text-white shadow-sm shadow-primary/20"
+                    : "bg-white text-muted border border-border hover:border-primary/30"
+                }`}
+              >
+                <Icon className="size-4" />
+                {group.name}
+              </button>
+            );
+          })}
+        </div>
+        <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
       </div>
-      <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
+
+      {visibleCategories.length > 0 && (
+        <div className="relative">
+          <div className="flex gap-2 overflow-x-auto scrollbar-none px-0.5 pb-1">
+            {visibleCategories.map((category) => {
+              const Icon =
+                taxonomyIcons[
+                  getTaxonomyIconKey({
+                    groupName: category.group.name,
+                    groupSlug: category.groupSlug,
+                    icon: category.icon,
+                    name: category.name,
+                    slug: category.slug,
+                  })
+                ];
+
+              return (
+                <button
+                  key={category.slug}
+                  onClick={() =>
+                    pushSelection({
+                      categorySlug: category.slug,
+                      groupSlug: category.groupSlug,
+                    })
+                  }
+                  className={`flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors shrink-0 ${
+                    selection.categorySlug === category.slug
+                      ? "bg-primary text-white shadow-sm shadow-primary/20"
+                      : "bg-white text-muted border border-border hover:border-primary/30"
+                  }`}
+                >
+                  <Icon className="size-4" />
+                  {category.name}
+                </button>
+              );
+            })}
+          </div>
+          <div className="absolute right-0 top-0 bottom-1 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
+        </div>
+      )}
     </div>
   );
 };

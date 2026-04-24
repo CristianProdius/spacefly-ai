@@ -1,34 +1,45 @@
 "use client";
 
-import { Space, SpaceType } from "@repo/types";
+import { Space } from "@repo/types";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { cn, parseImages, getPriceDisplay } from "@/lib/utils";
 import { useState, useRef } from "react";
+import { deriveTaxonomyFromSpaces } from "@/lib/taxonomy";
 
-const categories: { label: string; value: string }[] = [
-  { label: "All Spaces", value: "all" },
-  { label: "Office Desks", value: "OFFICE_DESK" },
-  { label: "Private Offices", value: "PRIVATE_OFFICE" },
-  { label: "Meeting Rooms", value: "MEETING_ROOM" },
-  { label: "Event Venues", value: "EVENT_VENUE" },
-  { label: "Wedding Venues", value: "WEDDING_VENUE" },
-  { label: "Coworking", value: "COWORKING_SPACE" },
-];
+type FeaturedSpace = Space & {
+  category?: {
+    name?: string | null;
+    slug?: string | null;
+  } | null;
+  categorySlug?: string | null;
+};
 
 export default function FeaturedTabbedCarousel({
   spaces,
 }: {
-  spaces: Space[];
+  spaces: FeaturedSpace[];
 }) {
   const [activeCategory, setActiveCategory] = useState("all");
   const scrollRef = useRef<HTMLDivElement>(null);
+  const taxonomy = deriveTaxonomyFromSpaces(spaces);
+  const categories = [
+    { label: "All Spaces", value: "all" },
+    ...taxonomy.categories.map((category) => ({
+      label: category.name,
+      value: category.slug,
+    })),
+  ];
 
   const filtered =
     activeCategory === "all"
       ? spaces
-      : spaces.filter((s) => s.spaceType === activeCategory);
+      : spaces.filter(
+          (space) =>
+            (space.category?.slug || space.categorySlug || "").toLowerCase() ===
+            activeCategory
+        );
 
   return (
     <section className="py-16">

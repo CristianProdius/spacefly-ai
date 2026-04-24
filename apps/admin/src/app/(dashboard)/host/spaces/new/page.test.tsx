@@ -5,6 +5,21 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite
 
 const mockStore = vi.fn();
 const push = vi.fn();
+const groupedCategoriesResponse = [
+  {
+    categories: [
+      {
+        groupSlug: "retail-commercial",
+        id: 17,
+        name: "Retail Store / Shop Front",
+        slug: "retail-store-shop-front",
+        spaceType: "PRIVATE_OFFICE",
+      },
+    ],
+    name: "Retail & Commercial",
+    slug: "retail-commercial",
+  },
+];
 
 vi.mock("@/stores/authStore", () => ({
   default: () => mockStore(),
@@ -121,7 +136,7 @@ describe("host new space page", () => {
         descriptionInput,
         "A bright studio for workshops and events with plenty of natural light."
       );
-      setInputValue(categorySelect, "meeting-spaces");
+      setInputValue(categorySelect, "retail-store-shop-front");
       setInputValue(capacityInput, "8");
       setInputValue(addressInput, "Main Street 1");
       setInputValue(cityInput, "Chisinau");
@@ -155,7 +170,7 @@ describe("host new space page", () => {
         .fn()
         .mockResolvedValueOnce({
           ok: true,
-          json: async () => [{ id: 1, name: "Meeting Spaces", slug: "meeting-spaces" }],
+          json: async () => groupedCategoriesResponse,
         })
         .mockResolvedValueOnce({
           ok: true,
@@ -200,6 +215,7 @@ describe("host new space page", () => {
     expect(container.textContent).toContain("Amenities");
     expect(container.textContent).toContain("Settings");
     expect(container.textContent).toContain("Enable instant booking");
+    expect(container.textContent).not.toContain("Space Type");
     expect(container.querySelector('a[href="/host/spaces"]')?.textContent).toContain(
       "Back to Spaces"
     );
@@ -249,7 +265,7 @@ describe("host new space page", () => {
         .fn()
         .mockResolvedValueOnce({
           ok: true,
-          json: async () => [{ id: 1, name: "Meeting Spaces", slug: "meeting-spaces" }],
+          json: async () => groupedCategoriesResponse,
         })
         .mockResolvedValueOnce({
           ok: true,
@@ -328,7 +344,7 @@ describe("host new space page", () => {
         .fn()
         .mockResolvedValueOnce({
           ok: true,
-          json: async () => [{ id: 1, name: "Meeting Spaces", slug: "meeting-spaces" }],
+          json: async () => groupedCategoriesResponse,
         })
         .mockResolvedValueOnce({
           ok: true,
@@ -411,7 +427,14 @@ describe("host new space page", () => {
       if (url.endsWith("/categories")) {
         return {
           ok: true,
-          json: async () => [{ id: 1, name: "Meeting Spaces", slug: "meeting-spaces" }],
+          json: async () => groupedCategoriesResponse,
+        };
+      }
+
+      if (url.endsWith("/categories?grouped=true")) {
+        return {
+          ok: true,
+          json: async () => groupedCategoriesResponse,
         };
       }
 
@@ -498,7 +521,7 @@ describe("host new space page", () => {
       shortDescription: "A bright studio for workshops",
       description:
         "A bright studio for workshops and events with plenty of natural light.",
-      spaceType: "MEETING_ROOM",
+      spaceType: "PRIVATE_OFFICE",
       pricingType: "BOTH",
       pricePerHour: 25,
       pricePerDay: 120,
@@ -511,7 +534,7 @@ describe("host new space page", () => {
       instantBook: false,
       cancellationPolicy: "MODERATE",
       houseRules: "",
-      categorySlug: "meeting-spaces",
+      categorySlug: "retail-store-shop-front",
       amenityIds: [1],
       images: ["/uploaded-space.png"],
     });

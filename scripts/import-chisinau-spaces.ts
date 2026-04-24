@@ -1,4 +1,5 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { pathToFileURL } from "node:url";
 import { Prisma } from "../packages/db/generated/prisma/index.js";
 import { prisma } from "../packages/db/src/client.ts";
 import {
@@ -7,7 +8,11 @@ import {
   getUploadConfig,
   sniffUploadedImageType,
 } from "../apps/product-service/src/utils/upload.ts";
-import { CHISINAU_SPACES, type CuratedSpaceSeed } from "./data/chisinau-spaces.ts";
+import {
+  CHISINAU_SPACES,
+  type CuratedSpaceSeed,
+  validateCuratedSpaceSeeds,
+} from "./data/chisinau-spaces.ts";
 
 const OWNER_EMAIL = "cristian@prodiusenterprise.com";
 const DEFAULT_DESCRIPTION_SUFFIX =
@@ -143,43 +148,11 @@ const uploadImageToStorage = async (
   return buildPublicUploadUrl(objectKey);
 };
 
-const validateManifest = () => {
-  const names = new Set<string>();
-  const categoryCounts = new Map<CuratedSpaceSeed["categorySlug"], number>();
-
-  for (const space of CHISINAU_SPACES) {
-    if (space.city !== "Chisinau") {
-      throw new Error(`${space.name}: city must remain Chisinau`);
-    }
-    if (!space.shortDescription.trim()) {
-      throw new Error(`${space.name}: short description is required`);
-    }
-    if (!space.description.trim()) {
-      throw new Error(`${space.name}: full description is required`);
-    }
-    if (space.imageSourceUrls.length === 0) {
-      throw new Error(`${space.name}: at least one source image is required`);
-    }
-    if (space.sourceUrls.length === 0) {
-      throw new Error(`${space.name}: at least one source URL is required`);
-    }
-    if (names.has(space.name)) {
-      throw new Error(`Duplicate space name in manifest: ${space.name}`);
-    }
-    names.add(space.name);
-    categoryCounts.set(space.categorySlug, (categoryCounts.get(space.categorySlug) ?? 0) + 1);
-  }
-
-  for (const [categorySlug, count] of categoryCounts) {
-    if (count < 2) {
-      throw new Error(
-        `Category ${categorySlug} has ${count} entries; at least 2 Chisinau spaces are required`
-      );
-    }
-  }
+export const validateManifest = (spaces: ReadonlyArray<CuratedSpaceSeed> = CHISINAU_SPACES) => {
+  validateCuratedSpaceSeeds(spaces);
 };
 
-const main = async () => {
+export const main = async () => {
   validateManifest();
 
   if (hasArg("--validate")) {
@@ -325,16 +298,21 @@ const main = async () => {
   console.log(`Done. ${OWNER_EMAIL} now owns ${total} Chisinau spaces.`);
 };
 
-main()
-  .catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    try {
-      await prisma.$executeRaw`SELECT pg_advisory_unlock(${IMPORT_LOCK_ID})`;
-    } catch {
-      // Ignore unlock failures when the advisory lock was never acquired.
-    }
-    await prisma.$disconnect();
-  });
+const isDirectRun =
+  process.argv[1] != null && import.meta.url === pathToFileURL(process.argv[1]).href;
+
+if (isDirectRun) {
+  main()
+    .catch((error) => {
+      console.error(error);
+      process.exitCode = 1;
+    })
+    .finally(async () => {
+      try {
+        await prisma.$executeRaw`SELECT pg_advisory_unlock(${IMPORT_LOCK_ID})`;
+      } catch {
+        // Ignore unlock failures when the advisory lock was never acquired.
+      }
+      await prisma.$disconnect();
+    });
+}

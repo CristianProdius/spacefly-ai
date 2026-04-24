@@ -161,8 +161,25 @@ model SpaceCategory {
   slug        String  @unique
   description String?
   icon        String?
+  groupSlug   String
+  sortOrder   Int     @default(0)
 
+  group  SpaceCategoryGroup @relation(fields: [groupSlug], references: [slug])
   spaces Space[]
+
+  @@index([groupSlug])
+  @@index([groupSlug, sortOrder])
+}
+
+model SpaceCategoryGroup {
+  id        Int     @id @default(autoincrement())
+  name      String
+  slug      String  @unique
+  sortOrder Int     @default(0)
+
+  categories SpaceCategory[]
+
+  @@index([sortOrder])
 }
 
 model Amenity {

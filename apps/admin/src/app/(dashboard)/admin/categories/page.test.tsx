@@ -83,11 +83,19 @@ describe("admin categories page", () => {
         ok: true,
         json: async () => [
           {
-            id: 1,
-            name: "Meeting Rooms",
-            slug: "meeting-rooms",
-            description: "Focus and collaboration spaces",
-            icon: "M",
+            categories: [
+              {
+                _count: { spaces: 4 },
+                groupSlug: "business-office",
+                id: 1,
+                name: "Meeting & Training Room",
+                slug: "meeting-training-room",
+                sortOrder: 3,
+              },
+            ],
+            name: "Business & Office",
+            slug: "business-office",
+            sortOrder: 1,
           },
         ],
       })
@@ -119,15 +127,21 @@ describe("admin categories page", () => {
     });
 
     expect(container.textContent).toContain("Categories");
-    expect(container.textContent).toContain("Manage space categories");
-    expect(container.textContent).toContain("Meeting Rooms");
-    expect(container.textContent).toContain("meeting-rooms");
-    expect(container.textContent).toContain("Focus and collaboration spaces");
+    expect(container.textContent).toContain("Manage grouped space categories");
+    expect(container.textContent).toContain("Business & Office");
+    expect(container.textContent).toContain("business-office");
+    expect(container.textContent).toContain("Meeting & Training Room");
+    expect(container.textContent).toContain("meeting-training-room");
     expect(container.textContent).toContain("Add Category");
-    expect(container.textContent).toContain("Name");
+    expect(container.textContent).toContain("Category");
     expect(container.textContent).toContain("Slug");
+    expect(container.textContent).toContain("Spaces");
     expect(container.querySelector("table")).not.toBeNull();
-    expect(container.querySelector('button[aria-label="Delete category Meeting Rooms"]')).not.toBeNull();
+    expect(
+      container.querySelector(
+        'button[aria-label="Delete category Meeting & Training Room"]'
+      )
+    ).not.toBeNull();
 
     const classNames = getClassNames();
     expect(classNames.some((className) => className.includes("bg-card"))).toBe(true);
@@ -183,7 +197,8 @@ describe("admin categories page", () => {
       await Promise.resolve();
     });
 
-    expect(container.textContent).toContain("No categories found");
+    expect(container.textContent).toContain("No categories yet");
+    expect(container.textContent).toContain("Business & Office");
 
     const classNames = getClassNames();
     expect(classNames.some((className) => className.includes("bg-card"))).toBe(true);
@@ -198,5 +213,43 @@ describe("admin categories page", () => {
     expect(classNames.some((className) => className.includes("text-gray-500"))).toBe(
       false
     );
+  });
+
+  it("normalizes flat category payloads with embedded group metadata", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => [
+          {
+            _count: { spaces: 2 },
+            group: {
+              name: "Retail & Commercial",
+              slug: "retail-commercial",
+              sortOrder: 4,
+            },
+            groupSlug: "retail-commercial",
+            id: 17,
+            name: "Retail Store / Shop Front",
+            slug: "retail-store-shop-front",
+          },
+        ],
+      })
+    );
+
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(container.textContent).toContain("Retail & Commercial");
+    expect(container.textContent).toContain("retail-commercial");
+    expect(container.textContent).toContain("Retail Store / Shop Front");
   });
 });

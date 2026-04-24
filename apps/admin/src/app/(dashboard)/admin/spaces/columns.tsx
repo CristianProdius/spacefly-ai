@@ -78,11 +78,20 @@ export const columns: ColumnDef<Space>[] = [
     header: "Name",
   },
   {
-    accessorKey: "spaceType",
-    header: "Type",
+    id: "category",
+    header: "Category",
     cell: ({ row }) => {
-      const type = row.getValue("spaceType") as string;
-      return <span className="text-xs">{type.replace("_", " ")}</span>;
+      const space = row.original;
+      const label =
+        space.category?.name ||
+        space.categorySlug
+          ?.split("-")
+          .filter(Boolean)
+          .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+          .join(" ") ||
+        space.spaceType.replaceAll("_", " ");
+
+      return <span className="text-xs">{label}</span>;
     },
   },
   {

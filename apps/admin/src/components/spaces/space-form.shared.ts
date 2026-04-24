@@ -5,17 +5,13 @@ import type {
   SpaceType,
 } from "@repo/types";
 
+import {
+  resolveLegacySpaceType,
+  type NormalizedTaxonomyCategory,
+} from "@/lib/taxonomy";
+
 export const PRODUCT_SERVICE_URL =
   process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL || "http://localhost:8000";
-
-export const spaceTypes: Array<{ value: SpaceType; label: string }> = [
-  { value: "OFFICE_DESK", label: "Office Desk" },
-  { value: "PRIVATE_OFFICE", label: "Private Office" },
-  { value: "MEETING_ROOM", label: "Meeting Room" },
-  { value: "EVENT_VENUE", label: "Event Venue" },
-  { value: "WEDDING_VENUE", label: "Wedding Venue" },
-  { value: "COWORKING_SPACE", label: "Coworking Space" },
-];
 
 export const pricingTypes: Array<{ value: PricingType; label: string }> = [
   { value: "HOURLY", label: "Hourly" },
@@ -105,9 +101,13 @@ export const createEmptySpaceFormValues = (): SpaceFormValues => ({
 });
 
 export const buildSpacePayload = (
-  formData: SpaceFormValues
+  formData: SpaceFormValues,
+  category?: Pick<NormalizedTaxonomyCategory, "legacySpaceType" | "slug" | "spaceType">
 ): SpaceFormPayload => ({
   ...formData,
+  spaceType: category
+    ? resolveLegacySpaceType(category, formData.spaceType)
+    : formData.spaceType,
   pricePerHour: formData.pricePerHour ? parseFloat(formData.pricePerHour) : null,
   pricePerDay: formData.pricePerDay ? parseFloat(formData.pricePerDay) : null,
   capacity: parseInt(formData.capacity, 10),

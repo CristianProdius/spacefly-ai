@@ -1,13 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Check, Loader2, Upload, X } from "lucide-react";
 
 import { DashboardPageHeader, DashboardSection } from "@/components/dashboard";
 import { Button } from "@/components/ui/button";
-import type { Amenity, SpaceCategory } from "@repo/types";
+import {
+  findCategoryBySlug,
+  flattenCategoryGroups,
+  normalizeCategoryGroups,
+  normalizeCategorySlug,
+  resolveLegacySpaceType,
+  type NormalizedTaxonomyCategoryGroup,
+  type TaxonomyApiResponse,
+} from "@/lib/taxonomy";
+import type { Amenity } from "@repo/types";
 
 import {
   PRODUCT_SERVICE_URL,
@@ -17,7 +26,6 @@ import {
   fieldClassName,
   labelClassName,
   pricingTypes,
-  spaceTypes,
   type SpaceFormPayload,
   type SpaceFormValues,
 } from "./space-form.shared";
@@ -45,13 +53,20 @@ const SpaceForm = ({
 }: SpaceFormProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [categories, setCategories] = useState<SpaceCategory[]>([]);
+  const [categoryGroups, setCategoryGroups] = useState<
+    NormalizedTaxonomyCategoryGroup[]
+  >(() => normalizeCategoryGroups([]));
   const [amenities, setAmenities] = useState<Amenity[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [formData, setFormData] = useState<SpaceFormValues>(
     initialValues ?? createEmptySpaceFormValues()
   );
+  const categories = useMemo(
+    () => flattenCategoryGroups(categoryGroups),
+    [categoryGroups]
+  );
+  const selectedCategory = findCategoryBySlug(categories, formData.categorySlug);
 
   useEffect(() => {
     setFormData(initialValues ?? createEmptySpaceFormValues());
@@ -61,13 +76,13 @@ const SpaceForm = ({
     const fetchData = async () => {
       try {
         const [catRes, amenRes] = await Promise.all([
-          fetch(`${PRODUCT_SERVICE_URL}/categories`),
+          fetch(`${PRODUCT_SERVICE_URL}/categories?grouped=true`),
           fetch(`${PRODUCT_SERVICE_URL}/amenities`),
         ]);
 
         if (catRes.ok) {
-          const catData = (await catRes.json()) as SpaceCategory[];
-          setCategories(catData);
+          const catData = (await catRes.json()) as TaxonomyApiResponse;
+          setCategoryGroups(normalizeCategoryGroups(catData));
         }
 
         if (amenRes.ok) {
@@ -81,6 +96,33 @@ const SpaceForm = ({
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (categories.length === 0 || !formData.categorySlug) {
+      return;
+    }
+
+    setFormData((prev) => {
+      const nextCategorySlug = normalizeCategorySlug(prev.categorySlug, categories);
+      const nextCategory = findCategoryBySlug(categories, nextCategorySlug);
+      const nextSpaceType = nextCategory
+        ? resolveLegacySpaceType(nextCategory, prev.spaceType)
+        : prev.spaceType;
+
+      if (
+        nextCategorySlug === prev.categorySlug &&
+        nextSpaceType === prev.spaceType
+      ) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        categorySlug: nextCategorySlug,
+        spaceType: nextSpaceType,
+      };
+    });
+  }, [categories, formData.categorySlug]);
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -162,7 +204,21 @@ const SpaceForm = ({
     setError(null);
 
     try {
-      await onSubmit(buildSpacePayload(formData));
+      const normalizedCategorySlug = normalizeCategorySlug(
+        formData.categorySlug,
+        categories
+      );
+      const category = findCategoryBySlug(categories, normalizedCategorySlug);
+
+      await onSubmit(
+        buildSpacePayload(
+          {
+            ...formData,
+            categorySlug: normalizedCategorySlug,
+          },
+          category
+        )
+      );
     } catch (submitError) {
       setError(
         submitError instanceof Error ? submitError.message : "An error occurred"
@@ -247,49 +303,45 @@ const SpaceForm = ({
               />
             </div>
 
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <label className={labelClassName}>Space Type</label>
-                <select
-                  required
-                  value={formData.spaceType}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      spaceType: event.target.value as SpaceFormValues["spaceType"],
-                    }))
-                  }
-                  className={fieldClassName}
-                >
-                  {spaceTypes.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div>
+              <label className={labelClassName}>Category</label>
+              <select
+                required
+                value={formData.categorySlug}
+                onChange={(event) =>
+                  setFormData((prev) => {
+                    const categorySlug = event.target.value;
+                    const category = findCategoryBySlug(categories, categorySlug);
 
-              <div>
-                <label className={labelClassName}>Category</label>
-                <select
-                  required
-                  value={formData.categorySlug}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
+                    return {
                       ...prev,
-                      categorySlug: event.target.value,
-                    }))
-                  }
-                  className={fieldClassName}
-                >
-                  <option value="">Select a category</option>
-                  {categories.map((category) => (
-                    <option key={category.id} value={category.slug}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                      categorySlug,
+                      spaceType: category
+                        ? resolveLegacySpaceType(category, prev.spaceType)
+                        : prev.spaceType,
+                    };
+                  })
+                }
+                className={fieldClassName}
+              >
+                <option value="">Select a category</option>
+                {categoryGroups.map((group) =>
+                  group.categories.length > 0 ? (
+                    <optgroup key={group.slug} label={group.name}>
+                      {group.categories.map((category) => (
+                        <option key={category.id} value={category.slug}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ) : null
+                )}
+              </select>
+              <p className="mt-2 text-sm text-muted-foreground">
+                {selectedCategory
+                  ? `Group: ${selectedCategory.group.name}`
+                  : "Choose the category that best matches this space. The legacy space type is set automatically."}
+              </p>
             </div>
 
             <div>

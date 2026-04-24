@@ -6,22 +6,36 @@ import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import spaceRouter from "./space.route.js";
 
 const mocks = vi.hoisted(() => ({
+  count: vi.fn(),
+  create: vi.fn(),
   createMany: vi.fn(),
   deleteMany: vi.fn(),
+  findMany: vi.fn(),
   findUnique: vi.fn(),
   producerSend: vi.fn(),
+  reviewAggregate: vi.fn(),
+  spaceCategoryFindUnique: vi.fn(),
   update: vi.fn(),
 }));
 
 vi.mock("@repo/db", () => ({
   prisma: {
     space: {
+      count: mocks.count,
+      create: mocks.create,
+      findMany: mocks.findMany,
       findUnique: mocks.findUnique,
       update: mocks.update,
+    },
+    spaceCategory: {
+      findUnique: mocks.spaceCategoryFindUnique,
     },
     spaceAmenity: {
       deleteMany: mocks.deleteMany,
       createMany: mocks.createMany,
+    },
+    review: {
+      aggregate: mocks.reviewAggregate,
     },
   },
 }));
@@ -222,29 +236,198 @@ describe("space routes", () => {
       hostId: "different-host",
       id: 123,
     });
+    mocks.spaceCategoryFindUnique.mockResolvedValue({
+      slug: "meeting-training-room",
+    });
     mocks.update.mockResolvedValue({
+      category: null,
       id: 123,
+      spaceType: "MEETING_ROOM",
       title: "Updated title",
     });
 
     const response = await invokeApp({
       authorization: `Bearer ${createToken("ADMIN", "admin-1")}`,
-      body: { title: "Updated title" },
+      body: {
+        categorySlug: "meeting-training-room",
+        spaceType: "EVENT_VENUE",
+        title: "Updated title",
+      },
       method: "PUT",
       url: "/spaces/123",
     });
 
     expect(response.status).toBe(200);
     expect(response.json).toEqual({
+      category: null,
       id: 123,
+      spaceType: "MEETING_ROOM",
       title: "Updated title",
     });
     expect(mocks.update).toHaveBeenCalledWith(
       expect.objectContaining({
-        data: { title: "Updated title" },
+        data: {
+          categorySlug: "meeting-training-room",
+          spaceType: "MEETING_ROOM",
+          title: "Updated title",
+        },
         where: { id: 123 },
       })
     );
     expect(mocks.producerSend).toHaveBeenCalledWith("space.updated", { value: { id: 123 } });
+  });
+
+  it("derives the canonical legacy space type from categorySlug on create", async () => {
+    mocks.spaceCategoryFindUnique.mockResolvedValue({
+      slug: "retail-store-shop-front",
+    });
+    mocks.create.mockResolvedValue({
+      amenities: [],
+      category: {
+        group: {
+          name: "Retail & Commercial",
+          slug: "retail-commercial",
+          sortOrder: 4,
+        },
+        groupSlug: "retail-commercial",
+        id: 17,
+        name: "Retail Store / Shop Front",
+        slug: "retail-store-shop-front",
+        sortOrder: 1,
+      },
+      id: 321,
+      spaceType: "PRIVATE_OFFICE",
+    });
+
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("HOST", "host-user-1")}`,
+      body: {
+        address: "Main Street 1",
+        amenities: [],
+        categorySlug: "retail-store-shop-front",
+        city: "Chisinau",
+        country: "Moldova",
+        description:
+          "A bright retail space for launches, previews, and short-term brand activations.",
+        images: ["/space.png"],
+        name: "Launch Store",
+        pricingType: "DAILY",
+        shortDescription: "Flexible retail frontage in the city center",
+        spaceType: "MEETING_ROOM",
+      },
+      method: "POST",
+      url: "/spaces",
+    });
+
+    expect(response.status).toBe(201);
+    expect(response.json).toMatchObject({
+      id: 321,
+      spaceType: "PRIVATE_OFFICE",
+    });
+    expect(mocks.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          categorySlug: "retail-store-shop-front",
+          hostId: "host-user-1",
+          spaceType: "PRIVATE_OFFICE",
+        }),
+      })
+    );
+  });
+
+  it("normalizes the legacy meeting-room slug on update", async () => {
+    mocks.findUnique.mockResolvedValue({
+      hostId: "host-user-1",
+      id: 123,
+    });
+    mocks.spaceCategoryFindUnique.mockResolvedValue({
+      slug: "meeting-training-room",
+    });
+    mocks.update.mockResolvedValue({
+      category: {
+        group: {
+          name: "Business & Office",
+          slug: "business-office",
+          sortOrder: 1,
+        },
+        groupSlug: "business-office",
+        id: 3,
+        name: "Meeting & Training Room",
+        slug: "meeting-training-room",
+        sortOrder: 3,
+      },
+      id: 123,
+      spaceType: "MEETING_ROOM",
+    });
+
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("HOST", "host-user-1")}`,
+      body: {
+        categorySlug: "meeting-room",
+        spaceType: "WEDDING_VENUE",
+      },
+      method: "PUT",
+      url: "/spaces/123",
+    });
+
+    expect(response.status).toBe(200);
+    expect(mocks.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: {
+          categorySlug: "meeting-training-room",
+          spaceType: "MEETING_ROOM",
+        },
+      })
+    );
+  });
+
+  it("applies groupSlug filters through the category relation on list endpoints", async () => {
+    mocks.findMany.mockResolvedValue([
+      {
+        _count: { reviews: 0 },
+        amenities: [],
+        category: {
+          group: {
+            name: "Events & Celebrations",
+            slug: "events-celebrations",
+            sortOrder: 2,
+          },
+          groupSlug: "events-celebrations",
+          id: 11,
+          name: "Event Venue",
+          slug: "event-venue",
+          sortOrder: 1,
+        },
+        host: {
+          id: "host-1",
+          image: null,
+          name: "Host",
+        },
+        id: 1,
+      },
+    ]);
+    mocks.count.mockResolvedValue(1);
+    mocks.reviewAggregate.mockResolvedValue({
+      _avg: { rating: null },
+    });
+
+    const response = await invokeApp({
+      method: "GET",
+      url: "/spaces?groupSlug=events-celebrations",
+    });
+
+    expect(response.status).toBe(200);
+    expect(mocks.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          category: {
+            is: {
+              groupSlug: "events-celebrations",
+            },
+          },
+        }),
+      })
+    );
+    expect(response.json.pagination.total).toBe(1);
   });
 });

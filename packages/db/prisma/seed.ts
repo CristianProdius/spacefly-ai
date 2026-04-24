@@ -6,21 +6,209 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("Seeding database...");
 
-  // Create Space Categories
+  const categoryGroups = [
+    { name: "Business & Office", slug: "business-office", sortOrder: 1 },
+    { name: "Events & Celebrations", slug: "events-celebrations", sortOrder: 2 },
+    { name: "Creative & Media", slug: "creative-media", sortOrder: 3 },
+    { name: "Retail & Commercial", slug: "retail-commercial", sortOrder: 4 },
+    { name: "Sports & Wellness", slug: "sports-wellness", sortOrder: 5 },
+    { name: "Industrial & Logistics", slug: "industrial-logistics", sortOrder: 6 },
+  ] as const;
+
   const categories = [
-    { name: "Office Desk", slug: "office-desk", description: "Individual desks in shared workspaces", icon: "desk" },
-    { name: "Private Office", slug: "private-office", description: "Enclosed private offices for teams", icon: "building" },
-    { name: "Meeting Room", slug: "meeting-room", description: "Conference and meeting rooms", icon: "users" },
-    { name: "Event Venue", slug: "event-venue", description: "Venues for corporate events and parties", icon: "calendar" },
-    { name: "Wedding Venue", slug: "wedding-venue", description: "Beautiful venues for weddings", icon: "heart" },
-    { name: "Coworking Space", slug: "coworking-space", description: "Open coworking areas", icon: "laptop" },
-  ];
+    { name: "Office Desk", slug: "office-desk", groupSlug: "business-office", sortOrder: 1 },
+    { name: "Private Office", slug: "private-office", groupSlug: "business-office", sortOrder: 2 },
+    {
+      name: "Meeting & Training Room",
+      slug: "meeting-training-room",
+      groupSlug: "business-office",
+      sortOrder: 3,
+    },
+    { name: "Coworking Space", slug: "coworking-space", groupSlug: "business-office", sortOrder: 4 },
+    {
+      name: "Large Conference Hall",
+      slug: "large-conference-hall",
+      groupSlug: "business-office",
+      sortOrder: 5,
+    },
+    { name: "Event Venue", slug: "event-venue", groupSlug: "events-celebrations", sortOrder: 1 },
+    { name: "Wedding Venue", slug: "wedding-venue", groupSlug: "events-celebrations", sortOrder: 2 },
+    { name: "Rooftop Venue", slug: "rooftop-venue", groupSlug: "events-celebrations", sortOrder: 3 },
+    {
+      name: "Garden / Outdoor Space",
+      slug: "garden-outdoor-space",
+      groupSlug: "events-celebrations",
+      sortOrder: 4,
+    },
+    {
+      name: "Private Party Space",
+      slug: "private-party-space",
+      groupSlug: "events-celebrations",
+      sortOrder: 5,
+    },
+    {
+      name: "Private Function Room",
+      slug: "private-function-room",
+      groupSlug: "events-celebrations",
+      sortOrder: 6,
+    },
+    {
+      name: "Private Dining Room",
+      slug: "private-dining-room",
+      groupSlug: "events-celebrations",
+      sortOrder: 7,
+    },
+    {
+      name: "The VIP Suite / Private Lounge",
+      slug: "vip-suite-private-lounge",
+      groupSlug: "events-celebrations",
+      sortOrder: 8,
+    },
+    {
+      name: "Workshop / Maker Space",
+      slug: "workshop-maker-space",
+      groupSlug: "creative-media",
+      sortOrder: 1,
+    },
+    {
+      name: "Photo & Video Studio",
+      slug: "photo-video-studio",
+      groupSlug: "creative-media",
+      sortOrder: 2,
+    },
+    { name: "Podcast Studio", slug: "podcast-studio", groupSlug: "creative-media", sortOrder: 3 },
+    {
+      name: "Dark Kitchen / Cloud Kitchen",
+      slug: "dark-kitchen-cloud-kitchen",
+      groupSlug: "creative-media",
+      sortOrder: 4,
+    },
+    {
+      name: "Private Cinema / Screening Room",
+      slug: "private-cinema-screening-room",
+      groupSlug: "creative-media",
+      sortOrder: 5,
+    },
+    {
+      name: "Gaming / Esports Lounge",
+      slug: "gaming-esports-lounge",
+      groupSlug: "creative-media",
+      sortOrder: 6,
+    },
+    {
+      name: "Retail Store / Shop Front",
+      slug: "retail-store-shop-front",
+      groupSlug: "retail-commercial",
+      sortOrder: 1,
+    },
+    { name: "Pop-up Store", slug: "pop-up-store", groupSlug: "retail-commercial", sortOrder: 2 },
+    { name: "Showroom", slug: "showroom", groupSlug: "retail-commercial", sortOrder: 3 },
+    {
+      name: "Yoga / Dance Studio",
+      slug: "yoga-dance-studio",
+      groupSlug: "sports-wellness",
+      sortOrder: 1,
+    },
+    {
+      name: "Sport Courts & Fields",
+      slug: "sport-courts-fields",
+      groupSlug: "sports-wellness",
+      sortOrder: 2,
+    },
+    { name: "Indoor & Fitness", slug: "indoor-fitness", groupSlug: "sports-wellness", sortOrder: 3 },
+    { name: "Sporturi de Nișă", slug: "specialty-sports", groupSlug: "sports-wellness", sortOrder: 4 },
+    {
+      name: "Micro-Warehouse / Storage",
+      slug: "micro-warehouse-storage",
+      groupSlug: "industrial-logistics",
+      sortOrder: 1,
+    },
+    {
+      name: "Warehouse / Storage Unit",
+      slug: "warehouse-storage-unit",
+      groupSlug: "industrial-logistics",
+      sortOrder: 2,
+    },
+    {
+      name: "Distribution Center",
+      slug: "distribution-center",
+      groupSlug: "industrial-logistics",
+      sortOrder: 3,
+    },
+    { name: "Cold Storage", slug: "cold-storage", groupSlug: "industrial-logistics", sortOrder: 4 },
+    { name: "Big Box Retail", slug: "big-box-retail", groupSlug: "industrial-logistics", sortOrder: 5 },
+    {
+      name: "Light Industrial / Workshop",
+      slug: "light-industrial-workshop",
+      groupSlug: "industrial-logistics",
+      sortOrder: 6,
+    },
+  ] as const;
+
+  for (const group of categoryGroups) {
+    await prisma.spaceCategoryGroup.upsert({
+      where: { slug: group.slug },
+      update: {
+        name: group.name,
+        sortOrder: group.sortOrder,
+      },
+      create: group,
+    });
+  }
+  console.log("✓ Category groups created");
+
+  const legacyMeetingRoom = await prisma.spaceCategory.findUnique({
+    where: { slug: "meeting-room" },
+    select: { id: true },
+  });
+  if (legacyMeetingRoom) {
+    await prisma.spaceCategory.upsert({
+      where: { slug: "meeting-training-room" },
+      update: {
+        description: null,
+        group: { connect: { slug: "business-office" } },
+        icon: null,
+        name: "Meeting & Training Room",
+        sortOrder: 3,
+      },
+      create: {
+        description: null,
+        group: { connect: { slug: "business-office" } },
+        icon: null,
+        name: "Meeting & Training Room",
+        slug: "meeting-training-room",
+        sortOrder: 3,
+      },
+    });
+
+    await prisma.space.updateMany({
+      where: { categorySlug: "meeting-room" },
+      data: { categorySlug: "meeting-training-room" },
+    });
+
+    await prisma.spaceCategory.delete({
+      where: { id: legacyMeetingRoom.id },
+    });
+  }
 
   for (const category of categories) {
     await prisma.spaceCategory.upsert({
       where: { slug: category.slug },
-      update: {},
-      create: category,
+      update: {
+        description: null,
+        group: { connect: { slug: category.groupSlug } },
+        icon: null,
+        name: category.name,
+        sortOrder: category.sortOrder,
+      },
+      create: {
+        description: null,
+        group: { connect: { slug: category.groupSlug } },
+        icon: null,
+        name: category.name,
+        slug: category.slug,
+        sortOrder: category.sortOrder,
+      },
     });
   }
   console.log("✓ Categories created");
@@ -152,7 +340,7 @@ async function main() {
       latitude: 40.7549,
       longitude: -73.9840,
       images: ["https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800"],
-      categorySlug: "meeting-room",
+      categorySlug: "meeting-training-room",
       hostId: host.id,
     },
     {

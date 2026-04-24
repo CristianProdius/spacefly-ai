@@ -6,6 +6,21 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite
 const mockStore = vi.fn();
 const push = vi.fn();
 const mockParams = { id: "42" };
+const groupedCategoriesResponse = [
+  {
+    categories: [
+      {
+        groupSlug: "retail-commercial",
+        id: 17,
+        name: "Retail Store / Shop Front",
+        slug: "retail-store-shop-front",
+        spaceType: "PRIVATE_OFFICE",
+      },
+    ],
+    name: "Retail & Commercial",
+    slug: "retail-commercial",
+  },
+];
 
 vi.mock("@/stores/authStore", () => ({
   default: () => mockStore(),
@@ -121,7 +136,7 @@ describe("host edit space page", () => {
             instantBook: true,
             cancellationPolicy: "STRICT",
             houseRules: "Leave the studio as you found it.",
-            categorySlug: "meeting-spaces",
+            categorySlug: "retail-store-shop-front",
             images: ["/loft.jpg"],
             amenities: [
               {
@@ -143,7 +158,14 @@ describe("host edit space page", () => {
       if (url.endsWith("/categories")) {
         return {
           ok: true,
-          json: async () => [{ id: 1, name: "Meeting Spaces", slug: "meeting-spaces" }],
+          json: async () => groupedCategoriesResponse,
+        };
+      }
+
+      if (url.endsWith("/categories?grouped=true")) {
+        return {
+          ok: true,
+          json: async () => groupedCategoriesResponse,
         };
       }
 
@@ -182,6 +204,7 @@ describe("host edit space page", () => {
     });
 
     expect(container.textContent).toContain("Edit Space");
+    expect(container.textContent).not.toContain("Space Type");
     expect(container.querySelector('a[href="/host/spaces"]')?.textContent).toContain(
       "Back to Spaces"
     );
@@ -213,7 +236,7 @@ describe("host edit space page", () => {
     expect(descriptionInput?.value).toContain("Bright loft for team meetings");
     expect(hourlyInput?.value).toBe("45");
     expect(dailyInput?.value).toBe("240");
-    expect(categorySelect?.value).toBe("meeting-spaces");
+    expect(categorySelect?.value).toBe("retail-store-shop-front");
     expect(amenityButton?.className).toContain("bg-primary/10");
     expect(instantBook?.checked).toBe(true);
     expect(container.querySelector('button[type="submit"]')?.textContent).toContain(
@@ -247,7 +270,7 @@ describe("host edit space page", () => {
       shortDescription: "Bright loft for team meetings",
       description:
         "Bright loft for team meetings, planning sessions, and workshops with flexible furniture and natural light.",
-      spaceType: "MEETING_ROOM",
+      spaceType: "PRIVATE_OFFICE",
       pricingType: "BOTH",
       pricePerHour: 55,
       pricePerDay: 300,
@@ -260,7 +283,7 @@ describe("host edit space page", () => {
       instantBook: false,
       cancellationPolicy: "STRICT",
       houseRules: "Leave the studio as you found it.",
-      categorySlug: "meeting-spaces",
+      categorySlug: "retail-store-shop-front",
       amenityIds: [2],
       images: ["/loft.jpg"],
     });

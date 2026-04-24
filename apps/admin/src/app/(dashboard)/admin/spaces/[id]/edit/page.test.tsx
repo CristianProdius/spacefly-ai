@@ -8,6 +8,21 @@ const push = vi.fn();
 const mockParams = { id: "42" };
 const getToken = vi.fn();
 const router = { push };
+const groupedCategoriesResponse = [
+  {
+    categories: [
+      {
+        groupSlug: "retail-commercial",
+        id: 17,
+        name: "Retail Store / Shop Front",
+        slug: "retail-store-shop-front",
+        spaceType: "PRIVATE_OFFICE",
+      },
+    ],
+    name: "Retail & Commercial",
+    slug: "retail-commercial",
+  },
+];
 
 vi.mock("@/stores/authStore", () => ({
   default: () => mockStore(),
@@ -130,7 +145,7 @@ describe("admin edit space page", () => {
             instantBook: true,
             cancellationPolicy: "STRICT",
             houseRules: "Leave the studio as you found it.",
-            categorySlug: "meeting-spaces",
+            categorySlug: "retail-store-shop-front",
             images: ["/loft.jpg"],
             amenities: [
               {
@@ -152,7 +167,14 @@ describe("admin edit space page", () => {
       if (url.endsWith("/categories")) {
         return {
           ok: true,
-          json: async () => [{ id: 1, name: "Meeting Spaces", slug: "meeting-spaces" }],
+          json: async () => groupedCategoriesResponse,
+        };
+      }
+
+      if (url.endsWith("/categories?grouped=true")) {
+        return {
+          ok: true,
+          json: async () => groupedCategoriesResponse,
         };
       }
 
@@ -191,6 +213,7 @@ describe("admin edit space page", () => {
     });
 
     expect(container.textContent).toContain("Edit Space");
+    expect(container.textContent).not.toContain("Space Type");
     expect(container.querySelector('a[href="/admin/spaces"]')?.textContent).toContain(
       "Back to Spaces"
     );

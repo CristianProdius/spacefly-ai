@@ -15,57 +15,62 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model User
- * 
+ *
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
  * Model Session
- * 
+ *
  */
 export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
 /**
  * Model Space
- * 
+ *
  */
 export type Space = $Result.DefaultSelection<Prisma.$SpacePayload>
 /**
  * Model SpaceCategory
- * 
+ *
  */
 export type SpaceCategory = $Result.DefaultSelection<Prisma.$SpaceCategoryPayload>
 /**
+ * Model SpaceCategoryGroup
+ *
+ */
+export type SpaceCategoryGroup = $Result.DefaultSelection<Prisma.$SpaceCategoryGroupPayload>
+/**
  * Model Amenity
- * 
+ *
  */
 export type Amenity = $Result.DefaultSelection<Prisma.$AmenityPayload>
 /**
  * Model SpaceAmenity
- * 
+ *
  */
 export type SpaceAmenity = $Result.DefaultSelection<Prisma.$SpaceAmenityPayload>
 /**
  * Model Availability
- * 
+ *
  */
 export type Availability = $Result.DefaultSelection<Prisma.$AvailabilityPayload>
 /**
  * Model BlockedDate
- * 
+ *
  */
 export type BlockedDate = $Result.DefaultSelection<Prisma.$BlockedDatePayload>
 /**
  * Model Booking
- * 
+ *
  */
 export type Booking = $Result.DefaultSelection<Prisma.$BookingPayload>
 /**
  * Model Review
- * 
+ *
  */
 export type Review = $Result.DefaultSelection<Prisma.$ReviewPayload>
 /**
  * Model Payout
- * 
+ *
  */
 export type Payout = $Result.DefaultSelection<Prisma.$PayoutPayload>
 
@@ -267,7 +272,7 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   * 
+   *
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
@@ -318,6 +323,16 @@ export class PrismaClient<
     * ```
     */
   get spaceCategory(): Prisma.SpaceCategoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.spaceCategoryGroup`: Exposes CRUD operations for the **SpaceCategoryGroup** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SpaceCategoryGroups
+    * const spaceCategoryGroups = await prisma.spaceCategoryGroup.findMany()
+    * ```
+    */
+  get spaceCategoryGroup(): Prisma.SpaceCategoryGroupDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.amenity`: Exposes CRUD operations for the **Amenity** model.
@@ -832,6 +847,7 @@ export namespace Prisma {
     Session: 'Session',
     Space: 'Space',
     SpaceCategory: 'SpaceCategory',
+    SpaceCategoryGroup: 'SpaceCategoryGroup',
     Amenity: 'Amenity',
     SpaceAmenity: 'SpaceAmenity',
     Availability: 'Availability',
@@ -857,7 +873,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "space" | "spaceCategory" | "amenity" | "spaceAmenity" | "availability" | "blockedDate" | "booking" | "review" | "payout"
+      modelProps: "user" | "session" | "space" | "spaceCategory" | "spaceCategoryGroup" | "amenity" | "spaceAmenity" | "availability" | "blockedDate" | "booking" | "review" | "payout"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1154,6 +1170,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SpaceCategoryCountArgs<ExtArgs>
             result: $Utils.Optional<SpaceCategoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      SpaceCategoryGroup: {
+        payload: Prisma.$SpaceCategoryGroupPayload<ExtArgs>
+        fields: Prisma.SpaceCategoryGroupFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SpaceCategoryGroupFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SpaceCategoryGroupFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>
+          }
+          findFirst: {
+            args: Prisma.SpaceCategoryGroupFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SpaceCategoryGroupFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>
+          }
+          findMany: {
+            args: Prisma.SpaceCategoryGroupFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>[]
+          }
+          create: {
+            args: Prisma.SpaceCategoryGroupCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>
+          }
+          createMany: {
+            args: Prisma.SpaceCategoryGroupCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SpaceCategoryGroupCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>[]
+          }
+          delete: {
+            args: Prisma.SpaceCategoryGroupDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>
+          }
+          update: {
+            args: Prisma.SpaceCategoryGroupUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>
+          }
+          deleteMany: {
+            args: Prisma.SpaceCategoryGroupDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SpaceCategoryGroupUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SpaceCategoryGroupUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>[]
+          }
+          upsert: {
+            args: Prisma.SpaceCategoryGroupUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SpaceCategoryGroupPayload>
+          }
+          aggregate: {
+            args: Prisma.SpaceCategoryGroupAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSpaceCategoryGroup>
+          }
+          groupBy: {
+            args: Prisma.SpaceCategoryGroupGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SpaceCategoryGroupGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SpaceCategoryGroupCountArgs<ExtArgs>
+            result: $Utils.Optional<SpaceCategoryGroupCountAggregateOutputType> | number
           }
         }
       }
@@ -1720,7 +1810,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     * 
+     *
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -1728,14 +1818,14 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     * 
+     *
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
      *  { emit: 'stdout', level: 'info' },
      *  { emit: 'stdout', level: 'warn' }
      *  { emit: 'stdout', level: 'error' }
-     * 
+     *
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -1756,7 +1846,7 @@ export namespace Prisma {
     adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
-     * 
+     *
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -1775,6 +1865,7 @@ export namespace Prisma {
     session?: SessionOmit
     space?: SpaceOmit
     spaceCategory?: SpaceCategoryOmit
+    spaceCategoryGroup?: SpaceCategoryGroupOmit
     amenity?: AmenityOmit
     spaceAmenity?: SpaceAmenityOmit
     availability?: AvailabilityOmit
@@ -2032,6 +2123,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type SpaceCategoryGroupCountOutputType
+   */
+
+  export type SpaceCategoryGroupCountOutputType = {
+    categories: number
+  }
+
+  export type SpaceCategoryGroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    categories?: boolean | SpaceCategoryGroupCountOutputTypeCountCategoriesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SpaceCategoryGroupCountOutputType without action
+   */
+  export type SpaceCategoryGroupCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroupCountOutputType
+     */
+    select?: SpaceCategoryGroupCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SpaceCategoryGroupCountOutputType without action
+   */
+  export type SpaceCategoryGroupCountOutputTypeCountCategoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpaceCategoryWhereInput
+  }
+
+
+  /**
    * Count Type AmenityCountOutputType
    */
 
@@ -2188,43 +2310,43 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Users
     **/
     _count?: true | UserCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: UserMaxAggregateInputType
@@ -2479,13 +2601,13 @@ export namespace Prisma {
      * @example
      * // Get all Users
      * const users = await prisma.user.findMany()
-     * 
+     *
      * // Get first 10 Users
      * const users = await prisma.user.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -2499,7 +2621,7 @@ export namespace Prisma {
      *     // ... data to create a User
      *   }
      * })
-     * 
+     *
      */
     create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2513,7 +2635,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2527,7 +2649,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Users and only return the `id`
      * const userWithIdOnly = await prisma.user.createManyAndReturn({
      *   select: { id: true },
@@ -2537,7 +2659,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -2551,7 +2673,7 @@ export namespace Prisma {
      *     // ... filter to delete one User
      *   }
      * })
-     * 
+     *
      */
     delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2568,7 +2690,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2582,7 +2704,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2601,7 +2723,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2618,7 +2740,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Users and only return the `id`
      * const userWithIdOnly = await prisma.user.updateManyAndReturn({
      *   select: { id: true },
@@ -2631,7 +2753,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -2720,7 +2842,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends UserGroupByArgs,
@@ -2844,7 +2966,7 @@ export namespace Prisma {
     readonly hostVerified: FieldRef<"User", 'Boolean'>
     readonly hostingSince: FieldRef<"User", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -2913,31 +3035,31 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Users.
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
@@ -2965,31 +3087,31 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Users.
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
@@ -3017,25 +3139,25 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Users.
      */
     skip?: number
@@ -3461,43 +3583,43 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Sessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Sessions
     **/
     _count?: true | SessionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: SessionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: SessionMaxAggregateInputType
@@ -3687,13 +3809,13 @@ export namespace Prisma {
      * @example
      * // Get all Sessions
      * const sessions = await prisma.session.findMany()
-     * 
+     *
      * // Get first 10 Sessions
      * const sessions = await prisma.session.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const sessionWithIdOnly = await prisma.session.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends SessionFindManyArgs>(args?: SelectSubset<T, SessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -3707,7 +3829,7 @@ export namespace Prisma {
      *     // ... data to create a Session
      *   }
      * })
-     * 
+     *
      */
     create<T extends SessionCreateArgs>(args: SelectSubset<T, SessionCreateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3721,7 +3843,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends SessionCreateManyArgs>(args?: SelectSubset<T, SessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3735,7 +3857,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Sessions and only return the `id`
      * const sessionWithIdOnly = await prisma.session.createManyAndReturn({
      *   select: { id: true },
@@ -3745,7 +3867,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends SessionCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -3759,7 +3881,7 @@ export namespace Prisma {
      *     // ... filter to delete one Session
      *   }
      * })
-     * 
+     *
      */
     delete<T extends SessionDeleteArgs>(args: SelectSubset<T, SessionDeleteArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3776,7 +3898,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends SessionUpdateArgs>(args: SelectSubset<T, SessionUpdateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3790,7 +3912,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends SessionDeleteManyArgs>(args?: SelectSubset<T, SessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3809,7 +3931,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends SessionUpdateManyArgs>(args: SelectSubset<T, SessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3826,7 +3948,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Sessions and only return the `id`
      * const sessionWithIdOnly = await prisma.session.updateManyAndReturn({
      *   select: { id: true },
@@ -3839,7 +3961,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends SessionUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -3928,7 +4050,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends SessionGroupByArgs,
@@ -4038,7 +4160,7 @@ export namespace Prisma {
     readonly expiresAt: FieldRef<"Session", 'DateTime'>
     readonly createdAt: FieldRef<"Session", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -4107,31 +4229,31 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Sessions.
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Sessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Sessions.
      */
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
@@ -4159,31 +4281,31 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Sessions.
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Sessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Sessions.
      */
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
@@ -4211,25 +4333,25 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Sessions.
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Sessions.
      */
     skip?: number
@@ -4703,55 +4825,55 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Spaces.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Spaces
     **/
     _count?: true | SpaceCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: SpaceAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: SpaceSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: SpaceMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: SpaceMaxAggregateInputType
@@ -5107,13 +5229,13 @@ export namespace Prisma {
      * @example
      * // Get all Spaces
      * const spaces = await prisma.space.findMany()
-     * 
+     *
      * // Get first 10 Spaces
      * const spaces = await prisma.space.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const spaceWithIdOnly = await prisma.space.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends SpaceFindManyArgs>(args?: SelectSubset<T, SpaceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -5127,7 +5249,7 @@ export namespace Prisma {
      *     // ... data to create a Space
      *   }
      * })
-     * 
+     *
      */
     create<T extends SpaceCreateArgs>(args: SelectSubset<T, SpaceCreateArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5141,7 +5263,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends SpaceCreateManyArgs>(args?: SelectSubset<T, SpaceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5155,7 +5277,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Spaces and only return the `id`
      * const spaceWithIdOnly = await prisma.space.createManyAndReturn({
      *   select: { id: true },
@@ -5165,7 +5287,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends SpaceCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -5179,7 +5301,7 @@ export namespace Prisma {
      *     // ... filter to delete one Space
      *   }
      * })
-     * 
+     *
      */
     delete<T extends SpaceDeleteArgs>(args: SelectSubset<T, SpaceDeleteArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5196,7 +5318,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends SpaceUpdateArgs>(args: SelectSubset<T, SpaceUpdateArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5210,7 +5332,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends SpaceDeleteManyArgs>(args?: SelectSubset<T, SpaceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5229,7 +5351,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends SpaceUpdateManyArgs>(args: SelectSubset<T, SpaceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5246,7 +5368,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Spaces and only return the `id`
      * const spaceWithIdOnly = await prisma.space.updateManyAndReturn({
      *   select: { id: true },
@@ -5259,7 +5381,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends SpaceUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -5348,7 +5470,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends SpaceGroupByArgs,
@@ -5487,7 +5609,7 @@ export namespace Prisma {
     readonly hostId: FieldRef<"Space", 'String'>
     readonly categorySlug: FieldRef<"Space", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -5556,31 +5678,31 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Spaces.
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Spaces.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Spaces.
      */
     distinct?: SpaceScalarFieldEnum | SpaceScalarFieldEnum[]
@@ -5608,31 +5730,31 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Spaces.
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Spaces.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Spaces.
      */
     distinct?: SpaceScalarFieldEnum | SpaceScalarFieldEnum[]
@@ -5660,25 +5782,25 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Spaces.
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Spaces.
      */
     skip?: number
@@ -6034,10 +6156,12 @@ export namespace Prisma {
 
   export type SpaceCategoryAvgAggregateOutputType = {
     id: number | null
+    sortOrder: number | null
   }
 
   export type SpaceCategorySumAggregateOutputType = {
     id: number | null
+    sortOrder: number | null
   }
 
   export type SpaceCategoryMinAggregateOutputType = {
@@ -6046,6 +6170,8 @@ export namespace Prisma {
     slug: string | null
     description: string | null
     icon: string | null
+    groupSlug: string | null
+    sortOrder: number | null
   }
 
   export type SpaceCategoryMaxAggregateOutputType = {
@@ -6054,6 +6180,8 @@ export namespace Prisma {
     slug: string | null
     description: string | null
     icon: string | null
+    groupSlug: string | null
+    sortOrder: number | null
   }
 
   export type SpaceCategoryCountAggregateOutputType = {
@@ -6062,16 +6190,20 @@ export namespace Prisma {
     slug: number
     description: number
     icon: number
+    groupSlug: number
+    sortOrder: number
     _all: number
   }
 
 
   export type SpaceCategoryAvgAggregateInputType = {
     id?: true
+    sortOrder?: true
   }
 
   export type SpaceCategorySumAggregateInputType = {
     id?: true
+    sortOrder?: true
   }
 
   export type SpaceCategoryMinAggregateInputType = {
@@ -6080,6 +6212,8 @@ export namespace Prisma {
     slug?: true
     description?: true
     icon?: true
+    groupSlug?: true
+    sortOrder?: true
   }
 
   export type SpaceCategoryMaxAggregateInputType = {
@@ -6088,6 +6222,8 @@ export namespace Prisma {
     slug?: true
     description?: true
     icon?: true
+    groupSlug?: true
+    sortOrder?: true
   }
 
   export type SpaceCategoryCountAggregateInputType = {
@@ -6096,6 +6232,8 @@ export namespace Prisma {
     slug?: true
     description?: true
     icon?: true
+    groupSlug?: true
+    sortOrder?: true
     _all?: true
   }
 
@@ -6106,55 +6244,55 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned SpaceCategories
     **/
     _count?: true | SpaceCategoryCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: SpaceCategoryAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: SpaceCategorySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: SpaceCategoryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: SpaceCategoryMaxAggregateInputType
@@ -6191,6 +6329,8 @@ export namespace Prisma {
     slug: string
     description: string | null
     icon: string | null
+    groupSlug: string
+    sortOrder: number
     _count: SpaceCategoryCountAggregateOutputType | null
     _avg: SpaceCategoryAvgAggregateOutputType | null
     _sum: SpaceCategorySumAggregateOutputType | null
@@ -6218,6 +6358,9 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     icon?: boolean
+    groupSlug?: boolean
+    sortOrder?: boolean
+    group?: boolean | SpaceCategoryGroupDefaultArgs<ExtArgs>
     spaces?: boolean | SpaceCategory$spacesArgs<ExtArgs>
     _count?: boolean | SpaceCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["spaceCategory"]>
@@ -6228,6 +6371,9 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     icon?: boolean
+    groupSlug?: boolean
+    sortOrder?: boolean
+    group?: boolean | SpaceCategoryGroupDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["spaceCategory"]>
 
   export type SpaceCategorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6236,6 +6382,9 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     icon?: boolean
+    groupSlug?: boolean
+    sortOrder?: boolean
+    group?: boolean | SpaceCategoryGroupDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["spaceCategory"]>
 
   export type SpaceCategorySelectScalar = {
@@ -6244,19 +6393,27 @@ export namespace Prisma {
     slug?: boolean
     description?: boolean
     icon?: boolean
+    groupSlug?: boolean
+    sortOrder?: boolean
   }
 
-  export type SpaceCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "icon", ExtArgs["result"]["spaceCategory"]>
+  export type SpaceCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "description" | "icon" | "groupSlug" | "sortOrder", ExtArgs["result"]["spaceCategory"]>
   export type SpaceCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | SpaceCategoryGroupDefaultArgs<ExtArgs>
     spaces?: boolean | SpaceCategory$spacesArgs<ExtArgs>
     _count?: boolean | SpaceCategoryCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type SpaceCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type SpaceCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SpaceCategoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | SpaceCategoryGroupDefaultArgs<ExtArgs>
+  }
+  export type SpaceCategoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    group?: boolean | SpaceCategoryGroupDefaultArgs<ExtArgs>
+  }
 
   export type $SpaceCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SpaceCategory"
     objects: {
+      group: Prisma.$SpaceCategoryGroupPayload<ExtArgs>
       spaces: Prisma.$SpacePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -6265,6 +6422,8 @@ export namespace Prisma {
       slug: string
       description: string | null
       icon: string | null
+      groupSlug: string
+      sortOrder: number
     }, ExtArgs["result"]["spaceCategory"]>
     composites: {}
   }
@@ -6344,13 +6503,13 @@ export namespace Prisma {
      * @example
      * // Get all SpaceCategories
      * const spaceCategories = await prisma.spaceCategory.findMany()
-     * 
+     *
      * // Get first 10 SpaceCategories
      * const spaceCategories = await prisma.spaceCategory.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const spaceCategoryWithIdOnly = await prisma.spaceCategory.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends SpaceCategoryFindManyArgs>(args?: SelectSubset<T, SpaceCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -6364,7 +6523,7 @@ export namespace Prisma {
      *     // ... data to create a SpaceCategory
      *   }
      * })
-     * 
+     *
      */
     create<T extends SpaceCategoryCreateArgs>(args: SelectSubset<T, SpaceCategoryCreateArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6378,7 +6537,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends SpaceCategoryCreateManyArgs>(args?: SelectSubset<T, SpaceCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6392,7 +6551,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many SpaceCategories and only return the `id`
      * const spaceCategoryWithIdOnly = await prisma.spaceCategory.createManyAndReturn({
      *   select: { id: true },
@@ -6402,7 +6561,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends SpaceCategoryCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceCategoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -6416,7 +6575,7 @@ export namespace Prisma {
      *     // ... filter to delete one SpaceCategory
      *   }
      * })
-     * 
+     *
      */
     delete<T extends SpaceCategoryDeleteArgs>(args: SelectSubset<T, SpaceCategoryDeleteArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6433,7 +6592,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends SpaceCategoryUpdateArgs>(args: SelectSubset<T, SpaceCategoryUpdateArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6447,7 +6606,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends SpaceCategoryDeleteManyArgs>(args?: SelectSubset<T, SpaceCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6466,7 +6625,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends SpaceCategoryUpdateManyArgs>(args: SelectSubset<T, SpaceCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6483,7 +6642,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more SpaceCategories and only return the `id`
      * const spaceCategoryWithIdOnly = await prisma.spaceCategory.updateManyAndReturn({
      *   select: { id: true },
@@ -6496,7 +6655,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends SpaceCategoryUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceCategoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -6585,7 +6744,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends SpaceCategoryGroupByArgs,
@@ -6659,6 +6818,7 @@ export namespace Prisma {
    */
   export interface Prisma__SpaceCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    group<T extends SpaceCategoryGroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpaceCategoryGroupDefaultArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     spaces<T extends SpaceCategory$spacesArgs<ExtArgs> = {}>(args?: Subset<T, SpaceCategory$spacesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6694,8 +6854,10 @@ export namespace Prisma {
     readonly slug: FieldRef<"SpaceCategory", 'String'>
     readonly description: FieldRef<"SpaceCategory", 'String'>
     readonly icon: FieldRef<"SpaceCategory", 'String'>
+    readonly groupSlug: FieldRef<"SpaceCategory", 'String'>
+    readonly sortOrder: FieldRef<"SpaceCategory", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -6764,31 +6926,31 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SpaceCategories.
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SpaceCategories.
      */
     distinct?: SpaceCategoryScalarFieldEnum | SpaceCategoryScalarFieldEnum[]
@@ -6816,31 +6978,31 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SpaceCategories.
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SpaceCategories.
      */
     distinct?: SpaceCategoryScalarFieldEnum | SpaceCategoryScalarFieldEnum[]
@@ -6868,25 +7030,25 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing SpaceCategories.
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
@@ -6943,6 +7105,10 @@ export namespace Prisma {
      */
     data: SpaceCategoryCreateManyInput | SpaceCategoryCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7013,6 +7179,10 @@ export namespace Prisma {
      * Limit how many SpaceCategories to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -7125,6 +7295,1101 @@ export namespace Prisma {
 
 
   /**
+   * Model SpaceCategoryGroup
+   */
+
+  export type AggregateSpaceCategoryGroup = {
+    _count: SpaceCategoryGroupCountAggregateOutputType | null
+    _avg: SpaceCategoryGroupAvgAggregateOutputType | null
+    _sum: SpaceCategoryGroupSumAggregateOutputType | null
+    _min: SpaceCategoryGroupMinAggregateOutputType | null
+    _max: SpaceCategoryGroupMaxAggregateOutputType | null
+  }
+
+  export type SpaceCategoryGroupAvgAggregateOutputType = {
+    id: number | null
+    sortOrder: number | null
+  }
+
+  export type SpaceCategoryGroupSumAggregateOutputType = {
+    id: number | null
+    sortOrder: number | null
+  }
+
+  export type SpaceCategoryGroupMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    slug: string | null
+    sortOrder: number | null
+  }
+
+  export type SpaceCategoryGroupMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    slug: string | null
+    sortOrder: number | null
+  }
+
+  export type SpaceCategoryGroupCountAggregateOutputType = {
+    id: number
+    name: number
+    slug: number
+    sortOrder: number
+    _all: number
+  }
+
+
+  export type SpaceCategoryGroupAvgAggregateInputType = {
+    id?: true
+    sortOrder?: true
+  }
+
+  export type SpaceCategoryGroupSumAggregateInputType = {
+    id?: true
+    sortOrder?: true
+  }
+
+  export type SpaceCategoryGroupMinAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    sortOrder?: true
+  }
+
+  export type SpaceCategoryGroupMaxAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    sortOrder?: true
+  }
+
+  export type SpaceCategoryGroupCountAggregateInputType = {
+    id?: true
+    name?: true
+    slug?: true
+    sortOrder?: true
+    _all?: true
+  }
+
+  export type SpaceCategoryGroupAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpaceCategoryGroup to aggregate.
+     */
+    where?: SpaceCategoryGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SpaceCategoryGroups to fetch.
+     */
+    orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: SpaceCategoryGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SpaceCategoryGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SpaceCategoryGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned SpaceCategoryGroups
+    **/
+    _count?: true | SpaceCategoryGroupCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+    **/
+    _avg?: SpaceCategoryGroupAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+    **/
+    _sum?: SpaceCategoryGroupSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+    **/
+    _min?: SpaceCategoryGroupMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+    **/
+    _max?: SpaceCategoryGroupMaxAggregateInputType
+  }
+
+  export type GetSpaceCategoryGroupAggregateType<T extends SpaceCategoryGroupAggregateArgs> = {
+        [P in keyof T & keyof AggregateSpaceCategoryGroup]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSpaceCategoryGroup[P]>
+      : GetScalarType<T[P], AggregateSpaceCategoryGroup[P]>
+  }
+
+
+
+
+  export type SpaceCategoryGroupGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpaceCategoryGroupWhereInput
+    orderBy?: SpaceCategoryGroupOrderByWithAggregationInput | SpaceCategoryGroupOrderByWithAggregationInput[]
+    by: SpaceCategoryGroupScalarFieldEnum[] | SpaceCategoryGroupScalarFieldEnum
+    having?: SpaceCategoryGroupScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SpaceCategoryGroupCountAggregateInputType | true
+    _avg?: SpaceCategoryGroupAvgAggregateInputType
+    _sum?: SpaceCategoryGroupSumAggregateInputType
+    _min?: SpaceCategoryGroupMinAggregateInputType
+    _max?: SpaceCategoryGroupMaxAggregateInputType
+  }
+
+  export type SpaceCategoryGroupGroupByOutputType = {
+    id: number
+    name: string
+    slug: string
+    sortOrder: number
+    _count: SpaceCategoryGroupCountAggregateOutputType | null
+    _avg: SpaceCategoryGroupAvgAggregateOutputType | null
+    _sum: SpaceCategoryGroupSumAggregateOutputType | null
+    _min: SpaceCategoryGroupMinAggregateOutputType | null
+    _max: SpaceCategoryGroupMaxAggregateOutputType | null
+  }
+
+  type GetSpaceCategoryGroupGroupByPayload<T extends SpaceCategoryGroupGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SpaceCategoryGroupGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SpaceCategoryGroupGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SpaceCategoryGroupGroupByOutputType[P]>
+            : GetScalarType<T[P], SpaceCategoryGroupGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SpaceCategoryGroupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    sortOrder?: boolean
+    categories?: boolean | SpaceCategoryGroup$categoriesArgs<ExtArgs>
+    _count?: boolean | SpaceCategoryGroupCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["spaceCategoryGroup"]>
+
+  export type SpaceCategoryGroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    sortOrder?: boolean
+  }, ExtArgs["result"]["spaceCategoryGroup"]>
+
+  export type SpaceCategoryGroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    sortOrder?: boolean
+  }, ExtArgs["result"]["spaceCategoryGroup"]>
+
+  export type SpaceCategoryGroupSelectScalar = {
+    id?: boolean
+    name?: boolean
+    slug?: boolean
+    sortOrder?: boolean
+  }
+
+  export type SpaceCategoryGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "sortOrder", ExtArgs["result"]["spaceCategoryGroup"]>
+  export type SpaceCategoryGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    categories?: boolean | SpaceCategoryGroup$categoriesArgs<ExtArgs>
+    _count?: boolean | SpaceCategoryGroupCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SpaceCategoryGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type SpaceCategoryGroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $SpaceCategoryGroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SpaceCategoryGroup"
+    objects: {
+      categories: Prisma.$SpaceCategoryPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      slug: string
+      sortOrder: number
+    }, ExtArgs["result"]["spaceCategoryGroup"]>
+    composites: {}
+  }
+
+  type SpaceCategoryGroupGetPayload<S extends boolean | null | undefined | SpaceCategoryGroupDefaultArgs> = $Result.GetResult<Prisma.$SpaceCategoryGroupPayload, S>
+
+  type SpaceCategoryGroupCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SpaceCategoryGroupFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SpaceCategoryGroupCountAggregateInputType | true
+    }
+
+  export interface SpaceCategoryGroupDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SpaceCategoryGroup'], meta: { name: 'SpaceCategoryGroup' } }
+    /**
+     * Find zero or one SpaceCategoryGroup that matches the filter.
+     * @param {SpaceCategoryGroupFindUniqueArgs} args - Arguments to find a SpaceCategoryGroup
+     * @example
+     * // Get one SpaceCategoryGroup
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SpaceCategoryGroupFindUniqueArgs>(args: SelectSubset<T, SpaceCategoryGroupFindUniqueArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SpaceCategoryGroup that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SpaceCategoryGroupFindUniqueOrThrowArgs} args - Arguments to find a SpaceCategoryGroup
+     * @example
+     * // Get one SpaceCategoryGroup
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SpaceCategoryGroupFindUniqueOrThrowArgs>(args: SelectSubset<T, SpaceCategoryGroupFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpaceCategoryGroup that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpaceCategoryGroupFindFirstArgs} args - Arguments to find a SpaceCategoryGroup
+     * @example
+     * // Get one SpaceCategoryGroup
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SpaceCategoryGroupFindFirstArgs>(args?: SelectSubset<T, SpaceCategoryGroupFindFirstArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SpaceCategoryGroup that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpaceCategoryGroupFindFirstOrThrowArgs} args - Arguments to find a SpaceCategoryGroup
+     * @example
+     * // Get one SpaceCategoryGroup
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SpaceCategoryGroupFindFirstOrThrowArgs>(args?: SelectSubset<T, SpaceCategoryGroupFindFirstOrThrowArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SpaceCategoryGroups that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpaceCategoryGroupFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SpaceCategoryGroups
+     * const spaceCategoryGroups = await prisma.spaceCategoryGroup.findMany()
+     *
+     * // Get first 10 SpaceCategoryGroups
+     * const spaceCategoryGroups = await prisma.spaceCategoryGroup.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const spaceCategoryGroupWithIdOnly = await prisma.spaceCategoryGroup.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends SpaceCategoryGroupFindManyArgs>(args?: SelectSubset<T, SpaceCategoryGroupFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SpaceCategoryGroup.
+     * @param {SpaceCategoryGroupCreateArgs} args - Arguments to create a SpaceCategoryGroup.
+     * @example
+     * // Create one SpaceCategoryGroup
+     * const SpaceCategoryGroup = await prisma.spaceCategoryGroup.create({
+     *   data: {
+     *     // ... data to create a SpaceCategoryGroup
+     *   }
+     * })
+     *
+     */
+    create<T extends SpaceCategoryGroupCreateArgs>(args: SelectSubset<T, SpaceCategoryGroupCreateArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SpaceCategoryGroups.
+     * @param {SpaceCategoryGroupCreateManyArgs} args - Arguments to create many SpaceCategoryGroups.
+     * @example
+     * // Create many SpaceCategoryGroups
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends SpaceCategoryGroupCreateManyArgs>(args?: SelectSubset<T, SpaceCategoryGroupCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SpaceCategoryGroups and returns the data saved in the database.
+     * @param {SpaceCategoryGroupCreateManyAndReturnArgs} args - Arguments to create many SpaceCategoryGroups.
+     * @example
+     * // Create many SpaceCategoryGroups
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many SpaceCategoryGroups and only return the `id`
+     * const spaceCategoryGroupWithIdOnly = await prisma.spaceCategoryGroup.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends SpaceCategoryGroupCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceCategoryGroupCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SpaceCategoryGroup.
+     * @param {SpaceCategoryGroupDeleteArgs} args - Arguments to delete one SpaceCategoryGroup.
+     * @example
+     * // Delete one SpaceCategoryGroup
+     * const SpaceCategoryGroup = await prisma.spaceCategoryGroup.delete({
+     *   where: {
+     *     // ... filter to delete one SpaceCategoryGroup
+     *   }
+     * })
+     *
+     */
+    delete<T extends SpaceCategoryGroupDeleteArgs>(args: SelectSubset<T, SpaceCategoryGroupDeleteArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SpaceCategoryGroup.
+     * @param {SpaceCategoryGroupUpdateArgs} args - Arguments to update one SpaceCategoryGroup.
+     * @example
+     * // Update one SpaceCategoryGroup
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends SpaceCategoryGroupUpdateArgs>(args: SelectSubset<T, SpaceCategoryGroupUpdateArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SpaceCategoryGroups.
+     * @param {SpaceCategoryGroupDeleteManyArgs} args - Arguments to filter SpaceCategoryGroups to delete.
+     * @example
+     * // Delete a few SpaceCategoryGroups
+     * const { count } = await prisma.spaceCategoryGroup.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends SpaceCategoryGroupDeleteManyArgs>(args?: SelectSubset<T, SpaceCategoryGroupDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpaceCategoryGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpaceCategoryGroupUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SpaceCategoryGroups
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends SpaceCategoryGroupUpdateManyArgs>(args: SelectSubset<T, SpaceCategoryGroupUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SpaceCategoryGroups and returns the data updated in the database.
+     * @param {SpaceCategoryGroupUpdateManyAndReturnArgs} args - Arguments to update many SpaceCategoryGroups.
+     * @example
+     * // Update many SpaceCategoryGroups
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more SpaceCategoryGroups and only return the `id`
+     * const spaceCategoryGroupWithIdOnly = await prisma.spaceCategoryGroup.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends SpaceCategoryGroupUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceCategoryGroupUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SpaceCategoryGroup.
+     * @param {SpaceCategoryGroupUpsertArgs} args - Arguments to update or create a SpaceCategoryGroup.
+     * @example
+     * // Update or create a SpaceCategoryGroup
+     * const spaceCategoryGroup = await prisma.spaceCategoryGroup.upsert({
+     *   create: {
+     *     // ... data to create a SpaceCategoryGroup
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SpaceCategoryGroup we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SpaceCategoryGroupUpsertArgs>(args: SelectSubset<T, SpaceCategoryGroupUpsertArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SpaceCategoryGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpaceCategoryGroupCountArgs} args - Arguments to filter SpaceCategoryGroups to count.
+     * @example
+     * // Count the number of SpaceCategoryGroups
+     * const count = await prisma.spaceCategoryGroup.count({
+     *   where: {
+     *     // ... the filter for the SpaceCategoryGroups we want to count
+     *   }
+     * })
+    **/
+    count<T extends SpaceCategoryGroupCountArgs>(
+      args?: Subset<T, SpaceCategoryGroupCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SpaceCategoryGroupCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SpaceCategoryGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpaceCategoryGroupAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SpaceCategoryGroupAggregateArgs>(args: Subset<T, SpaceCategoryGroupAggregateArgs>): Prisma.PrismaPromise<GetSpaceCategoryGroupAggregateType<T>>
+
+    /**
+     * Group by SpaceCategoryGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SpaceCategoryGroupGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+    **/
+    groupBy<
+      T extends SpaceCategoryGroupGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SpaceCategoryGroupGroupByArgs['orderBy'] }
+        : { orderBy?: SpaceCategoryGroupGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SpaceCategoryGroupGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSpaceCategoryGroupGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SpaceCategoryGroup model
+   */
+  readonly fields: SpaceCategoryGroupFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SpaceCategoryGroup.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SpaceCategoryGroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    categories<T extends SpaceCategoryGroup$categoriesArgs<ExtArgs> = {}>(args?: Subset<T, SpaceCategoryGroup$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SpaceCategoryGroup model
+   */
+  interface SpaceCategoryGroupFieldRefs {
+    readonly id: FieldRef<"SpaceCategoryGroup", 'Int'>
+    readonly name: FieldRef<"SpaceCategoryGroup", 'String'>
+    readonly slug: FieldRef<"SpaceCategoryGroup", 'String'>
+    readonly sortOrder: FieldRef<"SpaceCategoryGroup", 'Int'>
+  }
+
+
+  // Custom InputTypes
+  /**
+   * SpaceCategoryGroup findUnique
+   */
+  export type SpaceCategoryGroupFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which SpaceCategoryGroup to fetch.
+     */
+    where: SpaceCategoryGroupWhereUniqueInput
+  }
+
+  /**
+   * SpaceCategoryGroup findUniqueOrThrow
+   */
+  export type SpaceCategoryGroupFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which SpaceCategoryGroup to fetch.
+     */
+    where: SpaceCategoryGroupWhereUniqueInput
+  }
+
+  /**
+   * SpaceCategoryGroup findFirst
+   */
+  export type SpaceCategoryGroupFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which SpaceCategoryGroup to fetch.
+     */
+    where?: SpaceCategoryGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SpaceCategoryGroups to fetch.
+     */
+    orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for SpaceCategoryGroups.
+     */
+    cursor?: SpaceCategoryGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SpaceCategoryGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SpaceCategoryGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of SpaceCategoryGroups.
+     */
+    distinct?: SpaceCategoryGroupScalarFieldEnum | SpaceCategoryGroupScalarFieldEnum[]
+  }
+
+  /**
+   * SpaceCategoryGroup findFirstOrThrow
+   */
+  export type SpaceCategoryGroupFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which SpaceCategoryGroup to fetch.
+     */
+    where?: SpaceCategoryGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SpaceCategoryGroups to fetch.
+     */
+    orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for SpaceCategoryGroups.
+     */
+    cursor?: SpaceCategoryGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SpaceCategoryGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SpaceCategoryGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of SpaceCategoryGroups.
+     */
+    distinct?: SpaceCategoryGroupScalarFieldEnum | SpaceCategoryGroupScalarFieldEnum[]
+  }
+
+  /**
+   * SpaceCategoryGroup findMany
+   */
+  export type SpaceCategoryGroupFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which SpaceCategoryGroups to fetch.
+     */
+    where?: SpaceCategoryGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of SpaceCategoryGroups to fetch.
+     */
+    orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing SpaceCategoryGroups.
+     */
+    cursor?: SpaceCategoryGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` SpaceCategoryGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` SpaceCategoryGroups.
+     */
+    skip?: number
+    distinct?: SpaceCategoryGroupScalarFieldEnum | SpaceCategoryGroupScalarFieldEnum[]
+  }
+
+  /**
+   * SpaceCategoryGroup create
+   */
+  export type SpaceCategoryGroupCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SpaceCategoryGroup.
+     */
+    data: XOR<SpaceCategoryGroupCreateInput, SpaceCategoryGroupUncheckedCreateInput>
+  }
+
+  /**
+   * SpaceCategoryGroup createMany
+   */
+  export type SpaceCategoryGroupCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SpaceCategoryGroups.
+     */
+    data: SpaceCategoryGroupCreateManyInput | SpaceCategoryGroupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SpaceCategoryGroup createManyAndReturn
+   */
+  export type SpaceCategoryGroupCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * The data used to create many SpaceCategoryGroups.
+     */
+    data: SpaceCategoryGroupCreateManyInput | SpaceCategoryGroupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SpaceCategoryGroup update
+   */
+  export type SpaceCategoryGroupUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SpaceCategoryGroup.
+     */
+    data: XOR<SpaceCategoryGroupUpdateInput, SpaceCategoryGroupUncheckedUpdateInput>
+    /**
+     * Choose, which SpaceCategoryGroup to update.
+     */
+    where: SpaceCategoryGroupWhereUniqueInput
+  }
+
+  /**
+   * SpaceCategoryGroup updateMany
+   */
+  export type SpaceCategoryGroupUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SpaceCategoryGroups.
+     */
+    data: XOR<SpaceCategoryGroupUpdateManyMutationInput, SpaceCategoryGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which SpaceCategoryGroups to update
+     */
+    where?: SpaceCategoryGroupWhereInput
+    /**
+     * Limit how many SpaceCategoryGroups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpaceCategoryGroup updateManyAndReturn
+   */
+  export type SpaceCategoryGroupUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * The data used to update SpaceCategoryGroups.
+     */
+    data: XOR<SpaceCategoryGroupUpdateManyMutationInput, SpaceCategoryGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which SpaceCategoryGroups to update
+     */
+    where?: SpaceCategoryGroupWhereInput
+    /**
+     * Limit how many SpaceCategoryGroups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpaceCategoryGroup upsert
+   */
+  export type SpaceCategoryGroupUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SpaceCategoryGroup to update in case it exists.
+     */
+    where: SpaceCategoryGroupWhereUniqueInput
+    /**
+     * In case the SpaceCategoryGroup found by the `where` argument doesn't exist, create a new SpaceCategoryGroup with this data.
+     */
+    create: XOR<SpaceCategoryGroupCreateInput, SpaceCategoryGroupUncheckedCreateInput>
+    /**
+     * In case the SpaceCategoryGroup was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SpaceCategoryGroupUpdateInput, SpaceCategoryGroupUncheckedUpdateInput>
+  }
+
+  /**
+   * SpaceCategoryGroup delete
+   */
+  export type SpaceCategoryGroupDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+    /**
+     * Filter which SpaceCategoryGroup to delete.
+     */
+    where: SpaceCategoryGroupWhereUniqueInput
+  }
+
+  /**
+   * SpaceCategoryGroup deleteMany
+   */
+  export type SpaceCategoryGroupDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SpaceCategoryGroups to delete
+     */
+    where?: SpaceCategoryGroupWhereInput
+    /**
+     * Limit how many SpaceCategoryGroups to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SpaceCategoryGroup.categories
+   */
+  export type SpaceCategoryGroup$categoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategory
+     */
+    select?: SpaceCategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategory
+     */
+    omit?: SpaceCategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryInclude<ExtArgs> | null
+    where?: SpaceCategoryWhereInput
+    orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
+    cursor?: SpaceCategoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SpaceCategoryScalarFieldEnum | SpaceCategoryScalarFieldEnum[]
+  }
+
+  /**
+   * SpaceCategoryGroup without action
+   */
+  export type SpaceCategoryGroupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SpaceCategoryGroup
+     */
+    select?: SpaceCategoryGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SpaceCategoryGroup
+     */
+    omit?: SpaceCategoryGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceCategoryGroupInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Amenity
    */
 
@@ -7204,55 +8469,55 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Amenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Amenities
     **/
     _count?: true | AmenityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: AmenityAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: AmenitySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: AmenityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: AmenityMaxAggregateInputType
@@ -7436,13 +8701,13 @@ export namespace Prisma {
      * @example
      * // Get all Amenities
      * const amenities = await prisma.amenity.findMany()
-     * 
+     *
      * // Get first 10 Amenities
      * const amenities = await prisma.amenity.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const amenityWithIdOnly = await prisma.amenity.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends AmenityFindManyArgs>(args?: SelectSubset<T, AmenityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -7456,7 +8721,7 @@ export namespace Prisma {
      *     // ... data to create a Amenity
      *   }
      * })
-     * 
+     *
      */
     create<T extends AmenityCreateArgs>(args: SelectSubset<T, AmenityCreateArgs<ExtArgs>>): Prisma__AmenityClient<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7470,7 +8735,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends AmenityCreateManyArgs>(args?: SelectSubset<T, AmenityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7484,7 +8749,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Amenities and only return the `id`
      * const amenityWithIdOnly = await prisma.amenity.createManyAndReturn({
      *   select: { id: true },
@@ -7494,7 +8759,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends AmenityCreateManyAndReturnArgs>(args?: SelectSubset<T, AmenityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -7508,7 +8773,7 @@ export namespace Prisma {
      *     // ... filter to delete one Amenity
      *   }
      * })
-     * 
+     *
      */
     delete<T extends AmenityDeleteArgs>(args: SelectSubset<T, AmenityDeleteArgs<ExtArgs>>): Prisma__AmenityClient<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7525,7 +8790,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends AmenityUpdateArgs>(args: SelectSubset<T, AmenityUpdateArgs<ExtArgs>>): Prisma__AmenityClient<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7539,7 +8804,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends AmenityDeleteManyArgs>(args?: SelectSubset<T, AmenityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7558,7 +8823,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends AmenityUpdateManyArgs>(args: SelectSubset<T, AmenityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7575,7 +8840,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Amenities and only return the `id`
      * const amenityWithIdOnly = await prisma.amenity.updateManyAndReturn({
      *   select: { id: true },
@@ -7588,7 +8853,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends AmenityUpdateManyAndReturnArgs>(args: SelectSubset<T, AmenityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -7677,7 +8942,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends AmenityGroupByArgs,
@@ -7786,7 +9051,7 @@ export namespace Prisma {
     readonly icon: FieldRef<"Amenity", 'String'>
     readonly category: FieldRef<"Amenity", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -7855,31 +9120,31 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Amenities.
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Amenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Amenities.
      */
     distinct?: AmenityScalarFieldEnum | AmenityScalarFieldEnum[]
@@ -7907,31 +9172,31 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Amenities.
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Amenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Amenities.
      */
     distinct?: AmenityScalarFieldEnum | AmenityScalarFieldEnum[]
@@ -7959,25 +9224,25 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Amenities.
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Amenities.
      */
     skip?: number
@@ -8297,55 +9562,55 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned SpaceAmenities
     **/
     _count?: true | SpaceAmenityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: SpaceAmenityAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: SpaceAmenitySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: SpaceAmenityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: SpaceAmenityMaxAggregateInputType
@@ -8534,13 +9799,13 @@ export namespace Prisma {
      * @example
      * // Get all SpaceAmenities
      * const spaceAmenities = await prisma.spaceAmenity.findMany()
-     * 
+     *
      * // Get first 10 SpaceAmenities
      * const spaceAmenities = await prisma.spaceAmenity.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const spaceAmenityWithIdOnly = await prisma.spaceAmenity.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends SpaceAmenityFindManyArgs>(args?: SelectSubset<T, SpaceAmenityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -8554,7 +9819,7 @@ export namespace Prisma {
      *     // ... data to create a SpaceAmenity
      *   }
      * })
-     * 
+     *
      */
     create<T extends SpaceAmenityCreateArgs>(args: SelectSubset<T, SpaceAmenityCreateArgs<ExtArgs>>): Prisma__SpaceAmenityClient<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8568,7 +9833,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends SpaceAmenityCreateManyArgs>(args?: SelectSubset<T, SpaceAmenityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8582,7 +9847,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many SpaceAmenities and only return the `id`
      * const spaceAmenityWithIdOnly = await prisma.spaceAmenity.createManyAndReturn({
      *   select: { id: true },
@@ -8592,7 +9857,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends SpaceAmenityCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceAmenityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -8606,7 +9871,7 @@ export namespace Prisma {
      *     // ... filter to delete one SpaceAmenity
      *   }
      * })
-     * 
+     *
      */
     delete<T extends SpaceAmenityDeleteArgs>(args: SelectSubset<T, SpaceAmenityDeleteArgs<ExtArgs>>): Prisma__SpaceAmenityClient<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8623,7 +9888,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends SpaceAmenityUpdateArgs>(args: SelectSubset<T, SpaceAmenityUpdateArgs<ExtArgs>>): Prisma__SpaceAmenityClient<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8637,7 +9902,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends SpaceAmenityDeleteManyArgs>(args?: SelectSubset<T, SpaceAmenityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8656,7 +9921,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends SpaceAmenityUpdateManyArgs>(args: SelectSubset<T, SpaceAmenityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8673,7 +9938,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more SpaceAmenities and only return the `id`
      * const spaceAmenityWithIdOnly = await prisma.spaceAmenity.updateManyAndReturn({
      *   select: { id: true },
@@ -8686,7 +9951,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends SpaceAmenityUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceAmenityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -8775,7 +10040,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends SpaceAmenityGroupByArgs,
@@ -8884,7 +10149,7 @@ export namespace Prisma {
     readonly spaceId: FieldRef<"SpaceAmenity", 'Int'>
     readonly amenityId: FieldRef<"SpaceAmenity", 'Int'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -8953,31 +10218,31 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SpaceAmenities.
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SpaceAmenities.
      */
     distinct?: SpaceAmenityScalarFieldEnum | SpaceAmenityScalarFieldEnum[]
@@ -9005,31 +10270,31 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for SpaceAmenities.
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of SpaceAmenities.
      */
     distinct?: SpaceAmenityScalarFieldEnum | SpaceAmenityScalarFieldEnum[]
@@ -9057,25 +10322,25 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing SpaceAmenities.
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
@@ -9397,55 +10662,55 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Availabilities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Availabilities
     **/
     _count?: true | AvailabilityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: AvailabilityAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: AvailabilitySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: AvailabilityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: AvailabilityMaxAggregateInputType
@@ -9645,13 +10910,13 @@ export namespace Prisma {
      * @example
      * // Get all Availabilities
      * const availabilities = await prisma.availability.findMany()
-     * 
+     *
      * // Get first 10 Availabilities
      * const availabilities = await prisma.availability.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const availabilityWithIdOnly = await prisma.availability.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends AvailabilityFindManyArgs>(args?: SelectSubset<T, AvailabilityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -9665,7 +10930,7 @@ export namespace Prisma {
      *     // ... data to create a Availability
      *   }
      * })
-     * 
+     *
      */
     create<T extends AvailabilityCreateArgs>(args: SelectSubset<T, AvailabilityCreateArgs<ExtArgs>>): Prisma__AvailabilityClient<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9679,7 +10944,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends AvailabilityCreateManyArgs>(args?: SelectSubset<T, AvailabilityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9693,7 +10958,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Availabilities and only return the `id`
      * const availabilityWithIdOnly = await prisma.availability.createManyAndReturn({
      *   select: { id: true },
@@ -9703,7 +10968,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends AvailabilityCreateManyAndReturnArgs>(args?: SelectSubset<T, AvailabilityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -9717,7 +10982,7 @@ export namespace Prisma {
      *     // ... filter to delete one Availability
      *   }
      * })
-     * 
+     *
      */
     delete<T extends AvailabilityDeleteArgs>(args: SelectSubset<T, AvailabilityDeleteArgs<ExtArgs>>): Prisma__AvailabilityClient<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9734,7 +10999,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends AvailabilityUpdateArgs>(args: SelectSubset<T, AvailabilityUpdateArgs<ExtArgs>>): Prisma__AvailabilityClient<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9748,7 +11013,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends AvailabilityDeleteManyArgs>(args?: SelectSubset<T, AvailabilityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9767,7 +11032,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends AvailabilityUpdateManyArgs>(args: SelectSubset<T, AvailabilityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9784,7 +11049,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Availabilities and only return the `id`
      * const availabilityWithIdOnly = await prisma.availability.updateManyAndReturn({
      *   select: { id: true },
@@ -9797,7 +11062,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends AvailabilityUpdateManyAndReturnArgs>(args: SelectSubset<T, AvailabilityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -9886,7 +11151,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends AvailabilityGroupByArgs,
@@ -9997,7 +11262,7 @@ export namespace Prisma {
     readonly endTime: FieldRef<"Availability", 'String'>
     readonly isOpen: FieldRef<"Availability", 'Boolean'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -10066,31 +11331,31 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Availabilities.
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Availabilities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Availabilities.
      */
     distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
@@ -10118,31 +11383,31 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Availabilities.
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Availabilities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Availabilities.
      */
     distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
@@ -10170,25 +11435,25 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Availabilities.
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Availabilities.
      */
     skip?: number
@@ -10494,55 +11759,55 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` BlockedDates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned BlockedDates
     **/
     _count?: true | BlockedDateCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: BlockedDateAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: BlockedDateSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: BlockedDateMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: BlockedDateMaxAggregateInputType
@@ -10730,13 +11995,13 @@ export namespace Prisma {
      * @example
      * // Get all BlockedDates
      * const blockedDates = await prisma.blockedDate.findMany()
-     * 
+     *
      * // Get first 10 BlockedDates
      * const blockedDates = await prisma.blockedDate.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const blockedDateWithIdOnly = await prisma.blockedDate.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends BlockedDateFindManyArgs>(args?: SelectSubset<T, BlockedDateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -10750,7 +12015,7 @@ export namespace Prisma {
      *     // ... data to create a BlockedDate
      *   }
      * })
-     * 
+     *
      */
     create<T extends BlockedDateCreateArgs>(args: SelectSubset<T, BlockedDateCreateArgs<ExtArgs>>): Prisma__BlockedDateClient<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10764,7 +12029,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends BlockedDateCreateManyArgs>(args?: SelectSubset<T, BlockedDateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10778,7 +12043,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many BlockedDates and only return the `id`
      * const blockedDateWithIdOnly = await prisma.blockedDate.createManyAndReturn({
      *   select: { id: true },
@@ -10788,7 +12053,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends BlockedDateCreateManyAndReturnArgs>(args?: SelectSubset<T, BlockedDateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -10802,7 +12067,7 @@ export namespace Prisma {
      *     // ... filter to delete one BlockedDate
      *   }
      * })
-     * 
+     *
      */
     delete<T extends BlockedDateDeleteArgs>(args: SelectSubset<T, BlockedDateDeleteArgs<ExtArgs>>): Prisma__BlockedDateClient<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10819,7 +12084,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends BlockedDateUpdateArgs>(args: SelectSubset<T, BlockedDateUpdateArgs<ExtArgs>>): Prisma__BlockedDateClient<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10833,7 +12098,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends BlockedDateDeleteManyArgs>(args?: SelectSubset<T, BlockedDateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10852,7 +12117,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends BlockedDateUpdateManyArgs>(args: SelectSubset<T, BlockedDateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10869,7 +12134,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more BlockedDates and only return the `id`
      * const blockedDateWithIdOnly = await prisma.blockedDate.updateManyAndReturn({
      *   select: { id: true },
@@ -10882,7 +12147,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends BlockedDateUpdateManyAndReturnArgs>(args: SelectSubset<T, BlockedDateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -10971,7 +12236,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends BlockedDateGroupByArgs,
@@ -11080,7 +12345,7 @@ export namespace Prisma {
     readonly date: FieldRef<"BlockedDate", 'DateTime'>
     readonly reason: FieldRef<"BlockedDate", 'String'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -11149,31 +12414,31 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for BlockedDates.
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` BlockedDates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of BlockedDates.
      */
     distinct?: BlockedDateScalarFieldEnum | BlockedDateScalarFieldEnum[]
@@ -11201,31 +12466,31 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for BlockedDates.
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` BlockedDates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of BlockedDates.
      */
     distinct?: BlockedDateScalarFieldEnum | BlockedDateScalarFieldEnum[]
@@ -11253,25 +12518,25 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing BlockedDates.
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` BlockedDates.
      */
     skip?: number
@@ -11713,55 +12978,55 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Bookings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Bookings
     **/
     _count?: true | BookingCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: BookingAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: BookingSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: BookingMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: BookingMaxAggregateInputType
@@ -12086,13 +13351,13 @@ export namespace Prisma {
      * @example
      * // Get all Bookings
      * const bookings = await prisma.booking.findMany()
-     * 
+     *
      * // Get first 10 Bookings
      * const bookings = await prisma.booking.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const bookingWithIdOnly = await prisma.booking.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends BookingFindManyArgs>(args?: SelectSubset<T, BookingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -12106,7 +13371,7 @@ export namespace Prisma {
      *     // ... data to create a Booking
      *   }
      * })
-     * 
+     *
      */
     create<T extends BookingCreateArgs>(args: SelectSubset<T, BookingCreateArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12120,7 +13385,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends BookingCreateManyArgs>(args?: SelectSubset<T, BookingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12134,7 +13399,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Bookings and only return the `id`
      * const bookingWithIdOnly = await prisma.booking.createManyAndReturn({
      *   select: { id: true },
@@ -12144,7 +13409,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends BookingCreateManyAndReturnArgs>(args?: SelectSubset<T, BookingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -12158,7 +13423,7 @@ export namespace Prisma {
      *     // ... filter to delete one Booking
      *   }
      * })
-     * 
+     *
      */
     delete<T extends BookingDeleteArgs>(args: SelectSubset<T, BookingDeleteArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12175,7 +13440,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends BookingUpdateArgs>(args: SelectSubset<T, BookingUpdateArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12189,7 +13454,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends BookingDeleteManyArgs>(args?: SelectSubset<T, BookingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12208,7 +13473,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends BookingUpdateManyArgs>(args: SelectSubset<T, BookingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12225,7 +13490,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Bookings and only return the `id`
      * const bookingWithIdOnly = await prisma.booking.updateManyAndReturn({
      *   select: { id: true },
@@ -12238,7 +13503,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends BookingUpdateManyAndReturnArgs>(args: SelectSubset<T, BookingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -12327,7 +13592,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends BookingGroupByArgs,
@@ -12459,7 +13724,7 @@ export namespace Prisma {
     readonly cancelledAt: FieldRef<"Booking", 'DateTime'>
     readonly completedAt: FieldRef<"Booking", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -12528,31 +13793,31 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Bookings.
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Bookings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Bookings.
      */
     distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
@@ -12580,31 +13845,31 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Bookings.
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Bookings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Bookings.
      */
     distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
@@ -12632,25 +13897,25 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Bookings.
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Bookings.
      */
     skip?: number
@@ -13015,55 +14280,55 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Reviews
     **/
     _count?: true | ReviewCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: ReviewAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: ReviewSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: ReviewMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: ReviewMaxAggregateInputType
@@ -13301,13 +14566,13 @@ export namespace Prisma {
      * @example
      * // Get all Reviews
      * const reviews = await prisma.review.findMany()
-     * 
+     *
      * // Get first 10 Reviews
      * const reviews = await prisma.review.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const reviewWithIdOnly = await prisma.review.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends ReviewFindManyArgs>(args?: SelectSubset<T, ReviewFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -13321,7 +14586,7 @@ export namespace Prisma {
      *     // ... data to create a Review
      *   }
      * })
-     * 
+     *
      */
     create<T extends ReviewCreateArgs>(args: SelectSubset<T, ReviewCreateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13335,7 +14600,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends ReviewCreateManyArgs>(args?: SelectSubset<T, ReviewCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13349,7 +14614,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Reviews and only return the `id`
      * const reviewWithIdOnly = await prisma.review.createManyAndReturn({
      *   select: { id: true },
@@ -13359,7 +14624,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends ReviewCreateManyAndReturnArgs>(args?: SelectSubset<T, ReviewCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -13373,7 +14638,7 @@ export namespace Prisma {
      *     // ... filter to delete one Review
      *   }
      * })
-     * 
+     *
      */
     delete<T extends ReviewDeleteArgs>(args: SelectSubset<T, ReviewDeleteArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13390,7 +14655,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends ReviewUpdateArgs>(args: SelectSubset<T, ReviewUpdateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13404,7 +14669,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends ReviewDeleteManyArgs>(args?: SelectSubset<T, ReviewDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13423,7 +14688,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends ReviewUpdateManyArgs>(args: SelectSubset<T, ReviewUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13440,7 +14705,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Reviews and only return the `id`
      * const reviewWithIdOnly = await prisma.review.updateManyAndReturn({
      *   select: { id: true },
@@ -13453,7 +14718,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends ReviewUpdateManyAndReturnArgs>(args: SelectSubset<T, ReviewUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -13542,7 +14807,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends ReviewGroupByArgs,
@@ -13659,7 +14924,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Review", 'DateTime'>
     readonly updatedAt: FieldRef<"Review", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -13728,31 +14993,31 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Reviews.
      */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
@@ -13780,31 +15045,31 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Reviews.
      */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
@@ -13832,25 +15097,25 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Reviews.
      */
     skip?: number
@@ -14192,55 +15457,55 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the start position
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Payouts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Count returned Payouts
     **/
     _count?: true | PayoutCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to average
     **/
     _avg?: PayoutAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to sum
     **/
     _sum?: PayoutSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the minimum value
     **/
     _min?: PayoutMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
+     *
      * Select which fields to find the maximum value
     **/
     _max?: PayoutMaxAggregateInputType
@@ -14464,13 +15729,13 @@ export namespace Prisma {
      * @example
      * // Get all Payouts
      * const payouts = await prisma.payout.findMany()
-     * 
+     *
      * // Get first 10 Payouts
      * const payouts = await prisma.payout.findMany({ take: 10 })
-     * 
+     *
      * // Only select the `id`
      * const payoutWithIdOnly = await prisma.payout.findMany({ select: { id: true } })
-     * 
+     *
      */
     findMany<T extends PayoutFindManyArgs>(args?: SelectSubset<T, PayoutFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -14484,7 +15749,7 @@ export namespace Prisma {
      *     // ... data to create a Payout
      *   }
      * })
-     * 
+     *
      */
     create<T extends PayoutCreateArgs>(args: SelectSubset<T, PayoutCreateArgs<ExtArgs>>): Prisma__PayoutClient<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14498,7 +15763,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *     
+     *
      */
     createMany<T extends PayoutCreateManyArgs>(args?: SelectSubset<T, PayoutCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14512,7 +15777,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Create many Payouts and only return the `id`
      * const payoutWithIdOnly = await prisma.payout.createManyAndReturn({
      *   select: { id: true },
@@ -14522,7 +15787,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     createManyAndReturn<T extends PayoutCreateManyAndReturnArgs>(args?: SelectSubset<T, PayoutCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -14536,7 +15801,7 @@ export namespace Prisma {
      *     // ... filter to delete one Payout
      *   }
      * })
-     * 
+     *
      */
     delete<T extends PayoutDeleteArgs>(args: SelectSubset<T, PayoutDeleteArgs<ExtArgs>>): Prisma__PayoutClient<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14553,7 +15818,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     update<T extends PayoutUpdateArgs>(args: SelectSubset<T, PayoutUpdateArgs<ExtArgs>>): Prisma__PayoutClient<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14567,7 +15832,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     * 
+     *
      */
     deleteMany<T extends PayoutDeleteManyArgs>(args?: SelectSubset<T, PayoutDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14586,7 +15851,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     * 
+     *
      */
     updateMany<T extends PayoutUpdateManyArgs>(args: SelectSubset<T, PayoutUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14603,7 +15868,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     * 
+     *
      * // Update zero or more Payouts and only return the `id`
      * const payoutWithIdOnly = await prisma.payout.updateManyAndReturn({
      *   select: { id: true },
@@ -14616,7 +15881,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     * 
+     *
      */
     updateManyAndReturn<T extends PayoutUpdateManyAndReturnArgs>(args: SelectSubset<T, PayoutUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -14705,7 +15970,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     * 
+     *
     **/
     groupBy<
       T extends PayoutGroupByArgs,
@@ -14820,7 +16085,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Payout", 'DateTime'>
     readonly updatedAt: FieldRef<"Payout", 'DateTime'>
   }
-    
+
 
   // Custom InputTypes
   /**
@@ -14889,31 +16154,31 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Payouts.
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Payouts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Payouts.
      */
     distinct?: PayoutScalarFieldEnum | PayoutScalarFieldEnum[]
@@ -14941,31 +16206,31 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for searching for Payouts.
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Payouts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
+     *
      * Filter by unique combinations of Payouts.
      */
     distinct?: PayoutScalarFieldEnum | PayoutScalarFieldEnum[]
@@ -14993,25 +16258,25 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
+     *
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
+     *
      * Sets the position for listing Payouts.
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
+     *
      * Skip the first `n` Payouts.
      */
     skip?: number
@@ -15317,10 +16582,22 @@ export namespace Prisma {
     name: 'name',
     slug: 'slug',
     description: 'description',
-    icon: 'icon'
+    icon: 'icon',
+    groupSlug: 'groupSlug',
+    sortOrder: 'sortOrder'
   };
 
   export type SpaceCategoryScalarFieldEnum = (typeof SpaceCategoryScalarFieldEnum)[keyof typeof SpaceCategoryScalarFieldEnum]
+
+
+  export const SpaceCategoryGroupScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    slug: 'slug',
+    sortOrder: 'sortOrder'
+  };
+
+  export type SpaceCategoryGroupScalarFieldEnum = (typeof SpaceCategoryGroupScalarFieldEnum)[keyof typeof SpaceCategoryGroupScalarFieldEnum]
 
 
   export const AmenityScalarFieldEnum: {
@@ -15475,161 +16752,161 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-    
+
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Role'
    */
   export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-    
+
 
 
   /**
    * Reference to a field of type 'Role[]'
    */
   export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
+
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
+
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
+
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'SpaceType'
    */
   export type EnumSpaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SpaceType'>
-    
+
 
 
   /**
    * Reference to a field of type 'SpaceType[]'
    */
   export type ListEnumSpaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SpaceType[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'PricingType'
    */
   export type EnumPricingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingType'>
-    
+
 
 
   /**
    * Reference to a field of type 'PricingType[]'
    */
   export type ListEnumPricingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingType[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
+
 
 
   /**
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-    
+
 
 
   /**
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
-    
+
 
 
   /**
    * Reference to a field of type 'CancellationPolicy'
    */
   export type EnumCancellationPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CancellationPolicy'>
-    
+
 
 
   /**
    * Reference to a field of type 'CancellationPolicy[]'
    */
   export type ListEnumCancellationPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CancellationPolicy[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'BookingStatus'
    */
   export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
-    
+
 
 
   /**
    * Reference to a field of type 'BookingStatus[]'
    */
   export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus[]'>
-    
+
 
 
   /**
    * Reference to a field of type 'PayoutStatus'
    */
   export type EnumPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutStatus'>
-    
+
 
 
   /**
    * Reference to a field of type 'PayoutStatus[]'
    */
   export type ListEnumPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutStatus[]'>
-    
+
   /**
    * Deep Input Types
    */
@@ -16004,6 +17281,9 @@ export namespace Prisma {
     slug?: StringFilter<"SpaceCategory"> | string
     description?: StringNullableFilter<"SpaceCategory"> | string | null
     icon?: StringNullableFilter<"SpaceCategory"> | string | null
+    groupSlug?: StringFilter<"SpaceCategory"> | string
+    sortOrder?: IntFilter<"SpaceCategory"> | number
+    group?: XOR<SpaceCategoryGroupScalarRelationFilter, SpaceCategoryGroupWhereInput>
     spaces?: SpaceListRelationFilter
   }
 
@@ -16013,6 +17293,9 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrderInput | SortOrder
     icon?: SortOrderInput | SortOrder
+    groupSlug?: SortOrder
+    sortOrder?: SortOrder
+    group?: SpaceCategoryGroupOrderByWithRelationInput
     spaces?: SpaceOrderByRelationAggregateInput
   }
 
@@ -16025,6 +17308,9 @@ export namespace Prisma {
     name?: StringFilter<"SpaceCategory"> | string
     description?: StringNullableFilter<"SpaceCategory"> | string | null
     icon?: StringNullableFilter<"SpaceCategory"> | string | null
+    groupSlug?: StringFilter<"SpaceCategory"> | string
+    sortOrder?: IntFilter<"SpaceCategory"> | number
+    group?: XOR<SpaceCategoryGroupScalarRelationFilter, SpaceCategoryGroupWhereInput>
     spaces?: SpaceListRelationFilter
   }, "id" | "slug">
 
@@ -16034,6 +17320,8 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrderInput | SortOrder
     icon?: SortOrderInput | SortOrder
+    groupSlug?: SortOrder
+    sortOrder?: SortOrder
     _count?: SpaceCategoryCountOrderByAggregateInput
     _avg?: SpaceCategoryAvgOrderByAggregateInput
     _max?: SpaceCategoryMaxOrderByAggregateInput
@@ -16050,6 +17338,60 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"SpaceCategory"> | string
     description?: StringNullableWithAggregatesFilter<"SpaceCategory"> | string | null
     icon?: StringNullableWithAggregatesFilter<"SpaceCategory"> | string | null
+    groupSlug?: StringWithAggregatesFilter<"SpaceCategory"> | string
+    sortOrder?: IntWithAggregatesFilter<"SpaceCategory"> | number
+  }
+
+  export type SpaceCategoryGroupWhereInput = {
+    AND?: SpaceCategoryGroupWhereInput | SpaceCategoryGroupWhereInput[]
+    OR?: SpaceCategoryGroupWhereInput[]
+    NOT?: SpaceCategoryGroupWhereInput | SpaceCategoryGroupWhereInput[]
+    id?: IntFilter<"SpaceCategoryGroup"> | number
+    name?: StringFilter<"SpaceCategoryGroup"> | string
+    slug?: StringFilter<"SpaceCategoryGroup"> | string
+    sortOrder?: IntFilter<"SpaceCategoryGroup"> | number
+    categories?: SpaceCategoryListRelationFilter
+  }
+
+  export type SpaceCategoryGroupOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    sortOrder?: SortOrder
+    categories?: SpaceCategoryOrderByRelationAggregateInput
+  }
+
+  export type SpaceCategoryGroupWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    slug?: string
+    AND?: SpaceCategoryGroupWhereInput | SpaceCategoryGroupWhereInput[]
+    OR?: SpaceCategoryGroupWhereInput[]
+    NOT?: SpaceCategoryGroupWhereInput | SpaceCategoryGroupWhereInput[]
+    name?: StringFilter<"SpaceCategoryGroup"> | string
+    sortOrder?: IntFilter<"SpaceCategoryGroup"> | number
+    categories?: SpaceCategoryListRelationFilter
+  }, "id" | "slug">
+
+  export type SpaceCategoryGroupOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    sortOrder?: SortOrder
+    _count?: SpaceCategoryGroupCountOrderByAggregateInput
+    _avg?: SpaceCategoryGroupAvgOrderByAggregateInput
+    _max?: SpaceCategoryGroupMaxOrderByAggregateInput
+    _min?: SpaceCategoryGroupMinOrderByAggregateInput
+    _sum?: SpaceCategoryGroupSumOrderByAggregateInput
+  }
+
+  export type SpaceCategoryGroupScalarWhereWithAggregatesInput = {
+    AND?: SpaceCategoryGroupScalarWhereWithAggregatesInput | SpaceCategoryGroupScalarWhereWithAggregatesInput[]
+    OR?: SpaceCategoryGroupScalarWhereWithAggregatesInput[]
+    NOT?: SpaceCategoryGroupScalarWhereWithAggregatesInput | SpaceCategoryGroupScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"SpaceCategoryGroup"> | number
+    name?: StringWithAggregatesFilter<"SpaceCategoryGroup"> | string
+    slug?: StringWithAggregatesFilter<"SpaceCategoryGroup"> | string
+    sortOrder?: IntWithAggregatesFilter<"SpaceCategoryGroup"> | number
   }
 
   export type AmenityWhereInput = {
@@ -17036,6 +18378,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     icon?: string | null
+    sortOrder?: number
+    group: SpaceCategoryGroupCreateNestedOneWithoutCategoriesInput
     spaces?: SpaceCreateNestedManyWithoutCategoryInput
   }
 
@@ -17045,6 +18389,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     icon?: string | null
+    groupSlug: string
+    sortOrder?: number
     spaces?: SpaceUncheckedCreateNestedManyWithoutCategoryInput
   }
 
@@ -17053,6 +18399,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    group?: SpaceCategoryGroupUpdateOneRequiredWithoutCategoriesNestedInput
     spaces?: SpaceUpdateManyWithoutCategoryNestedInput
   }
 
@@ -17062,6 +18410,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    groupSlug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
     spaces?: SpaceUncheckedUpdateManyWithoutCategoryNestedInput
   }
 
@@ -17071,6 +18421,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     icon?: string | null
+    groupSlug: string
+    sortOrder?: number
   }
 
   export type SpaceCategoryUpdateManyMutationInput = {
@@ -17078,6 +18430,7 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
   }
 
   export type SpaceCategoryUncheckedUpdateManyInput = {
@@ -17086,6 +18439,58 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    groupSlug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SpaceCategoryGroupCreateInput = {
+    name: string
+    slug: string
+    sortOrder?: number
+    categories?: SpaceCategoryCreateNestedManyWithoutGroupInput
+  }
+
+  export type SpaceCategoryGroupUncheckedCreateInput = {
+    id?: number
+    name: string
+    slug: string
+    sortOrder?: number
+    categories?: SpaceCategoryUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type SpaceCategoryGroupUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    categories?: SpaceCategoryUpdateManyWithoutGroupNestedInput
+  }
+
+  export type SpaceCategoryGroupUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    categories?: SpaceCategoryUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type SpaceCategoryGroupCreateManyInput = {
+    id?: number
+    name: string
+    slug: string
+    sortOrder?: number
+  }
+
+  export type SpaceCategoryGroupUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SpaceCategoryGroupUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
   }
 
   export type AmenityCreateInput = {
@@ -18284,16 +19689,24 @@ export namespace Prisma {
     _max?: NestedEnumCancellationPolicyFilter<$PrismaModel>
   }
 
+  export type SpaceCategoryGroupScalarRelationFilter = {
+    is?: SpaceCategoryGroupWhereInput
+    isNot?: SpaceCategoryGroupWhereInput
+  }
+
   export type SpaceCategoryCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     slug?: SortOrder
     description?: SortOrder
     icon?: SortOrder
+    groupSlug?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type SpaceCategoryAvgOrderByAggregateInput = {
     id?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type SpaceCategoryMaxOrderByAggregateInput = {
@@ -18302,6 +19715,8 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     icon?: SortOrder
+    groupSlug?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type SpaceCategoryMinOrderByAggregateInput = {
@@ -18310,10 +19725,54 @@ export namespace Prisma {
     slug?: SortOrder
     description?: SortOrder
     icon?: SortOrder
+    groupSlug?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type SpaceCategorySumOrderByAggregateInput = {
     id?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type SpaceCategoryListRelationFilter = {
+    every?: SpaceCategoryWhereInput
+    some?: SpaceCategoryWhereInput
+    none?: SpaceCategoryWhereInput
+  }
+
+  export type SpaceCategoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SpaceCategoryGroupCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type SpaceCategoryGroupAvgOrderByAggregateInput = {
+    id?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type SpaceCategoryGroupMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type SpaceCategoryGroupMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    slug?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type SpaceCategoryGroupSumOrderByAggregateInput = {
+    id?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type AmenityCountOrderByAggregateInput = {
@@ -19288,6 +20747,12 @@ export namespace Prisma {
     deleteMany?: ReviewScalarWhereInput | ReviewScalarWhereInput[]
   }
 
+  export type SpaceCategoryGroupCreateNestedOneWithoutCategoriesInput = {
+    create?: XOR<SpaceCategoryGroupCreateWithoutCategoriesInput, SpaceCategoryGroupUncheckedCreateWithoutCategoriesInput>
+    connectOrCreate?: SpaceCategoryGroupCreateOrConnectWithoutCategoriesInput
+    connect?: SpaceCategoryGroupWhereUniqueInput
+  }
+
   export type SpaceCreateNestedManyWithoutCategoryInput = {
     create?: XOR<SpaceCreateWithoutCategoryInput, SpaceUncheckedCreateWithoutCategoryInput> | SpaceCreateWithoutCategoryInput[] | SpaceUncheckedCreateWithoutCategoryInput[]
     connectOrCreate?: SpaceCreateOrConnectWithoutCategoryInput | SpaceCreateOrConnectWithoutCategoryInput[]
@@ -19300,6 +20765,14 @@ export namespace Prisma {
     connectOrCreate?: SpaceCreateOrConnectWithoutCategoryInput | SpaceCreateOrConnectWithoutCategoryInput[]
     createMany?: SpaceCreateManyCategoryInputEnvelope
     connect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+  }
+
+  export type SpaceCategoryGroupUpdateOneRequiredWithoutCategoriesNestedInput = {
+    create?: XOR<SpaceCategoryGroupCreateWithoutCategoriesInput, SpaceCategoryGroupUncheckedCreateWithoutCategoriesInput>
+    connectOrCreate?: SpaceCategoryGroupCreateOrConnectWithoutCategoriesInput
+    upsert?: SpaceCategoryGroupUpsertWithoutCategoriesInput
+    connect?: SpaceCategoryGroupWhereUniqueInput
+    update?: XOR<XOR<SpaceCategoryGroupUpdateToOneWithWhereWithoutCategoriesInput, SpaceCategoryGroupUpdateWithoutCategoriesInput>, SpaceCategoryGroupUncheckedUpdateWithoutCategoriesInput>
   }
 
   export type SpaceUpdateManyWithoutCategoryNestedInput = {
@@ -19328,6 +20801,48 @@ export namespace Prisma {
     update?: SpaceUpdateWithWhereUniqueWithoutCategoryInput | SpaceUpdateWithWhereUniqueWithoutCategoryInput[]
     updateMany?: SpaceUpdateManyWithWhereWithoutCategoryInput | SpaceUpdateManyWithWhereWithoutCategoryInput[]
     deleteMany?: SpaceScalarWhereInput | SpaceScalarWhereInput[]
+  }
+
+  export type SpaceCategoryCreateNestedManyWithoutGroupInput = {
+    create?: XOR<SpaceCategoryCreateWithoutGroupInput, SpaceCategoryUncheckedCreateWithoutGroupInput> | SpaceCategoryCreateWithoutGroupInput[] | SpaceCategoryUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: SpaceCategoryCreateOrConnectWithoutGroupInput | SpaceCategoryCreateOrConnectWithoutGroupInput[]
+    createMany?: SpaceCategoryCreateManyGroupInputEnvelope
+    connect?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+  }
+
+  export type SpaceCategoryUncheckedCreateNestedManyWithoutGroupInput = {
+    create?: XOR<SpaceCategoryCreateWithoutGroupInput, SpaceCategoryUncheckedCreateWithoutGroupInput> | SpaceCategoryCreateWithoutGroupInput[] | SpaceCategoryUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: SpaceCategoryCreateOrConnectWithoutGroupInput | SpaceCategoryCreateOrConnectWithoutGroupInput[]
+    createMany?: SpaceCategoryCreateManyGroupInputEnvelope
+    connect?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+  }
+
+  export type SpaceCategoryUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<SpaceCategoryCreateWithoutGroupInput, SpaceCategoryUncheckedCreateWithoutGroupInput> | SpaceCategoryCreateWithoutGroupInput[] | SpaceCategoryUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: SpaceCategoryCreateOrConnectWithoutGroupInput | SpaceCategoryCreateOrConnectWithoutGroupInput[]
+    upsert?: SpaceCategoryUpsertWithWhereUniqueWithoutGroupInput | SpaceCategoryUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: SpaceCategoryCreateManyGroupInputEnvelope
+    set?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    disconnect?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    delete?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    connect?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    update?: SpaceCategoryUpdateWithWhereUniqueWithoutGroupInput | SpaceCategoryUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: SpaceCategoryUpdateManyWithWhereWithoutGroupInput | SpaceCategoryUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: SpaceCategoryScalarWhereInput | SpaceCategoryScalarWhereInput[]
+  }
+
+  export type SpaceCategoryUncheckedUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<SpaceCategoryCreateWithoutGroupInput, SpaceCategoryUncheckedCreateWithoutGroupInput> | SpaceCategoryCreateWithoutGroupInput[] | SpaceCategoryUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: SpaceCategoryCreateOrConnectWithoutGroupInput | SpaceCategoryCreateOrConnectWithoutGroupInput[]
+    upsert?: SpaceCategoryUpsertWithWhereUniqueWithoutGroupInput | SpaceCategoryUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: SpaceCategoryCreateManyGroupInputEnvelope
+    set?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    disconnect?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    delete?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    connect?: SpaceCategoryWhereUniqueInput | SpaceCategoryWhereUniqueInput[]
+    update?: SpaceCategoryUpdateWithWhereUniqueWithoutGroupInput | SpaceCategoryUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: SpaceCategoryUpdateManyWithWhereWithoutGroupInput | SpaceCategoryUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: SpaceCategoryScalarWhereInput | SpaceCategoryScalarWhereInput[]
   }
 
   export type SpaceAmenityCreateNestedManyWithoutAmenityInput = {
@@ -20592,6 +22107,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     icon?: string | null
+    sortOrder?: number
+    group: SpaceCategoryGroupCreateNestedOneWithoutCategoriesInput
   }
 
   export type SpaceCategoryUncheckedCreateWithoutSpacesInput = {
@@ -20600,6 +22117,8 @@ export namespace Prisma {
     slug: string
     description?: string | null
     icon?: string | null
+    groupSlug: string
+    sortOrder?: number
   }
 
   export type SpaceCategoryCreateOrConnectWithoutSpacesInput = {
@@ -20840,6 +22359,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    group?: SpaceCategoryGroupUpdateOneRequiredWithoutCategoriesNestedInput
   }
 
   export type SpaceCategoryUncheckedUpdateWithoutSpacesInput = {
@@ -20848,6 +22369,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     icon?: NullableStringFieldUpdateOperationsInput | string | null
+    groupSlug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
   }
 
   export type SpaceAmenityUpsertWithWhereUniqueWithoutSpaceInput = {
@@ -20961,6 +22484,24 @@ export namespace Prisma {
     data: XOR<ReviewUpdateManyMutationInput, ReviewUncheckedUpdateManyWithoutSpaceInput>
   }
 
+  export type SpaceCategoryGroupCreateWithoutCategoriesInput = {
+    name: string
+    slug: string
+    sortOrder?: number
+  }
+
+  export type SpaceCategoryGroupUncheckedCreateWithoutCategoriesInput = {
+    id?: number
+    name: string
+    slug: string
+    sortOrder?: number
+  }
+
+  export type SpaceCategoryGroupCreateOrConnectWithoutCategoriesInput = {
+    where: SpaceCategoryGroupWhereUniqueInput
+    create: XOR<SpaceCategoryGroupCreateWithoutCategoriesInput, SpaceCategoryGroupUncheckedCreateWithoutCategoriesInput>
+  }
+
   export type SpaceCreateWithoutCategoryInput = {
     name: string
     shortDescription: string
@@ -21040,6 +22581,30 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type SpaceCategoryGroupUpsertWithoutCategoriesInput = {
+    update: XOR<SpaceCategoryGroupUpdateWithoutCategoriesInput, SpaceCategoryGroupUncheckedUpdateWithoutCategoriesInput>
+    create: XOR<SpaceCategoryGroupCreateWithoutCategoriesInput, SpaceCategoryGroupUncheckedCreateWithoutCategoriesInput>
+    where?: SpaceCategoryGroupWhereInput
+  }
+
+  export type SpaceCategoryGroupUpdateToOneWithWhereWithoutCategoriesInput = {
+    where?: SpaceCategoryGroupWhereInput
+    data: XOR<SpaceCategoryGroupUpdateWithoutCategoriesInput, SpaceCategoryGroupUncheckedUpdateWithoutCategoriesInput>
+  }
+
+  export type SpaceCategoryGroupUpdateWithoutCategoriesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SpaceCategoryGroupUncheckedUpdateWithoutCategoriesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    sortOrder?: IntFieldUpdateOperationsInput | number
+  }
+
   export type SpaceUpsertWithWhereUniqueWithoutCategoryInput = {
     where: SpaceWhereUniqueInput
     update: XOR<SpaceUpdateWithoutCategoryInput, SpaceUncheckedUpdateWithoutCategoryInput>
@@ -21054,6 +22619,64 @@ export namespace Prisma {
   export type SpaceUpdateManyWithWhereWithoutCategoryInput = {
     where: SpaceScalarWhereInput
     data: XOR<SpaceUpdateManyMutationInput, SpaceUncheckedUpdateManyWithoutCategoryInput>
+  }
+
+  export type SpaceCategoryCreateWithoutGroupInput = {
+    name: string
+    slug: string
+    description?: string | null
+    icon?: string | null
+    sortOrder?: number
+    spaces?: SpaceCreateNestedManyWithoutCategoryInput
+  }
+
+  export type SpaceCategoryUncheckedCreateWithoutGroupInput = {
+    id?: number
+    name: string
+    slug: string
+    description?: string | null
+    icon?: string | null
+    sortOrder?: number
+    spaces?: SpaceUncheckedCreateNestedManyWithoutCategoryInput
+  }
+
+  export type SpaceCategoryCreateOrConnectWithoutGroupInput = {
+    where: SpaceCategoryWhereUniqueInput
+    create: XOR<SpaceCategoryCreateWithoutGroupInput, SpaceCategoryUncheckedCreateWithoutGroupInput>
+  }
+
+  export type SpaceCategoryCreateManyGroupInputEnvelope = {
+    data: SpaceCategoryCreateManyGroupInput | SpaceCategoryCreateManyGroupInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SpaceCategoryUpsertWithWhereUniqueWithoutGroupInput = {
+    where: SpaceCategoryWhereUniqueInput
+    update: XOR<SpaceCategoryUpdateWithoutGroupInput, SpaceCategoryUncheckedUpdateWithoutGroupInput>
+    create: XOR<SpaceCategoryCreateWithoutGroupInput, SpaceCategoryUncheckedCreateWithoutGroupInput>
+  }
+
+  export type SpaceCategoryUpdateWithWhereUniqueWithoutGroupInput = {
+    where: SpaceCategoryWhereUniqueInput
+    data: XOR<SpaceCategoryUpdateWithoutGroupInput, SpaceCategoryUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type SpaceCategoryUpdateManyWithWhereWithoutGroupInput = {
+    where: SpaceCategoryScalarWhereInput
+    data: XOR<SpaceCategoryUpdateManyMutationInput, SpaceCategoryUncheckedUpdateManyWithoutGroupInput>
+  }
+
+  export type SpaceCategoryScalarWhereInput = {
+    AND?: SpaceCategoryScalarWhereInput | SpaceCategoryScalarWhereInput[]
+    OR?: SpaceCategoryScalarWhereInput[]
+    NOT?: SpaceCategoryScalarWhereInput | SpaceCategoryScalarWhereInput[]
+    id?: IntFilter<"SpaceCategory"> | number
+    name?: StringFilter<"SpaceCategory"> | string
+    slug?: StringFilter<"SpaceCategory"> | string
+    description?: StringNullableFilter<"SpaceCategory"> | string | null
+    icon?: StringNullableFilter<"SpaceCategory"> | string | null
+    groupSlug?: StringFilter<"SpaceCategory"> | string
+    sortOrder?: IntFilter<"SpaceCategory"> | number
   }
 
   export type SpaceAmenityCreateWithoutAmenityInput = {
@@ -23322,6 +24945,43 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SpaceCategoryCreateManyGroupInput = {
+    id?: number
+    name: string
+    slug: string
+    description?: string | null
+    icon?: string | null
+    sortOrder?: number
+  }
+
+  export type SpaceCategoryUpdateWithoutGroupInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    spaces?: SpaceUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type SpaceCategoryUncheckedUpdateWithoutGroupInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    spaces?: SpaceUncheckedUpdateManyWithoutCategoryNestedInput
+  }
+
+  export type SpaceCategoryUncheckedUpdateManyWithoutGroupInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    icon?: NullableStringFieldUpdateOperationsInput | string | null
+    sortOrder?: IntFieldUpdateOperationsInput | number
   }
 
   export type SpaceAmenityCreateManyAmenityInput = {

@@ -5,7 +5,7 @@ export type CuratedSpaceSeed = {
   categorySlug:
     | "office-desk"
     | "private-office"
-    | "meeting-room"
+    | "meeting-training-room"
     | "event-venue"
     | "wedding-venue"
     | "coworking-space";
@@ -195,7 +195,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
       "Central Chisinau meeting room for small business sessions and startup calls.",
     description:
       "Curated from iHUB Chisinau's published meeting-room offer. This room is modeled from the venue's hourly meeting-room tariff, which includes an individual room for 4 to 10 people plus a whiteboard and TV inside the iHUB campus.",
-    categorySlug: "meeting-room",
+    categorySlug: "meeting-training-room",
     spaceType: "MEETING_ROOM",
     pricingType: "HOURLY",
     capacity: 10,
@@ -224,7 +224,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
       "Hotel meeting room on Arborilor for boardroom sessions, training, and client meetings.",
     description:
       "Curated from Courtyard by Marriott Chisinau's official capacity chart. Amber is a 25.2 m² meeting room inside the hotel events floor, published for up to 25 theater, 20 reception, or 12 U-shape participants.",
-    categorySlug: "meeting-room",
+    categorySlug: "meeting-training-room",
     spaceType: "MEETING_ROOM",
     pricingType: "HOURLY",
     capacity: 25,
@@ -466,3 +466,31 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
       "The public listing describes the space and amenities but does not expose a direct book-now rate.",
   },
 ];
+
+export const validateCuratedSpaceSeeds = (
+  spaces: ReadonlyArray<CuratedSpaceSeed> = CHISINAU_SPACES
+) => {
+  const names = new Set<string>();
+
+  for (const space of spaces) {
+    if (space.city !== "Chisinau") {
+      throw new Error(`${space.name}: city must remain Chisinau`);
+    }
+    if (!space.shortDescription.trim()) {
+      throw new Error(`${space.name}: short description is required`);
+    }
+    if (!space.description.trim()) {
+      throw new Error(`${space.name}: full description is required`);
+    }
+    if (space.imageSourceUrls.length === 0) {
+      throw new Error(`${space.name}: at least one source image is required`);
+    }
+    if (space.sourceUrls.length === 0) {
+      throw new Error(`${space.name}: at least one source URL is required`);
+    }
+    if (names.has(space.name)) {
+      throw new Error(`Duplicate space name in manifest: ${space.name}`);
+    }
+    names.add(space.name);
+  }
+};

@@ -3,7 +3,11 @@ import { getTranslations } from "next-intl/server";
 
 interface SpacesPageProps {
   searchParams: Promise<{
+    category?: string;
+    categorySlug?: string;
     type?: string;
+    group?: string;
+    groupSlug?: string;
     city?: string;
     capacity?: string;
     minPrice?: string;
@@ -27,7 +31,11 @@ const SpacesPage = async ({ searchParams }: SpacesPageProps) => {
       </div>
 
       <SpaceList
+        category={params.category}
+        categorySlug={params.categorySlug}
         type={params.type}
+        group={params.group}
+        groupSlug={params.groupSlug}
         city={params.city}
         capacity={params.capacity}
         minPrice={params.minPrice}

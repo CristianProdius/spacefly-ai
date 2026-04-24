@@ -1,14 +1,14 @@
 "use client";
 
-import { Space, SpaceType } from "@repo/types";
+import { Space } from "@repo/types";
 import {
   Building2,
   DoorOpen,
-  Users,
-  PartyPopper,
   Heart,
   LayoutGrid,
-  Star,
+  PartyPopper,
+  Store,
+  Users,
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
@@ -16,60 +16,54 @@ import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { cn, parseImages, getPriceDisplay, compactPriceLabels } from "@/lib/utils";
 import { useState } from "react";
+import { deriveTaxonomyFromSpaces, getTaxonomyIconKey } from "@/lib/taxonomy";
 
-const categoryTiles: {
-  label: string;
-  value: SpaceType;
-  icon: React.ReactNode;
-  gradient: string;
-}[] = [
-  {
-    label: "Office Desks",
-    value: "OFFICE_DESK",
-    icon: <LayoutGrid className="w-8 h-8" />,
-    gradient: "from-amber-500/80 to-orange-600/80",
-  },
-  {
-    label: "Private Offices",
-    value: "PRIVATE_OFFICE",
-    icon: <DoorOpen className="w-8 h-8" />,
-    gradient: "from-blue-500/80 to-indigo-600/80",
-  },
-  {
-    label: "Meeting Rooms",
-    value: "MEETING_ROOM",
-    icon: <Users className="w-8 h-8" />,
-    gradient: "from-emerald-500/80 to-teal-600/80",
-  },
-  {
-    label: "Event Venues",
-    value: "EVENT_VENUE",
-    icon: <PartyPopper className="w-8 h-8" />,
-    gradient: "from-purple-500/80 to-violet-600/80",
-  },
-  {
-    label: "Wedding Venues",
-    value: "WEDDING_VENUE",
-    icon: <Heart className="w-8 h-8" />,
-    gradient: "from-pink-500/80 to-rose-600/80",
-  },
-  {
-    label: "Coworking",
-    value: "COWORKING_SPACE",
-    icon: <Building2 className="w-8 h-8" />,
-    gradient: "from-cyan-500/80 to-sky-600/80",
-  },
+type FeaturedSpace = Space & {
+  category?: {
+    group?: {
+      name?: string | null;
+      slug?: string | null;
+    } | null;
+    groupSlug?: string | null;
+    name?: string | null;
+    slug?: string | null;
+  } | null;
+  categorySlug?: string | null;
+};
+
+const gradients = [
+  "from-amber-500/80 to-orange-600/80",
+  "from-blue-500/80 to-indigo-600/80",
+  "from-emerald-500/80 to-teal-600/80",
+  "from-rose-500/80 to-pink-600/80",
+  "from-cyan-500/80 to-sky-600/80",
+  "from-fuchsia-500/80 to-violet-600/80",
 ];
+
+const taxonomyIcons = {
+  all: LayoutGrid,
+  building: Building2,
+  door: DoorOpen,
+  grid: LayoutGrid,
+  heart: Heart,
+  party: PartyPopper,
+  store: Store,
+  users: Users,
+} as const;
 
 export default function FeaturedCategoryMosaic({
   spaces,
 }: {
-  spaces: Space[];
+  spaces: FeaturedSpace[];
 }) {
-  const [expanded, setExpanded] = useState<SpaceType | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const taxonomy = deriveTaxonomyFromSpaces(spaces);
 
-  const getSpacesForCategory = (type: SpaceType) =>
-    spaces.filter((s) => s.spaceType === type);
+  const getSpacesForCategory = (categorySlug: string) =>
+    spaces.filter(
+      (space) =>
+        (space.category?.slug || space.categorySlug || "").toLowerCase() === categorySlug
+    );
 
   return (
     <section className="py-16">
@@ -83,15 +77,26 @@ export default function FeaturedCategoryMosaic({
 
         {/* Category tiles grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {categoryTiles.map((cat) => {
-            const isExpanded = expanded === cat.value;
-            const categorySpaces = getSpacesForCategory(cat.value);
+          {taxonomy.categories.map((category, index) => {
+            const isExpanded = expanded === category.slug;
+            const categorySpaces = getSpacesForCategory(category.slug);
+            const Icon =
+              taxonomyIcons[
+                getTaxonomyIconKey({
+                  groupName: category.group.name,
+                  groupSlug: category.groupSlug,
+                  icon: category.icon,
+                  name: category.name,
+                  slug: category.slug,
+                })
+              ];
+            const gradient = gradients[index % gradients.length];
 
             return (
-              <div key={cat.value}>
+              <div key={category.slug}>
                 <button
                   onClick={() =>
-                    setExpanded(isExpanded ? null : cat.value)
+                    setExpanded(isExpanded ? null : category.slug)
                   }
                   className={cn(
                     "w-full group relative aspect-[4/3] rounded-xl overflow-hidden transition-all duration-300",
@@ -102,15 +107,17 @@ export default function FeaturedCategoryMosaic({
                   <div
                     className={cn(
                       "absolute inset-0 bg-gradient-to-br",
-                      cat.gradient
+                      gradient
                     )}
                   />
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
 
                   {/* Icon + label */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-white">
-                    {cat.icon}
-                    <span className="font-semibold text-sm">{cat.label}</span>
+                    <Icon className="w-8 h-8" />
+                    <span className="font-semibold text-sm text-center px-3">
+                      {category.name}
+                    </span>
                     <span className="text-white/70 text-xs">
                       {categorySpaces.length} space
                       {categorySpaces.length !== 1 ? "s" : ""}

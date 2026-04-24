@@ -181,7 +181,16 @@ exports.Prisma.SpaceCategoryScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   description: 'description',
-  icon: 'icon'
+  icon: 'icon',
+  groupSlug: 'groupSlug',
+  sortOrder: 'sortOrder'
+};
+
+exports.Prisma.SpaceCategoryGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  sortOrder: 'sortOrder'
 };
 
 exports.Prisma.AmenityScalarFieldEnum = {
@@ -340,6 +349,7 @@ exports.Prisma.ModelName = {
   Session: 'Session',
   Space: 'Space',
   SpaceCategory: 'SpaceCategory',
+  SpaceCategoryGroup: 'SpaceCategoryGroup',
   Amenity: 'Amenity',
   SpaceAmenity: 'SpaceAmenity',
   Availability: 'Availability',

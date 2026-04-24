@@ -7,6 +7,7 @@ import ReviewSection from "./ReviewSection";
 import LocationMapLoader from "./LocationMapLoader";
 import { getTranslations } from "next-intl/server";
 import { parseImages } from "@/lib/utils";
+import { getSpaceCategoryLabel } from "@/lib/taxonomy";
 
 async function getSpace(id: string): Promise<SpaceWithHost | null> {
   try {
@@ -38,6 +39,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
   const tCommon = await getTranslations("common");
 
   const images = parseImages(space.images);
+  const categoryLabel = getSpaceCategoryLabel(space);
 
   const hostName = space.host?.name || tCommon("unknown");
   const hostInitials = hostName.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
@@ -98,7 +100,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           <div>
             <div className="flex items-center gap-2 text-sm text-muted mb-2">
               <span className="bg-subtle px-2 py-1 rounded border border-border">
-                {t(`spaceTypes.${space.spaceType}`)}
+                {categoryLabel || t(`spaceTypes.${space.spaceType}`)}
               </span>
               {space.instantBook && (
                 <span className="bg-success/10 text-success px-2 py-1 rounded border border-success/20">
