@@ -146,7 +146,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
       import("react-toastify").then(({ toast }) => {
         toast.info(message);
       });
-      window.location.href = "/login";
+      window.location.href = `/${locale}/login`;
     }
   },
 }));
