@@ -1,5 +1,7 @@
 import z from "zod";
 
+export type { Venue, VenueWithHost, VenueWithSpaces } from "./venue";
+
 export type SpaceType =
   | "OFFICE_DESK"
   | "PRIVATE_OFFICE"
@@ -141,6 +143,8 @@ export interface Space {
   updatedAt: string;
   hostId: string;
   categorySlug: string;
+  venueId: number;
+  venue?: import("./venue").Venue;
   category?: SpaceCategory;
   amenities?: SpaceAmenity[];
   availability?: Availability[];
@@ -155,6 +159,7 @@ export interface SpaceWithHost extends Space {
     image: string | null;
     hostingSince: string | null;
   };
+  venue?: import("./venue").Venue;
 }
 
 export const LEGACY_SPACE_TYPES = [
