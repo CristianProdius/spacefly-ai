@@ -198,7 +198,9 @@
     "reviewsLabel": "{count} отзывов",
     "responseFromHost": "Ответ хоста",
     "contactHostForDetails": "Свяжитесь с хостом для деталей",
-    "noReviewsYet": "Пока нет отзывов"
+    "noReviewsYet": "Пока нет отзывов",
+    "showAllPhotos": "Показать все {count} фото",
+    "photoCounter": "{current} / {total}"
   },
   "booking": {
     "date": "Дата",

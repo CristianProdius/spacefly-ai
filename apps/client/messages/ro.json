@@ -198,7 +198,9 @@
     "reviewsLabel": "{count} recenzii",
     "responseFromHost": "Raspunsul gazdei",
     "contactHostForDetails": "Contacteaza gazda pentru detalii",
-    "noReviewsYet": "Nicio recenzie"
+    "noReviewsYet": "Nicio recenzie",
+    "showAllPhotos": "Arat\u0103 toate cele {count} fotografii",
+    "photoCounter": "{current} / {total}"
   },
   "booking": {
     "date": "Data",

@@ -8,6 +8,7 @@ import LocationMapLoader from "./LocationMapLoader";
 import { getTranslations } from "next-intl/server";
 import { parseImages } from "@/lib/utils";
 import { getSpaceCategoryLabel } from "@/lib/taxonomy";
+import ImageGallery from "@/components/ImageGallery";
 
 async function getSpace(id: string): Promise<SpaceWithHost | null> {
   try {
@@ -55,43 +56,7 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Image Gallery */}
-      {images.length <= 1 ? (
-        <div className="mb-8 rounded-xl overflow-hidden shadow-[var(--shadow-lg)]">
-          <div className="relative aspect-[21/9]">
-            <Image
-              src={images[0] || "/placeholder-space.jpg"}
-              alt={space.name}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-8 rounded-xl overflow-hidden shadow-[var(--shadow-lg)]">
-          <div className="relative aspect-[4/3] md:aspect-auto md:row-span-2 md:min-h-[400px]">
-            <Image
-              src={images[0] || "/placeholder-space.jpg"}
-              alt={space.name}
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            {images.slice(1, 5).map((img, idx) => (
-              <div key={idx} className="relative aspect-[4/3]">
-                <Image
-                  src={img}
-                  alt={`${space.name} - ${idx + 2}`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <ImageGallery images={images} spaceName={space.name} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}

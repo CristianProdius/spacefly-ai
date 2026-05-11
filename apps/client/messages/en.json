@@ -198,7 +198,9 @@
     "reviewsLabel": "{count} reviews",
     "responseFromHost": "Response from host",
     "contactHostForDetails": "Contact host for details",
-    "noReviewsYet": "No reviews yet"
+    "noReviewsYet": "No reviews yet",
+    "showAllPhotos": "Show all {count} photos",
+    "photoCounter": "{current} / {total}"
   },
   "booking": {
     "date": "Date",
