@@ -15,62 +15,67 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 /**
  * Model User
- *
+ * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
  * Model Session
- *
+ * 
  */
 export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
 /**
+ * Model Venue
+ * 
+ */
+export type Venue = $Result.DefaultSelection<Prisma.$VenuePayload>
+/**
  * Model Space
- *
+ * 
  */
 export type Space = $Result.DefaultSelection<Prisma.$SpacePayload>
 /**
  * Model SpaceCategory
- *
+ * 
  */
 export type SpaceCategory = $Result.DefaultSelection<Prisma.$SpaceCategoryPayload>
 /**
  * Model SpaceCategoryGroup
- *
+ * 
  */
 export type SpaceCategoryGroup = $Result.DefaultSelection<Prisma.$SpaceCategoryGroupPayload>
 /**
  * Model Amenity
- *
+ * 
  */
 export type Amenity = $Result.DefaultSelection<Prisma.$AmenityPayload>
 /**
  * Model SpaceAmenity
- *
+ * 
  */
 export type SpaceAmenity = $Result.DefaultSelection<Prisma.$SpaceAmenityPayload>
 /**
  * Model Availability
- *
+ * 
  */
 export type Availability = $Result.DefaultSelection<Prisma.$AvailabilityPayload>
 /**
  * Model BlockedDate
- *
+ * 
  */
 export type BlockedDate = $Result.DefaultSelection<Prisma.$BlockedDatePayload>
 /**
  * Model Booking
- *
+ * 
  */
 export type Booking = $Result.DefaultSelection<Prisma.$BookingPayload>
 /**
  * Model Review
- *
+ * 
  */
 export type Review = $Result.DefaultSelection<Prisma.$ReviewPayload>
 /**
  * Model Payout
- *
+ * 
  */
 export type Payout = $Result.DefaultSelection<Prisma.$PayoutPayload>
 
@@ -272,7 +277,7 @@ export class PrismaClient<
    *   prisma.user.create({ data: { name: 'Alice' } }),
    * ])
    * ```
-   *
+   * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
   $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
@@ -303,6 +308,16 @@ export class PrismaClient<
     * ```
     */
   get session(): Prisma.SessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.venue`: Exposes CRUD operations for the **Venue** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Venues
+    * const venues = await prisma.venue.findMany()
+    * ```
+    */
+  get venue(): Prisma.VenueDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.space`: Exposes CRUD operations for the **Space** model.
@@ -845,6 +860,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Session: 'Session',
+    Venue: 'Venue',
     Space: 'Space',
     SpaceCategory: 'SpaceCategory',
     SpaceCategoryGroup: 'SpaceCategoryGroup',
@@ -873,7 +889,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "space" | "spaceCategory" | "spaceCategoryGroup" | "amenity" | "spaceAmenity" | "availability" | "blockedDate" | "booking" | "review" | "payout"
+      modelProps: "user" | "session" | "venue" | "space" | "spaceCategory" | "spaceCategoryGroup" | "amenity" | "spaceAmenity" | "availability" | "blockedDate" | "booking" | "review" | "payout"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1022,6 +1038,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SessionCountArgs<ExtArgs>
             result: $Utils.Optional<SessionCountAggregateOutputType> | number
+          }
+        }
+      }
+      Venue: {
+        payload: Prisma.$VenuePayload<ExtArgs>
+        fields: Prisma.VenueFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.VenueFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.VenueFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>
+          }
+          findFirst: {
+            args: Prisma.VenueFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.VenueFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>
+          }
+          findMany: {
+            args: Prisma.VenueFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>[]
+          }
+          create: {
+            args: Prisma.VenueCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>
+          }
+          createMany: {
+            args: Prisma.VenueCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.VenueCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>[]
+          }
+          delete: {
+            args: Prisma.VenueDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>
+          }
+          update: {
+            args: Prisma.VenueUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>
+          }
+          deleteMany: {
+            args: Prisma.VenueDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.VenueUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.VenueUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>[]
+          }
+          upsert: {
+            args: Prisma.VenueUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$VenuePayload>
+          }
+          aggregate: {
+            args: Prisma.VenueAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateVenue>
+          }
+          groupBy: {
+            args: Prisma.VenueGroupByArgs<ExtArgs>
+            result: $Utils.Optional<VenueGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.VenueCountArgs<ExtArgs>
+            result: $Utils.Optional<VenueCountAggregateOutputType> | number
           }
         }
       }
@@ -1810,7 +1900,7 @@ export namespace Prisma {
      * ```
      * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
-     *
+     * 
      * // Emit as events only
      * log: [
      *   { emit: 'event', level: 'query' },
@@ -1818,14 +1908,14 @@ export namespace Prisma {
      *   { emit: 'event', level: 'warn' }
      *   { emit: 'event', level: 'error' }
      * ]
-     *
+     * 
      * / Emit as events and log to stdout
      * og: [
      *  { emit: 'stdout', level: 'query' },
      *  { emit: 'stdout', level: 'info' },
      *  { emit: 'stdout', level: 'warn' }
      *  { emit: 'stdout', level: 'error' }
-     *
+     * 
      * ```
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
@@ -1846,7 +1936,7 @@ export namespace Prisma {
     adapter?: runtime.SqlDriverAdapterFactory | null
     /**
      * Global configuration for omitting model fields by default.
-     *
+     * 
      * @example
      * ```
      * const prisma = new PrismaClient({
@@ -1863,6 +1953,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     session?: SessionOmit
+    venue?: VenueOmit
     space?: SpaceOmit
     spaceCategory?: SpaceCategoryOmit
     spaceCategoryGroup?: SpaceCategoryGroupOmit
@@ -1954,6 +2045,7 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     sessions: number
+    venues: number
     spaces: number
     bookingsAsGuest: number
     bookingsAsHost: number
@@ -1963,6 +2055,7 @@ export namespace Prisma {
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+    venues?: boolean | UserCountOutputTypeCountVenuesArgs
     spaces?: boolean | UserCountOutputTypeCountSpacesArgs
     bookingsAsGuest?: boolean | UserCountOutputTypeCountBookingsAsGuestArgs
     bookingsAsHost?: boolean | UserCountOutputTypeCountBookingsAsHostArgs
@@ -1986,6 +2079,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountVenuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VenueWhereInput
   }
 
   /**
@@ -2021,6 +2121,37 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPayoutsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PayoutWhereInput
+  }
+
+
+  /**
+   * Count Type VenueCountOutputType
+   */
+
+  export type VenueCountOutputType = {
+    spaces: number
+  }
+
+  export type VenueCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    spaces?: boolean | VenueCountOutputTypeCountSpacesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * VenueCountOutputType without action
+   */
+  export type VenueCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the VenueCountOutputType
+     */
+    select?: VenueCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * VenueCountOutputType without action
+   */
+  export type VenueCountOutputTypeCountSpacesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SpaceWhereInput
   }
 
 
@@ -2310,43 +2441,43 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Users
     **/
     _count?: true | UserCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: UserMaxAggregateInputType
@@ -2425,6 +2556,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: boolean
     sessions?: boolean | User$sessionsArgs<ExtArgs>
+    venues?: boolean | User$venuesArgs<ExtArgs>
     spaces?: boolean | User$spacesArgs<ExtArgs>
     bookingsAsGuest?: boolean | User$bookingsAsGuestArgs<ExtArgs>
     bookingsAsHost?: boolean | User$bookingsAsHostArgs<ExtArgs>
@@ -2487,6 +2619,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "username" | "name" | "password" | "role" | "emailVerified" | "image" | "phone" | "bio" | "createdAt" | "updatedAt" | "hostVerified" | "hostingSince", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     sessions?: boolean | User$sessionsArgs<ExtArgs>
+    venues?: boolean | User$venuesArgs<ExtArgs>
     spaces?: boolean | User$spacesArgs<ExtArgs>
     bookingsAsGuest?: boolean | User$bookingsAsGuestArgs<ExtArgs>
     bookingsAsHost?: boolean | User$bookingsAsHostArgs<ExtArgs>
@@ -2501,6 +2634,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       sessions: Prisma.$SessionPayload<ExtArgs>[]
+      venues: Prisma.$VenuePayload<ExtArgs>[]
       spaces: Prisma.$SpacePayload<ExtArgs>[]
       bookingsAsGuest: Prisma.$BookingPayload<ExtArgs>[]
       bookingsAsHost: Prisma.$BookingPayload<ExtArgs>[]
@@ -2601,13 +2735,13 @@ export namespace Prisma {
      * @example
      * // Get all Users
      * const users = await prisma.user.findMany()
-     *
+     * 
      * // Get first 10 Users
      * const users = await prisma.user.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends UserFindManyArgs>(args?: SelectSubset<T, UserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -2621,7 +2755,7 @@ export namespace Prisma {
      *     // ... data to create a User
      *   }
      * })
-     *
+     * 
      */
     create<T extends UserCreateArgs>(args: SelectSubset<T, UserCreateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2635,7 +2769,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends UserCreateManyArgs>(args?: SelectSubset<T, UserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2649,7 +2783,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Users and only return the `id`
      * const userWithIdOnly = await prisma.user.createManyAndReturn({
      *   select: { id: true },
@@ -2659,7 +2793,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends UserCreateManyAndReturnArgs>(args?: SelectSubset<T, UserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -2673,7 +2807,7 @@ export namespace Prisma {
      *     // ... filter to delete one User
      *   }
      * })
-     *
+     * 
      */
     delete<T extends UserDeleteArgs>(args: SelectSubset<T, UserDeleteArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2690,7 +2824,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends UserUpdateArgs>(args: SelectSubset<T, UserUpdateArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -2704,7 +2838,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends UserDeleteManyArgs>(args?: SelectSubset<T, UserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2723,7 +2857,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends UserUpdateManyArgs>(args: SelectSubset<T, UserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -2740,7 +2874,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Users and only return the `id`
      * const userWithIdOnly = await prisma.user.updateManyAndReturn({
      *   select: { id: true },
@@ -2753,7 +2887,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends UserUpdateManyAndReturnArgs>(args: SelectSubset<T, UserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -2842,7 +2976,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends UserGroupByArgs,
@@ -2917,6 +3051,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    venues<T extends User$venuesArgs<ExtArgs> = {}>(args?: Subset<T, User$venuesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     spaces<T extends User$spacesArgs<ExtArgs> = {}>(args?: Subset<T, User$spacesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bookingsAsGuest<T extends User$bookingsAsGuestArgs<ExtArgs> = {}>(args?: Subset<T, User$bookingsAsGuestArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bookingsAsHost<T extends User$bookingsAsHostArgs<ExtArgs> = {}>(args?: Subset<T, User$bookingsAsHostArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2966,7 +3101,7 @@ export namespace Prisma {
     readonly hostVerified: FieldRef<"User", 'Boolean'>
     readonly hostingSince: FieldRef<"User", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -3035,31 +3170,31 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Users.
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
@@ -3087,31 +3222,31 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Users.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Users.
      */
     distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]
@@ -3139,25 +3274,25 @@ export namespace Prisma {
     where?: UserWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Users to fetch.
      */
     orderBy?: UserOrderByWithRelationInput | UserOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Users.
      */
     cursor?: UserWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Users from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Users.
      */
     skip?: number
@@ -3377,6 +3512,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.venues
+   */
+  export type User$venuesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    where?: VenueWhereInput
+    orderBy?: VenueOrderByWithRelationInput | VenueOrderByWithRelationInput[]
+    cursor?: VenueWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VenueScalarFieldEnum | VenueScalarFieldEnum[]
+  }
+
+  /**
    * User.spaces
    */
   export type User$spacesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3583,43 +3742,43 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Sessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Sessions
     **/
     _count?: true | SessionCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SessionMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SessionMaxAggregateInputType
@@ -3809,13 +3968,13 @@ export namespace Prisma {
      * @example
      * // Get all Sessions
      * const sessions = await prisma.session.findMany()
-     *
+     * 
      * // Get first 10 Sessions
      * const sessions = await prisma.session.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const sessionWithIdOnly = await prisma.session.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SessionFindManyArgs>(args?: SelectSubset<T, SessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -3829,7 +3988,7 @@ export namespace Prisma {
      *     // ... data to create a Session
      *   }
      * })
-     *
+     * 
      */
     create<T extends SessionCreateArgs>(args: SelectSubset<T, SessionCreateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3843,7 +4002,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SessionCreateManyArgs>(args?: SelectSubset<T, SessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3857,7 +4016,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Sessions and only return the `id`
      * const sessionWithIdOnly = await prisma.session.createManyAndReturn({
      *   select: { id: true },
@@ -3867,7 +4026,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SessionCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -3881,7 +4040,7 @@ export namespace Prisma {
      *     // ... filter to delete one Session
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SessionDeleteArgs>(args: SelectSubset<T, SessionDeleteArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3898,7 +4057,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SessionUpdateArgs>(args: SelectSubset<T, SessionUpdateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -3912,7 +4071,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SessionDeleteManyArgs>(args?: SelectSubset<T, SessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3931,7 +4090,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SessionUpdateManyArgs>(args: SelectSubset<T, SessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -3948,7 +4107,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Sessions and only return the `id`
      * const sessionWithIdOnly = await prisma.session.updateManyAndReturn({
      *   select: { id: true },
@@ -3961,7 +4120,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SessionUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -4050,7 +4209,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SessionGroupByArgs,
@@ -4160,7 +4319,7 @@ export namespace Prisma {
     readonly expiresAt: FieldRef<"Session", 'DateTime'>
     readonly createdAt: FieldRef<"Session", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -4229,31 +4388,31 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Sessions.
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Sessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Sessions.
      */
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
@@ -4281,31 +4440,31 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Sessions.
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Sessions.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Sessions.
      */
     distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
@@ -4333,25 +4492,25 @@ export namespace Prisma {
     where?: SessionWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Sessions to fetch.
      */
     orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Sessions.
      */
     cursor?: SessionWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Sessions from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Sessions.
      */
     skip?: number
@@ -4574,6 +4733,1275 @@ export namespace Prisma {
 
 
   /**
+   * Model Venue
+   */
+
+  export type AggregateVenue = {
+    _count: VenueCountAggregateOutputType | null
+    _avg: VenueAvgAggregateOutputType | null
+    _sum: VenueSumAggregateOutputType | null
+    _min: VenueMinAggregateOutputType | null
+    _max: VenueMaxAggregateOutputType | null
+  }
+
+  export type VenueAvgAggregateOutputType = {
+    id: number | null
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type VenueSumAggregateOutputType = {
+    id: number | null
+    latitude: number | null
+    longitude: number | null
+  }
+
+  export type VenueMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    shortDescription: string | null
+    description: string | null
+    address: string | null
+    city: string | null
+    state: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
+    hostId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VenueMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    shortDescription: string | null
+    description: string | null
+    address: string | null
+    city: string | null
+    state: string | null
+    country: string | null
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
+    hostId: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type VenueCountAggregateOutputType = {
+    id: number
+    name: number
+    shortDescription: number
+    description: number
+    images: number
+    address: number
+    city: number
+    state: number
+    country: number
+    postalCode: number
+    latitude: number
+    longitude: number
+    hostId: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type VenueAvgAggregateInputType = {
+    id?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type VenueSumAggregateInputType = {
+    id?: true
+    latitude?: true
+    longitude?: true
+  }
+
+  export type VenueMinAggregateInputType = {
+    id?: true
+    name?: true
+    shortDescription?: true
+    description?: true
+    address?: true
+    city?: true
+    state?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
+    hostId?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VenueMaxAggregateInputType = {
+    id?: true
+    name?: true
+    shortDescription?: true
+    description?: true
+    address?: true
+    city?: true
+    state?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
+    hostId?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type VenueCountAggregateInputType = {
+    id?: true
+    name?: true
+    shortDescription?: true
+    description?: true
+    images?: true
+    address?: true
+    city?: true
+    state?: true
+    country?: true
+    postalCode?: true
+    latitude?: true
+    longitude?: true
+    hostId?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type VenueAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Venue to aggregate.
+     */
+    where?: VenueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Venues to fetch.
+     */
+    orderBy?: VenueOrderByWithRelationInput | VenueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: VenueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Venues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Venues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Venues
+    **/
+    _count?: true | VenueCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: VenueAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: VenueSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: VenueMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: VenueMaxAggregateInputType
+  }
+
+  export type GetVenueAggregateType<T extends VenueAggregateArgs> = {
+        [P in keyof T & keyof AggregateVenue]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateVenue[P]>
+      : GetScalarType<T[P], AggregateVenue[P]>
+  }
+
+
+
+
+  export type VenueGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VenueWhereInput
+    orderBy?: VenueOrderByWithAggregationInput | VenueOrderByWithAggregationInput[]
+    by: VenueScalarFieldEnum[] | VenueScalarFieldEnum
+    having?: VenueScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: VenueCountAggregateInputType | true
+    _avg?: VenueAvgAggregateInputType
+    _sum?: VenueSumAggregateInputType
+    _min?: VenueMinAggregateInputType
+    _max?: VenueMaxAggregateInputType
+  }
+
+  export type VenueGroupByOutputType = {
+    id: number
+    name: string
+    shortDescription: string
+    description: string
+    images: JsonValue
+    address: string
+    city: string
+    state: string | null
+    country: string
+    postalCode: string | null
+    latitude: number | null
+    longitude: number | null
+    hostId: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: VenueCountAggregateOutputType | null
+    _avg: VenueAvgAggregateOutputType | null
+    _sum: VenueSumAggregateOutputType | null
+    _min: VenueMinAggregateOutputType | null
+    _max: VenueMaxAggregateOutputType | null
+  }
+
+  type GetVenueGroupByPayload<T extends VenueGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<VenueGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof VenueGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], VenueGroupByOutputType[P]>
+            : GetScalarType<T[P], VenueGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type VenueSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    shortDescription?: boolean
+    description?: boolean
+    images?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    hostId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    host?: boolean | UserDefaultArgs<ExtArgs>
+    spaces?: boolean | Venue$spacesArgs<ExtArgs>
+    _count?: boolean | VenueCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["venue"]>
+
+  export type VenueSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    shortDescription?: boolean
+    description?: boolean
+    images?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    hostId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    host?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["venue"]>
+
+  export type VenueSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    shortDescription?: boolean
+    description?: boolean
+    images?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    hostId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    host?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["venue"]>
+
+  export type VenueSelectScalar = {
+    id?: boolean
+    name?: boolean
+    shortDescription?: boolean
+    description?: boolean
+    images?: boolean
+    address?: boolean
+    city?: boolean
+    state?: boolean
+    country?: boolean
+    postalCode?: boolean
+    latitude?: boolean
+    longitude?: boolean
+    hostId?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "hostId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
+  export type VenueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    host?: boolean | UserDefaultArgs<ExtArgs>
+    spaces?: boolean | Venue$spacesArgs<ExtArgs>
+    _count?: boolean | VenueCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type VenueIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    host?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type VenueIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    host?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $VenuePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Venue"
+    objects: {
+      host: Prisma.$UserPayload<ExtArgs>
+      spaces: Prisma.$SpacePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      shortDescription: string
+      description: string
+      images: Prisma.JsonValue
+      address: string
+      city: string
+      state: string | null
+      country: string
+      postalCode: string | null
+      latitude: number | null
+      longitude: number | null
+      hostId: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["venue"]>
+    composites: {}
+  }
+
+  type VenueGetPayload<S extends boolean | null | undefined | VenueDefaultArgs> = $Result.GetResult<Prisma.$VenuePayload, S>
+
+  type VenueCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<VenueFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: VenueCountAggregateInputType | true
+    }
+
+  export interface VenueDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Venue'], meta: { name: 'Venue' } }
+    /**
+     * Find zero or one Venue that matches the filter.
+     * @param {VenueFindUniqueArgs} args - Arguments to find a Venue
+     * @example
+     * // Get one Venue
+     * const venue = await prisma.venue.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends VenueFindUniqueArgs>(args: SelectSubset<T, VenueFindUniqueArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Venue that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {VenueFindUniqueOrThrowArgs} args - Arguments to find a Venue
+     * @example
+     * // Get one Venue
+     * const venue = await prisma.venue.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends VenueFindUniqueOrThrowArgs>(args: SelectSubset<T, VenueFindUniqueOrThrowArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Venue that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueFindFirstArgs} args - Arguments to find a Venue
+     * @example
+     * // Get one Venue
+     * const venue = await prisma.venue.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends VenueFindFirstArgs>(args?: SelectSubset<T, VenueFindFirstArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Venue that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueFindFirstOrThrowArgs} args - Arguments to find a Venue
+     * @example
+     * // Get one Venue
+     * const venue = await prisma.venue.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends VenueFindFirstOrThrowArgs>(args?: SelectSubset<T, VenueFindFirstOrThrowArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Venues that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Venues
+     * const venues = await prisma.venue.findMany()
+     * 
+     * // Get first 10 Venues
+     * const venues = await prisma.venue.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const venueWithIdOnly = await prisma.venue.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends VenueFindManyArgs>(args?: SelectSubset<T, VenueFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Venue.
+     * @param {VenueCreateArgs} args - Arguments to create a Venue.
+     * @example
+     * // Create one Venue
+     * const Venue = await prisma.venue.create({
+     *   data: {
+     *     // ... data to create a Venue
+     *   }
+     * })
+     * 
+     */
+    create<T extends VenueCreateArgs>(args: SelectSubset<T, VenueCreateArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Venues.
+     * @param {VenueCreateManyArgs} args - Arguments to create many Venues.
+     * @example
+     * // Create many Venues
+     * const venue = await prisma.venue.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends VenueCreateManyArgs>(args?: SelectSubset<T, VenueCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Venues and returns the data saved in the database.
+     * @param {VenueCreateManyAndReturnArgs} args - Arguments to create many Venues.
+     * @example
+     * // Create many Venues
+     * const venue = await prisma.venue.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Venues and only return the `id`
+     * const venueWithIdOnly = await prisma.venue.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends VenueCreateManyAndReturnArgs>(args?: SelectSubset<T, VenueCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Venue.
+     * @param {VenueDeleteArgs} args - Arguments to delete one Venue.
+     * @example
+     * // Delete one Venue
+     * const Venue = await prisma.venue.delete({
+     *   where: {
+     *     // ... filter to delete one Venue
+     *   }
+     * })
+     * 
+     */
+    delete<T extends VenueDeleteArgs>(args: SelectSubset<T, VenueDeleteArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Venue.
+     * @param {VenueUpdateArgs} args - Arguments to update one Venue.
+     * @example
+     * // Update one Venue
+     * const venue = await prisma.venue.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends VenueUpdateArgs>(args: SelectSubset<T, VenueUpdateArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Venues.
+     * @param {VenueDeleteManyArgs} args - Arguments to filter Venues to delete.
+     * @example
+     * // Delete a few Venues
+     * const { count } = await prisma.venue.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends VenueDeleteManyArgs>(args?: SelectSubset<T, VenueDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Venues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Venues
+     * const venue = await prisma.venue.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends VenueUpdateManyArgs>(args: SelectSubset<T, VenueUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Venues and returns the data updated in the database.
+     * @param {VenueUpdateManyAndReturnArgs} args - Arguments to update many Venues.
+     * @example
+     * // Update many Venues
+     * const venue = await prisma.venue.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Venues and only return the `id`
+     * const venueWithIdOnly = await prisma.venue.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends VenueUpdateManyAndReturnArgs>(args: SelectSubset<T, VenueUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Venue.
+     * @param {VenueUpsertArgs} args - Arguments to update or create a Venue.
+     * @example
+     * // Update or create a Venue
+     * const venue = await prisma.venue.upsert({
+     *   create: {
+     *     // ... data to create a Venue
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Venue we want to update
+     *   }
+     * })
+     */
+    upsert<T extends VenueUpsertArgs>(args: SelectSubset<T, VenueUpsertArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Venues.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueCountArgs} args - Arguments to filter Venues to count.
+     * @example
+     * // Count the number of Venues
+     * const count = await prisma.venue.count({
+     *   where: {
+     *     // ... the filter for the Venues we want to count
+     *   }
+     * })
+    **/
+    count<T extends VenueCountArgs>(
+      args?: Subset<T, VenueCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], VenueCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Venue.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends VenueAggregateArgs>(args: Subset<T, VenueAggregateArgs>): Prisma.PrismaPromise<GetVenueAggregateType<T>>
+
+    /**
+     * Group by Venue.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {VenueGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends VenueGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: VenueGroupByArgs['orderBy'] }
+        : { orderBy?: VenueGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, VenueGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetVenueGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Venue model
+   */
+  readonly fields: VenueFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Venue.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__VenueClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    host<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    spaces<T extends Venue$spacesArgs<ExtArgs> = {}>(args?: Subset<T, Venue$spacesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Venue model
+   */
+  interface VenueFieldRefs {
+    readonly id: FieldRef<"Venue", 'Int'>
+    readonly name: FieldRef<"Venue", 'String'>
+    readonly shortDescription: FieldRef<"Venue", 'String'>
+    readonly description: FieldRef<"Venue", 'String'>
+    readonly images: FieldRef<"Venue", 'Json'>
+    readonly address: FieldRef<"Venue", 'String'>
+    readonly city: FieldRef<"Venue", 'String'>
+    readonly state: FieldRef<"Venue", 'String'>
+    readonly country: FieldRef<"Venue", 'String'>
+    readonly postalCode: FieldRef<"Venue", 'String'>
+    readonly latitude: FieldRef<"Venue", 'Float'>
+    readonly longitude: FieldRef<"Venue", 'Float'>
+    readonly hostId: FieldRef<"Venue", 'String'>
+    readonly isActive: FieldRef<"Venue", 'Boolean'>
+    readonly createdAt: FieldRef<"Venue", 'DateTime'>
+    readonly updatedAt: FieldRef<"Venue", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Venue findUnique
+   */
+  export type VenueFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * Filter, which Venue to fetch.
+     */
+    where: VenueWhereUniqueInput
+  }
+
+  /**
+   * Venue findUniqueOrThrow
+   */
+  export type VenueFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * Filter, which Venue to fetch.
+     */
+    where: VenueWhereUniqueInput
+  }
+
+  /**
+   * Venue findFirst
+   */
+  export type VenueFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * Filter, which Venue to fetch.
+     */
+    where?: VenueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Venues to fetch.
+     */
+    orderBy?: VenueOrderByWithRelationInput | VenueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Venues.
+     */
+    cursor?: VenueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Venues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Venues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Venues.
+     */
+    distinct?: VenueScalarFieldEnum | VenueScalarFieldEnum[]
+  }
+
+  /**
+   * Venue findFirstOrThrow
+   */
+  export type VenueFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * Filter, which Venue to fetch.
+     */
+    where?: VenueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Venues to fetch.
+     */
+    orderBy?: VenueOrderByWithRelationInput | VenueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Venues.
+     */
+    cursor?: VenueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Venues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Venues.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Venues.
+     */
+    distinct?: VenueScalarFieldEnum | VenueScalarFieldEnum[]
+  }
+
+  /**
+   * Venue findMany
+   */
+  export type VenueFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * Filter, which Venues to fetch.
+     */
+    where?: VenueWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Venues to fetch.
+     */
+    orderBy?: VenueOrderByWithRelationInput | VenueOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Venues.
+     */
+    cursor?: VenueWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Venues from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Venues.
+     */
+    skip?: number
+    distinct?: VenueScalarFieldEnum | VenueScalarFieldEnum[]
+  }
+
+  /**
+   * Venue create
+   */
+  export type VenueCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Venue.
+     */
+    data: XOR<VenueCreateInput, VenueUncheckedCreateInput>
+  }
+
+  /**
+   * Venue createMany
+   */
+  export type VenueCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Venues.
+     */
+    data: VenueCreateManyInput | VenueCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Venue createManyAndReturn
+   */
+  export type VenueCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * The data used to create many Venues.
+     */
+    data: VenueCreateManyInput | VenueCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Venue update
+   */
+  export type VenueUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Venue.
+     */
+    data: XOR<VenueUpdateInput, VenueUncheckedUpdateInput>
+    /**
+     * Choose, which Venue to update.
+     */
+    where: VenueWhereUniqueInput
+  }
+
+  /**
+   * Venue updateMany
+   */
+  export type VenueUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Venues.
+     */
+    data: XOR<VenueUpdateManyMutationInput, VenueUncheckedUpdateManyInput>
+    /**
+     * Filter which Venues to update
+     */
+    where?: VenueWhereInput
+    /**
+     * Limit how many Venues to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Venue updateManyAndReturn
+   */
+  export type VenueUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * The data used to update Venues.
+     */
+    data: XOR<VenueUpdateManyMutationInput, VenueUncheckedUpdateManyInput>
+    /**
+     * Filter which Venues to update
+     */
+    where?: VenueWhereInput
+    /**
+     * Limit how many Venues to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Venue upsert
+   */
+  export type VenueUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Venue to update in case it exists.
+     */
+    where: VenueWhereUniqueInput
+    /**
+     * In case the Venue found by the `where` argument doesn't exist, create a new Venue with this data.
+     */
+    create: XOR<VenueCreateInput, VenueUncheckedCreateInput>
+    /**
+     * In case the Venue was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<VenueUpdateInput, VenueUncheckedUpdateInput>
+  }
+
+  /**
+   * Venue delete
+   */
+  export type VenueDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    /**
+     * Filter which Venue to delete.
+     */
+    where: VenueWhereUniqueInput
+  }
+
+  /**
+   * Venue deleteMany
+   */
+  export type VenueDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Venues to delete
+     */
+    where?: VenueWhereInput
+    /**
+     * Limit how many Venues to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Venue.spaces
+   */
+  export type Venue$spacesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Space
+     */
+    select?: SpaceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Space
+     */
+    omit?: SpaceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SpaceInclude<ExtArgs> | null
+    where?: SpaceWhereInput
+    orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
+    cursor?: SpaceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SpaceScalarFieldEnum | SpaceScalarFieldEnum[]
+  }
+
+  /**
+   * Venue without action
+   */
+  export type VenueDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Space
    */
 
@@ -4595,6 +6023,7 @@ export namespace Prisma {
     maxBookingHours: number | null
     latitude: number | null
     longitude: number | null
+    venueId: number | null
   }
 
   export type SpaceSumAggregateOutputType = {
@@ -4607,6 +6036,7 @@ export namespace Prisma {
     maxBookingHours: number | null
     latitude: number | null
     longitude: number | null
+    venueId: number | null
   }
 
   export type SpaceMinAggregateOutputType = {
@@ -4636,6 +6066,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     hostId: string | null
+    venueId: number | null
     categorySlug: string | null
   }
 
@@ -4666,6 +6097,7 @@ export namespace Prisma {
     createdAt: Date | null
     updatedAt: Date | null
     hostId: string | null
+    venueId: number | null
     categorySlug: string | null
   }
 
@@ -4697,6 +6129,7 @@ export namespace Prisma {
     createdAt: number
     updatedAt: number
     hostId: number
+    venueId: number
     categorySlug: number
     _all: number
   }
@@ -4712,6 +6145,7 @@ export namespace Prisma {
     maxBookingHours?: true
     latitude?: true
     longitude?: true
+    venueId?: true
   }
 
   export type SpaceSumAggregateInputType = {
@@ -4724,6 +6158,7 @@ export namespace Prisma {
     maxBookingHours?: true
     latitude?: true
     longitude?: true
+    venueId?: true
   }
 
   export type SpaceMinAggregateInputType = {
@@ -4753,6 +6188,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     hostId?: true
+    venueId?: true
     categorySlug?: true
   }
 
@@ -4783,6 +6219,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     hostId?: true
+    venueId?: true
     categorySlug?: true
   }
 
@@ -4814,6 +6251,7 @@ export namespace Prisma {
     createdAt?: true
     updatedAt?: true
     hostId?: true
+    venueId?: true
     categorySlug?: true
     _all?: true
   }
@@ -4825,55 +6263,55 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Spaces.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Spaces
     **/
     _count?: true | SpaceCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: SpaceAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: SpaceSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SpaceMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SpaceMaxAggregateInputType
@@ -4932,6 +6370,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     hostId: string
+    venueId: number | null
     categorySlug: string
     _count: SpaceCountAggregateOutputType | null
     _avg: SpaceAvgAggregateOutputType | null
@@ -4982,8 +6421,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     hostId?: boolean
+    venueId?: boolean
     categorySlug?: boolean
     host?: boolean | UserDefaultArgs<ExtArgs>
+    venue?: boolean | Space$venueArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
     amenities?: boolean | Space$amenitiesArgs<ExtArgs>
     availability?: boolean | Space$availabilityArgs<ExtArgs>
@@ -5021,8 +6462,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     hostId?: boolean
+    venueId?: boolean
     categorySlug?: boolean
     host?: boolean | UserDefaultArgs<ExtArgs>
+    venue?: boolean | Space$venueArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["space"]>
 
@@ -5054,8 +6497,10 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     hostId?: boolean
+    venueId?: boolean
     categorySlug?: boolean
     host?: boolean | UserDefaultArgs<ExtArgs>
+    venue?: boolean | Space$venueArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["space"]>
 
@@ -5087,12 +6532,14 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     hostId?: boolean
+    venueId?: boolean
     categorySlug?: boolean
   }
 
-  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "categorySlug", ExtArgs["result"]["space"]>
+  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
   export type SpaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
+    venue?: boolean | Space$venueArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
     amenities?: boolean | Space$amenitiesArgs<ExtArgs>
     availability?: boolean | Space$availabilityArgs<ExtArgs>
@@ -5103,10 +6550,12 @@ export namespace Prisma {
   }
   export type SpaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
+    venue?: boolean | Space$venueArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }
   export type SpaceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
+    venue?: boolean | Space$venueArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }
 
@@ -5114,6 +6563,7 @@ export namespace Prisma {
     name: "Space"
     objects: {
       host: Prisma.$UserPayload<ExtArgs>
+      venue: Prisma.$VenuePayload<ExtArgs> | null
       category: Prisma.$SpaceCategoryPayload<ExtArgs>
       amenities: Prisma.$SpaceAmenityPayload<ExtArgs>[]
       availability: Prisma.$AvailabilityPayload<ExtArgs>[]
@@ -5149,6 +6599,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       hostId: string
+      venueId: number | null
       categorySlug: string
     }, ExtArgs["result"]["space"]>
     composites: {}
@@ -5229,13 +6680,13 @@ export namespace Prisma {
      * @example
      * // Get all Spaces
      * const spaces = await prisma.space.findMany()
-     *
+     * 
      * // Get first 10 Spaces
      * const spaces = await prisma.space.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const spaceWithIdOnly = await prisma.space.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SpaceFindManyArgs>(args?: SelectSubset<T, SpaceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -5249,7 +6700,7 @@ export namespace Prisma {
      *     // ... data to create a Space
      *   }
      * })
-     *
+     * 
      */
     create<T extends SpaceCreateArgs>(args: SelectSubset<T, SpaceCreateArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5263,7 +6714,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SpaceCreateManyArgs>(args?: SelectSubset<T, SpaceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5277,7 +6728,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Spaces and only return the `id`
      * const spaceWithIdOnly = await prisma.space.createManyAndReturn({
      *   select: { id: true },
@@ -5287,7 +6738,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SpaceCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -5301,7 +6752,7 @@ export namespace Prisma {
      *     // ... filter to delete one Space
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SpaceDeleteArgs>(args: SelectSubset<T, SpaceDeleteArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5318,7 +6769,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SpaceUpdateArgs>(args: SelectSubset<T, SpaceUpdateArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -5332,7 +6783,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SpaceDeleteManyArgs>(args?: SelectSubset<T, SpaceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5351,7 +6802,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SpaceUpdateManyArgs>(args: SelectSubset<T, SpaceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -5368,7 +6819,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Spaces and only return the `id`
      * const spaceWithIdOnly = await prisma.space.updateManyAndReturn({
      *   select: { id: true },
@@ -5381,7 +6832,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SpaceUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -5470,7 +6921,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SpaceGroupByArgs,
@@ -5545,6 +6996,7 @@ export namespace Prisma {
   export interface Prisma__SpaceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     host<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    venue<T extends Space$venueArgs<ExtArgs> = {}>(args?: Subset<T, Space$venueArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     category<T extends SpaceCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpaceCategoryDefaultArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     amenities<T extends Space$amenitiesArgs<ExtArgs> = {}>(args?: Subset<T, Space$amenitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     availability<T extends Space$availabilityArgs<ExtArgs> = {}>(args?: Subset<T, Space$availabilityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -5607,9 +7059,10 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Space", 'DateTime'>
     readonly updatedAt: FieldRef<"Space", 'DateTime'>
     readonly hostId: FieldRef<"Space", 'String'>
+    readonly venueId: FieldRef<"Space", 'Int'>
     readonly categorySlug: FieldRef<"Space", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -5678,31 +7131,31 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Spaces.
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Spaces.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Spaces.
      */
     distinct?: SpaceScalarFieldEnum | SpaceScalarFieldEnum[]
@@ -5730,31 +7183,31 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Spaces.
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Spaces.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Spaces.
      */
     distinct?: SpaceScalarFieldEnum | SpaceScalarFieldEnum[]
@@ -5782,25 +7235,25 @@ export namespace Prisma {
     where?: SpaceWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Spaces to fetch.
      */
     orderBy?: SpaceOrderByWithRelationInput | SpaceOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Spaces.
      */
     cursor?: SpaceWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Spaces from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Spaces.
      */
     skip?: number
@@ -6001,6 +7454,25 @@ export namespace Prisma {
      * Limit how many Spaces to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Space.venue
+   */
+  export type Space$venueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venue
+     */
+    select?: VenueSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venue
+     */
+    omit?: VenueOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VenueInclude<ExtArgs> | null
+    where?: VenueWhereInput
   }
 
   /**
@@ -6244,55 +7716,55 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned SpaceCategories
     **/
     _count?: true | SpaceCategoryCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: SpaceCategoryAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: SpaceCategorySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SpaceCategoryMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SpaceCategoryMaxAggregateInputType
@@ -6503,13 +7975,13 @@ export namespace Prisma {
      * @example
      * // Get all SpaceCategories
      * const spaceCategories = await prisma.spaceCategory.findMany()
-     *
+     * 
      * // Get first 10 SpaceCategories
      * const spaceCategories = await prisma.spaceCategory.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const spaceCategoryWithIdOnly = await prisma.spaceCategory.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SpaceCategoryFindManyArgs>(args?: SelectSubset<T, SpaceCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -6523,7 +7995,7 @@ export namespace Prisma {
      *     // ... data to create a SpaceCategory
      *   }
      * })
-     *
+     * 
      */
     create<T extends SpaceCategoryCreateArgs>(args: SelectSubset<T, SpaceCategoryCreateArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6537,7 +8009,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SpaceCategoryCreateManyArgs>(args?: SelectSubset<T, SpaceCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6551,7 +8023,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many SpaceCategories and only return the `id`
      * const spaceCategoryWithIdOnly = await prisma.spaceCategory.createManyAndReturn({
      *   select: { id: true },
@@ -6561,7 +8033,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SpaceCategoryCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceCategoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -6575,7 +8047,7 @@ export namespace Prisma {
      *     // ... filter to delete one SpaceCategory
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SpaceCategoryDeleteArgs>(args: SelectSubset<T, SpaceCategoryDeleteArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6592,7 +8064,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SpaceCategoryUpdateArgs>(args: SelectSubset<T, SpaceCategoryUpdateArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -6606,7 +8078,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SpaceCategoryDeleteManyArgs>(args?: SelectSubset<T, SpaceCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6625,7 +8097,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SpaceCategoryUpdateManyArgs>(args: SelectSubset<T, SpaceCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -6642,7 +8114,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more SpaceCategories and only return the `id`
      * const spaceCategoryWithIdOnly = await prisma.spaceCategory.updateManyAndReturn({
      *   select: { id: true },
@@ -6655,7 +8127,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SpaceCategoryUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceCategoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -6744,7 +8216,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SpaceCategoryGroupByArgs,
@@ -6857,7 +8329,7 @@ export namespace Prisma {
     readonly groupSlug: FieldRef<"SpaceCategory", 'String'>
     readonly sortOrder: FieldRef<"SpaceCategory", 'Int'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -6926,31 +8398,31 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SpaceCategories.
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SpaceCategories.
      */
     distinct?: SpaceCategoryScalarFieldEnum | SpaceCategoryScalarFieldEnum[]
@@ -6978,31 +8450,31 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SpaceCategories.
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SpaceCategories.
      */
     distinct?: SpaceCategoryScalarFieldEnum | SpaceCategoryScalarFieldEnum[]
@@ -7030,25 +8502,25 @@ export namespace Prisma {
     where?: SpaceCategoryWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategories to fetch.
      */
     orderBy?: SpaceCategoryOrderByWithRelationInput | SpaceCategoryOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing SpaceCategories.
      */
     cursor?: SpaceCategoryWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategories from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategories.
      */
     skip?: number
@@ -7378,55 +8850,55 @@ export namespace Prisma {
     where?: SpaceCategoryGroupWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategoryGroups to fetch.
      */
     orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SpaceCategoryGroupWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategoryGroups from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategoryGroups.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned SpaceCategoryGroups
     **/
     _count?: true | SpaceCategoryGroupCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: SpaceCategoryGroupAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: SpaceCategoryGroupSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SpaceCategoryGroupMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SpaceCategoryGroupMaxAggregateInputType
@@ -7610,13 +9082,13 @@ export namespace Prisma {
      * @example
      * // Get all SpaceCategoryGroups
      * const spaceCategoryGroups = await prisma.spaceCategoryGroup.findMany()
-     *
+     * 
      * // Get first 10 SpaceCategoryGroups
      * const spaceCategoryGroups = await prisma.spaceCategoryGroup.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const spaceCategoryGroupWithIdOnly = await prisma.spaceCategoryGroup.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SpaceCategoryGroupFindManyArgs>(args?: SelectSubset<T, SpaceCategoryGroupFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -7630,7 +9102,7 @@ export namespace Prisma {
      *     // ... data to create a SpaceCategoryGroup
      *   }
      * })
-     *
+     * 
      */
     create<T extends SpaceCategoryGroupCreateArgs>(args: SelectSubset<T, SpaceCategoryGroupCreateArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7644,7 +9116,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SpaceCategoryGroupCreateManyArgs>(args?: SelectSubset<T, SpaceCategoryGroupCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7658,7 +9130,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many SpaceCategoryGroups and only return the `id`
      * const spaceCategoryGroupWithIdOnly = await prisma.spaceCategoryGroup.createManyAndReturn({
      *   select: { id: true },
@@ -7668,7 +9140,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SpaceCategoryGroupCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceCategoryGroupCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -7682,7 +9154,7 @@ export namespace Prisma {
      *     // ... filter to delete one SpaceCategoryGroup
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SpaceCategoryGroupDeleteArgs>(args: SelectSubset<T, SpaceCategoryGroupDeleteArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7699,7 +9171,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SpaceCategoryGroupUpdateArgs>(args: SelectSubset<T, SpaceCategoryGroupUpdateArgs<ExtArgs>>): Prisma__SpaceCategoryGroupClient<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -7713,7 +9185,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SpaceCategoryGroupDeleteManyArgs>(args?: SelectSubset<T, SpaceCategoryGroupDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7732,7 +9204,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SpaceCategoryGroupUpdateManyArgs>(args: SelectSubset<T, SpaceCategoryGroupUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -7749,7 +9221,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more SpaceCategoryGroups and only return the `id`
      * const spaceCategoryGroupWithIdOnly = await prisma.spaceCategoryGroup.updateManyAndReturn({
      *   select: { id: true },
@@ -7762,7 +9234,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SpaceCategoryGroupUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceCategoryGroupUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceCategoryGroupPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -7851,7 +9323,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SpaceCategoryGroupGroupByArgs,
@@ -7960,7 +9432,7 @@ export namespace Prisma {
     readonly slug: FieldRef<"SpaceCategoryGroup", 'String'>
     readonly sortOrder: FieldRef<"SpaceCategoryGroup", 'Int'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -8029,31 +9501,31 @@ export namespace Prisma {
     where?: SpaceCategoryGroupWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategoryGroups to fetch.
      */
     orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SpaceCategoryGroups.
      */
     cursor?: SpaceCategoryGroupWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategoryGroups from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategoryGroups.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SpaceCategoryGroups.
      */
     distinct?: SpaceCategoryGroupScalarFieldEnum | SpaceCategoryGroupScalarFieldEnum[]
@@ -8081,31 +9553,31 @@ export namespace Prisma {
     where?: SpaceCategoryGroupWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategoryGroups to fetch.
      */
     orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SpaceCategoryGroups.
      */
     cursor?: SpaceCategoryGroupWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategoryGroups from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategoryGroups.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SpaceCategoryGroups.
      */
     distinct?: SpaceCategoryGroupScalarFieldEnum | SpaceCategoryGroupScalarFieldEnum[]
@@ -8133,25 +9605,25 @@ export namespace Prisma {
     where?: SpaceCategoryGroupWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceCategoryGroups to fetch.
      */
     orderBy?: SpaceCategoryGroupOrderByWithRelationInput | SpaceCategoryGroupOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing SpaceCategoryGroups.
      */
     cursor?: SpaceCategoryGroupWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceCategoryGroups from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceCategoryGroups.
      */
     skip?: number
@@ -8469,55 +9941,55 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Amenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Amenities
     **/
     _count?: true | AmenityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AmenityAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AmenitySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AmenityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AmenityMaxAggregateInputType
@@ -8701,13 +10173,13 @@ export namespace Prisma {
      * @example
      * // Get all Amenities
      * const amenities = await prisma.amenity.findMany()
-     *
+     * 
      * // Get first 10 Amenities
      * const amenities = await prisma.amenity.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const amenityWithIdOnly = await prisma.amenity.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AmenityFindManyArgs>(args?: SelectSubset<T, AmenityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -8721,7 +10193,7 @@ export namespace Prisma {
      *     // ... data to create a Amenity
      *   }
      * })
-     *
+     * 
      */
     create<T extends AmenityCreateArgs>(args: SelectSubset<T, AmenityCreateArgs<ExtArgs>>): Prisma__AmenityClient<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8735,7 +10207,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AmenityCreateManyArgs>(args?: SelectSubset<T, AmenityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8749,7 +10221,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Amenities and only return the `id`
      * const amenityWithIdOnly = await prisma.amenity.createManyAndReturn({
      *   select: { id: true },
@@ -8759,7 +10231,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AmenityCreateManyAndReturnArgs>(args?: SelectSubset<T, AmenityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -8773,7 +10245,7 @@ export namespace Prisma {
      *     // ... filter to delete one Amenity
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AmenityDeleteArgs>(args: SelectSubset<T, AmenityDeleteArgs<ExtArgs>>): Prisma__AmenityClient<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8790,7 +10262,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AmenityUpdateArgs>(args: SelectSubset<T, AmenityUpdateArgs<ExtArgs>>): Prisma__AmenityClient<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -8804,7 +10276,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AmenityDeleteManyArgs>(args?: SelectSubset<T, AmenityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8823,7 +10295,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AmenityUpdateManyArgs>(args: SelectSubset<T, AmenityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -8840,7 +10312,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Amenities and only return the `id`
      * const amenityWithIdOnly = await prisma.amenity.updateManyAndReturn({
      *   select: { id: true },
@@ -8853,7 +10325,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AmenityUpdateManyAndReturnArgs>(args: SelectSubset<T, AmenityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AmenityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -8942,7 +10414,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AmenityGroupByArgs,
@@ -9051,7 +10523,7 @@ export namespace Prisma {
     readonly icon: FieldRef<"Amenity", 'String'>
     readonly category: FieldRef<"Amenity", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -9120,31 +10592,31 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Amenities.
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Amenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Amenities.
      */
     distinct?: AmenityScalarFieldEnum | AmenityScalarFieldEnum[]
@@ -9172,31 +10644,31 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Amenities.
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Amenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Amenities.
      */
     distinct?: AmenityScalarFieldEnum | AmenityScalarFieldEnum[]
@@ -9224,25 +10696,25 @@ export namespace Prisma {
     where?: AmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Amenities to fetch.
      */
     orderBy?: AmenityOrderByWithRelationInput | AmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Amenities.
      */
     cursor?: AmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Amenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Amenities.
      */
     skip?: number
@@ -9562,55 +11034,55 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned SpaceAmenities
     **/
     _count?: true | SpaceAmenityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: SpaceAmenityAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: SpaceAmenitySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: SpaceAmenityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: SpaceAmenityMaxAggregateInputType
@@ -9799,13 +11271,13 @@ export namespace Prisma {
      * @example
      * // Get all SpaceAmenities
      * const spaceAmenities = await prisma.spaceAmenity.findMany()
-     *
+     * 
      * // Get first 10 SpaceAmenities
      * const spaceAmenities = await prisma.spaceAmenity.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const spaceAmenityWithIdOnly = await prisma.spaceAmenity.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends SpaceAmenityFindManyArgs>(args?: SelectSubset<T, SpaceAmenityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -9819,7 +11291,7 @@ export namespace Prisma {
      *     // ... data to create a SpaceAmenity
      *   }
      * })
-     *
+     * 
      */
     create<T extends SpaceAmenityCreateArgs>(args: SelectSubset<T, SpaceAmenityCreateArgs<ExtArgs>>): Prisma__SpaceAmenityClient<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9833,7 +11305,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends SpaceAmenityCreateManyArgs>(args?: SelectSubset<T, SpaceAmenityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9847,7 +11319,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many SpaceAmenities and only return the `id`
      * const spaceAmenityWithIdOnly = await prisma.spaceAmenity.createManyAndReturn({
      *   select: { id: true },
@@ -9857,7 +11329,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends SpaceAmenityCreateManyAndReturnArgs>(args?: SelectSubset<T, SpaceAmenityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -9871,7 +11343,7 @@ export namespace Prisma {
      *     // ... filter to delete one SpaceAmenity
      *   }
      * })
-     *
+     * 
      */
     delete<T extends SpaceAmenityDeleteArgs>(args: SelectSubset<T, SpaceAmenityDeleteArgs<ExtArgs>>): Prisma__SpaceAmenityClient<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9888,7 +11360,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends SpaceAmenityUpdateArgs>(args: SelectSubset<T, SpaceAmenityUpdateArgs<ExtArgs>>): Prisma__SpaceAmenityClient<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -9902,7 +11374,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends SpaceAmenityDeleteManyArgs>(args?: SelectSubset<T, SpaceAmenityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9921,7 +11393,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends SpaceAmenityUpdateManyArgs>(args: SelectSubset<T, SpaceAmenityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -9938,7 +11410,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more SpaceAmenities and only return the `id`
      * const spaceAmenityWithIdOnly = await prisma.spaceAmenity.updateManyAndReturn({
      *   select: { id: true },
@@ -9951,7 +11423,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends SpaceAmenityUpdateManyAndReturnArgs>(args: SelectSubset<T, SpaceAmenityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -10040,7 +11512,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends SpaceAmenityGroupByArgs,
@@ -10149,7 +11621,7 @@ export namespace Prisma {
     readonly spaceId: FieldRef<"SpaceAmenity", 'Int'>
     readonly amenityId: FieldRef<"SpaceAmenity", 'Int'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -10218,31 +11690,31 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SpaceAmenities.
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SpaceAmenities.
      */
     distinct?: SpaceAmenityScalarFieldEnum | SpaceAmenityScalarFieldEnum[]
@@ -10270,31 +11742,31 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for SpaceAmenities.
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of SpaceAmenities.
      */
     distinct?: SpaceAmenityScalarFieldEnum | SpaceAmenityScalarFieldEnum[]
@@ -10322,25 +11794,25 @@ export namespace Prisma {
     where?: SpaceAmenityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of SpaceAmenities to fetch.
      */
     orderBy?: SpaceAmenityOrderByWithRelationInput | SpaceAmenityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing SpaceAmenities.
      */
     cursor?: SpaceAmenityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` SpaceAmenities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` SpaceAmenities.
      */
     skip?: number
@@ -10662,55 +12134,55 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Availabilities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Availabilities
     **/
     _count?: true | AvailabilityCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: AvailabilityAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: AvailabilitySumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: AvailabilityMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: AvailabilityMaxAggregateInputType
@@ -10910,13 +12382,13 @@ export namespace Prisma {
      * @example
      * // Get all Availabilities
      * const availabilities = await prisma.availability.findMany()
-     *
+     * 
      * // Get first 10 Availabilities
      * const availabilities = await prisma.availability.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const availabilityWithIdOnly = await prisma.availability.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends AvailabilityFindManyArgs>(args?: SelectSubset<T, AvailabilityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -10930,7 +12402,7 @@ export namespace Prisma {
      *     // ... data to create a Availability
      *   }
      * })
-     *
+     * 
      */
     create<T extends AvailabilityCreateArgs>(args: SelectSubset<T, AvailabilityCreateArgs<ExtArgs>>): Prisma__AvailabilityClient<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10944,7 +12416,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends AvailabilityCreateManyArgs>(args?: SelectSubset<T, AvailabilityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -10958,7 +12430,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Availabilities and only return the `id`
      * const availabilityWithIdOnly = await prisma.availability.createManyAndReturn({
      *   select: { id: true },
@@ -10968,7 +12440,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends AvailabilityCreateManyAndReturnArgs>(args?: SelectSubset<T, AvailabilityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -10982,7 +12454,7 @@ export namespace Prisma {
      *     // ... filter to delete one Availability
      *   }
      * })
-     *
+     * 
      */
     delete<T extends AvailabilityDeleteArgs>(args: SelectSubset<T, AvailabilityDeleteArgs<ExtArgs>>): Prisma__AvailabilityClient<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -10999,7 +12471,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends AvailabilityUpdateArgs>(args: SelectSubset<T, AvailabilityUpdateArgs<ExtArgs>>): Prisma__AvailabilityClient<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -11013,7 +12485,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends AvailabilityDeleteManyArgs>(args?: SelectSubset<T, AvailabilityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11032,7 +12504,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends AvailabilityUpdateManyArgs>(args: SelectSubset<T, AvailabilityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -11049,7 +12521,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Availabilities and only return the `id`
      * const availabilityWithIdOnly = await prisma.availability.updateManyAndReturn({
      *   select: { id: true },
@@ -11062,7 +12534,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends AvailabilityUpdateManyAndReturnArgs>(args: SelectSubset<T, AvailabilityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -11151,7 +12623,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends AvailabilityGroupByArgs,
@@ -11262,7 +12734,7 @@ export namespace Prisma {
     readonly endTime: FieldRef<"Availability", 'String'>
     readonly isOpen: FieldRef<"Availability", 'Boolean'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -11331,31 +12803,31 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Availabilities.
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Availabilities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Availabilities.
      */
     distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
@@ -11383,31 +12855,31 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Availabilities.
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Availabilities.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Availabilities.
      */
     distinct?: AvailabilityScalarFieldEnum | AvailabilityScalarFieldEnum[]
@@ -11435,25 +12907,25 @@ export namespace Prisma {
     where?: AvailabilityWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Availabilities to fetch.
      */
     orderBy?: AvailabilityOrderByWithRelationInput | AvailabilityOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Availabilities.
      */
     cursor?: AvailabilityWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Availabilities from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Availabilities.
      */
     skip?: number
@@ -11759,55 +13231,55 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BlockedDates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned BlockedDates
     **/
     _count?: true | BlockedDateCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: BlockedDateAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: BlockedDateSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BlockedDateMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: BlockedDateMaxAggregateInputType
@@ -11995,13 +13467,13 @@ export namespace Prisma {
      * @example
      * // Get all BlockedDates
      * const blockedDates = await prisma.blockedDate.findMany()
-     *
+     * 
      * // Get first 10 BlockedDates
      * const blockedDates = await prisma.blockedDate.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const blockedDateWithIdOnly = await prisma.blockedDate.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends BlockedDateFindManyArgs>(args?: SelectSubset<T, BlockedDateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -12015,7 +13487,7 @@ export namespace Prisma {
      *     // ... data to create a BlockedDate
      *   }
      * })
-     *
+     * 
      */
     create<T extends BlockedDateCreateArgs>(args: SelectSubset<T, BlockedDateCreateArgs<ExtArgs>>): Prisma__BlockedDateClient<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12029,7 +13501,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends BlockedDateCreateManyArgs>(args?: SelectSubset<T, BlockedDateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12043,7 +13515,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many BlockedDates and only return the `id`
      * const blockedDateWithIdOnly = await prisma.blockedDate.createManyAndReturn({
      *   select: { id: true },
@@ -12053,7 +13525,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends BlockedDateCreateManyAndReturnArgs>(args?: SelectSubset<T, BlockedDateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -12067,7 +13539,7 @@ export namespace Prisma {
      *     // ... filter to delete one BlockedDate
      *   }
      * })
-     *
+     * 
      */
     delete<T extends BlockedDateDeleteArgs>(args: SelectSubset<T, BlockedDateDeleteArgs<ExtArgs>>): Prisma__BlockedDateClient<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12084,7 +13556,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends BlockedDateUpdateArgs>(args: SelectSubset<T, BlockedDateUpdateArgs<ExtArgs>>): Prisma__BlockedDateClient<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -12098,7 +13570,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends BlockedDateDeleteManyArgs>(args?: SelectSubset<T, BlockedDateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12117,7 +13589,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends BlockedDateUpdateManyArgs>(args: SelectSubset<T, BlockedDateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -12134,7 +13606,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more BlockedDates and only return the `id`
      * const blockedDateWithIdOnly = await prisma.blockedDate.updateManyAndReturn({
      *   select: { id: true },
@@ -12147,7 +13619,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends BlockedDateUpdateManyAndReturnArgs>(args: SelectSubset<T, BlockedDateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -12236,7 +13708,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends BlockedDateGroupByArgs,
@@ -12345,7 +13817,7 @@ export namespace Prisma {
     readonly date: FieldRef<"BlockedDate", 'DateTime'>
     readonly reason: FieldRef<"BlockedDate", 'String'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -12414,31 +13886,31 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for BlockedDates.
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BlockedDates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of BlockedDates.
      */
     distinct?: BlockedDateScalarFieldEnum | BlockedDateScalarFieldEnum[]
@@ -12466,31 +13938,31 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for BlockedDates.
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BlockedDates.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of BlockedDates.
      */
     distinct?: BlockedDateScalarFieldEnum | BlockedDateScalarFieldEnum[]
@@ -12518,25 +13990,25 @@ export namespace Prisma {
     where?: BlockedDateWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of BlockedDates to fetch.
      */
     orderBy?: BlockedDateOrderByWithRelationInput | BlockedDateOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing BlockedDates.
      */
     cursor?: BlockedDateWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` BlockedDates from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` BlockedDates.
      */
     skip?: number
@@ -12978,55 +14450,55 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Bookings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Bookings
     **/
     _count?: true | BookingCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: BookingAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: BookingSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BookingMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: BookingMaxAggregateInputType
@@ -13351,13 +14823,13 @@ export namespace Prisma {
      * @example
      * // Get all Bookings
      * const bookings = await prisma.booking.findMany()
-     *
+     * 
      * // Get first 10 Bookings
      * const bookings = await prisma.booking.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const bookingWithIdOnly = await prisma.booking.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends BookingFindManyArgs>(args?: SelectSubset<T, BookingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -13371,7 +14843,7 @@ export namespace Prisma {
      *     // ... data to create a Booking
      *   }
      * })
-     *
+     * 
      */
     create<T extends BookingCreateArgs>(args: SelectSubset<T, BookingCreateArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13385,7 +14857,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends BookingCreateManyArgs>(args?: SelectSubset<T, BookingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13399,7 +14871,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Bookings and only return the `id`
      * const bookingWithIdOnly = await prisma.booking.createManyAndReturn({
      *   select: { id: true },
@@ -13409,7 +14881,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends BookingCreateManyAndReturnArgs>(args?: SelectSubset<T, BookingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -13423,7 +14895,7 @@ export namespace Prisma {
      *     // ... filter to delete one Booking
      *   }
      * })
-     *
+     * 
      */
     delete<T extends BookingDeleteArgs>(args: SelectSubset<T, BookingDeleteArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13440,7 +14912,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends BookingUpdateArgs>(args: SelectSubset<T, BookingUpdateArgs<ExtArgs>>): Prisma__BookingClient<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -13454,7 +14926,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends BookingDeleteManyArgs>(args?: SelectSubset<T, BookingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13473,7 +14945,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends BookingUpdateManyArgs>(args: SelectSubset<T, BookingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -13490,7 +14962,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Bookings and only return the `id`
      * const bookingWithIdOnly = await prisma.booking.updateManyAndReturn({
      *   select: { id: true },
@@ -13503,7 +14975,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends BookingUpdateManyAndReturnArgs>(args: SelectSubset<T, BookingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -13592,7 +15064,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends BookingGroupByArgs,
@@ -13724,7 +15196,7 @@ export namespace Prisma {
     readonly cancelledAt: FieldRef<"Booking", 'DateTime'>
     readonly completedAt: FieldRef<"Booking", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -13793,31 +15265,31 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Bookings.
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Bookings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Bookings.
      */
     distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
@@ -13845,31 +15317,31 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Bookings.
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Bookings.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Bookings.
      */
     distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
@@ -13897,25 +15369,25 @@ export namespace Prisma {
     where?: BookingWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Bookings to fetch.
      */
     orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Bookings.
      */
     cursor?: BookingWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Bookings from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Bookings.
      */
     skip?: number
@@ -14280,55 +15752,55 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Reviews
     **/
     _count?: true | ReviewCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: ReviewAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: ReviewSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: ReviewMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: ReviewMaxAggregateInputType
@@ -14566,13 +16038,13 @@ export namespace Prisma {
      * @example
      * // Get all Reviews
      * const reviews = await prisma.review.findMany()
-     *
+     * 
      * // Get first 10 Reviews
      * const reviews = await prisma.review.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const reviewWithIdOnly = await prisma.review.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends ReviewFindManyArgs>(args?: SelectSubset<T, ReviewFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -14586,7 +16058,7 @@ export namespace Prisma {
      *     // ... data to create a Review
      *   }
      * })
-     *
+     * 
      */
     create<T extends ReviewCreateArgs>(args: SelectSubset<T, ReviewCreateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14600,7 +16072,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends ReviewCreateManyArgs>(args?: SelectSubset<T, ReviewCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14614,7 +16086,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Reviews and only return the `id`
      * const reviewWithIdOnly = await prisma.review.createManyAndReturn({
      *   select: { id: true },
@@ -14624,7 +16096,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends ReviewCreateManyAndReturnArgs>(args?: SelectSubset<T, ReviewCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -14638,7 +16110,7 @@ export namespace Prisma {
      *     // ... filter to delete one Review
      *   }
      * })
-     *
+     * 
      */
     delete<T extends ReviewDeleteArgs>(args: SelectSubset<T, ReviewDeleteArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14655,7 +16127,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends ReviewUpdateArgs>(args: SelectSubset<T, ReviewUpdateArgs<ExtArgs>>): Prisma__ReviewClient<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -14669,7 +16141,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends ReviewDeleteManyArgs>(args?: SelectSubset<T, ReviewDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14688,7 +16160,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends ReviewUpdateManyArgs>(args: SelectSubset<T, ReviewUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -14705,7 +16177,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Reviews and only return the `id`
      * const reviewWithIdOnly = await prisma.review.updateManyAndReturn({
      *   select: { id: true },
@@ -14718,7 +16190,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends ReviewUpdateManyAndReturnArgs>(args: SelectSubset<T, ReviewUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReviewPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -14807,7 +16279,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends ReviewGroupByArgs,
@@ -14924,7 +16396,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Review", 'DateTime'>
     readonly updatedAt: FieldRef<"Review", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -14993,31 +16465,31 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Reviews.
      */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
@@ -15045,31 +16517,31 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Reviews.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Reviews.
      */
     distinct?: ReviewScalarFieldEnum | ReviewScalarFieldEnum[]
@@ -15097,25 +16569,25 @@ export namespace Prisma {
     where?: ReviewWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Reviews to fetch.
      */
     orderBy?: ReviewOrderByWithRelationInput | ReviewOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Reviews.
      */
     cursor?: ReviewWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Reviews from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Reviews.
      */
     skip?: number
@@ -15457,55 +16929,55 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the start position
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Payouts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Count returned Payouts
     **/
     _count?: true | PayoutCountAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to average
     **/
     _avg?: PayoutAvgAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to sum
     **/
     _sum?: PayoutSumAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: PayoutMinAggregateInputType
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     *
+     * 
      * Select which fields to find the maximum value
     **/
     _max?: PayoutMaxAggregateInputType
@@ -15729,13 +17201,13 @@ export namespace Prisma {
      * @example
      * // Get all Payouts
      * const payouts = await prisma.payout.findMany()
-     *
+     * 
      * // Get first 10 Payouts
      * const payouts = await prisma.payout.findMany({ take: 10 })
-     *
+     * 
      * // Only select the `id`
      * const payoutWithIdOnly = await prisma.payout.findMany({ select: { id: true } })
-     *
+     * 
      */
     findMany<T extends PayoutFindManyArgs>(args?: SelectSubset<T, PayoutFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
 
@@ -15749,7 +17221,7 @@ export namespace Prisma {
      *     // ... data to create a Payout
      *   }
      * })
-     *
+     * 
      */
     create<T extends PayoutCreateArgs>(args: SelectSubset<T, PayoutCreateArgs<ExtArgs>>): Prisma__PayoutClient<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15763,7 +17235,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     *     
      */
     createMany<T extends PayoutCreateManyArgs>(args?: SelectSubset<T, PayoutCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15777,7 +17249,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Create many Payouts and only return the `id`
      * const payoutWithIdOnly = await prisma.payout.createManyAndReturn({
      *   select: { id: true },
@@ -15787,7 +17259,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     createManyAndReturn<T extends PayoutCreateManyAndReturnArgs>(args?: SelectSubset<T, PayoutCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
 
@@ -15801,7 +17273,7 @@ export namespace Prisma {
      *     // ... filter to delete one Payout
      *   }
      * })
-     *
+     * 
      */
     delete<T extends PayoutDeleteArgs>(args: SelectSubset<T, PayoutDeleteArgs<ExtArgs>>): Prisma__PayoutClient<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15818,7 +17290,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     update<T extends PayoutUpdateArgs>(args: SelectSubset<T, PayoutUpdateArgs<ExtArgs>>): Prisma__PayoutClient<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
 
@@ -15832,7 +17304,7 @@ export namespace Prisma {
      *     // ... provide filter here
      *   }
      * })
-     *
+     * 
      */
     deleteMany<T extends PayoutDeleteManyArgs>(args?: SelectSubset<T, PayoutDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15851,7 +17323,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   }
      * })
-     *
+     * 
      */
     updateMany<T extends PayoutUpdateManyArgs>(args: SelectSubset<T, PayoutUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
 
@@ -15868,7 +17340,7 @@ export namespace Prisma {
      *     // ... provide data here
      *   ]
      * })
-     *
+     * 
      * // Update zero or more Payouts and only return the `id`
      * const payoutWithIdOnly = await prisma.payout.updateManyAndReturn({
      *   select: { id: true },
@@ -15881,7 +17353,7 @@ export namespace Prisma {
      * })
      * Note, that providing `undefined` is treated as the value not being there.
      * Read more here: https://pris.ly/d/null-undefined
-     *
+     * 
      */
     updateManyAndReturn<T extends PayoutUpdateManyAndReturnArgs>(args: SelectSubset<T, PayoutUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayoutPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
 
@@ -15970,7 +17442,7 @@ export namespace Prisma {
      *     _all: true
      *   },
      * })
-     *
+     * 
     **/
     groupBy<
       T extends PayoutGroupByArgs,
@@ -16085,7 +17557,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"Payout", 'DateTime'>
     readonly updatedAt: FieldRef<"Payout", 'DateTime'>
   }
-
+    
 
   // Custom InputTypes
   /**
@@ -16154,31 +17626,31 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Payouts.
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Payouts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Payouts.
      */
     distinct?: PayoutScalarFieldEnum | PayoutScalarFieldEnum[]
@@ -16206,31 +17678,31 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for searching for Payouts.
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Payouts.
      */
     skip?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     *
+     * 
      * Filter by unique combinations of Payouts.
      */
     distinct?: PayoutScalarFieldEnum | PayoutScalarFieldEnum[]
@@ -16258,25 +17730,25 @@ export namespace Prisma {
     where?: PayoutWhereInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     *
+     * 
      * Determine the order of Payouts to fetch.
      */
     orderBy?: PayoutOrderByWithRelationInput | PayoutOrderByWithRelationInput[]
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     *
+     * 
      * Sets the position for listing Payouts.
      */
     cursor?: PayoutWhereUniqueInput
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Take `±n` Payouts from the position of the cursor.
      */
     take?: number
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     *
+     * 
      * Skip the first `n` Payouts.
      */
     skip?: number
@@ -16543,6 +18015,28 @@ export namespace Prisma {
   export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
+  export const VenueScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    shortDescription: 'shortDescription',
+    description: 'description',
+    images: 'images',
+    address: 'address',
+    city: 'city',
+    state: 'state',
+    country: 'country',
+    postalCode: 'postalCode',
+    latitude: 'latitude',
+    longitude: 'longitude',
+    hostId: 'hostId',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type VenueScalarFieldEnum = (typeof VenueScalarFieldEnum)[keyof typeof VenueScalarFieldEnum]
+
+
   export const SpaceScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -16571,6 +18065,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     hostId: 'hostId',
+    venueId: 'venueId',
     categorySlug: 'categorySlug'
   };
 
@@ -16752,161 +18247,161 @@ export namespace Prisma {
    * Reference to a field of type 'String'
    */
   export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
-
+    
 
 
   /**
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Role'
    */
   export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-
+    
 
 
   /**
    * Reference to a field of type 'Role[]'
    */
   export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-
+    
 
 
   /**
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-
+    
 
 
   /**
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-
-
-
-  /**
-   * Reference to a field of type 'SpaceType'
-   */
-  export type EnumSpaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SpaceType'>
-
-
-
-  /**
-   * Reference to a field of type 'SpaceType[]'
-   */
-  export type ListEnumSpaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SpaceType[]'>
-
-
-
-  /**
-   * Reference to a field of type 'PricingType'
-   */
-  export type EnumPricingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingType'>
-
-
-
-  /**
-   * Reference to a field of type 'PricingType[]'
-   */
-  export type ListEnumPricingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingType[]'>
-
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'Json'
    */
   export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
-
+    
 
 
   /**
    * Reference to a field of type 'QueryMode'
    */
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
 
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SpaceType'
+   */
+  export type EnumSpaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SpaceType'>
+    
+
+
+  /**
+   * Reference to a field of type 'SpaceType[]'
+   */
+  export type ListEnumSpaceTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SpaceType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PricingType'
+   */
+  export type EnumPricingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingType'>
+    
+
+
+  /**
+   * Reference to a field of type 'PricingType[]'
+   */
+  export type ListEnumPricingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PricingType[]'>
+    
 
 
   /**
    * Reference to a field of type 'CancellationPolicy'
    */
   export type EnumCancellationPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CancellationPolicy'>
-
+    
 
 
   /**
    * Reference to a field of type 'CancellationPolicy[]'
    */
   export type ListEnumCancellationPolicyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CancellationPolicy[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'BookingStatus'
    */
   export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
-
+    
 
 
   /**
    * Reference to a field of type 'BookingStatus[]'
    */
   export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus[]'>
-
+    
 
 
   /**
    * Reference to a field of type 'PayoutStatus'
    */
   export type EnumPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutStatus'>
-
+    
 
 
   /**
    * Reference to a field of type 'PayoutStatus[]'
    */
   export type ListEnumPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PayoutStatus[]'>
-
+    
   /**
    * Deep Input Types
    */
@@ -16931,6 +18426,7 @@ export namespace Prisma {
     hostVerified?: BoolFilter<"User"> | boolean
     hostingSince?: DateTimeNullableFilter<"User"> | Date | string | null
     sessions?: SessionListRelationFilter
+    venues?: VenueListRelationFilter
     spaces?: SpaceListRelationFilter
     bookingsAsGuest?: BookingListRelationFilter
     bookingsAsHost?: BookingListRelationFilter
@@ -16954,6 +18450,7 @@ export namespace Prisma {
     hostVerified?: SortOrder
     hostingSince?: SortOrderInput | SortOrder
     sessions?: SessionOrderByRelationAggregateInput
+    venues?: VenueOrderByRelationAggregateInput
     spaces?: SpaceOrderByRelationAggregateInput
     bookingsAsGuest?: BookingOrderByRelationAggregateInput
     bookingsAsHost?: BookingOrderByRelationAggregateInput
@@ -16980,6 +18477,7 @@ export namespace Prisma {
     hostVerified?: BoolFilter<"User"> | boolean
     hostingSince?: DateTimeNullableFilter<"User"> | Date | string | null
     sessions?: SessionListRelationFilter
+    venues?: VenueListRelationFilter
     spaces?: SpaceListRelationFilter
     bookingsAsGuest?: BookingListRelationFilter
     bookingsAsHost?: BookingListRelationFilter
@@ -17082,6 +18580,121 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
   }
 
+  export type VenueWhereInput = {
+    AND?: VenueWhereInput | VenueWhereInput[]
+    OR?: VenueWhereInput[]
+    NOT?: VenueWhereInput | VenueWhereInput[]
+    id?: IntFilter<"Venue"> | number
+    name?: StringFilter<"Venue"> | string
+    shortDescription?: StringFilter<"Venue"> | string
+    description?: StringFilter<"Venue"> | string
+    images?: JsonFilter<"Venue">
+    address?: StringFilter<"Venue"> | string
+    city?: StringFilter<"Venue"> | string
+    state?: StringNullableFilter<"Venue"> | string | null
+    country?: StringFilter<"Venue"> | string
+    postalCode?: StringNullableFilter<"Venue"> | string | null
+    latitude?: FloatNullableFilter<"Venue"> | number | null
+    longitude?: FloatNullableFilter<"Venue"> | number | null
+    hostId?: StringFilter<"Venue"> | string
+    isActive?: BoolFilter<"Venue"> | boolean
+    createdAt?: DateTimeFilter<"Venue"> | Date | string
+    updatedAt?: DateTimeFilter<"Venue"> | Date | string
+    host?: XOR<UserScalarRelationFilter, UserWhereInput>
+    spaces?: SpaceListRelationFilter
+  }
+
+  export type VenueOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    shortDescription?: SortOrder
+    description?: SortOrder
+    images?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrderInput | SortOrder
+    country?: SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    hostId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    host?: UserOrderByWithRelationInput
+    spaces?: SpaceOrderByRelationAggregateInput
+  }
+
+  export type VenueWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: VenueWhereInput | VenueWhereInput[]
+    OR?: VenueWhereInput[]
+    NOT?: VenueWhereInput | VenueWhereInput[]
+    name?: StringFilter<"Venue"> | string
+    shortDescription?: StringFilter<"Venue"> | string
+    description?: StringFilter<"Venue"> | string
+    images?: JsonFilter<"Venue">
+    address?: StringFilter<"Venue"> | string
+    city?: StringFilter<"Venue"> | string
+    state?: StringNullableFilter<"Venue"> | string | null
+    country?: StringFilter<"Venue"> | string
+    postalCode?: StringNullableFilter<"Venue"> | string | null
+    latitude?: FloatNullableFilter<"Venue"> | number | null
+    longitude?: FloatNullableFilter<"Venue"> | number | null
+    hostId?: StringFilter<"Venue"> | string
+    isActive?: BoolFilter<"Venue"> | boolean
+    createdAt?: DateTimeFilter<"Venue"> | Date | string
+    updatedAt?: DateTimeFilter<"Venue"> | Date | string
+    host?: XOR<UserScalarRelationFilter, UserWhereInput>
+    spaces?: SpaceListRelationFilter
+  }, "id">
+
+  export type VenueOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    shortDescription?: SortOrder
+    description?: SortOrder
+    images?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrderInput | SortOrder
+    country?: SortOrder
+    postalCode?: SortOrderInput | SortOrder
+    latitude?: SortOrderInput | SortOrder
+    longitude?: SortOrderInput | SortOrder
+    hostId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: VenueCountOrderByAggregateInput
+    _avg?: VenueAvgOrderByAggregateInput
+    _max?: VenueMaxOrderByAggregateInput
+    _min?: VenueMinOrderByAggregateInput
+    _sum?: VenueSumOrderByAggregateInput
+  }
+
+  export type VenueScalarWhereWithAggregatesInput = {
+    AND?: VenueScalarWhereWithAggregatesInput | VenueScalarWhereWithAggregatesInput[]
+    OR?: VenueScalarWhereWithAggregatesInput[]
+    NOT?: VenueScalarWhereWithAggregatesInput | VenueScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Venue"> | number
+    name?: StringWithAggregatesFilter<"Venue"> | string
+    shortDescription?: StringWithAggregatesFilter<"Venue"> | string
+    description?: StringWithAggregatesFilter<"Venue"> | string
+    images?: JsonWithAggregatesFilter<"Venue">
+    address?: StringWithAggregatesFilter<"Venue"> | string
+    city?: StringWithAggregatesFilter<"Venue"> | string
+    state?: StringNullableWithAggregatesFilter<"Venue"> | string | null
+    country?: StringWithAggregatesFilter<"Venue"> | string
+    postalCode?: StringNullableWithAggregatesFilter<"Venue"> | string | null
+    latitude?: FloatNullableWithAggregatesFilter<"Venue"> | number | null
+    longitude?: FloatNullableWithAggregatesFilter<"Venue"> | number | null
+    hostId?: StringWithAggregatesFilter<"Venue"> | string
+    isActive?: BoolWithAggregatesFilter<"Venue"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
+  }
+
   export type SpaceWhereInput = {
     AND?: SpaceWhereInput | SpaceWhereInput[]
     OR?: SpaceWhereInput[]
@@ -17113,8 +18726,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Space"> | Date | string
     updatedAt?: DateTimeFilter<"Space"> | Date | string
     hostId?: StringFilter<"Space"> | string
+    venueId?: IntNullableFilter<"Space"> | number | null
     categorySlug?: StringFilter<"Space"> | string
     host?: XOR<UserScalarRelationFilter, UserWhereInput>
+    venue?: XOR<VenueNullableScalarRelationFilter, VenueWhereInput> | null
     category?: XOR<SpaceCategoryScalarRelationFilter, SpaceCategoryWhereInput>
     amenities?: SpaceAmenityListRelationFilter
     availability?: AvailabilityListRelationFilter
@@ -17151,8 +18766,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     hostId?: SortOrder
+    venueId?: SortOrderInput | SortOrder
     categorySlug?: SortOrder
     host?: UserOrderByWithRelationInput
+    venue?: VenueOrderByWithRelationInput
     category?: SpaceCategoryOrderByWithRelationInput
     amenities?: SpaceAmenityOrderByRelationAggregateInput
     availability?: AvailabilityOrderByRelationAggregateInput
@@ -17192,8 +18809,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Space"> | Date | string
     updatedAt?: DateTimeFilter<"Space"> | Date | string
     hostId?: StringFilter<"Space"> | string
+    venueId?: IntNullableFilter<"Space"> | number | null
     categorySlug?: StringFilter<"Space"> | string
     host?: XOR<UserScalarRelationFilter, UserWhereInput>
+    venue?: XOR<VenueNullableScalarRelationFilter, VenueWhereInput> | null
     category?: XOR<SpaceCategoryScalarRelationFilter, SpaceCategoryWhereInput>
     amenities?: SpaceAmenityListRelationFilter
     availability?: AvailabilityListRelationFilter
@@ -17230,6 +18849,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     hostId?: SortOrder
+    venueId?: SortOrderInput | SortOrder
     categorySlug?: SortOrder
     _count?: SpaceCountOrderByAggregateInput
     _avg?: SpaceAvgOrderByAggregateInput
@@ -17269,6 +18889,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Space"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Space"> | Date | string
     hostId?: StringWithAggregatesFilter<"Space"> | string
+    venueId?: IntNullableWithAggregatesFilter<"Space"> | number | null
     categorySlug?: StringWithAggregatesFilter<"Space"> | string
   }
 
@@ -17959,6 +19580,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
+    venues?: VenueCreateNestedManyWithoutHostInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
@@ -17982,6 +19604,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    venues?: VenueUncheckedCreateNestedManyWithoutHostInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
@@ -18005,6 +19628,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    venues?: VenueUpdateManyWithoutHostNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
@@ -18028,6 +19652,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    venues?: VenueUncheckedUpdateManyWithoutHostNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
@@ -18141,6 +19766,139 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type VenueCreateInput = {
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    host: UserCreateNestedOneWithoutVenuesInput
+    spaces?: SpaceCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueUncheckedCreateInput = {
+    id?: number
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    hostId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    spaces?: SpaceUncheckedCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    host?: UserUpdateOneRequiredWithoutVenuesNestedInput
+    spaces?: SpaceUpdateManyWithoutVenueNestedInput
+  }
+
+  export type VenueUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    hostId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    spaces?: SpaceUncheckedUpdateManyWithoutVenueNestedInput
+  }
+
+  export type VenueCreateManyInput = {
+    id?: number
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    hostId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VenueUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VenueUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    hostId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SpaceCreateInput = {
     name: string
     shortDescription: string
@@ -18168,6 +19926,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -18204,6 +19963,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -18239,6 +19999,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -18275,6 +20036,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -18311,6 +20073,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     categorySlug: string
   }
 
@@ -18370,6 +20133,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
   }
 
@@ -19120,6 +20884,12 @@ export namespace Prisma {
     none?: SessionWhereInput
   }
 
+  export type VenueListRelationFilter = {
+    every?: VenueWhereInput
+    some?: VenueWhereInput
+    none?: VenueWhereInput
+  }
+
   export type SpaceListRelationFilter = {
     every?: SpaceWhereInput
     some?: SpaceWhereInput
@@ -19150,6 +20920,10 @@ export namespace Prisma {
   }
 
   export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type VenueOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19341,53 +21115,6 @@ export namespace Prisma {
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
   }
-
-  export type EnumSpaceTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumSpaceTypeFilter<$PrismaModel> | $Enums.SpaceType
-  }
-
-  export type EnumPricingTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.PricingType | EnumPricingTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumPricingTypeFilter<$PrismaModel> | $Enums.PricingType
-  }
-
-  export type FloatNullableFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
-  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -19412,11 +21139,188 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
+  export type FloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type VenueCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    shortDescription?: SortOrder
+    description?: SortOrder
+    images?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    hostId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VenueAvgOrderByAggregateInput = {
+    id?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type VenueMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    shortDescription?: SortOrder
+    description?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    hostId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VenueMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    shortDescription?: SortOrder
+    description?: SortOrder
+    address?: SortOrder
+    city?: SortOrder
+    state?: SortOrder
+    country?: SortOrder
+    postalCode?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+    hostId?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type VenueSumOrderByAggregateInput = {
+    id?: SortOrder
+    latitude?: SortOrder
+    longitude?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+
+  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type EnumSpaceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSpaceTypeFilter<$PrismaModel> | $Enums.SpaceType
+  }
+
+  export type EnumPricingTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PricingType | EnumPricingTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPricingTypeFilter<$PrismaModel> | $Enums.PricingType
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type EnumCancellationPolicyFilter<$PrismaModel = never> = {
     equals?: $Enums.CancellationPolicy | EnumCancellationPolicyFieldRefInput<$PrismaModel>
     in?: $Enums.CancellationPolicy[] | ListEnumCancellationPolicyFieldRefInput<$PrismaModel>
     notIn?: $Enums.CancellationPolicy[] | ListEnumCancellationPolicyFieldRefInput<$PrismaModel>
     not?: NestedEnumCancellationPolicyFilter<$PrismaModel> | $Enums.CancellationPolicy
+  }
+
+  export type VenueNullableScalarRelationFilter = {
+    is?: VenueWhereInput | null
+    isNot?: VenueWhereInput | null
   }
 
   export type SpaceCategoryScalarRelationFilter = {
@@ -19482,6 +21386,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     hostId?: SortOrder
+    venueId?: SortOrder
     categorySlug?: SortOrder
   }
 
@@ -19495,6 +21400,7 @@ export namespace Prisma {
     maxBookingHours?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    venueId?: SortOrder
   }
 
   export type SpaceMaxOrderByAggregateInput = {
@@ -19524,6 +21430,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     hostId?: SortOrder
+    venueId?: SortOrder
     categorySlug?: SortOrder
   }
 
@@ -19554,6 +21461,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     hostId?: SortOrder
+    venueId?: SortOrder
     categorySlug?: SortOrder
   }
 
@@ -19567,22 +21475,7 @@ export namespace Prisma {
     maxBookingHours?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
+    venueId?: SortOrder
   }
 
   export type EnumSpaceTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -19603,22 +21496,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPricingTypeFilter<$PrismaModel>
     _max?: NestedEnumPricingTypeFilter<$PrismaModel>
-  }
-
-  export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -19651,32 +21528,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type EnumCancellationPolicyWithAggregatesFilter<$PrismaModel = never> = {
@@ -20182,6 +22033,13 @@ export namespace Prisma {
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
+  export type VenueCreateNestedManyWithoutHostInput = {
+    create?: XOR<VenueCreateWithoutHostInput, VenueUncheckedCreateWithoutHostInput> | VenueCreateWithoutHostInput[] | VenueUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: VenueCreateOrConnectWithoutHostInput | VenueCreateOrConnectWithoutHostInput[]
+    createMany?: VenueCreateManyHostInputEnvelope
+    connect?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+  }
+
   export type SpaceCreateNestedManyWithoutHostInput = {
     create?: XOR<SpaceCreateWithoutHostInput, SpaceUncheckedCreateWithoutHostInput> | SpaceCreateWithoutHostInput[] | SpaceUncheckedCreateWithoutHostInput[]
     connectOrCreate?: SpaceCreateOrConnectWithoutHostInput | SpaceCreateOrConnectWithoutHostInput[]
@@ -20222,6 +22080,13 @@ export namespace Prisma {
     connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
     createMany?: SessionCreateManyUserInputEnvelope
     connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
+  export type VenueUncheckedCreateNestedManyWithoutHostInput = {
+    create?: XOR<VenueCreateWithoutHostInput, VenueUncheckedCreateWithoutHostInput> | VenueCreateWithoutHostInput[] | VenueUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: VenueCreateOrConnectWithoutHostInput | VenueCreateOrConnectWithoutHostInput[]
+    createMany?: VenueCreateManyHostInputEnvelope
+    connect?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
   }
 
   export type SpaceUncheckedCreateNestedManyWithoutHostInput = {
@@ -20295,6 +22160,20 @@ export namespace Prisma {
     update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
+  export type VenueUpdateManyWithoutHostNestedInput = {
+    create?: XOR<VenueCreateWithoutHostInput, VenueUncheckedCreateWithoutHostInput> | VenueCreateWithoutHostInput[] | VenueUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: VenueCreateOrConnectWithoutHostInput | VenueCreateOrConnectWithoutHostInput[]
+    upsert?: VenueUpsertWithWhereUniqueWithoutHostInput | VenueUpsertWithWhereUniqueWithoutHostInput[]
+    createMany?: VenueCreateManyHostInputEnvelope
+    set?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    disconnect?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    delete?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    connect?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    update?: VenueUpdateWithWhereUniqueWithoutHostInput | VenueUpdateWithWhereUniqueWithoutHostInput[]
+    updateMany?: VenueUpdateManyWithWhereWithoutHostInput | VenueUpdateManyWithWhereWithoutHostInput[]
+    deleteMany?: VenueScalarWhereInput | VenueScalarWhereInput[]
   }
 
   export type SpaceUpdateManyWithoutHostNestedInput = {
@@ -20381,6 +22260,20 @@ export namespace Prisma {
     deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
+  export type VenueUncheckedUpdateManyWithoutHostNestedInput = {
+    create?: XOR<VenueCreateWithoutHostInput, VenueUncheckedCreateWithoutHostInput> | VenueCreateWithoutHostInput[] | VenueUncheckedCreateWithoutHostInput[]
+    connectOrCreate?: VenueCreateOrConnectWithoutHostInput | VenueCreateOrConnectWithoutHostInput[]
+    upsert?: VenueUpsertWithWhereUniqueWithoutHostInput | VenueUpsertWithWhereUniqueWithoutHostInput[]
+    createMany?: VenueCreateManyHostInputEnvelope
+    set?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    disconnect?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    delete?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    connect?: VenueWhereUniqueInput | VenueWhereUniqueInput[]
+    update?: VenueUpdateWithWhereUniqueWithoutHostInput | VenueUpdateWithWhereUniqueWithoutHostInput[]
+    updateMany?: VenueUpdateManyWithWhereWithoutHostInput | VenueUpdateManyWithWhereWithoutHostInput[]
+    deleteMany?: VenueScalarWhereInput | VenueScalarWhereInput[]
+  }
+
   export type SpaceUncheckedUpdateManyWithoutHostNestedInput = {
     create?: XOR<SpaceCreateWithoutHostInput, SpaceUncheckedCreateWithoutHostInput> | SpaceCreateWithoutHostInput[] | SpaceUncheckedCreateWithoutHostInput[]
     connectOrCreate?: SpaceCreateOrConnectWithoutHostInput | SpaceCreateOrConnectWithoutHostInput[]
@@ -20465,10 +22358,88 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
   }
 
+  export type UserCreateNestedOneWithoutVenuesInput = {
+    create?: XOR<UserCreateWithoutVenuesInput, UserUncheckedCreateWithoutVenuesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVenuesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SpaceCreateNestedManyWithoutVenueInput = {
+    create?: XOR<SpaceCreateWithoutVenueInput, SpaceUncheckedCreateWithoutVenueInput> | SpaceCreateWithoutVenueInput[] | SpaceUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: SpaceCreateOrConnectWithoutVenueInput | SpaceCreateOrConnectWithoutVenueInput[]
+    createMany?: SpaceCreateManyVenueInputEnvelope
+    connect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+  }
+
+  export type SpaceUncheckedCreateNestedManyWithoutVenueInput = {
+    create?: XOR<SpaceCreateWithoutVenueInput, SpaceUncheckedCreateWithoutVenueInput> | SpaceCreateWithoutVenueInput[] | SpaceUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: SpaceCreateOrConnectWithoutVenueInput | SpaceCreateOrConnectWithoutVenueInput[]
+    createMany?: SpaceCreateManyVenueInputEnvelope
+    connect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+  }
+
+  export type NullableFloatFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type UserUpdateOneRequiredWithoutVenuesNestedInput = {
+    create?: XOR<UserCreateWithoutVenuesInput, UserUncheckedCreateWithoutVenuesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutVenuesInput
+    upsert?: UserUpsertWithoutVenuesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutVenuesInput, UserUpdateWithoutVenuesInput>, UserUncheckedUpdateWithoutVenuesInput>
+  }
+
+  export type SpaceUpdateManyWithoutVenueNestedInput = {
+    create?: XOR<SpaceCreateWithoutVenueInput, SpaceUncheckedCreateWithoutVenueInput> | SpaceCreateWithoutVenueInput[] | SpaceUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: SpaceCreateOrConnectWithoutVenueInput | SpaceCreateOrConnectWithoutVenueInput[]
+    upsert?: SpaceUpsertWithWhereUniqueWithoutVenueInput | SpaceUpsertWithWhereUniqueWithoutVenueInput[]
+    createMany?: SpaceCreateManyVenueInputEnvelope
+    set?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    disconnect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    delete?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    connect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    update?: SpaceUpdateWithWhereUniqueWithoutVenueInput | SpaceUpdateWithWhereUniqueWithoutVenueInput[]
+    updateMany?: SpaceUpdateManyWithWhereWithoutVenueInput | SpaceUpdateManyWithWhereWithoutVenueInput[]
+    deleteMany?: SpaceScalarWhereInput | SpaceScalarWhereInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type SpaceUncheckedUpdateManyWithoutVenueNestedInput = {
+    create?: XOR<SpaceCreateWithoutVenueInput, SpaceUncheckedCreateWithoutVenueInput> | SpaceCreateWithoutVenueInput[] | SpaceUncheckedCreateWithoutVenueInput[]
+    connectOrCreate?: SpaceCreateOrConnectWithoutVenueInput | SpaceCreateOrConnectWithoutVenueInput[]
+    upsert?: SpaceUpsertWithWhereUniqueWithoutVenueInput | SpaceUpsertWithWhereUniqueWithoutVenueInput[]
+    createMany?: SpaceCreateManyVenueInputEnvelope
+    set?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    disconnect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    delete?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    connect?: SpaceWhereUniqueInput | SpaceWhereUniqueInput[]
+    update?: SpaceUpdateWithWhereUniqueWithoutVenueInput | SpaceUpdateWithWhereUniqueWithoutVenueInput[]
+    updateMany?: SpaceUpdateManyWithWhereWithoutVenueInput | SpaceUpdateManyWithWhereWithoutVenueInput[]
+    deleteMany?: SpaceScalarWhereInput | SpaceScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutSpacesInput = {
     create?: XOR<UserCreateWithoutSpacesInput, UserUncheckedCreateWithoutSpacesInput>
     connectOrCreate?: UserCreateOrConnectWithoutSpacesInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type VenueCreateNestedOneWithoutSpacesInput = {
+    create?: XOR<VenueCreateWithoutSpacesInput, VenueUncheckedCreateWithoutSpacesInput>
+    connectOrCreate?: VenueCreateOrConnectWithoutSpacesInput
+    connect?: VenueWhereUniqueInput
   }
 
   export type SpaceCategoryCreateNestedOneWithoutSpacesInput = {
@@ -20555,23 +22526,7 @@ export namespace Prisma {
     set?: $Enums.PricingType
   }
 
-  export type NullableFloatFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
-  export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
@@ -20597,6 +22552,16 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutSpacesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSpacesInput, UserUpdateWithoutSpacesInput>, UserUncheckedUpdateWithoutSpacesInput>
+  }
+
+  export type VenueUpdateOneWithoutSpacesNestedInput = {
+    create?: XOR<VenueCreateWithoutSpacesInput, VenueUncheckedCreateWithoutSpacesInput>
+    connectOrCreate?: VenueCreateOrConnectWithoutSpacesInput
+    upsert?: VenueUpsertWithoutSpacesInput
+    disconnect?: VenueWhereInput | boolean
+    delete?: VenueWhereInput | boolean
+    connect?: VenueWhereUniqueInput
+    update?: XOR<XOR<VenueUpdateToOneWithWhereWithoutSpacesInput, VenueUpdateWithoutSpacesInput>, VenueUncheckedUpdateWithoutSpacesInput>
   }
 
   export type SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput = {
@@ -21254,20 +23219,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedEnumSpaceTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumSpaceTypeFilter<$PrismaModel> | $Enums.SpaceType
-  }
-
-  export type NestedEnumPricingTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.PricingType | EnumPricingTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumPricingTypeFilter<$PrismaModel> | $Enums.PricingType
-  }
-
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
     in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
@@ -21277,24 +23228,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedEnumCancellationPolicyFilter<$PrismaModel = never> = {
-    equals?: $Enums.CancellationPolicy | EnumCancellationPolicyFieldRefInput<$PrismaModel>
-    in?: $Enums.CancellationPolicy[] | ListEnumCancellationPolicyFieldRefInput<$PrismaModel>
-    notIn?: $Enums.CancellationPolicy[] | ListEnumCancellationPolicyFieldRefInput<$PrismaModel>
-    not?: NestedEnumCancellationPolicyFilter<$PrismaModel> | $Enums.CancellationPolicy
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -21311,6 +23244,77 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedFloatNullableFilter<$PrismaModel>
+    _min?: NestedFloatNullableFilter<$PrismaModel>
+    _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumSpaceTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumSpaceTypeFilter<$PrismaModel> | $Enums.SpaceType
+  }
+
+  export type NestedEnumPricingTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.PricingType | EnumPricingTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumPricingTypeFilter<$PrismaModel> | $Enums.PricingType
+  }
+
+  export type NestedEnumCancellationPolicyFilter<$PrismaModel = never> = {
+    equals?: $Enums.CancellationPolicy | EnumCancellationPolicyFieldRefInput<$PrismaModel>
+    in?: $Enums.CancellationPolicy[] | ListEnumCancellationPolicyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CancellationPolicy[] | ListEnumCancellationPolicyFieldRefInput<$PrismaModel>
+    not?: NestedEnumCancellationPolicyFilter<$PrismaModel> | $Enums.CancellationPolicy
   }
 
   export type NestedEnumSpaceTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -21331,22 +23335,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPricingTypeFilter<$PrismaModel>
     _max?: NestedEnumPricingTypeFilter<$PrismaModel>
-  }
-
-  export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedFloatNullableFilter<$PrismaModel>
-    _min?: NestedFloatNullableFilter<$PrismaModel>
-    _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
@@ -21379,29 +23367,6 @@ export namespace Prisma {
     _sum?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedIntNullableFilter<$PrismaModel>
     _max?: NestedIntNullableFilter<$PrismaModel>
-  }
-  export type NestedJsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type NestedJsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string[]
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedEnumCancellationPolicyWithAggregatesFilter<$PrismaModel = never> = {
@@ -21472,6 +23437,53 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type VenueCreateWithoutHostInput = {
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    spaces?: SpaceCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueUncheckedCreateWithoutHostInput = {
+    id?: number
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    spaces?: SpaceUncheckedCreateNestedManyWithoutVenueInput
+  }
+
+  export type VenueCreateOrConnectWithoutHostInput = {
+    where: VenueWhereUniqueInput
+    create: XOR<VenueCreateWithoutHostInput, VenueUncheckedCreateWithoutHostInput>
+  }
+
+  export type VenueCreateManyHostInputEnvelope = {
+    data: VenueCreateManyHostInput | VenueCreateManyHostInput[]
+    skipDuplicates?: boolean
+  }
+
   export type SpaceCreateWithoutHostInput = {
     name: string
     shortDescription: string
@@ -21498,6 +23510,7 @@ export namespace Prisma {
     houseRules?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -21533,6 +23546,7 @@ export namespace Prisma {
     houseRules?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    venueId?: number | null
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -21773,6 +23787,44 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Session"> | Date | string
   }
 
+  export type VenueUpsertWithWhereUniqueWithoutHostInput = {
+    where: VenueWhereUniqueInput
+    update: XOR<VenueUpdateWithoutHostInput, VenueUncheckedUpdateWithoutHostInput>
+    create: XOR<VenueCreateWithoutHostInput, VenueUncheckedCreateWithoutHostInput>
+  }
+
+  export type VenueUpdateWithWhereUniqueWithoutHostInput = {
+    where: VenueWhereUniqueInput
+    data: XOR<VenueUpdateWithoutHostInput, VenueUncheckedUpdateWithoutHostInput>
+  }
+
+  export type VenueUpdateManyWithWhereWithoutHostInput = {
+    where: VenueScalarWhereInput
+    data: XOR<VenueUpdateManyMutationInput, VenueUncheckedUpdateManyWithoutHostInput>
+  }
+
+  export type VenueScalarWhereInput = {
+    AND?: VenueScalarWhereInput | VenueScalarWhereInput[]
+    OR?: VenueScalarWhereInput[]
+    NOT?: VenueScalarWhereInput | VenueScalarWhereInput[]
+    id?: IntFilter<"Venue"> | number
+    name?: StringFilter<"Venue"> | string
+    shortDescription?: StringFilter<"Venue"> | string
+    description?: StringFilter<"Venue"> | string
+    images?: JsonFilter<"Venue">
+    address?: StringFilter<"Venue"> | string
+    city?: StringFilter<"Venue"> | string
+    state?: StringNullableFilter<"Venue"> | string | null
+    country?: StringFilter<"Venue"> | string
+    postalCode?: StringNullableFilter<"Venue"> | string | null
+    latitude?: FloatNullableFilter<"Venue"> | number | null
+    longitude?: FloatNullableFilter<"Venue"> | number | null
+    hostId?: StringFilter<"Venue"> | string
+    isActive?: BoolFilter<"Venue"> | boolean
+    createdAt?: DateTimeFilter<"Venue"> | Date | string
+    updatedAt?: DateTimeFilter<"Venue"> | Date | string
+  }
+
   export type SpaceUpsertWithWhereUniqueWithoutHostInput = {
     where: SpaceWhereUniqueInput
     update: XOR<SpaceUpdateWithoutHostInput, SpaceUncheckedUpdateWithoutHostInput>
@@ -21820,6 +23872,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Space"> | Date | string
     updatedAt?: DateTimeFilter<"Space"> | Date | string
     hostId?: StringFilter<"Space"> | string
+    venueId?: IntNullableFilter<"Space"> | number | null
     categorySlug?: StringFilter<"Space"> | string
   }
 
@@ -21964,6 +24017,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
+    venues?: VenueCreateNestedManyWithoutHostInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
@@ -21986,6 +24040,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     hostVerified?: boolean
     hostingSince?: Date | string | null
+    venues?: VenueUncheckedCreateNestedManyWithoutHostInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
@@ -22024,6 +24079,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    venues?: VenueUpdateManyWithoutHostNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
@@ -22046,11 +24102,217 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    venues?: VenueUncheckedUpdateManyWithoutHostNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
+  }
+
+  export type UserCreateWithoutVenuesInput = {
+    id?: string
+    email: string
+    username: string
+    name?: string | null
+    password: string
+    role?: $Enums.Role
+    emailVerified?: boolean
+    image?: string | null
+    phone?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hostVerified?: boolean
+    hostingSince?: Date | string | null
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    spaces?: SpaceCreateNestedManyWithoutHostInput
+    bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
+    reviews?: ReviewCreateNestedManyWithoutUserInput
+    payouts?: PayoutCreateNestedManyWithoutHostInput
+  }
+
+  export type UserUncheckedCreateWithoutVenuesInput = {
+    id?: string
+    email: string
+    username: string
+    name?: string | null
+    password: string
+    role?: $Enums.Role
+    emailVerified?: boolean
+    image?: string | null
+    phone?: string | null
+    bio?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hostVerified?: boolean
+    hostingSince?: Date | string | null
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
+    bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
+    bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
+    payouts?: PayoutUncheckedCreateNestedManyWithoutHostInput
+  }
+
+  export type UserCreateOrConnectWithoutVenuesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutVenuesInput, UserUncheckedCreateWithoutVenuesInput>
+  }
+
+  export type SpaceCreateWithoutVenueInput = {
+    name: string
+    shortDescription: string
+    description: string
+    spaceType: $Enums.SpaceType
+    pricingType: $Enums.PricingType
+    pricePerHour?: number | null
+    pricePerDay?: number | null
+    cleaningFee?: number
+    capacity: number
+    minBookingHours?: number | null
+    maxBookingHours?: number | null
+    images: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    instantBook?: boolean
+    cancellationPolicy?: $Enums.CancellationPolicy
+    houseRules?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    host: UserCreateNestedOneWithoutSpacesInput
+    category: SpaceCategoryCreateNestedOneWithoutSpacesInput
+    amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    availability?: AvailabilityCreateNestedManyWithoutSpaceInput
+    blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
+    bookings?: BookingCreateNestedManyWithoutSpaceInput
+    reviews?: ReviewCreateNestedManyWithoutSpaceInput
+  }
+
+  export type SpaceUncheckedCreateWithoutVenueInput = {
+    id?: number
+    name: string
+    shortDescription: string
+    description: string
+    spaceType: $Enums.SpaceType
+    pricingType: $Enums.PricingType
+    pricePerHour?: number | null
+    pricePerDay?: number | null
+    cleaningFee?: number
+    capacity: number
+    minBookingHours?: number | null
+    maxBookingHours?: number | null
+    images: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    instantBook?: boolean
+    cancellationPolicy?: $Enums.CancellationPolicy
+    houseRules?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hostId: string
+    categorySlug: string
+    amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
+    blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutSpaceInput
+  }
+
+  export type SpaceCreateOrConnectWithoutVenueInput = {
+    where: SpaceWhereUniqueInput
+    create: XOR<SpaceCreateWithoutVenueInput, SpaceUncheckedCreateWithoutVenueInput>
+  }
+
+  export type SpaceCreateManyVenueInputEnvelope = {
+    data: SpaceCreateManyVenueInput | SpaceCreateManyVenueInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutVenuesInput = {
+    update: XOR<UserUpdateWithoutVenuesInput, UserUncheckedUpdateWithoutVenuesInput>
+    create: XOR<UserCreateWithoutVenuesInput, UserUncheckedCreateWithoutVenuesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutVenuesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutVenuesInput, UserUncheckedUpdateWithoutVenuesInput>
+  }
+
+  export type UserUpdateWithoutVenuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hostVerified?: BoolFieldUpdateOperationsInput | boolean
+    hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    spaces?: SpaceUpdateManyWithoutHostNestedInput
+    bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
+    reviews?: ReviewUpdateManyWithoutUserNestedInput
+    payouts?: PayoutUpdateManyWithoutHostNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutVenuesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hostVerified?: BoolFieldUpdateOperationsInput | boolean
+    hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
+    bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
+    bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
+    payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
+  }
+
+  export type SpaceUpsertWithWhereUniqueWithoutVenueInput = {
+    where: SpaceWhereUniqueInput
+    update: XOR<SpaceUpdateWithoutVenueInput, SpaceUncheckedUpdateWithoutVenueInput>
+    create: XOR<SpaceCreateWithoutVenueInput, SpaceUncheckedCreateWithoutVenueInput>
+  }
+
+  export type SpaceUpdateWithWhereUniqueWithoutVenueInput = {
+    where: SpaceWhereUniqueInput
+    data: XOR<SpaceUpdateWithoutVenueInput, SpaceUncheckedUpdateWithoutVenueInput>
+  }
+
+  export type SpaceUpdateManyWithWhereWithoutVenueInput = {
+    where: SpaceScalarWhereInput
+    data: XOR<SpaceUpdateManyMutationInput, SpaceUncheckedUpdateManyWithoutVenueInput>
   }
 
   export type UserCreateWithoutSpacesInput = {
@@ -22069,6 +24331,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
+    venues?: VenueCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
@@ -22091,6 +24354,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    venues?: VenueUncheckedCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
@@ -22100,6 +24364,48 @@ export namespace Prisma {
   export type UserCreateOrConnectWithoutSpacesInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutSpacesInput, UserUncheckedCreateWithoutSpacesInput>
+  }
+
+  export type VenueCreateWithoutSpacesInput = {
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    host: UserCreateNestedOneWithoutVenuesInput
+  }
+
+  export type VenueUncheckedCreateWithoutSpacesInput = {
+    id?: number
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    hostId: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VenueCreateOrConnectWithoutSpacesInput = {
+    where: VenueWhereUniqueInput
+    create: XOR<VenueCreateWithoutSpacesInput, VenueUncheckedCreateWithoutSpacesInput>
   }
 
   export type SpaceCategoryCreateWithoutSpacesInput = {
@@ -22315,6 +24621,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    venues?: VenueUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
@@ -22337,10 +24644,59 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    venues?: VenueUncheckedUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
     payouts?: PayoutUncheckedUpdateManyWithoutHostNestedInput
+  }
+
+  export type VenueUpsertWithoutSpacesInput = {
+    update: XOR<VenueUpdateWithoutSpacesInput, VenueUncheckedUpdateWithoutSpacesInput>
+    create: XOR<VenueCreateWithoutSpacesInput, VenueUncheckedCreateWithoutSpacesInput>
+    where?: VenueWhereInput
+  }
+
+  export type VenueUpdateToOneWithWhereWithoutSpacesInput = {
+    where?: VenueWhereInput
+    data: XOR<VenueUpdateWithoutSpacesInput, VenueUncheckedUpdateWithoutSpacesInput>
+  }
+
+  export type VenueUpdateWithoutSpacesInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    host?: UserUpdateOneRequiredWithoutVenuesNestedInput
+  }
+
+  export type VenueUncheckedUpdateWithoutSpacesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    hostId?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type SpaceCategoryUpsertWithoutSpacesInput = {
@@ -22529,6 +24885,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
@@ -22564,6 +24921,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
@@ -22741,6 +25099,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
@@ -22776,6 +25135,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     categorySlug: string
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
@@ -22844,6 +25204,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
@@ -22879,6 +25240,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
@@ -22937,6 +25299,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
@@ -22972,6 +25335,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
@@ -23022,6 +25386,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
@@ -23057,6 +25422,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
@@ -23091,6 +25457,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -23126,6 +25493,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -23176,6 +25544,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -23211,6 +25580,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -23234,6 +25604,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
+    venues?: VenueCreateNestedManyWithoutHostInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
     bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
@@ -23256,6 +25627,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    venues?: VenueUncheckedCreateNestedManyWithoutHostInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
     bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
@@ -23283,6 +25655,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
+    venues?: VenueCreateNestedManyWithoutHostInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
     reviews?: ReviewCreateNestedManyWithoutUserInput
@@ -23305,6 +25678,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    venues?: VenueUncheckedCreateNestedManyWithoutHostInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutUserInput
@@ -23343,6 +25717,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -23378,6 +25753,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -23445,6 +25821,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    venues?: VenueUpdateManyWithoutHostNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
     bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
@@ -23467,6 +25844,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    venues?: VenueUncheckedUpdateManyWithoutHostNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
     bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
@@ -23500,6 +25878,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    venues?: VenueUpdateManyWithoutHostNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
     reviews?: ReviewUpdateManyWithoutUserNestedInput
@@ -23522,6 +25901,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    venues?: VenueUncheckedUpdateManyWithoutHostNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutUserNestedInput
@@ -23566,6 +25946,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -23601,6 +25982,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -23658,6 +26040,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
+    venues?: VenueCreateNestedManyWithoutHostInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
@@ -23680,6 +26063,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    venues?: VenueUncheckedCreateNestedManyWithoutHostInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
@@ -23718,6 +26102,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
+    venue?: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -23753,6 +26138,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -23851,6 +26237,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    venues?: VenueUpdateManyWithoutHostNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
@@ -23873,6 +26260,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    venues?: VenueUncheckedUpdateManyWithoutHostNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
@@ -23917,6 +26305,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -23952,6 +26341,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -24040,6 +26430,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionCreateNestedManyWithoutUserInput
+    venues?: VenueCreateNestedManyWithoutHostInput
     spaces?: SpaceCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingCreateNestedManyWithoutHostInput
@@ -24062,6 +26453,7 @@ export namespace Prisma {
     hostVerified?: boolean
     hostingSince?: Date | string | null
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    venues?: VenueUncheckedCreateNestedManyWithoutHostInput
     spaces?: SpaceUncheckedCreateNestedManyWithoutHostInput
     bookingsAsGuest?: BookingUncheckedCreateNestedManyWithoutGuestInput
     bookingsAsHost?: BookingUncheckedCreateNestedManyWithoutHostInput
@@ -24100,6 +26492,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUpdateManyWithoutUserNestedInput
+    venues?: VenueUpdateManyWithoutHostNestedInput
     spaces?: SpaceUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUpdateManyWithoutHostNestedInput
@@ -24122,6 +26515,7 @@ export namespace Prisma {
     hostVerified?: BoolFieldUpdateOperationsInput | boolean
     hostingSince?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    venues?: VenueUncheckedUpdateManyWithoutHostNestedInput
     spaces?: SpaceUncheckedUpdateManyWithoutHostNestedInput
     bookingsAsGuest?: BookingUncheckedUpdateManyWithoutGuestNestedInput
     bookingsAsHost?: BookingUncheckedUpdateManyWithoutHostNestedInput
@@ -24133,6 +26527,24 @@ export namespace Prisma {
     token: string
     expiresAt: Date | string
     createdAt?: Date | string
+  }
+
+  export type VenueCreateManyHostInput = {
+    id?: number
+    name: string
+    shortDescription?: string
+    description?: string
+    images?: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type SpaceCreateManyHostInput = {
@@ -24162,6 +26574,7 @@ export namespace Prisma {
     houseRules?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    venueId?: number | null
     categorySlug: string
   }
 
@@ -24262,6 +26675,61 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type VenueUpdateWithoutHostInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    spaces?: SpaceUpdateManyWithoutVenueNestedInput
+  }
+
+  export type VenueUncheckedUpdateWithoutHostInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    spaces?: SpaceUncheckedUpdateManyWithoutVenueNestedInput
+  }
+
+  export type VenueUncheckedUpdateManyWithoutHostInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SpaceUpdateWithoutHostInput = {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
@@ -24288,6 +26756,7 @@ export namespace Prisma {
     houseRules?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -24323,6 +26792,7 @@ export namespace Prisma {
     houseRules?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -24358,6 +26828,7 @@ export namespace Prisma {
     houseRules?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     categorySlug?: StringFieldUpdateOperationsInput | string
   }
 
@@ -24590,6 +27061,139 @@ export namespace Prisma {
     processedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SpaceCreateManyVenueInput = {
+    id?: number
+    name: string
+    shortDescription: string
+    description: string
+    spaceType: $Enums.SpaceType
+    pricingType: $Enums.PricingType
+    pricePerHour?: number | null
+    pricePerDay?: number | null
+    cleaningFee?: number
+    capacity: number
+    minBookingHours?: number | null
+    maxBookingHours?: number | null
+    images: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    instantBook?: boolean
+    cancellationPolicy?: $Enums.CancellationPolicy
+    houseRules?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hostId: string
+    categorySlug: string
+  }
+
+  export type SpaceUpdateWithoutVenueInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
+    pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    capacity?: IntFieldUpdateOperationsInput | number
+    minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    instantBook?: BoolFieldUpdateOperationsInput | boolean
+    cancellationPolicy?: EnumCancellationPolicyFieldUpdateOperationsInput | $Enums.CancellationPolicy
+    houseRules?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
+    amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
+    blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
+    bookings?: BookingUpdateManyWithoutSpaceNestedInput
+    reviews?: ReviewUpdateManyWithoutSpaceNestedInput
+  }
+
+  export type SpaceUncheckedUpdateWithoutVenueInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
+    pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    capacity?: IntFieldUpdateOperationsInput | number
+    minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    instantBook?: BoolFieldUpdateOperationsInput | boolean
+    cancellationPolicy?: EnumCancellationPolicyFieldUpdateOperationsInput | $Enums.CancellationPolicy
+    houseRules?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hostId?: StringFieldUpdateOperationsInput | string
+    categorySlug?: StringFieldUpdateOperationsInput | string
+    amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
+    blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutSpaceNestedInput
+  }
+
+  export type SpaceUncheckedUpdateManyWithoutVenueInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
+    pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    capacity?: IntFieldUpdateOperationsInput | number
+    minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    instantBook?: BoolFieldUpdateOperationsInput | boolean
+    cancellationPolicy?: EnumCancellationPolicyFieldUpdateOperationsInput | $Enums.CancellationPolicy
+    houseRules?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hostId?: StringFieldUpdateOperationsInput | string
+    categorySlug?: StringFieldUpdateOperationsInput | string
   }
 
   export type SpaceAmenityCreateManySpaceInput = {
@@ -24846,6 +27450,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
+    venueId?: number | null
   }
 
   export type SpaceUpdateWithoutCategoryInput = {
@@ -24875,6 +27480,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
@@ -24910,6 +27516,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
@@ -24945,6 +27552,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type SpaceCategoryCreateManyGroupInput = {

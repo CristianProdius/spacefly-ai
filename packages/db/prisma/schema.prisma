@@ -78,6 +78,7 @@ model User {
 
   // Relations
   sessions         Session[]
+  venues           Venue[]
   spaces           Space[]          // Spaces hosted by this user
   bookingsAsGuest  Booking[]  @relation("GuestBookings")
   bookingsAsHost   Booking[]  @relation("HostBookings")
@@ -100,6 +101,40 @@ model Session {
 
   @@index([token])
   @@index([userId])
+}
+
+// ==================== VENUES ====================
+
+model Venue {
+  id               Int      @id @default(autoincrement())
+  name             String
+  shortDescription String   @default("")
+  description      String   @default("")
+  images           Json     @default("[]")
+
+  // Location
+  address    String
+  city       String
+  state      String?
+  country    String
+  postalCode String?
+  latitude   Float?
+  longitude  Float?
+
+  // Owner
+  hostId String
+  host   User   @relation(fields: [hostId], references: [id])
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  spaces Space[]
+
+  @@index([hostId])
+  @@index([city])
+  @@index([isActive])
 }
 
 // ==================== SPACES ====================
@@ -140,6 +175,8 @@ model Space {
   // Relations
   hostId       String
   host         User           @relation(fields: [hostId], references: [id])
+  venueId      Int?
+  venue        Venue?         @relation(fields: [venueId], references: [id])
   categorySlug String
   category     SpaceCategory  @relation(fields: [categorySlug], references: [slug])
   amenities    SpaceAmenity[]
@@ -149,6 +186,7 @@ model Space {
   reviews      Review[]
 
   @@index([hostId])
+  @@index([venueId])
   @@index([categorySlug])
   @@index([spaceType])
   @@index([city])

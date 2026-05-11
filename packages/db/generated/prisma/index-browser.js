@@ -145,6 +145,25 @@ exports.Prisma.SessionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.VenueScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  shortDescription: 'shortDescription',
+  description: 'description',
+  images: 'images',
+  address: 'address',
+  city: 'city',
+  state: 'state',
+  country: 'country',
+  postalCode: 'postalCode',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  hostId: 'hostId',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SpaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -173,6 +192,7 @@ exports.Prisma.SpaceScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   hostId: 'hostId',
+  venueId: 'venueId',
   categorySlug: 'categorySlug'
 };
 
@@ -347,6 +367,7 @@ exports.PayoutStatus = exports.$Enums.PayoutStatus = {
 exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
+  Venue: 'Venue',
   Space: 'Space',
   SpaceCategory: 'SpaceCategory',
   SpaceCategoryGroup: 'SpaceCategoryGroup',
