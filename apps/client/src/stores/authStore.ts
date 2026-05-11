@@ -135,9 +135,16 @@ const useAuthStore = create<AuthState>((set, get) => ({
     clearAuth();
     set({ user: null, token: null, isAuthenticated: false });
     if (typeof window !== "undefined") {
-      // Dynamic import to avoid SSR issues
+      // Resolve locale from URL path (set by next-intl: /en/..., /ro/..., /ru/...)
+      const locale = window.location.pathname.split("/")[1] || "en";
+      const messages: Record<string, string> = {
+        en: "Your session has expired. Please sign in again.",
+        ro: "Sesiunea ta a expirat. Te rugăm să te autentifici din nou.",
+        ru: "Ваша сессия истекла. Пожалуйста, войдите снова.",
+      };
+      const message = messages[locale] || messages.en;
       import("react-toastify").then(({ toast }) => {
-        toast.info("Your session has expired. Please sign in again.");
+        toast.info(message);
       });
       window.location.href = "/login";
     }
