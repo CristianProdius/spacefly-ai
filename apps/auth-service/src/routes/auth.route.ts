@@ -12,6 +12,24 @@ import { producer } from "../utils/kafka.js";
 
 const router: Router = Router();
 
+/** Convert a duration string like "30d", "1h", "15m" to milliseconds. */
+function parseExpiry(str: string): number {
+  const match = str.match(/^(\d+)(m|h|d)$/);
+  if (!match) return 7 * 24 * 60 * 60 * 1000; // fallback: 7 days
+  const value = parseInt(match[1]!, 10);
+  const unit = match[2];
+  switch (unit) {
+    case "m":
+      return value * 60 * 1000;
+    case "h":
+      return value * 60 * 60 * 1000;
+    case "d":
+      return value * 24 * 60 * 60 * 1000;
+    default:
+      return 7 * 24 * 60 * 60 * 1000;
+  }
+}
+
 // Register new user
 router.post("/register", async (req, res) => {
   try {
@@ -57,7 +75,7 @@ router.post("/register", async (req, res) => {
       data: {
         userId: user.id,
         token: tokens.refreshToken,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        expiresAt: new Date(Date.now() + parseExpiry(process.env.JWT_REFRESH_EXPIRES_IN || "30d"))
       },
     });
 
@@ -122,7 +140,7 @@ router.post("/login", async (req, res) => {
       data: {
         userId: user.id,
         token: tokens.refreshToken,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+        expiresAt: new Date(Date.now() + parseExpiry(process.env.JWT_REFRESH_EXPIRES_IN || "30d"))
       },
     });
 

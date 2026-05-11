@@ -163,7 +163,8 @@
     "loginFailed": "Ошибка входа",
     "registrationFailed": "Ошибка регистрации",
     "passwordsDoNotMatch": "Пароли не совпадают",
-    "passwordMinLength": "Пароль должен содержать не менее 6 символов"
+    "passwordMinLength": "Пароль должен содержать не менее 6 символов",
+    "sessionExpired": "Ваша сессия истекла. Пожалуйста, войдите снова."
   },
   "spaces": {
     "title": "Обзор Пространств",

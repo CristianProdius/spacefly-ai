@@ -142,3 +142,27 @@ export function clearAuth(): void {
 export function isAuthenticated(): boolean {
   return !!getAccessToken();
 }
+
+/** Decode the payload section of a JWT without verification (client-side only). */
+export function decodeJwtPayload(token: string): { exp: number; [key: string]: unknown } {
+  const parts = token.split(".");
+  if (parts.length !== 3) throw new Error("Invalid JWT");
+  const payload = parts[1]!;
+  // Handle base64url encoding: replace URL-safe chars and pad if needed
+  const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+  const json = atob(base64);
+  return JSON.parse(json);
+}
+
+/**
+ * Check whether a JWT access token is expired (or about to expire within bufferMs).
+ * Returns true (expired) on any error to trigger a refresh attempt.
+ */
+export function isTokenExpired(token: string, bufferMs = 60_000): boolean {
+  try {
+    const { exp } = decodeJwtPayload(token);
+    return exp * 1000 - bufferMs <= Date.now();
+  } catch {
+    return true;
+  }
+}

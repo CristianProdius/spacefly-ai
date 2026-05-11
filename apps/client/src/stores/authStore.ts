@@ -11,6 +11,7 @@ import {
   getRefreshToken,
   getStoredUser,
   clearAuth,
+  isTokenExpired,
 } from "@/lib/auth";
 
 interface AuthState {
@@ -23,7 +24,8 @@ interface AuthState {
   logout: () => Promise<void>;
   getToken: () => Promise<string | null>;
   setUser: (user: User) => void;
-  initialize: () => void;
+  initialize: () => Promise<void>;
+  handleSessionExpired: () => void;
 }
 
 const useAuthStore = create<AuthState>((set, get) => ({
@@ -32,15 +34,32 @@ const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   isAuthenticated: false,
 
-  initialize: () => {
-    const user = getStoredUser();
+  initialize: async () => {
     const token = getAccessToken();
-    set({
-      user,
-      token,
-      isAuthenticated: !!token && !!user,
-      isLoading: false,
-    });
+    const user = getStoredUser();
+
+    if (!token || !user) {
+      clearAuth();
+      set({ user: null, token: null, isAuthenticated: false, isLoading: false });
+      return;
+    }
+
+    // If token is expired, attempt silent refresh
+    if (isTokenExpired(token)) {
+      try {
+        const refreshToken = getRefreshToken();
+        if (!refreshToken) throw new Error("No refresh token");
+        const newToken = await refreshAccessToken(refreshToken);
+        saveTokens(newToken, refreshToken);
+        set({ user, token: newToken, isAuthenticated: true, isLoading: false });
+      } catch {
+        clearAuth();
+        set({ user: null, token: null, isAuthenticated: false, isLoading: false });
+      }
+      return;
+    }
+
+    set({ user, token, isAuthenticated: true, isLoading: false });
   },
 
   setUser: (user: User) => {
@@ -89,28 +108,39 @@ const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   getToken: async () => {
-    let token = getAccessToken();
+    const token = getAccessToken();
+    if (!token) return null;
 
-    if (!token) {
-      return null;
-    }
+    // Key fix: only refresh if token is actually expired
+    if (!isTokenExpired(token)) return token;
 
-    // Check if token is expired (simple check - in production, decode JWT)
+    // Token expired — try refresh
     try {
       const refreshToken = getRefreshToken();
-      if (refreshToken) {
-        // Try to refresh the token
-        const newToken = await refreshAccessToken(refreshToken);
-        saveTokens(newToken, refreshToken);
-        return newToken;
+      if (!refreshToken) {
+        get().handleSessionExpired();
+        return null;
       }
+      const newToken = await refreshAccessToken(refreshToken);
+      saveTokens(newToken, refreshToken);
+      set({ token: newToken });
+      return newToken;
     } catch {
-      // Token refresh failed, user needs to re-login
-      get().logout();
+      get().handleSessionExpired();
       return null;
     }
+  },
 
-    return token;
+  handleSessionExpired: () => {
+    clearAuth();
+    set({ user: null, token: null, isAuthenticated: false });
+    if (typeof window !== "undefined") {
+      // Dynamic import to avoid SSR issues
+      import("react-toastify").then(({ toast }) => {
+        toast.info("Your session has expired. Please sign in again.");
+      });
+      window.location.href = "/login";
+    }
   },
 }));
 

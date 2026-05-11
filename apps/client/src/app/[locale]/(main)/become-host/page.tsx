@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "@/i18n/navigation";
 import useAuthStore from "@/stores/authStore";
+import { fetchWithAuth } from "@/lib/apiClient";
 import { useTranslations } from "next-intl";
 import {
   Building2,
@@ -42,14 +43,10 @@ const BecomeHostPage = () => {
     setError(null);
 
     try {
-      const res = await fetch(
+      const res = await fetchWithAuth(
         `${process.env.NEXT_PUBLIC_AUTH_SERVICE_URL}/auth/become-host`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 

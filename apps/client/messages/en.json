@@ -163,7 +163,8 @@
     "loginFailed": "Login failed",
     "registrationFailed": "Registration failed",
     "passwordsDoNotMatch": "Passwords do not match",
-    "passwordMinLength": "Password must be at least 6 characters"
+    "passwordMinLength": "Password must be at least 6 characters",
+    "sessionExpired": "Your session has expired. Please sign in again."
   },
   "spaces": {
     "title": "Browse Spaces",

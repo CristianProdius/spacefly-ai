@@ -163,7 +163,8 @@
     "loginFailed": "Autentificare esuata",
     "registrationFailed": "Inregistrare esuata",
     "passwordsDoNotMatch": "Parolele nu se potrivesc",
-    "passwordMinLength": "Parola trebuie sa aiba cel putin 6 caractere"
+    "passwordMinLength": "Parola trebuie sa aiba cel putin 6 caractere",
+    "sessionExpired": "Sesiunea ta a expirat. Te rugăm să te autentifici din nou."
   },
   "spaces": {
     "title": "Exploreaza Spatii",

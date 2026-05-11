@@ -5,6 +5,7 @@ import { useRouter } from "@/i18n/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import useAuthStore from "@/stores/authStore";
+import { fetchWithAuth } from "@/lib/apiClient";
 import { useTranslations } from "next-intl";
 import {
   Calendar,
@@ -116,13 +117,8 @@ const BookingsPage = () => {
 
   const fetchBookings = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/my`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await fetchWithAuth(
+        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/my`
       );
 
       if (!res.ok) {

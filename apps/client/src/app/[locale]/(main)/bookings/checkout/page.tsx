@@ -5,6 +5,7 @@ import { useRouter } from "@/i18n/navigation";
 import Image from "next/image";
 import useBookingStore from "@/stores/bookingStore";
 import useAuthStore from "@/stores/authStore";
+import { fetchWithAuth } from "@/lib/apiClient";
 import { useTranslations } from "next-intl";
 import { Calendar, Clock, Users, AlertCircle, Check } from "lucide-react";
 import { formatPriceFull } from "@/lib/utils";
@@ -38,14 +39,10 @@ const CheckoutPage = () => {
     setError(null);
 
     try {
-      const bookingRes = await fetch(
+      const bookingRes = await fetchWithAuth(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
           body: JSON.stringify({
             spaceId: draft.spaceId,
             startDate: draft.startDate,
