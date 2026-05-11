@@ -8,6 +8,7 @@ import {
   BadgeCheck,
   Building2,
   EyeOff,
+  Hotel,
   MapPin,
   MoreVertical,
   Pencil,
@@ -41,6 +42,9 @@ interface Space {
   isActive: boolean;
   averageRating: number | null;
   totalReviews: number;
+  venue?: {
+    name: string;
+  } | null;
 }
 
 const HostSpacesPage = () => {
@@ -282,11 +286,17 @@ const HostSpacesPage = () => {
                         <h3 className="truncate font-semibold text-foreground">
                           {space.name}
                         </h3>
-                        <div className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
-                          <MapPin className="size-4" />
-                          <span>
+                        <div className="mt-1 flex items-center gap-3 text-sm text-muted-foreground">
+                          <span className="inline-flex items-center gap-1">
+                            <MapPin className="size-4" />
                             {space.city}, {space.country}
                           </span>
+                          {space.venue?.name && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                              <Hotel className="size-3" />
+                              {space.venue.name}
+                            </span>
+                          )}
                         </div>
                       </div>
 

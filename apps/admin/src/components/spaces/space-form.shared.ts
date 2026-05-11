@@ -43,11 +43,7 @@ export interface SpaceFormValues {
   pricePerHour: string;
   pricePerDay: string;
   capacity: string;
-  address: string;
-  city: string;
-  state: string;
-  country: string;
-  postalCode: string;
+  venueId: number | null;
   instantBook: boolean;
   cancellationPolicy: CancellationPolicy;
   houseRules: string;
@@ -65,11 +61,7 @@ export interface SpaceFormPayload {
   pricePerHour: number | null;
   pricePerDay: number | null;
   capacity: number;
-  address: string;
-  city: string;
-  state: string;
-  country: string;
-  postalCode: string;
+  venueId: number | null;
   instantBook: boolean;
   cancellationPolicy: CancellationPolicy;
   houseRules: string;
@@ -87,11 +79,7 @@ export const createEmptySpaceFormValues = (): SpaceFormValues => ({
   pricePerHour: "",
   pricePerDay: "",
   capacity: "",
-  address: "",
-  city: "",
-  state: "",
-  country: "",
-  postalCode: "",
+  venueId: null,
   instantBook: false,
   cancellationPolicy: "MODERATE",
   houseRules: "",
@@ -111,6 +99,7 @@ export const buildSpacePayload = (
   pricePerHour: formData.pricePerHour ? parseFloat(formData.pricePerHour) : null,
   pricePerDay: formData.pricePerDay ? parseFloat(formData.pricePerDay) : null,
   capacity: parseInt(formData.capacity, 10),
+  venueId: formData.venueId,
 });
 
 export const mapSpaceToFormValues = (
@@ -124,18 +113,13 @@ export const mapSpaceToFormValues = (
     | "pricePerHour"
     | "pricePerDay"
     | "capacity"
-    | "address"
-    | "city"
-    | "state"
-    | "country"
-    | "postalCode"
     | "instantBook"
     | "cancellationPolicy"
     | "houseRules"
     | "categorySlug"
     | "images"
     | "amenities"
-  >
+  > & { venueId?: number | null }
 ): SpaceFormValues => ({
   name: space.name,
   shortDescription: space.shortDescription,
@@ -145,11 +129,7 @@ export const mapSpaceToFormValues = (
   pricePerHour: space.pricePerHour?.toString() ?? "",
   pricePerDay: space.pricePerDay?.toString() ?? "",
   capacity: space.capacity.toString(),
-  address: space.address,
-  city: space.city,
-  state: space.state ?? "",
-  country: space.country,
-  postalCode: space.postalCode ?? "",
+  venueId: space.venueId ?? null,
   instantBook: space.instantBook,
   cancellationPolicy: space.cancellationPolicy,
   houseRules: space.houseRules ?? "",

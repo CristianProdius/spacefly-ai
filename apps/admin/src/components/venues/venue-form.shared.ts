@@ -1,0 +1,76 @@
+export const PRODUCT_SERVICE_URL =
+  process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL || "http://localhost:8000";
+
+export const fieldClassName =
+  "w-full rounded-md border border-input bg-background px-4 py-3 text-sm text-foreground shadow-xs outline-none transition-[color,box-shadow] placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-input/30";
+
+export const labelClassName = "mb-1 block text-sm font-medium text-foreground";
+
+export interface VenueFormValues {
+  name: string;
+  shortDescription: string;
+  description: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  images: string[];
+}
+
+export interface VenueFormPayload {
+  name: string;
+  shortDescription: string;
+  description: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  images: string[];
+}
+
+export const createEmptyVenueFormValues = (): VenueFormValues => ({
+  name: "",
+  shortDescription: "",
+  description: "",
+  address: "",
+  city: "",
+  state: "",
+  country: "",
+  postalCode: "",
+  images: [],
+});
+
+export const buildVenuePayload = (
+  formData: VenueFormValues
+): VenueFormPayload => ({
+  ...formData,
+});
+
+export interface VenueResponse {
+  id: number;
+  name: string;
+  shortDescription: string;
+  description: string;
+  address: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+  images: string[];
+}
+
+export const mapVenueToFormValues = (
+  venue: VenueResponse
+): VenueFormValues => ({
+  name: venue.name,
+  shortDescription: venue.shortDescription,
+  description: venue.description,
+  address: venue.address,
+  city: venue.city,
+  state: venue.state ?? "",
+  country: venue.country,
+  postalCode: venue.postalCode ?? "",
+  images: Array.isArray(venue.images) ? venue.images : [],
+});

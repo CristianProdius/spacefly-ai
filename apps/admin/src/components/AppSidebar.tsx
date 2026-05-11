@@ -4,6 +4,7 @@ import {
   Home,
   Plus,
   Building2,
+  Hotel,
   CalendarCheck,
   LayoutDashboard,
   DollarSign,
@@ -48,6 +49,7 @@ const AppSidebar = () => {
 
   const hostNavItems = [
     { title: "Dashboard", url: "/host", icon: LayoutDashboard },
+    { title: "My Venues", url: "/host/venues", icon: Hotel },
     { title: "My Spaces", url: "/host/spaces", icon: Building2 },
     { title: "My Bookings", url: "/host/bookings", icon: CalendarCheck },
     { title: "Earnings", url: "/host/earnings", icon: DollarSign },

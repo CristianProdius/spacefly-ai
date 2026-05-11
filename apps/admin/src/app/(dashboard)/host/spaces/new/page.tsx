@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import SpaceForm from "@/components/spaces/space-form";
 import {
@@ -11,7 +11,10 @@ import useAuthStore from "@/stores/authStore";
 
 const NewSpacePage = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { token } = useAuthStore();
+  const venueIdParam = searchParams.get("venueId");
+  const defaultVenueId = venueIdParam ? parseInt(venueIdParam, 10) : undefined;
 
   const handleCreate = async (payload: SpaceFormPayload) => {
     const response = await fetch(`${PRODUCT_SERVICE_URL}/spaces`, {
@@ -37,6 +40,7 @@ const NewSpacePage = () => {
       description="Fill in the details to list your space"
       backHref="/host/spaces"
       token={token}
+      defaultVenueId={defaultVenueId}
       submitLabel="Create Space"
       submittingLabel="Creating..."
       onSubmit={handleCreate}

@@ -30,12 +30,20 @@ import {
   type SpaceFormValues,
 } from "./space-form.shared";
 
+interface VenueOption {
+  id: number;
+  name: string;
+  city: string;
+  country: string;
+}
+
 interface SpaceFormProps {
   title: string;
   description: string;
   backHref: string;
   token: string | null;
   initialValues?: SpaceFormValues;
+  defaultVenueId?: number;
   submitLabel: string;
   submittingLabel: string;
   onSubmit: (payload: SpaceFormPayload) => Promise<void>;
@@ -47,6 +55,7 @@ const SpaceForm = ({
   backHref,
   token,
   initialValues,
+  defaultVenueId,
   submitLabel,
   submittingLabel,
   onSubmit,
@@ -57,11 +66,16 @@ const SpaceForm = ({
     NormalizedTaxonomyCategoryGroup[]
   >(() => normalizeCategoryGroups([]));
   const [amenities, setAmenities] = useState<Amenity[]>([]);
+  const [venues, setVenues] = useState<VenueOption[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<SpaceFormValues>(
-    initialValues ?? createEmptySpaceFormValues()
-  );
+  const [formData, setFormData] = useState<SpaceFormValues>(() => {
+    const values = initialValues ?? createEmptySpaceFormValues();
+    if (defaultVenueId && !values.venueId) {
+      return { ...values, venueId: defaultVenueId };
+    }
+    return values;
+  });
   const categories = useMemo(
     () => flattenCategoryGroups(categoryGroups),
     [categoryGroups]
@@ -94,8 +108,26 @@ const SpaceForm = ({
       }
     };
 
+    const fetchVenues = async () => {
+      if (!token) return;
+
+      try {
+        const res = await fetch(`${PRODUCT_SERVICE_URL}/venues/host/my`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (res.ok) {
+          const venueData = (await res.json()) as VenueOption[];
+          setVenues(venueData);
+        }
+      } catch (fetchError) {
+        console.error("Error fetching venues:", fetchError);
+      }
+    };
+
     fetchData();
-  }, []);
+    fetchVenues();
+  }, [token]);
 
   useEffect(() => {
     if (categories.length === 0 || !formData.categorySlug) {
@@ -421,85 +453,32 @@ const SpaceForm = ({
           </p>
         </DashboardSection>
 
-        <DashboardSection title="Location" contentClassName="space-y-4">
-          <div className="space-y-4">
-            <div>
-              <label className={labelClassName}>Address</label>
-              <input
-                type="text"
-                required
-                value={formData.address}
-                onChange={(event) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    address: event.target.value,
-                  }))
-                }
-                className={fieldClassName}
-                placeholder="Street address"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              <div>
-                <label className={labelClassName}>City</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.city}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      city: event.target.value,
-                    }))
-                  }
-                  className={fieldClassName}
-                />
-              </div>
-              <div>
-                <label className={labelClassName}>State</label>
-                <input
-                  type="text"
-                  value={formData.state}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      state: event.target.value,
-                    }))
-                  }
-                  className={fieldClassName}
-                />
-              </div>
-              <div>
-                <label className={labelClassName}>Country</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.country}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      country: event.target.value,
-                    }))
-                  }
-                  className={fieldClassName}
-                />
-              </div>
-              <div>
-                <label className={labelClassName}>Postal Code</label>
-                <input
-                  type="text"
-                  value={formData.postalCode}
-                  onChange={(event) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      postalCode: event.target.value,
-                    }))
-                  }
-                  className={fieldClassName}
-                />
-              </div>
-            </div>
+        <DashboardSection title="Venue" contentClassName="space-y-4">
+          <div>
+            <label className={labelClassName}>Select Venue *</label>
+            <select
+              value={formData.venueId ?? ""}
+              onChange={(event) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  venueId: parseInt(event.target.value) || null,
+                }))
+              }
+              className={fieldClassName}
+              required
+            >
+              <option value="">Select a venue...</option>
+              {venues.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name} — {v.city}, {v.country}
+                </option>
+              ))}
+            </select>
+            <p className="text-sm text-muted-foreground mt-1">
+              <a href="/host/venues/new" className="text-primary hover:underline">
+                + Create new venue
+              </a>
+            </p>
           </div>
         </DashboardSection>
 
