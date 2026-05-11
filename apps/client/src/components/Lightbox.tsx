@@ -132,7 +132,7 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
             {/* Image */}
             <div className="relative max-h-[80vh] max-w-[90vw] w-full h-full">
               <Image
-                src={images[currentIndex]}
+                src={images[currentIndex]!}
                 alt={`${alt} - ${currentIndex + 1}`}
                 fill
                 className="object-contain"
