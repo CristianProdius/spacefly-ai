@@ -1,6 +1,44 @@
 import { Request, Response } from "express";
 import { prisma, Prisma, PricingType, SpaceType, CancellationPolicy } from "@repo/db";
 import { producer } from "../utils/kafka.js";
+import { buildCategoryPayload } from "../lib/space-taxonomy.js";
+
+const venueInclude = {
+  select: {
+    id: true,
+    name: true,
+    shortDescription: true,
+    description: true,
+    images: true,
+    address: true,
+    city: true,
+    state: true,
+    country: true,
+    postalCode: true,
+    latitude: true,
+    longitude: true,
+    hostId: true,
+    isActive: true,
+  },
+};
+
+/**
+ * Flatten venue location fields onto space for backward compat.
+ * Existing clients read space.city, space.address — this keeps them working.
+ */
+const flattenVenue = (space: any) => {
+  if (!space?.venue) return space;
+  return {
+    ...space,
+    address: space.venue.address,
+    city: space.venue.city,
+    state: space.venue.state,
+    country: space.venue.country,
+    postalCode: space.venue.postalCode,
+    latitude: space.venue.latitude,
+    longitude: space.venue.longitude,
+  };
+};
 
 // Get all spaces with search/filter
 export const getSpaces = async (req: Request, res: Response) => {
@@ -54,7 +92,7 @@ export const getSpaces = async (req: Request, res: Response) => {
   const where: Prisma.SpaceWhereInput = {
     isActive: true,
     ...(city && {
-      city: { contains: city as string, mode: "insensitive" },
+      venue: { city: { contains: city as string, mode: "insensitive" } },
     }),
     ...(spaceType && { spaceType: spaceType as SpaceType }),
     ...(categorySlug && { categorySlug: categorySlug as string }),
@@ -92,6 +130,7 @@ export const getSpaces = async (req: Request, res: Response) => {
       take: limitNum,
       include: {
         category: true,
+        venue: venueInclude,
         host: {
           select: {
             id: true,
@@ -119,11 +158,11 @@ export const getSpaces = async (req: Request, res: Response) => {
         where: { spaceId: space.id },
         _avg: { rating: true },
       });
-      return {
+      return flattenVenue({
         ...space,
         averageRating: avgRating._avg.rating || 0,
         reviewCount: space._count.reviews,
-      };
+      });
     })
   );
 
@@ -147,6 +186,7 @@ export const getSpace = async (req: Request, res: Response) => {
     where: { id: spaceId },
     include: {
       category: true,
+      venue: venueInclude,
       host: {
         select: {
           id: true,
@@ -198,22 +238,43 @@ export const getSpace = async (req: Request, res: Response) => {
     where: { spaceId: space.id },
   });
 
-  res.status(200).json({
-    ...space,
-    averageRating: avgRating._avg.rating || 0,
-    reviewCount,
-  });
+  res.status(200).json(
+    flattenVenue({
+      ...space,
+      averageRating: avgRating._avg.rating || 0,
+      reviewCount,
+    })
+  );
 };
 
 // Create space (HOST only)
 export const createSpace = async (req: Request, res: Response) => {
   const hostId = req.userId!;
-  const { amenityIds, ...spaceData } = req.body;
+  const { amenityIds, venueId, ...spaceData } = req.body;
+
+  if (!venueId) {
+    return res.status(400).json({ message: "venueId is required" });
+  }
+  const venue = await prisma.venue.findUnique({ where: { id: venueId } });
+  if (!venue) {
+    return res.status(400).json({ message: "Venue not found" });
+  }
+  if (venue.hostId !== hostId) {
+    return res.status(403).json({ message: "Venue does not belong to you" });
+  }
 
   const space = await prisma.space.create({
     data: {
-      ...spaceData,
+      ...buildCategoryPayload(spaceData),
       hostId,
+      venueId,
+      address: venue.address,
+      city: venue.city,
+      state: venue.state,
+      country: venue.country,
+      postalCode: venue.postalCode,
+      latitude: venue.latitude,
+      longitude: venue.longitude,
       amenities: amenityIds
         ? {
             create: amenityIds.map((amenityId: number) => ({ amenityId })),
@@ -325,6 +386,7 @@ export const getMySpaces = async (req: Request, res: Response) => {
     where: { hostId },
     include: {
       category: true,
+      venue: venueInclude,
       _count: {
         select: {
           bookings: true,
@@ -335,7 +397,7 @@ export const getMySpaces = async (req: Request, res: Response) => {
     orderBy: { createdAt: "desc" },
   });
 
-  res.status(200).json(spaces);
+  res.status(200).json(spaces.map(flattenVenue));
 };
 
 // Get/Update space availability
