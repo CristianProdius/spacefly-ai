@@ -314,12 +314,50 @@ export const updateSpace = async (req: Request, res: Response) => {
     return res.status(403).json({ message: "Not authorized to update this space" });
   }
 
-  const { amenityIds, ...spaceData } = req.body;
+  const { amenityIds, venueId, ...body } = req.body;
 
-  // Update space
+  // Whitelist allowed update fields to prevent mass assignment
+  const allowed: Record<string, unknown> = {};
+  const allowedKeys = [
+    "name", "shortDescription", "description", "spaceType", "pricingType",
+    "pricePerHour", "pricePerDay", "cleaningFee", "capacity",
+    "minBookingHours", "maxBookingHours", "images", "isActive",
+    "instantBook", "cancellationPolicy", "houseRules", "categorySlug",
+  ] as const;
+  for (const key of allowedKeys) {
+    if (body[key] !== undefined) allowed[key] = body[key];
+  }
+
+  // If venueId is being changed, validate ownership
+  if (venueId !== undefined && venueId !== existingSpace.venueId) {
+    const venue = await prisma.venue.findUnique({ where: { id: venueId } });
+    if (!venue) {
+      return res.status(400).json({ message: "Venue not found" });
+    }
+    if (venue.hostId !== userId && userRole !== "ADMIN") {
+      return res.status(403).json({ message: "Venue does not belong to you" });
+    }
+    allowed.venueId = venueId;
+    // Update denormalized location fields from new venue
+    allowed.address = venue.address;
+    allowed.city = venue.city;
+    allowed.state = venue.state;
+    allowed.country = venue.country;
+    allowed.postalCode = venue.postalCode;
+    allowed.latitude = venue.latitude;
+    allowed.longitude = venue.longitude;
+  }
+
+  // Handle categorySlug → spaceType resolution
+  if (allowed.categorySlug) {
+    const resolved = buildCategoryPayload({ ...body, categorySlug: allowed.categorySlug });
+    allowed.categorySlug = resolved.categorySlug;
+    allowed.spaceType = resolved.spaceType;
+  }
+
   const space = await prisma.space.update({
     where: { id: spaceId },
-    data: spaceData,
+    data: allowed,
     include: {
       category: true,
       amenities: {

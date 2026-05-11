@@ -104,24 +104,39 @@ export const updateVenue = async (req: Request, res: Response) => {
     longitude,
     isActive,
   } = req.body;
-  const venue = await prisma.venue.update({
-    where: { id: venueId },
-    data: {
-      ...(name !== undefined && { name }),
-      ...(shortDescription !== undefined && { shortDescription }),
-      ...(description !== undefined && { description }),
-      ...(images !== undefined && { images }),
-      ...(address !== undefined && { address }),
-      ...(city !== undefined && { city }),
-      ...(state !== undefined && { state }),
-      ...(country !== undefined && { country }),
-      ...(postalCode !== undefined && { postalCode }),
-      ...(latitude !== undefined && { latitude }),
-      ...(longitude !== undefined && { longitude }),
-      ...(isActive !== undefined && { isActive }),
-    },
-  });
-  producer.send("venue.updated", { value: { id: venue.id } });
+  const venueData = {
+    ...(name !== undefined && { name }),
+    ...(shortDescription !== undefined && { shortDescription }),
+    ...(description !== undefined && { description }),
+    ...(images !== undefined && { images }),
+    ...(address !== undefined && { address }),
+    ...(city !== undefined && { city }),
+    ...(state !== undefined && { state }),
+    ...(country !== undefined && { country }),
+    ...(postalCode !== undefined && { postalCode }),
+    ...(latitude !== undefined && { latitude }),
+    ...(longitude !== undefined && { longitude }),
+    ...(isActive !== undefined && { isActive }),
+  };
+
+  // Cascade location changes to all spaces under this venue
+  const locationFields = { address, city, state, country, postalCode, latitude, longitude };
+  const locationUpdates: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(locationFields)) {
+    if (value !== undefined) locationUpdates[key] = value;
+  }
+
+  if (Object.keys(locationUpdates).length > 0) {
+    await prisma.$transaction([
+      prisma.venue.update({ where: { id: venueId }, data: venueData }),
+      prisma.space.updateMany({ where: { venueId }, data: locationUpdates }),
+    ]);
+  } else {
+    await prisma.venue.update({ where: { id: venueId }, data: venueData });
+  }
+
+  const venue = await prisma.venue.findUnique({ where: { id: venueId } });
+  producer.send("venue.updated", { value: { id: venueId } });
   res.status(200).json(venue);
 };
 

@@ -15,6 +15,8 @@ export interface VenueFormValues {
   state: string;
   country: string;
   postalCode: string;
+  latitude: number | null;
+  longitude: number | null;
   images: string[];
 }
 
@@ -24,9 +26,11 @@ export interface VenueFormPayload {
   description: string;
   address: string;
   city: string;
-  state: string;
+  state: string | null;
   country: string;
-  postalCode: string;
+  postalCode: string | null;
+  latitude: number | null;
+  longitude: number | null;
   images: string[];
 }
 
@@ -39,6 +43,8 @@ export const createEmptyVenueFormValues = (): VenueFormValues => ({
   state: "",
   country: "",
   postalCode: "",
+  latitude: null,
+  longitude: null,
   images: [],
 });
 
@@ -46,6 +52,8 @@ export const buildVenuePayload = (
   formData: VenueFormValues
 ): VenueFormPayload => ({
   ...formData,
+  state: formData.state || null,
+  postalCode: formData.postalCode || null,
 });
 
 export interface VenueResponse {
@@ -55,9 +63,11 @@ export interface VenueResponse {
   description: string;
   address: string;
   city: string;
-  state: string;
+  state: string | null;
   country: string;
-  postalCode: string;
+  postalCode: string | null;
+  latitude: number | null;
+  longitude: number | null;
   images: string[];
 }
 
@@ -72,5 +82,7 @@ export const mapVenueToFormValues = (
   state: venue.state ?? "",
   country: venue.country,
   postalCode: venue.postalCode ?? "",
+  latitude: venue.latitude ?? null,
+  longitude: venue.longitude ?? null,
   images: Array.isArray(venue.images) ? venue.images : [],
 });
