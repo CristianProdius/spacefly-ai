@@ -175,8 +175,8 @@ model Space {
   // Relations
   hostId       String
   host         User           @relation(fields: [hostId], references: [id])
-  venueId      Int?
-  venue        Venue?         @relation(fields: [venueId], references: [id])
+  venueId      Int
+  venue        Venue          @relation(fields: [venueId], references: [id])
   categorySlug String
   category     SpaceCategory  @relation(fields: [categorySlug], references: [slug])
   amenities    SpaceAmenity[]

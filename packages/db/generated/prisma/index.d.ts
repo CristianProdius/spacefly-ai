@@ -6370,7 +6370,7 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     hostId: string
-    venueId: number | null
+    venueId: number
     categorySlug: string
     _count: SpaceCountAggregateOutputType | null
     _avg: SpaceAvgAggregateOutputType | null
@@ -6424,7 +6424,7 @@ export namespace Prisma {
     venueId?: boolean
     categorySlug?: boolean
     host?: boolean | UserDefaultArgs<ExtArgs>
-    venue?: boolean | Space$venueArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
     amenities?: boolean | Space$amenitiesArgs<ExtArgs>
     availability?: boolean | Space$availabilityArgs<ExtArgs>
@@ -6465,7 +6465,7 @@ export namespace Prisma {
     venueId?: boolean
     categorySlug?: boolean
     host?: boolean | UserDefaultArgs<ExtArgs>
-    venue?: boolean | Space$venueArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["space"]>
 
@@ -6500,7 +6500,7 @@ export namespace Prisma {
     venueId?: boolean
     categorySlug?: boolean
     host?: boolean | UserDefaultArgs<ExtArgs>
-    venue?: boolean | Space$venueArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["space"]>
 
@@ -6539,7 +6539,7 @@ export namespace Prisma {
   export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
   export type SpaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
-    venue?: boolean | Space$venueArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
     amenities?: boolean | Space$amenitiesArgs<ExtArgs>
     availability?: boolean | Space$availabilityArgs<ExtArgs>
@@ -6550,12 +6550,12 @@ export namespace Prisma {
   }
   export type SpaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
-    venue?: boolean | Space$venueArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }
   export type SpaceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
-    venue?: boolean | Space$venueArgs<ExtArgs>
+    venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
   }
 
@@ -6563,7 +6563,7 @@ export namespace Prisma {
     name: "Space"
     objects: {
       host: Prisma.$UserPayload<ExtArgs>
-      venue: Prisma.$VenuePayload<ExtArgs> | null
+      venue: Prisma.$VenuePayload<ExtArgs>
       category: Prisma.$SpaceCategoryPayload<ExtArgs>
       amenities: Prisma.$SpaceAmenityPayload<ExtArgs>[]
       availability: Prisma.$AvailabilityPayload<ExtArgs>[]
@@ -6599,7 +6599,7 @@ export namespace Prisma {
       createdAt: Date
       updatedAt: Date
       hostId: string
-      venueId: number | null
+      venueId: number
       categorySlug: string
     }, ExtArgs["result"]["space"]>
     composites: {}
@@ -6996,7 +6996,7 @@ export namespace Prisma {
   export interface Prisma__SpaceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     host<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    venue<T extends Space$venueArgs<ExtArgs> = {}>(args?: Subset<T, Space$venueArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    venue<T extends VenueDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenueDefaultArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     category<T extends SpaceCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpaceCategoryDefaultArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     amenities<T extends Space$amenitiesArgs<ExtArgs> = {}>(args?: Subset<T, Space$amenitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     availability<T extends Space$availabilityArgs<ExtArgs> = {}>(args?: Subset<T, Space$availabilityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7454,25 +7454,6 @@ export namespace Prisma {
      * Limit how many Spaces to delete.
      */
     limit?: number
-  }
-
-  /**
-   * Space.venue
-   */
-  export type Space$venueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Venue
-     */
-    select?: VenueSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Venue
-     */
-    omit?: VenueOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: VenueInclude<ExtArgs> | null
-    where?: VenueWhereInput
   }
 
   /**
@@ -18726,10 +18707,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Space"> | Date | string
     updatedAt?: DateTimeFilter<"Space"> | Date | string
     hostId?: StringFilter<"Space"> | string
-    venueId?: IntNullableFilter<"Space"> | number | null
+    venueId?: IntFilter<"Space"> | number
     categorySlug?: StringFilter<"Space"> | string
     host?: XOR<UserScalarRelationFilter, UserWhereInput>
-    venue?: XOR<VenueNullableScalarRelationFilter, VenueWhereInput> | null
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     category?: XOR<SpaceCategoryScalarRelationFilter, SpaceCategoryWhereInput>
     amenities?: SpaceAmenityListRelationFilter
     availability?: AvailabilityListRelationFilter
@@ -18766,7 +18747,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     hostId?: SortOrder
-    venueId?: SortOrderInput | SortOrder
+    venueId?: SortOrder
     categorySlug?: SortOrder
     host?: UserOrderByWithRelationInput
     venue?: VenueOrderByWithRelationInput
@@ -18809,10 +18790,10 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Space"> | Date | string
     updatedAt?: DateTimeFilter<"Space"> | Date | string
     hostId?: StringFilter<"Space"> | string
-    venueId?: IntNullableFilter<"Space"> | number | null
+    venueId?: IntFilter<"Space"> | number
     categorySlug?: StringFilter<"Space"> | string
     host?: XOR<UserScalarRelationFilter, UserWhereInput>
-    venue?: XOR<VenueNullableScalarRelationFilter, VenueWhereInput> | null
+    venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     category?: XOR<SpaceCategoryScalarRelationFilter, SpaceCategoryWhereInput>
     amenities?: SpaceAmenityListRelationFilter
     availability?: AvailabilityListRelationFilter
@@ -18849,7 +18830,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     hostId?: SortOrder
-    venueId?: SortOrderInput | SortOrder
+    venueId?: SortOrder
     categorySlug?: SortOrder
     _count?: SpaceCountOrderByAggregateInput
     _avg?: SpaceAvgOrderByAggregateInput
@@ -18889,7 +18870,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Space"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Space"> | Date | string
     hostId?: StringWithAggregatesFilter<"Space"> | string
-    venueId?: IntNullableWithAggregatesFilter<"Space"> | number | null
+    venueId?: IntWithAggregatesFilter<"Space"> | number
     categorySlug?: StringWithAggregatesFilter<"Space"> | string
   }
 
@@ -19926,7 +19907,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -19963,7 +19944,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -19999,7 +19980,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -20036,7 +20017,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -20073,7 +20054,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
   }
 
@@ -20133,7 +20114,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
   }
 
@@ -21318,9 +21299,9 @@ export namespace Prisma {
     not?: NestedEnumCancellationPolicyFilter<$PrismaModel> | $Enums.CancellationPolicy
   }
 
-  export type VenueNullableScalarRelationFilter = {
-    is?: VenueWhereInput | null
-    isNot?: VenueWhereInput | null
+  export type VenueScalarRelationFilter = {
+    is?: VenueWhereInput
+    isNot?: VenueWhereInput
   }
 
   export type SpaceCategoryScalarRelationFilter = {
@@ -22554,12 +22535,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSpacesInput, UserUpdateWithoutSpacesInput>, UserUncheckedUpdateWithoutSpacesInput>
   }
 
-  export type VenueUpdateOneWithoutSpacesNestedInput = {
+  export type VenueUpdateOneRequiredWithoutSpacesNestedInput = {
     create?: XOR<VenueCreateWithoutSpacesInput, VenueUncheckedCreateWithoutSpacesInput>
     connectOrCreate?: VenueCreateOrConnectWithoutSpacesInput
     upsert?: VenueUpsertWithoutSpacesInput
-    disconnect?: VenueWhereInput | boolean
-    delete?: VenueWhereInput | boolean
     connect?: VenueWhereUniqueInput
     update?: XOR<XOR<VenueUpdateToOneWithWhereWithoutSpacesInput, VenueUpdateWithoutSpacesInput>, VenueUncheckedUpdateWithoutSpacesInput>
   }
@@ -23510,7 +23489,7 @@ export namespace Prisma {
     houseRules?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -23546,7 +23525,7 @@ export namespace Prisma {
     houseRules?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -23872,7 +23851,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Space"> | Date | string
     updatedAt?: DateTimeFilter<"Space"> | Date | string
     hostId?: StringFilter<"Space"> | string
-    venueId?: IntNullableFilter<"Space"> | number | null
+    venueId?: IntFilter<"Space"> | number
     categorySlug?: StringFilter<"Space"> | string
   }
 
@@ -24885,7 +24864,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
@@ -24921,7 +24900,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
@@ -25099,7 +25078,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
@@ -25135,7 +25114,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
@@ -25204,7 +25183,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
@@ -25240,7 +25219,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
@@ -25299,7 +25278,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
@@ -25335,7 +25314,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
@@ -25386,7 +25365,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
@@ -25422,7 +25401,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
@@ -25457,7 +25436,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -25493,7 +25472,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -25544,7 +25523,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -25580,7 +25559,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -25717,7 +25696,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -25753,7 +25732,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -25946,7 +25925,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -25982,7 +25961,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -26102,7 +26081,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     host: UserCreateNestedOneWithoutSpacesInput
-    venue?: VenueCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
@@ -26138,7 +26117,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
@@ -26305,7 +26284,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -26341,7 +26320,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -26574,7 +26553,7 @@ export namespace Prisma {
     houseRules?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    venueId?: number | null
+    venueId: number
     categorySlug: string
   }
 
@@ -26756,7 +26735,7 @@ export namespace Prisma {
     houseRules?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
@@ -26792,7 +26771,7 @@ export namespace Prisma {
     houseRules?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
@@ -26828,7 +26807,7 @@ export namespace Prisma {
     houseRules?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
   }
 
@@ -27450,7 +27429,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     hostId: string
-    venueId?: number | null
+    venueId: number
   }
 
   export type SpaceUpdateWithoutCategoryInput = {
@@ -27480,7 +27459,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
-    venue?: VenueUpdateOneWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
@@ -27516,7 +27495,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
@@ -27552,7 +27531,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     hostId?: StringFieldUpdateOperationsInput | string
-    venueId?: NullableIntFieldUpdateOperationsInput | number | null
+    venueId?: IntFieldUpdateOperationsInput | number
   }
 
   export type SpaceCategoryCreateManyGroupInput = {
