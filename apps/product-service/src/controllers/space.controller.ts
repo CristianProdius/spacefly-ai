@@ -1,70 +1,53 @@
 import { Request, Response } from "express";
 import { prisma, Prisma, PricingType, SpaceType, CancellationPolicy } from "@repo/db";
 import { producer } from "../utils/kafka.js";
-import {
-  buildCategoryPayload,
-  deriveLegacySpaceTypeFromCategorySlug,
-  normalizeCategorySlug,
-} from "../lib/space-taxonomy.js";
-
-const categoryInclude = {
-  include: {
-    group: true,
-  },
-};
-
-const spaceDetailsInclude = {
-  amenities: {
-    include: { amenity: true },
-  },
-  category: categoryInclude,
-};
-
-const resolveCategoryAssignment = async (categorySlug: string) => {
-  const normalizedCategorySlug = normalizeCategorySlug(categorySlug);
-  const derivedSpaceType = deriveLegacySpaceTypeFromCategorySlug(normalizedCategorySlug);
-
-  if (!derivedSpaceType) {
-    return null;
-  }
-
-  const category = await prisma.spaceCategory.findUnique({
-    where: { slug: normalizedCategorySlug },
-    select: { slug: true },
-  });
-
-  if (!category) {
-    return null;
-  }
-
-  return {
-    categorySlug: category.slug,
-    spaceType: derivedSpaceType,
-  };
-};
 
 // Get all spaces with search/filter
 export const getSpaces = async (req: Request, res: Response) => {
+  // Parse sort param into sortBy/sortOrder before destructuring
+  const sortParam = req.query.sort as string | undefined;
+  let resolvedSortBy = (req.query.sortBy as string) || "createdAt";
+  let resolvedSortOrder = (req.query.sortOrder as string) || "desc";
+
+  if (sortParam) {
+    switch (sortParam) {
+      case "newest":
+        resolvedSortBy = "createdAt";
+        resolvedSortOrder = "desc";
+        break;
+      case "price_asc":
+        resolvedSortBy = "pricePerHour";
+        resolvedSortOrder = "asc";
+        break;
+      case "price_desc":
+        resolvedSortBy = "pricePerHour";
+        resolvedSortOrder = "desc";
+        break;
+      case "rating":
+        resolvedSortBy = "createdAt";
+        resolvedSortOrder = "desc";
+        break;
+    }
+  }
+
   const {
     city,
     spaceType,
     categorySlug,
-    groupSlug,
     minPrice,
     maxPrice,
-    minCapacity,
+    minCapacity: minCapacityParam,
+    capacity: capacityParam,
     amenityIds,
     instantBook,
-    sortBy = "createdAt",
-    sortOrder = "desc",
     page = "1",
-    limit = "12",
+    limit = "20",
   } = req.query;
+
+  const minCapacity = minCapacityParam || capacityParam;
 
   const pageNum = parseInt(page as string);
   const limitNum = parseInt(limit as string);
-  const normalizedCategorySlug =
-    typeof categorySlug === "string" ? normalizeCategorySlug(categorySlug) : undefined;
 
   const where: Prisma.SpaceWhereInput = {
     isActive: true,
@@ -72,28 +55,21 @@ export const getSpaces = async (req: Request, res: Response) => {
       city: { contains: city as string, mode: "insensitive" },
     }),
     ...(spaceType && { spaceType: spaceType as SpaceType }),
-    ...(normalizedCategorySlug && { categorySlug: normalizedCategorySlug }),
-    ...(groupSlug && {
-      category: {
-        is: {
-          groupSlug: groupSlug as string,
-        },
-      },
-    }),
+    ...(categorySlug && { categorySlug: categorySlug as string }),
     ...(minCapacity && { capacity: { gte: parseInt(minCapacity as string) } }),
     ...(instantBook !== undefined && { instantBook: instantBook === "true" }),
     ...((minPrice || maxPrice) && {
       OR: [
         {
           pricePerHour: {
-            ...(minPrice && { gte: parseFloat(minPrice as string) }),
-            ...(maxPrice && { lte: parseFloat(maxPrice as string) }),
+            ...(minPrice && { gte: parseInt(minPrice as string) }),
+            ...(maxPrice && { lte: parseInt(maxPrice as string) }),
           },
         },
         {
           pricePerDay: {
-            ...(minPrice && { gte: parseFloat(minPrice as string) }),
-            ...(maxPrice && { lte: parseFloat(maxPrice as string) }),
+            ...(minPrice && { gte: parseInt(minPrice as string) }),
+            ...(maxPrice && { lte: parseInt(maxPrice as string) }),
           },
         },
       ],
@@ -101,7 +77,7 @@ export const getSpaces = async (req: Request, res: Response) => {
   };
 
   const orderBy: Prisma.SpaceOrderByWithRelationInput = {
-    [sortBy as string]: sortOrder,
+    [resolvedSortBy]: resolvedSortOrder,
   };
 
   const skip = (pageNum - 1) * limitNum;
@@ -113,7 +89,7 @@ export const getSpaces = async (req: Request, res: Response) => {
       skip,
       take: limitNum,
       include: {
-        category: categoryInclude,
+        category: true,
         host: {
           select: {
             id: true,
@@ -168,7 +144,7 @@ export const getSpace = async (req: Request, res: Response) => {
   const space = await prisma.space.findUnique({
     where: { id: spaceId },
     include: {
-      category: categoryInclude,
+      category: true,
       host: {
         select: {
           id: true,
@@ -231,18 +207,10 @@ export const getSpace = async (req: Request, res: Response) => {
 export const createSpace = async (req: Request, res: Response) => {
   const hostId = req.userId!;
   const { amenityIds, ...spaceData } = req.body;
-  const categoryAssignment =
-    typeof spaceData.categorySlug === "string"
-      ? await resolveCategoryAssignment(spaceData.categorySlug)
-      : null;
-
-  if (!categoryAssignment) {
-    return res.status(400).json({ message: "Invalid category slug" });
-  }
 
   const space = await prisma.space.create({
     data: {
-      ...buildCategoryPayload(spaceData),
+      ...spaceData,
       hostId,
       amenities: amenityIds
         ? {
@@ -250,7 +218,12 @@ export const createSpace = async (req: Request, res: Response) => {
           }
         : undefined,
     },
-    include: spaceDetailsInclude,
+    include: {
+      category: true,
+      amenities: {
+        include: { amenity: true },
+      },
+    },
   });
 
   producer.send("space.created", { value: { id: space.id, hostId } });
@@ -279,20 +252,17 @@ export const updateSpace = async (req: Request, res: Response) => {
   }
 
   const { amenityIds, ...spaceData } = req.body;
-  const categoryAssignment =
-    typeof spaceData.categorySlug === "string"
-      ? await resolveCategoryAssignment(spaceData.categorySlug)
-      : null;
-
-  if (typeof spaceData.categorySlug === "string" && !categoryAssignment) {
-    return res.status(400).json({ message: "Invalid category slug" });
-  }
 
   // Update space
   const space = await prisma.space.update({
     where: { id: spaceId },
-    data: buildCategoryPayload(spaceData),
-    include: spaceDetailsInclude,
+    data: spaceData,
+    include: {
+      category: true,
+      amenities: {
+        include: { amenity: true },
+      },
+    },
   });
 
   // Update amenities if provided
@@ -352,7 +322,7 @@ export const getMySpaces = async (req: Request, res: Response) => {
   const spaces = await prisma.space.findMany({
     where: { hostId },
     include: {
-      category: categoryInclude,
+      category: true,
       _count: {
         select: {
           bookings: true,

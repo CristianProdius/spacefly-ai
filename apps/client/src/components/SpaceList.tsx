@@ -2,6 +2,7 @@ import { Space } from "@repo/types";
 import SpaceCategories from "./SpaceCategories";
 import SpaceCard from "./SpaceCard";
 import SpaceFilter from "./SpaceFilter";
+import SpaceListBrowse from "./SpaceListBrowse";
 import { Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
@@ -12,7 +13,7 @@ import {
   type BrowseTaxonomy,
 } from "@/lib/taxonomy";
 
-type SpaceWithCategory = Space & {
+export type SpaceWithCategory = Space & {
   category?: {
     group?: {
       name?: string | null;
@@ -40,10 +41,23 @@ interface FetchParams {
   limit?: string;
 }
 
+export interface PaginationData {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+interface FetchResult {
+  spaces: SpaceWithCategory[];
+  pagination: PaginationData;
+  apiParams: string;
+}
+
 const fetchSpaces = async (
   params: FetchParams,
   taxonomy: BrowseTaxonomy
-): Promise<SpaceWithCategory[]> => {
+): Promise<FetchResult> => {
   const searchParams = new URLSearchParams();
   const hasExplicitTaxonomyParams = Boolean(
     params.category ||
@@ -79,19 +93,24 @@ const fetchSpaces = async (
   if (params.sort) searchParams.set("sort", params.sort);
   if (params.limit) searchParams.set("limit", params.limit);
 
-  const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${searchParams.toString()}`;
+  const apiParams = searchParams.toString();
+  const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${apiParams}`;
 
   try {
     const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) {
       console.error("Failed to fetch spaces:", res.status);
-      return [];
+      return { spaces: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }, apiParams };
     }
     const data = await res.json();
-    return data.spaces || data || [];
+    return {
+      spaces: data.spaces || data || [],
+      pagination: data.pagination || { page: 1, limit: 20, total: 0, totalPages: 0 },
+      apiParams,
+    };
   } catch (error) {
     console.error("Error fetching spaces:", error);
-    return [];
+    return { spaces: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }, apiParams };
   }
 };
 
@@ -131,7 +150,7 @@ const SpaceList = async ({
     { category, categorySlug, group, groupSlug, type },
     taxonomy
   );
-  const spaces = await fetchSpaces({
+  const result = await fetchSpaces({
     category,
     categorySlug,
     group,
@@ -143,18 +162,33 @@ const SpaceList = async ({
     instantBook,
     type,
     sort: sort || "newest",
-    limit: variant === "homepage" ? "8" : undefined,
+    limit: variant === "homepage" ? "8" : "20",
   }, taxonomy);
 
   const t = await getTranslations("spaces");
   const tc = await getTranslations("common");
 
+  if (variant === "browse") {
+    return (
+      <div className="w-full">
+        <SpaceListBrowse
+          initialSpaces={result.spaces}
+          initialPagination={result.pagination}
+          initialApiParams={result.apiParams}
+          taxonomy={taxonomy}
+          browseSelection={browseSelection}
+        />
+      </div>
+    );
+  }
+
+  // Homepage variant — keep original rendering
+  const spaces = result.spaces;
   return (
     <div className="w-full">
       {showCategories && (
         <SpaceCategories selection={browseSelection} taxonomy={taxonomy} />
       )}
-      {variant === "browse" && <SpaceFilter />}
 
       {spaces.length === 0 ? (
         <div className="text-center py-16">
@@ -172,7 +206,7 @@ const SpaceList = async ({
         </div>
       )}
 
-      {variant === "homepage" && spaces.length > 0 && (
+      {spaces.length > 0 && (
         <div className="flex justify-center mt-8">
           <Link
             href={buildBrowseHref(browseSelection)}

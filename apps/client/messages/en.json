@@ -200,7 +200,10 @@
     "contactHostForDetails": "Contact host for details",
     "noReviewsYet": "No reviews yet",
     "showAllPhotos": "Show all {count} photos",
-    "photoCounter": "{current} / {total}"
+    "photoCounter": "{current} / {total}",
+    "showingResults": "{shown} of {total} spaces",
+    "loadingMore": "Loading more spaces...",
+    "noMoreResults": "You've seen all results"
   },
   "booking": {
     "date": "Date",

@@ -200,7 +200,10 @@
     "contactHostForDetails": "Contacteaza gazda pentru detalii",
     "noReviewsYet": "Nicio recenzie",
     "showAllPhotos": "Arat\u0103 toate cele {count} fotografii",
-    "photoCounter": "{current} / {total}"
+    "photoCounter": "{current} / {total}",
+    "showingResults": "{shown} din {total} spații",
+    "loadingMore": "Se încarcă mai multe spații...",
+    "noMoreResults": "Ai văzut toate rezultatele"
   },
   "booking": {
     "date": "Data",
