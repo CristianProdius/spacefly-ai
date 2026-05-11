@@ -77,11 +77,14 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
   }, [open, currentIndex]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
+    const touch = e.touches[0];
+    if (touch) touchStartX.current = touch.clientX;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    touchEndX.current = e.changedTouches[0].clientX;
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+    touchEndX.current = touch.clientX;
     const delta = touchStartX.current - touchEndX.current;
     if (delta > SWIPE_THRESHOLD && currentIndex < images.length - 1) {
       setCurrentIndex((prev) => prev + 1);
