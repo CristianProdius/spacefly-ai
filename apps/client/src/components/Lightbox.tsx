@@ -31,13 +31,13 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
   // Keyboard navigation
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft" && currentIndex > 0) {
-        setCurrentIndex((prev) => prev - 1);
-      } else if (e.key === "ArrowRight" && currentIndex < images.length - 1) {
-        setCurrentIndex((prev) => prev + 1);
+      if (e.key === "ArrowLeft") {
+        setCurrentIndex((prev) => Math.max(0, prev - 1));
+      } else if (e.key === "ArrowRight") {
+        setCurrentIndex((prev) => Math.min(images.length - 1, prev + 1));
       }
     },
-    [currentIndex, images.length]
+    [images.length]
   );
 
   useEffect(() => {
@@ -49,13 +49,18 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
   // Preload adjacent images
   useEffect(() => {
     if (!open) return;
+    const preloaded: HTMLImageElement[] = [];
     const toPreload = [currentIndex - 1, currentIndex + 1].filter(
       (i) => i >= 0 && i < images.length
     );
     toPreload.forEach((i) => {
       const img = new window.Image();
       img.src = images[i];
+      preloaded.push(img);
     });
+    return () => {
+      preloaded.forEach((img) => { img.src = ""; });
+    };
   }, [open, currentIndex, images]);
 
   // Auto-scroll active thumbnail into view
@@ -86,6 +91,10 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 z-50 bg-black/95" />
         <Dialog.Popup className="fixed inset-0 z-50 flex flex-col items-center justify-center">
+          <Dialog.Title className="sr-only">
+            {t("photoCounter", { current: currentIndex + 1, total: images.length })}
+          </Dialog.Title>
+
           {/* Counter */}
           <div className="absolute top-4 left-1/2 -translate-x-1/2 text-white/70 text-sm">
             {t("photoCounter", { current: currentIndex + 1, total: images.length })}
@@ -106,6 +115,7 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
             {currentIndex > 0 && (
               <button
                 onClick={() => setCurrentIndex((prev) => prev - 1)}
+                aria-label="Previous"
                 className="absolute left-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors cursor-pointer"
               >
                 <ChevronLeft className="size-10" />
@@ -120,7 +130,6 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
                 fill
                 className="object-contain"
                 sizes="90vw"
-                priority
               />
             </div>
 
@@ -128,6 +137,7 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
             {currentIndex < images.length - 1 && (
               <button
                 onClick={() => setCurrentIndex((prev) => prev + 1)}
+                aria-label="Next"
                 className="absolute right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors cursor-pointer"
               >
                 <ChevronRight className="size-10" />

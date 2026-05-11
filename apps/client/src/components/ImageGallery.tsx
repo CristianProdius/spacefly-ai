@@ -21,6 +21,8 @@ const ImageGallery = ({ images, spaceName }: ImageGalleryProps) => {
     setLightboxOpen(true);
   };
 
+  if (images.length === 0) return null;
+
   return (
     <>
       {images.length <= 1 ? (
