@@ -56,8 +56,10 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
       (i) => i >= 0 && i < images.length
     );
     toPreload.forEach((i) => {
+      const src = images[i];
+      if (!src) return;
       const img = new window.Image();
-      img.src = images[i];
+      img.src = src;
       preloaded.push(img);
     });
     return () => {
