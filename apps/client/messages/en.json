@@ -203,7 +203,8 @@
     "photoCounter": "{current} / {total}",
     "showingResults": "{shown} of {total} spaces",
     "loadingMore": "Loading more spaces...",
-    "noMoreResults": "You've seen all results"
+    "noMoreResults": "You've seen all results",
+    "atVenue": "at {venue}"
   },
   "booking": {
     "date": "Date",

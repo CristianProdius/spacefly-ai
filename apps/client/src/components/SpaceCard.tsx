@@ -7,8 +7,9 @@ import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { parseImages, getPriceDisplay, type PriceLabels } from "@/lib/utils";
 import { getSpaceCategoryLabel } from "@/lib/taxonomy";
+import { type SpaceWithCategory } from "./SpaceList";
 
-const SpaceCard = ({ space }: { space: Space }) => {
+const SpaceCard = ({ space }: { space: Space | SpaceWithCategory }) => {
   const images = parseImages(space.images);
   const t = useTranslations("spaces");
   const tc = useTranslations("common");
@@ -54,6 +55,12 @@ const SpaceCard = ({ space }: { space: Space }) => {
               </div>
             )}
           </div>
+
+          {"venue" in space && space.venue && space.venue.name !== space.name && (
+            <p className="text-xs text-muted line-clamp-1">
+              {t("atVenue", { venue: space.venue.name })}
+            </p>
+          )}
 
           <p className="text-sm text-muted line-clamp-1">
             {space.city}, {space.country}

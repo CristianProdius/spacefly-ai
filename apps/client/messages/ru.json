@@ -203,7 +203,8 @@
     "photoCounter": "{current} / {total}",
     "showingResults": "{shown} из {total} пространств",
     "loadingMore": "Загрузка пространств...",
-    "noMoreResults": "Вы просмотрели все результаты"
+    "noMoreResults": "Вы просмотрели все результаты",
+    "atVenue": "в {venue}"
   },
   "booking": {
     "date": "Дата",

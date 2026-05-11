@@ -203,7 +203,8 @@
     "photoCounter": "{current} / {total}",
     "showingResults": "{shown} din {total} spații",
     "loadingMore": "Se încarcă mai multe spații...",
-    "noMoreResults": "Ai văzut toate rezultatele"
+    "noMoreResults": "Ai văzut toate rezultatele",
+    "atVenue": "la {venue}"
   },
   "booking": {
     "date": "Data",

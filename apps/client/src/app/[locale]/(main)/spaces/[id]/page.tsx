@@ -76,6 +76,12 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
             <h1 className="text-3xl font-bold text-foreground mb-2 text-balance">
               {space.name}
             </h1>
+            {(space as { venue?: { name?: string } | null }).venue?.name &&
+              (space as { venue?: { name?: string } | null }).venue!.name !== space.name && (
+                <p className="text-sm text-muted mb-2">
+                  {t("atVenue", { venue: (space as { venue?: { name?: string } | null }).venue!.name! })}
+                </p>
+              )}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-muted">
               <div className="flex items-center gap-1">
                 <MapPin className="size-4" />

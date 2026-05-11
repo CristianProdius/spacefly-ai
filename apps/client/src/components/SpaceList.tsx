@@ -24,6 +24,12 @@ export type SpaceWithCategory = Space & {
     name?: string | null;
     slug?: string | null;
   } | null;
+  venue?: {
+    id: number;
+    name: string;
+    city: string;
+    country: string;
+  } | null;
 };
 
 interface FetchParams {
