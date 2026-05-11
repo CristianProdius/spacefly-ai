@@ -4,7 +4,7 @@ import { getAccessToken, getRefreshToken, refreshAccessToken, saveTokens, isToke
 let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
-async function getValidToken(): Promise<string | null> {
+export async function getValidToken(): Promise<string | null> {
   const token = getAccessToken();
   if (!token) return null;
   if (!isTokenExpired(token)) return token;
@@ -59,7 +59,11 @@ export async function fetchWithAuth(
       return response;
     }
 
-    // Try refresh for idempotent requests
+    // Try refresh for idempotent requests — force a fresh refresh cycle
+    // by waiting for any in-flight refresh to complete first, then retrying
+    if (isRefreshing && refreshPromise) {
+      await refreshPromise;
+    }
     isRefreshing = false;
     refreshPromise = null;
     const newToken = await getValidToken();

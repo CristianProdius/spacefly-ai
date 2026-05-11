@@ -6,6 +6,7 @@ import { useRouter } from "@/i18n/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import useAuthStore from "@/stores/authStore";
+import { fetchWithAuth } from "@/lib/apiClient";
 import { useTranslations } from "next-intl";
 import {
   Calendar,
@@ -132,13 +133,8 @@ const BookingDetailPage = () => {
 
   const fetchBooking = async () => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/${params.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await fetchWithAuth(
+        `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/${params.id}`
       );
 
       if (!res.ok) {
@@ -161,14 +157,10 @@ const BookingDetailPage = () => {
 
     setCancelling(true);
     try {
-      const res = await fetch(
+      const res = await fetchWithAuth(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/${booking.id}/cancel`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
           body: JSON.stringify({ reason: t("cancelledByGuest") }),
         }
       );

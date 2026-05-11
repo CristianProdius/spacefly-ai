@@ -43,8 +43,9 @@ export default function SpaceListBrowse({
   const isLoadingRef = useRef(false);
   const apiParamsRef = useRef(initialApiParams);
 
-  // Cache key based on current search params
-  const cacheKey = STORAGE_KEY_PREFIX + searchParams.toString();
+  // Cache key scoped to locale + search params to prevent cross-locale contamination
+  const locale = typeof window !== "undefined" ? window.location.pathname.split("/")[1] || "en" : "en";
+  const cacheKey = STORAGE_KEY_PREFIX + locale + "_" + searchParams.toString();
 
   // Restore from sessionStorage on mount (back-button support)
   useEffect(() => {
@@ -62,16 +63,19 @@ export default function SpaceListBrowse({
           setPage(cachedPage);
           setTotal(cachedTotal);
           setHasMore(cachedSpaces.length < cachedTotal);
-          // Restore scroll position after render
+          // Restore scroll position after layout settles
           requestAnimationFrame(() => {
-            window.scrollTo(0, scrollY || 0);
+            requestAnimationFrame(() => {
+              window.scrollTo(0, scrollY || 0);
+            });
           });
         }
       }
     } catch {
       // Ignore storage errors
     }
-  }, []); // Only on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- intentionally mount-only to restore cached state
+  }, []);
 
   // Save to sessionStorage when spaces change
   useEffect(() => {

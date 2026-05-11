@@ -24,6 +24,8 @@ export const getSpaces = async (req: Request, res: Response) => {
         resolvedSortOrder = "desc";
         break;
       case "rating":
+        // averageRating is computed after the query, so we can't sort by it in Prisma.
+        // Falls back to newest as a reasonable approximation.
         resolvedSortBy = "createdAt";
         resolvedSortOrder = "desc";
         break;

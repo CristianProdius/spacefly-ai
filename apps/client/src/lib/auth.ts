@@ -139,12 +139,8 @@ export function clearAuth(): void {
   }
 }
 
-export function isAuthenticated(): boolean {
-  return !!getAccessToken();
-}
-
 /** Decode the payload section of a JWT without verification (client-side only). */
-export function decodeJwtPayload(token: string): { exp: number; [key: string]: unknown } {
+export function decodeJwtPayload(token: string): { exp?: number; [key: string]: unknown } {
   const parts = token.split(".");
   if (parts.length !== 3) throw new Error("Invalid JWT");
   const payload = parts[1]!;
@@ -161,6 +157,7 @@ export function decodeJwtPayload(token: string): { exp: number; [key: string]: u
 export function isTokenExpired(token: string, bufferMs = 60_000): boolean {
   try {
     const { exp } = decodeJwtPayload(token);
+    if (typeof exp !== "number") return true;
     return exp * 1000 - bufferMs <= Date.now();
   } catch {
     return true;

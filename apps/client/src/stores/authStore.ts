@@ -13,6 +13,7 @@ import {
   clearAuth,
   isTokenExpired,
 } from "@/lib/auth";
+import { getValidToken } from "@/lib/apiClient";
 
 interface AuthState {
   user: User | null;
@@ -108,27 +109,14 @@ const useAuthStore = create<AuthState>((set, get) => ({
   },
 
   getToken: async () => {
-    const token = getAccessToken();
-    if (!token) return null;
-
-    // Key fix: only refresh if token is actually expired
-    if (!isTokenExpired(token)) return token;
-
-    // Token expired — try refresh
-    try {
-      const refreshToken = getRefreshToken();
-      if (!refreshToken) {
-        get().handleSessionExpired();
-        return null;
-      }
-      const newToken = await refreshAccessToken(refreshToken);
-      saveTokens(newToken, refreshToken);
-      set({ token: newToken });
-      return newToken;
-    } catch {
-      get().handleSessionExpired();
+    // Delegate to apiClient's getValidToken which has refresh deduplication
+    const token = await getValidToken();
+    if (!token) {
+      if (getAccessToken()) get().handleSessionExpired();
       return null;
     }
+    set({ token });
+    return token;
   },
 
   handleSessionExpired: () => {
@@ -146,7 +134,8 @@ const useAuthStore = create<AuthState>((set, get) => ({
       import("react-toastify").then(({ toast }) => {
         toast.info(message);
       });
-      window.location.href = `/${locale}/login`;
+      const returnPath = window.location.pathname + window.location.search;
+      window.location.href = `/${locale}/login?redirect=${encodeURIComponent(returnPath)}`;
     }
   },
 }));

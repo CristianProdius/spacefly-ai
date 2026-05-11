@@ -6,6 +6,8 @@ import { Dialog } from "@base-ui/react/dialog";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+const SWIPE_THRESHOLD = 50;
+
 interface LightboxProps {
   images: string[];
   initialIndex: number;
@@ -79,9 +81,9 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
   const handleTouchEnd = (e: React.TouchEvent) => {
     touchEndX.current = e.changedTouches[0].clientX;
     const delta = touchStartX.current - touchEndX.current;
-    if (delta > 50 && currentIndex < images.length - 1) {
+    if (delta > SWIPE_THRESHOLD && currentIndex < images.length - 1) {
       setCurrentIndex((prev) => prev + 1);
-    } else if (delta < -50 && currentIndex > 0) {
+    } else if (delta < -SWIPE_THRESHOLD && currentIndex > 0) {
       setCurrentIndex((prev) => prev - 1);
     }
   };

@@ -12,13 +12,15 @@ import { producer } from "../utils/kafka.js";
 
 const router: Router = Router();
 
-/** Convert a duration string like "30d", "1h", "15m" to milliseconds. */
+/** Convert a duration string like "30d", "1h", "15m", "30s" to milliseconds. */
 function parseExpiry(str: string): number {
-  const match = str.match(/^(\d+)(m|h|d)$/);
+  const match = str.match(/^(\d+)(s|m|h|d)$/);
   if (!match) return 7 * 24 * 60 * 60 * 1000; // fallback: 7 days
   const value = parseInt(match[1]!, 10);
   const unit = match[2];
   switch (unit) {
+    case "s":
+      return value * 1000;
     case "m":
       return value * 60 * 1000;
     case "h":
