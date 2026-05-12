@@ -32,6 +32,8 @@ export interface Booking {
   cleaningFee: number;
   serviceFee: number;
   totalAmount: number;
+  currency: string;
+  exchangeRate: number;
 
   // Status
   status: BookingStatus;

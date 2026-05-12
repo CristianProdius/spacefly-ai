@@ -1,5 +1,7 @@
 import z from "zod";
+import type { PricingTier } from "./currency";
 
+export type { Currency, ExchangeRate, PricingTier } from "./currency";
 export type { Venue, VenueWithHost, VenueWithSpaces } from "./venue";
 
 export type SpaceType =
@@ -124,6 +126,8 @@ export interface Space {
   pricePerHour: number | null;
   pricePerDay: number | null;
   cleaningFee: number;
+  currency: string;
+  pricingTiers?: PricingTier[];
   capacity: number;
   minBookingHours: number | null;
   maxBookingHours: number | null;
