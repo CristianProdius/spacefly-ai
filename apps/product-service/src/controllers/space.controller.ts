@@ -99,7 +99,7 @@ export const getSpaces = async (req: Request, res: Response) => {
     ...(categorySlug && { categorySlug: categorySlug as string }),
     ...(minCapacity && { capacity: { gte: parseInt(minCapacity as string) } }),
     ...(instantBook !== undefined && { instantBook: instantBook === "true" }),
-    ...(currencyParam && { currency: currencyParam as string }),
+    ...(currencyParam && { currency: currencyParam as "USD" | "EUR" | "MDL" }),
     ...((minPrice || maxPrice) && {
       OR: [
         {
