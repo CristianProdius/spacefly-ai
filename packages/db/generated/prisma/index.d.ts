@@ -29,6 +29,11 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  */
 export type Venue = $Result.DefaultSelection<Prisma.$VenuePayload>
 /**
+ * Model ExchangeRate
+ * 
+ */
+export type ExchangeRate = $Result.DefaultSelection<Prisma.$ExchangeRatePayload>
+/**
  * Model Space
  * 
  */
@@ -53,6 +58,11 @@ export type Amenity = $Result.DefaultSelection<Prisma.$AmenityPayload>
  * 
  */
 export type SpaceAmenity = $Result.DefaultSelection<Prisma.$SpaceAmenityPayload>
+/**
+ * Model PricingTier
+ * 
+ */
+export type PricingTier = $Result.DefaultSelection<Prisma.$PricingTierPayload>
 /**
  * Model Availability
  * 
@@ -145,6 +155,15 @@ export const PayoutStatus: {
 
 export type PayoutStatus = (typeof PayoutStatus)[keyof typeof PayoutStatus]
 
+
+export const Currency: {
+  USD: 'USD',
+  EUR: 'EUR',
+  MDL: 'MDL'
+};
+
+export type Currency = (typeof Currency)[keyof typeof Currency]
+
 }
 
 export type Role = $Enums.Role
@@ -170,6 +189,10 @@ export const CancellationPolicy: typeof $Enums.CancellationPolicy
 export type PayoutStatus = $Enums.PayoutStatus
 
 export const PayoutStatus: typeof $Enums.PayoutStatus
+
+export type Currency = $Enums.Currency
+
+export const Currency: typeof $Enums.Currency
 
 /**
  * ##  Prisma Client ʲˢ
@@ -320,6 +343,16 @@ export class PrismaClient<
   get venue(): Prisma.VenueDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.exchangeRate`: Exposes CRUD operations for the **ExchangeRate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ExchangeRates
+    * const exchangeRates = await prisma.exchangeRate.findMany()
+    * ```
+    */
+  get exchangeRate(): Prisma.ExchangeRateDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.space`: Exposes CRUD operations for the **Space** model.
     * Example usage:
     * ```ts
@@ -368,6 +401,16 @@ export class PrismaClient<
     * ```
     */
   get spaceAmenity(): Prisma.SpaceAmenityDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pricingTier`: Exposes CRUD operations for the **PricingTier** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PricingTiers
+    * const pricingTiers = await prisma.pricingTier.findMany()
+    * ```
+    */
+  get pricingTier(): Prisma.PricingTierDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.availability`: Exposes CRUD operations for the **Availability** model.
@@ -861,11 +904,13 @@ export namespace Prisma {
     User: 'User',
     Session: 'Session',
     Venue: 'Venue',
+    ExchangeRate: 'ExchangeRate',
     Space: 'Space',
     SpaceCategory: 'SpaceCategory',
     SpaceCategoryGroup: 'SpaceCategoryGroup',
     Amenity: 'Amenity',
     SpaceAmenity: 'SpaceAmenity',
+    PricingTier: 'PricingTier',
     Availability: 'Availability',
     BlockedDate: 'BlockedDate',
     Booking: 'Booking',
@@ -889,7 +934,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "session" | "venue" | "space" | "spaceCategory" | "spaceCategoryGroup" | "amenity" | "spaceAmenity" | "availability" | "blockedDate" | "booking" | "review" | "payout"
+      modelProps: "user" | "session" | "venue" | "exchangeRate" | "space" | "spaceCategory" | "spaceCategoryGroup" | "amenity" | "spaceAmenity" | "pricingTier" | "availability" | "blockedDate" | "booking" | "review" | "payout"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1112,6 +1157,80 @@ export namespace Prisma {
           count: {
             args: Prisma.VenueCountArgs<ExtArgs>
             result: $Utils.Optional<VenueCountAggregateOutputType> | number
+          }
+        }
+      }
+      ExchangeRate: {
+        payload: Prisma.$ExchangeRatePayload<ExtArgs>
+        fields: Prisma.ExchangeRateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ExchangeRateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ExchangeRateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>
+          }
+          findFirst: {
+            args: Prisma.ExchangeRateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ExchangeRateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>
+          }
+          findMany: {
+            args: Prisma.ExchangeRateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>[]
+          }
+          create: {
+            args: Prisma.ExchangeRateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>
+          }
+          createMany: {
+            args: Prisma.ExchangeRateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ExchangeRateCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>[]
+          }
+          delete: {
+            args: Prisma.ExchangeRateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>
+          }
+          update: {
+            args: Prisma.ExchangeRateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>
+          }
+          deleteMany: {
+            args: Prisma.ExchangeRateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ExchangeRateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ExchangeRateUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>[]
+          }
+          upsert: {
+            args: Prisma.ExchangeRateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ExchangeRatePayload>
+          }
+          aggregate: {
+            args: Prisma.ExchangeRateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateExchangeRate>
+          }
+          groupBy: {
+            args: Prisma.ExchangeRateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ExchangeRateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ExchangeRateCountArgs<ExtArgs>
+            result: $Utils.Optional<ExchangeRateCountAggregateOutputType> | number
           }
         }
       }
@@ -1482,6 +1601,80 @@ export namespace Prisma {
           count: {
             args: Prisma.SpaceAmenityCountArgs<ExtArgs>
             result: $Utils.Optional<SpaceAmenityCountAggregateOutputType> | number
+          }
+        }
+      }
+      PricingTier: {
+        payload: Prisma.$PricingTierPayload<ExtArgs>
+        fields: Prisma.PricingTierFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PricingTierFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PricingTierFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          findFirst: {
+            args: Prisma.PricingTierFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PricingTierFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          findMany: {
+            args: Prisma.PricingTierFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>[]
+          }
+          create: {
+            args: Prisma.PricingTierCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          createMany: {
+            args: Prisma.PricingTierCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PricingTierCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>[]
+          }
+          delete: {
+            args: Prisma.PricingTierDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          update: {
+            args: Prisma.PricingTierUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          deleteMany: {
+            args: Prisma.PricingTierDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PricingTierUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PricingTierUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>[]
+          }
+          upsert: {
+            args: Prisma.PricingTierUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PricingTierPayload>
+          }
+          aggregate: {
+            args: Prisma.PricingTierAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePricingTier>
+          }
+          groupBy: {
+            args: Prisma.PricingTierGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PricingTierGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PricingTierCountArgs<ExtArgs>
+            result: $Utils.Optional<PricingTierCountAggregateOutputType> | number
           }
         }
       }
@@ -1954,11 +2147,13 @@ export namespace Prisma {
     user?: UserOmit
     session?: SessionOmit
     venue?: VenueOmit
+    exchangeRate?: ExchangeRateOmit
     space?: SpaceOmit
     spaceCategory?: SpaceCategoryOmit
     spaceCategoryGroup?: SpaceCategoryGroupOmit
     amenity?: AmenityOmit
     spaceAmenity?: SpaceAmenityOmit
+    pricingTier?: PricingTierOmit
     availability?: AvailabilityOmit
     blockedDate?: BlockedDateOmit
     booking?: BookingOmit
@@ -2161,6 +2356,7 @@ export namespace Prisma {
 
   export type SpaceCountOutputType = {
     amenities: number
+    pricingTiers: number
     availability: number
     blockedDates: number
     bookings: number
@@ -2169,6 +2365,7 @@ export namespace Prisma {
 
   export type SpaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     amenities?: boolean | SpaceCountOutputTypeCountAmenitiesArgs
+    pricingTiers?: boolean | SpaceCountOutputTypeCountPricingTiersArgs
     availability?: boolean | SpaceCountOutputTypeCountAvailabilityArgs
     blockedDates?: boolean | SpaceCountOutputTypeCountBlockedDatesArgs
     bookings?: boolean | SpaceCountOutputTypeCountBookingsArgs
@@ -2191,6 +2388,13 @@ export namespace Prisma {
    */
   export type SpaceCountOutputTypeCountAmenitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SpaceAmenityWhereInput
+  }
+
+  /**
+   * SpaceCountOutputType without action
+   */
+  export type SpaceCountOutputTypeCountPricingTiersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PricingTierWhereInput
   }
 
   /**
@@ -4768,6 +4972,7 @@ export namespace Prisma {
     postalCode: string | null
     latitude: number | null
     longitude: number | null
+    currency: $Enums.Currency | null
     hostId: string | null
     isActive: boolean | null
     createdAt: Date | null
@@ -4786,6 +4991,7 @@ export namespace Prisma {
     postalCode: string | null
     latitude: number | null
     longitude: number | null
+    currency: $Enums.Currency | null
     hostId: string | null
     isActive: boolean | null
     createdAt: Date | null
@@ -4805,6 +5011,7 @@ export namespace Prisma {
     postalCode: number
     latitude: number
     longitude: number
+    currency: number
     hostId: number
     isActive: number
     createdAt: number
@@ -4837,6 +5044,7 @@ export namespace Prisma {
     postalCode?: true
     latitude?: true
     longitude?: true
+    currency?: true
     hostId?: true
     isActive?: true
     createdAt?: true
@@ -4855,6 +5063,7 @@ export namespace Prisma {
     postalCode?: true
     latitude?: true
     longitude?: true
+    currency?: true
     hostId?: true
     isActive?: true
     createdAt?: true
@@ -4874,6 +5083,7 @@ export namespace Prisma {
     postalCode?: true
     latitude?: true
     longitude?: true
+    currency?: true
     hostId?: true
     isActive?: true
     createdAt?: true
@@ -4980,6 +5190,7 @@ export namespace Prisma {
     postalCode: string | null
     latitude: number | null
     longitude: number | null
+    currency: $Enums.Currency
     hostId: string
     isActive: boolean
     createdAt: Date
@@ -5018,6 +5229,7 @@ export namespace Prisma {
     postalCode?: boolean
     latitude?: boolean
     longitude?: boolean
+    currency?: boolean
     hostId?: boolean
     isActive?: boolean
     createdAt?: boolean
@@ -5040,6 +5252,7 @@ export namespace Prisma {
     postalCode?: boolean
     latitude?: boolean
     longitude?: boolean
+    currency?: boolean
     hostId?: boolean
     isActive?: boolean
     createdAt?: boolean
@@ -5060,6 +5273,7 @@ export namespace Prisma {
     postalCode?: boolean
     latitude?: boolean
     longitude?: boolean
+    currency?: boolean
     hostId?: boolean
     isActive?: boolean
     createdAt?: boolean
@@ -5080,13 +5294,14 @@ export namespace Prisma {
     postalCode?: boolean
     latitude?: boolean
     longitude?: boolean
+    currency?: boolean
     hostId?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "hostId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
+  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "currency" | "hostId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
   export type VenueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     spaces?: boolean | Venue$spacesArgs<ExtArgs>
@@ -5118,6 +5333,7 @@ export namespace Prisma {
       postalCode: string | null
       latitude: number | null
       longitude: number | null
+      currency: $Enums.Currency
       hostId: string
       isActive: boolean
       createdAt: Date
@@ -5559,6 +5775,7 @@ export namespace Prisma {
     readonly postalCode: FieldRef<"Venue", 'String'>
     readonly latitude: FieldRef<"Venue", 'Float'>
     readonly longitude: FieldRef<"Venue", 'Float'>
+    readonly currency: FieldRef<"Venue", 'Currency'>
     readonly hostId: FieldRef<"Venue", 'String'>
     readonly isActive: FieldRef<"Venue", 'Boolean'>
     readonly createdAt: FieldRef<"Venue", 'DateTime'>
@@ -6002,6 +6219,1052 @@ export namespace Prisma {
 
 
   /**
+   * Model ExchangeRate
+   */
+
+  export type AggregateExchangeRate = {
+    _count: ExchangeRateCountAggregateOutputType | null
+    _avg: ExchangeRateAvgAggregateOutputType | null
+    _sum: ExchangeRateSumAggregateOutputType | null
+    _min: ExchangeRateMinAggregateOutputType | null
+    _max: ExchangeRateMaxAggregateOutputType | null
+  }
+
+  export type ExchangeRateAvgAggregateOutputType = {
+    id: number | null
+    rate: number | null
+  }
+
+  export type ExchangeRateSumAggregateOutputType = {
+    id: number | null
+    rate: number | null
+  }
+
+  export type ExchangeRateMinAggregateOutputType = {
+    id: number | null
+    fromCurrency: $Enums.Currency | null
+    toCurrency: $Enums.Currency | null
+    rate: number | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type ExchangeRateMaxAggregateOutputType = {
+    id: number | null
+    fromCurrency: $Enums.Currency | null
+    toCurrency: $Enums.Currency | null
+    rate: number | null
+    updatedAt: Date | null
+    updatedBy: string | null
+  }
+
+  export type ExchangeRateCountAggregateOutputType = {
+    id: number
+    fromCurrency: number
+    toCurrency: number
+    rate: number
+    updatedAt: number
+    updatedBy: number
+    _all: number
+  }
+
+
+  export type ExchangeRateAvgAggregateInputType = {
+    id?: true
+    rate?: true
+  }
+
+  export type ExchangeRateSumAggregateInputType = {
+    id?: true
+    rate?: true
+  }
+
+  export type ExchangeRateMinAggregateInputType = {
+    id?: true
+    fromCurrency?: true
+    toCurrency?: true
+    rate?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type ExchangeRateMaxAggregateInputType = {
+    id?: true
+    fromCurrency?: true
+    toCurrency?: true
+    rate?: true
+    updatedAt?: true
+    updatedBy?: true
+  }
+
+  export type ExchangeRateCountAggregateInputType = {
+    id?: true
+    fromCurrency?: true
+    toCurrency?: true
+    rate?: true
+    updatedAt?: true
+    updatedBy?: true
+    _all?: true
+  }
+
+  export type ExchangeRateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExchangeRate to aggregate.
+     */
+    where?: ExchangeRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExchangeRates to fetch.
+     */
+    orderBy?: ExchangeRateOrderByWithRelationInput | ExchangeRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ExchangeRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExchangeRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExchangeRates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ExchangeRates
+    **/
+    _count?: true | ExchangeRateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ExchangeRateAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ExchangeRateSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ExchangeRateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ExchangeRateMaxAggregateInputType
+  }
+
+  export type GetExchangeRateAggregateType<T extends ExchangeRateAggregateArgs> = {
+        [P in keyof T & keyof AggregateExchangeRate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateExchangeRate[P]>
+      : GetScalarType<T[P], AggregateExchangeRate[P]>
+  }
+
+
+
+
+  export type ExchangeRateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ExchangeRateWhereInput
+    orderBy?: ExchangeRateOrderByWithAggregationInput | ExchangeRateOrderByWithAggregationInput[]
+    by: ExchangeRateScalarFieldEnum[] | ExchangeRateScalarFieldEnum
+    having?: ExchangeRateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ExchangeRateCountAggregateInputType | true
+    _avg?: ExchangeRateAvgAggregateInputType
+    _sum?: ExchangeRateSumAggregateInputType
+    _min?: ExchangeRateMinAggregateInputType
+    _max?: ExchangeRateMaxAggregateInputType
+  }
+
+  export type ExchangeRateGroupByOutputType = {
+    id: number
+    fromCurrency: $Enums.Currency
+    toCurrency: $Enums.Currency
+    rate: number
+    updatedAt: Date
+    updatedBy: string | null
+    _count: ExchangeRateCountAggregateOutputType | null
+    _avg: ExchangeRateAvgAggregateOutputType | null
+    _sum: ExchangeRateSumAggregateOutputType | null
+    _min: ExchangeRateMinAggregateOutputType | null
+    _max: ExchangeRateMaxAggregateOutputType | null
+  }
+
+  type GetExchangeRateGroupByPayload<T extends ExchangeRateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ExchangeRateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ExchangeRateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ExchangeRateGroupByOutputType[P]>
+            : GetScalarType<T[P], ExchangeRateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ExchangeRateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+  }, ExtArgs["result"]["exchangeRate"]>
+
+  export type ExchangeRateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+  }, ExtArgs["result"]["exchangeRate"]>
+
+  export type ExchangeRateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+  }, ExtArgs["result"]["exchangeRate"]>
+
+  export type ExchangeRateSelectScalar = {
+    id?: boolean
+    fromCurrency?: boolean
+    toCurrency?: boolean
+    rate?: boolean
+    updatedAt?: boolean
+    updatedBy?: boolean
+  }
+
+  export type ExchangeRateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fromCurrency" | "toCurrency" | "rate" | "updatedAt" | "updatedBy", ExtArgs["result"]["exchangeRate"]>
+
+  export type $ExchangeRatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ExchangeRate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      fromCurrency: $Enums.Currency
+      toCurrency: $Enums.Currency
+      rate: number
+      updatedAt: Date
+      updatedBy: string | null
+    }, ExtArgs["result"]["exchangeRate"]>
+    composites: {}
+  }
+
+  type ExchangeRateGetPayload<S extends boolean | null | undefined | ExchangeRateDefaultArgs> = $Result.GetResult<Prisma.$ExchangeRatePayload, S>
+
+  type ExchangeRateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ExchangeRateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ExchangeRateCountAggregateInputType | true
+    }
+
+  export interface ExchangeRateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ExchangeRate'], meta: { name: 'ExchangeRate' } }
+    /**
+     * Find zero or one ExchangeRate that matches the filter.
+     * @param {ExchangeRateFindUniqueArgs} args - Arguments to find a ExchangeRate
+     * @example
+     * // Get one ExchangeRate
+     * const exchangeRate = await prisma.exchangeRate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ExchangeRateFindUniqueArgs>(args: SelectSubset<T, ExchangeRateFindUniqueArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ExchangeRate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ExchangeRateFindUniqueOrThrowArgs} args - Arguments to find a ExchangeRate
+     * @example
+     * // Get one ExchangeRate
+     * const exchangeRate = await prisma.exchangeRate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ExchangeRateFindUniqueOrThrowArgs>(args: SelectSubset<T, ExchangeRateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExchangeRate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExchangeRateFindFirstArgs} args - Arguments to find a ExchangeRate
+     * @example
+     * // Get one ExchangeRate
+     * const exchangeRate = await prisma.exchangeRate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ExchangeRateFindFirstArgs>(args?: SelectSubset<T, ExchangeRateFindFirstArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ExchangeRate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExchangeRateFindFirstOrThrowArgs} args - Arguments to find a ExchangeRate
+     * @example
+     * // Get one ExchangeRate
+     * const exchangeRate = await prisma.exchangeRate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ExchangeRateFindFirstOrThrowArgs>(args?: SelectSubset<T, ExchangeRateFindFirstOrThrowArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ExchangeRates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExchangeRateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ExchangeRates
+     * const exchangeRates = await prisma.exchangeRate.findMany()
+     * 
+     * // Get first 10 ExchangeRates
+     * const exchangeRates = await prisma.exchangeRate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const exchangeRateWithIdOnly = await prisma.exchangeRate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ExchangeRateFindManyArgs>(args?: SelectSubset<T, ExchangeRateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ExchangeRate.
+     * @param {ExchangeRateCreateArgs} args - Arguments to create a ExchangeRate.
+     * @example
+     * // Create one ExchangeRate
+     * const ExchangeRate = await prisma.exchangeRate.create({
+     *   data: {
+     *     // ... data to create a ExchangeRate
+     *   }
+     * })
+     * 
+     */
+    create<T extends ExchangeRateCreateArgs>(args: SelectSubset<T, ExchangeRateCreateArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ExchangeRates.
+     * @param {ExchangeRateCreateManyArgs} args - Arguments to create many ExchangeRates.
+     * @example
+     * // Create many ExchangeRates
+     * const exchangeRate = await prisma.exchangeRate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ExchangeRateCreateManyArgs>(args?: SelectSubset<T, ExchangeRateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ExchangeRates and returns the data saved in the database.
+     * @param {ExchangeRateCreateManyAndReturnArgs} args - Arguments to create many ExchangeRates.
+     * @example
+     * // Create many ExchangeRates
+     * const exchangeRate = await prisma.exchangeRate.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ExchangeRates and only return the `id`
+     * const exchangeRateWithIdOnly = await prisma.exchangeRate.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ExchangeRateCreateManyAndReturnArgs>(args?: SelectSubset<T, ExchangeRateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ExchangeRate.
+     * @param {ExchangeRateDeleteArgs} args - Arguments to delete one ExchangeRate.
+     * @example
+     * // Delete one ExchangeRate
+     * const ExchangeRate = await prisma.exchangeRate.delete({
+     *   where: {
+     *     // ... filter to delete one ExchangeRate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ExchangeRateDeleteArgs>(args: SelectSubset<T, ExchangeRateDeleteArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ExchangeRate.
+     * @param {ExchangeRateUpdateArgs} args - Arguments to update one ExchangeRate.
+     * @example
+     * // Update one ExchangeRate
+     * const exchangeRate = await prisma.exchangeRate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ExchangeRateUpdateArgs>(args: SelectSubset<T, ExchangeRateUpdateArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ExchangeRates.
+     * @param {ExchangeRateDeleteManyArgs} args - Arguments to filter ExchangeRates to delete.
+     * @example
+     * // Delete a few ExchangeRates
+     * const { count } = await prisma.exchangeRate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ExchangeRateDeleteManyArgs>(args?: SelectSubset<T, ExchangeRateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExchangeRates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExchangeRateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ExchangeRates
+     * const exchangeRate = await prisma.exchangeRate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ExchangeRateUpdateManyArgs>(args: SelectSubset<T, ExchangeRateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ExchangeRates and returns the data updated in the database.
+     * @param {ExchangeRateUpdateManyAndReturnArgs} args - Arguments to update many ExchangeRates.
+     * @example
+     * // Update many ExchangeRates
+     * const exchangeRate = await prisma.exchangeRate.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ExchangeRates and only return the `id`
+     * const exchangeRateWithIdOnly = await prisma.exchangeRate.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ExchangeRateUpdateManyAndReturnArgs>(args: SelectSubset<T, ExchangeRateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ExchangeRate.
+     * @param {ExchangeRateUpsertArgs} args - Arguments to update or create a ExchangeRate.
+     * @example
+     * // Update or create a ExchangeRate
+     * const exchangeRate = await prisma.exchangeRate.upsert({
+     *   create: {
+     *     // ... data to create a ExchangeRate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ExchangeRate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ExchangeRateUpsertArgs>(args: SelectSubset<T, ExchangeRateUpsertArgs<ExtArgs>>): Prisma__ExchangeRateClient<$Result.GetResult<Prisma.$ExchangeRatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ExchangeRates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExchangeRateCountArgs} args - Arguments to filter ExchangeRates to count.
+     * @example
+     * // Count the number of ExchangeRates
+     * const count = await prisma.exchangeRate.count({
+     *   where: {
+     *     // ... the filter for the ExchangeRates we want to count
+     *   }
+     * })
+    **/
+    count<T extends ExchangeRateCountArgs>(
+      args?: Subset<T, ExchangeRateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ExchangeRateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ExchangeRate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExchangeRateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ExchangeRateAggregateArgs>(args: Subset<T, ExchangeRateAggregateArgs>): Prisma.PrismaPromise<GetExchangeRateAggregateType<T>>
+
+    /**
+     * Group by ExchangeRate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ExchangeRateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ExchangeRateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ExchangeRateGroupByArgs['orderBy'] }
+        : { orderBy?: ExchangeRateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ExchangeRateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetExchangeRateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ExchangeRate model
+   */
+  readonly fields: ExchangeRateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ExchangeRate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ExchangeRateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ExchangeRate model
+   */
+  interface ExchangeRateFieldRefs {
+    readonly id: FieldRef<"ExchangeRate", 'Int'>
+    readonly fromCurrency: FieldRef<"ExchangeRate", 'Currency'>
+    readonly toCurrency: FieldRef<"ExchangeRate", 'Currency'>
+    readonly rate: FieldRef<"ExchangeRate", 'Float'>
+    readonly updatedAt: FieldRef<"ExchangeRate", 'DateTime'>
+    readonly updatedBy: FieldRef<"ExchangeRate", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ExchangeRate findUnique
+   */
+  export type ExchangeRateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * Filter, which ExchangeRate to fetch.
+     */
+    where: ExchangeRateWhereUniqueInput
+  }
+
+  /**
+   * ExchangeRate findUniqueOrThrow
+   */
+  export type ExchangeRateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * Filter, which ExchangeRate to fetch.
+     */
+    where: ExchangeRateWhereUniqueInput
+  }
+
+  /**
+   * ExchangeRate findFirst
+   */
+  export type ExchangeRateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * Filter, which ExchangeRate to fetch.
+     */
+    where?: ExchangeRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExchangeRates to fetch.
+     */
+    orderBy?: ExchangeRateOrderByWithRelationInput | ExchangeRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExchangeRates.
+     */
+    cursor?: ExchangeRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExchangeRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExchangeRates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExchangeRates.
+     */
+    distinct?: ExchangeRateScalarFieldEnum | ExchangeRateScalarFieldEnum[]
+  }
+
+  /**
+   * ExchangeRate findFirstOrThrow
+   */
+  export type ExchangeRateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * Filter, which ExchangeRate to fetch.
+     */
+    where?: ExchangeRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExchangeRates to fetch.
+     */
+    orderBy?: ExchangeRateOrderByWithRelationInput | ExchangeRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ExchangeRates.
+     */
+    cursor?: ExchangeRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExchangeRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExchangeRates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ExchangeRates.
+     */
+    distinct?: ExchangeRateScalarFieldEnum | ExchangeRateScalarFieldEnum[]
+  }
+
+  /**
+   * ExchangeRate findMany
+   */
+  export type ExchangeRateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * Filter, which ExchangeRates to fetch.
+     */
+    where?: ExchangeRateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ExchangeRates to fetch.
+     */
+    orderBy?: ExchangeRateOrderByWithRelationInput | ExchangeRateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ExchangeRates.
+     */
+    cursor?: ExchangeRateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ExchangeRates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ExchangeRates.
+     */
+    skip?: number
+    distinct?: ExchangeRateScalarFieldEnum | ExchangeRateScalarFieldEnum[]
+  }
+
+  /**
+   * ExchangeRate create
+   */
+  export type ExchangeRateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ExchangeRate.
+     */
+    data: XOR<ExchangeRateCreateInput, ExchangeRateUncheckedCreateInput>
+  }
+
+  /**
+   * ExchangeRate createMany
+   */
+  export type ExchangeRateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ExchangeRates.
+     */
+    data: ExchangeRateCreateManyInput | ExchangeRateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ExchangeRate createManyAndReturn
+   */
+  export type ExchangeRateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * The data used to create many ExchangeRates.
+     */
+    data: ExchangeRateCreateManyInput | ExchangeRateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ExchangeRate update
+   */
+  export type ExchangeRateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ExchangeRate.
+     */
+    data: XOR<ExchangeRateUpdateInput, ExchangeRateUncheckedUpdateInput>
+    /**
+     * Choose, which ExchangeRate to update.
+     */
+    where: ExchangeRateWhereUniqueInput
+  }
+
+  /**
+   * ExchangeRate updateMany
+   */
+  export type ExchangeRateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ExchangeRates.
+     */
+    data: XOR<ExchangeRateUpdateManyMutationInput, ExchangeRateUncheckedUpdateManyInput>
+    /**
+     * Filter which ExchangeRates to update
+     */
+    where?: ExchangeRateWhereInput
+    /**
+     * Limit how many ExchangeRates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExchangeRate updateManyAndReturn
+   */
+  export type ExchangeRateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * The data used to update ExchangeRates.
+     */
+    data: XOR<ExchangeRateUpdateManyMutationInput, ExchangeRateUncheckedUpdateManyInput>
+    /**
+     * Filter which ExchangeRates to update
+     */
+    where?: ExchangeRateWhereInput
+    /**
+     * Limit how many ExchangeRates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExchangeRate upsert
+   */
+  export type ExchangeRateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ExchangeRate to update in case it exists.
+     */
+    where: ExchangeRateWhereUniqueInput
+    /**
+     * In case the ExchangeRate found by the `where` argument doesn't exist, create a new ExchangeRate with this data.
+     */
+    create: XOR<ExchangeRateCreateInput, ExchangeRateUncheckedCreateInput>
+    /**
+     * In case the ExchangeRate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ExchangeRateUpdateInput, ExchangeRateUncheckedUpdateInput>
+  }
+
+  /**
+   * ExchangeRate delete
+   */
+  export type ExchangeRateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+    /**
+     * Filter which ExchangeRate to delete.
+     */
+    where: ExchangeRateWhereUniqueInput
+  }
+
+  /**
+   * ExchangeRate deleteMany
+   */
+  export type ExchangeRateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ExchangeRates to delete
+     */
+    where?: ExchangeRateWhereInput
+    /**
+     * Limit how many ExchangeRates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ExchangeRate without action
+   */
+  export type ExchangeRateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ExchangeRate
+     */
+    select?: ExchangeRateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ExchangeRate
+     */
+    omit?: ExchangeRateOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model Space
    */
 
@@ -6049,6 +7312,7 @@ export namespace Prisma {
     pricePerHour: number | null
     pricePerDay: number | null
     cleaningFee: number | null
+    currency: $Enums.Currency | null
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -6080,6 +7344,7 @@ export namespace Prisma {
     pricePerHour: number | null
     pricePerDay: number | null
     cleaningFee: number | null
+    currency: $Enums.Currency | null
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -6111,6 +7376,7 @@ export namespace Prisma {
     pricePerHour: number
     pricePerDay: number
     cleaningFee: number
+    currency: number
     capacity: number
     minBookingHours: number
     maxBookingHours: number
@@ -6171,6 +7437,7 @@ export namespace Prisma {
     pricePerHour?: true
     pricePerDay?: true
     cleaningFee?: true
+    currency?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -6202,6 +7469,7 @@ export namespace Prisma {
     pricePerHour?: true
     pricePerDay?: true
     cleaningFee?: true
+    currency?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -6233,6 +7501,7 @@ export namespace Prisma {
     pricePerHour?: true
     pricePerDay?: true
     cleaningFee?: true
+    currency?: true
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
@@ -6352,6 +7621,7 @@ export namespace Prisma {
     pricePerHour: number | null
     pricePerDay: number | null
     cleaningFee: number
+    currency: $Enums.Currency
     capacity: number
     minBookingHours: number | null
     maxBookingHours: number | null
@@ -6403,6 +7673,7 @@ export namespace Prisma {
     pricePerHour?: boolean
     pricePerDay?: boolean
     cleaningFee?: boolean
+    currency?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -6427,6 +7698,7 @@ export namespace Prisma {
     venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
     amenities?: boolean | Space$amenitiesArgs<ExtArgs>
+    pricingTiers?: boolean | Space$pricingTiersArgs<ExtArgs>
     availability?: boolean | Space$availabilityArgs<ExtArgs>
     blockedDates?: boolean | Space$blockedDatesArgs<ExtArgs>
     bookings?: boolean | Space$bookingsArgs<ExtArgs>
@@ -6444,6 +7716,7 @@ export namespace Prisma {
     pricePerHour?: boolean
     pricePerDay?: boolean
     cleaningFee?: boolean
+    currency?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -6479,6 +7752,7 @@ export namespace Prisma {
     pricePerHour?: boolean
     pricePerDay?: boolean
     cleaningFee?: boolean
+    currency?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -6514,6 +7788,7 @@ export namespace Prisma {
     pricePerHour?: boolean
     pricePerDay?: boolean
     cleaningFee?: boolean
+    currency?: boolean
     capacity?: boolean
     minBookingHours?: boolean
     maxBookingHours?: boolean
@@ -6536,12 +7811,13 @@ export namespace Prisma {
     categorySlug?: boolean
   }
 
-  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
+  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "currency" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
   export type SpaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     venue?: boolean | VenueDefaultArgs<ExtArgs>
     category?: boolean | SpaceCategoryDefaultArgs<ExtArgs>
     amenities?: boolean | Space$amenitiesArgs<ExtArgs>
+    pricingTiers?: boolean | Space$pricingTiersArgs<ExtArgs>
     availability?: boolean | Space$availabilityArgs<ExtArgs>
     blockedDates?: boolean | Space$blockedDatesArgs<ExtArgs>
     bookings?: boolean | Space$bookingsArgs<ExtArgs>
@@ -6566,6 +7842,7 @@ export namespace Prisma {
       venue: Prisma.$VenuePayload<ExtArgs>
       category: Prisma.$SpaceCategoryPayload<ExtArgs>
       amenities: Prisma.$SpaceAmenityPayload<ExtArgs>[]
+      pricingTiers: Prisma.$PricingTierPayload<ExtArgs>[]
       availability: Prisma.$AvailabilityPayload<ExtArgs>[]
       blockedDates: Prisma.$BlockedDatePayload<ExtArgs>[]
       bookings: Prisma.$BookingPayload<ExtArgs>[]
@@ -6581,6 +7858,7 @@ export namespace Prisma {
       pricePerHour: number | null
       pricePerDay: number | null
       cleaningFee: number
+      currency: $Enums.Currency
       capacity: number
       minBookingHours: number | null
       maxBookingHours: number | null
@@ -6999,6 +8277,7 @@ export namespace Prisma {
     venue<T extends VenueDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VenueDefaultArgs<ExtArgs>>): Prisma__VenueClient<$Result.GetResult<Prisma.$VenuePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     category<T extends SpaceCategoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpaceCategoryDefaultArgs<ExtArgs>>): Prisma__SpaceCategoryClient<$Result.GetResult<Prisma.$SpaceCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     amenities<T extends Space$amenitiesArgs<ExtArgs> = {}>(args?: Subset<T, Space$amenitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SpaceAmenityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pricingTiers<T extends Space$pricingTiersArgs<ExtArgs> = {}>(args?: Subset<T, Space$pricingTiersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     availability<T extends Space$availabilityArgs<ExtArgs> = {}>(args?: Subset<T, Space$availabilityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AvailabilityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     blockedDates<T extends Space$blockedDatesArgs<ExtArgs> = {}>(args?: Subset<T, Space$blockedDatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BlockedDatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bookings<T extends Space$bookingsArgs<ExtArgs> = {}>(args?: Subset<T, Space$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7041,6 +8320,7 @@ export namespace Prisma {
     readonly pricePerHour: FieldRef<"Space", 'Float'>
     readonly pricePerDay: FieldRef<"Space", 'Float'>
     readonly cleaningFee: FieldRef<"Space", 'Float'>
+    readonly currency: FieldRef<"Space", 'Currency'>
     readonly capacity: FieldRef<"Space", 'Int'>
     readonly minBookingHours: FieldRef<"Space", 'Int'>
     readonly maxBookingHours: FieldRef<"Space", 'Int'>
@@ -7478,6 +8758,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: SpaceAmenityScalarFieldEnum | SpaceAmenityScalarFieldEnum[]
+  }
+
+  /**
+   * Space.pricingTiers
+   */
+  export type Space$pricingTiersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    where?: PricingTierWhereInput
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    cursor?: PricingTierWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PricingTierScalarFieldEnum | PricingTierScalarFieldEnum[]
   }
 
   /**
@@ -12016,6 +13320,1110 @@ export namespace Prisma {
 
 
   /**
+   * Model PricingTier
+   */
+
+  export type AggregatePricingTier = {
+    _count: PricingTierCountAggregateOutputType | null
+    _avg: PricingTierAvgAggregateOutputType | null
+    _sum: PricingTierSumAggregateOutputType | null
+    _min: PricingTierMinAggregateOutputType | null
+    _max: PricingTierMaxAggregateOutputType | null
+  }
+
+  export type PricingTierAvgAggregateOutputType = {
+    id: number | null
+    spaceId: number | null
+    minutes: number | null
+    price: number | null
+  }
+
+  export type PricingTierSumAggregateOutputType = {
+    id: number | null
+    spaceId: number | null
+    minutes: number | null
+    price: number | null
+  }
+
+  export type PricingTierMinAggregateOutputType = {
+    id: number | null
+    spaceId: number | null
+    minutes: number | null
+    label: string | null
+    price: number | null
+  }
+
+  export type PricingTierMaxAggregateOutputType = {
+    id: number | null
+    spaceId: number | null
+    minutes: number | null
+    label: string | null
+    price: number | null
+  }
+
+  export type PricingTierCountAggregateOutputType = {
+    id: number
+    spaceId: number
+    minutes: number
+    label: number
+    price: number
+    _all: number
+  }
+
+
+  export type PricingTierAvgAggregateInputType = {
+    id?: true
+    spaceId?: true
+    minutes?: true
+    price?: true
+  }
+
+  export type PricingTierSumAggregateInputType = {
+    id?: true
+    spaceId?: true
+    minutes?: true
+    price?: true
+  }
+
+  export type PricingTierMinAggregateInputType = {
+    id?: true
+    spaceId?: true
+    minutes?: true
+    label?: true
+    price?: true
+  }
+
+  export type PricingTierMaxAggregateInputType = {
+    id?: true
+    spaceId?: true
+    minutes?: true
+    label?: true
+    price?: true
+  }
+
+  export type PricingTierCountAggregateInputType = {
+    id?: true
+    spaceId?: true
+    minutes?: true
+    label?: true
+    price?: true
+    _all?: true
+  }
+
+  export type PricingTierAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PricingTier to aggregate.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PricingTiers
+    **/
+    _count?: true | PricingTierCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PricingTierAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PricingTierSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PricingTierMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PricingTierMaxAggregateInputType
+  }
+
+  export type GetPricingTierAggregateType<T extends PricingTierAggregateArgs> = {
+        [P in keyof T & keyof AggregatePricingTier]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePricingTier[P]>
+      : GetScalarType<T[P], AggregatePricingTier[P]>
+  }
+
+
+
+
+  export type PricingTierGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PricingTierWhereInput
+    orderBy?: PricingTierOrderByWithAggregationInput | PricingTierOrderByWithAggregationInput[]
+    by: PricingTierScalarFieldEnum[] | PricingTierScalarFieldEnum
+    having?: PricingTierScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PricingTierCountAggregateInputType | true
+    _avg?: PricingTierAvgAggregateInputType
+    _sum?: PricingTierSumAggregateInputType
+    _min?: PricingTierMinAggregateInputType
+    _max?: PricingTierMaxAggregateInputType
+  }
+
+  export type PricingTierGroupByOutputType = {
+    id: number
+    spaceId: number
+    minutes: number
+    label: string
+    price: number
+    _count: PricingTierCountAggregateOutputType | null
+    _avg: PricingTierAvgAggregateOutputType | null
+    _sum: PricingTierSumAggregateOutputType | null
+    _min: PricingTierMinAggregateOutputType | null
+    _max: PricingTierMaxAggregateOutputType | null
+  }
+
+  type GetPricingTierGroupByPayload<T extends PricingTierGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PricingTierGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PricingTierGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PricingTierGroupByOutputType[P]>
+            : GetScalarType<T[P], PricingTierGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PricingTierSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    spaceId?: boolean
+    minutes?: boolean
+    label?: boolean
+    price?: boolean
+    space?: boolean | SpaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pricingTier"]>
+
+  export type PricingTierSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    spaceId?: boolean
+    minutes?: boolean
+    label?: boolean
+    price?: boolean
+    space?: boolean | SpaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pricingTier"]>
+
+  export type PricingTierSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    spaceId?: boolean
+    minutes?: boolean
+    label?: boolean
+    price?: boolean
+    space?: boolean | SpaceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pricingTier"]>
+
+  export type PricingTierSelectScalar = {
+    id?: boolean
+    spaceId?: boolean
+    minutes?: boolean
+    label?: boolean
+    price?: boolean
+  }
+
+  export type PricingTierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "spaceId" | "minutes" | "label" | "price", ExtArgs["result"]["pricingTier"]>
+  export type PricingTierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    space?: boolean | SpaceDefaultArgs<ExtArgs>
+  }
+  export type PricingTierIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    space?: boolean | SpaceDefaultArgs<ExtArgs>
+  }
+  export type PricingTierIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    space?: boolean | SpaceDefaultArgs<ExtArgs>
+  }
+
+  export type $PricingTierPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PricingTier"
+    objects: {
+      space: Prisma.$SpacePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      spaceId: number
+      minutes: number
+      label: string
+      price: number
+    }, ExtArgs["result"]["pricingTier"]>
+    composites: {}
+  }
+
+  type PricingTierGetPayload<S extends boolean | null | undefined | PricingTierDefaultArgs> = $Result.GetResult<Prisma.$PricingTierPayload, S>
+
+  type PricingTierCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PricingTierFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PricingTierCountAggregateInputType | true
+    }
+
+  export interface PricingTierDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PricingTier'], meta: { name: 'PricingTier' } }
+    /**
+     * Find zero or one PricingTier that matches the filter.
+     * @param {PricingTierFindUniqueArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PricingTierFindUniqueArgs>(args: SelectSubset<T, PricingTierFindUniqueArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PricingTier that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PricingTierFindUniqueOrThrowArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PricingTierFindUniqueOrThrowArgs>(args: SelectSubset<T, PricingTierFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PricingTier that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierFindFirstArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PricingTierFindFirstArgs>(args?: SelectSubset<T, PricingTierFindFirstArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PricingTier that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierFindFirstOrThrowArgs} args - Arguments to find a PricingTier
+     * @example
+     * // Get one PricingTier
+     * const pricingTier = await prisma.pricingTier.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PricingTierFindFirstOrThrowArgs>(args?: SelectSubset<T, PricingTierFindFirstOrThrowArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PricingTiers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PricingTiers
+     * const pricingTiers = await prisma.pricingTier.findMany()
+     * 
+     * // Get first 10 PricingTiers
+     * const pricingTiers = await prisma.pricingTier.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pricingTierWithIdOnly = await prisma.pricingTier.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PricingTierFindManyArgs>(args?: SelectSubset<T, PricingTierFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PricingTier.
+     * @param {PricingTierCreateArgs} args - Arguments to create a PricingTier.
+     * @example
+     * // Create one PricingTier
+     * const PricingTier = await prisma.pricingTier.create({
+     *   data: {
+     *     // ... data to create a PricingTier
+     *   }
+     * })
+     * 
+     */
+    create<T extends PricingTierCreateArgs>(args: SelectSubset<T, PricingTierCreateArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PricingTiers.
+     * @param {PricingTierCreateManyArgs} args - Arguments to create many PricingTiers.
+     * @example
+     * // Create many PricingTiers
+     * const pricingTier = await prisma.pricingTier.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PricingTierCreateManyArgs>(args?: SelectSubset<T, PricingTierCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PricingTiers and returns the data saved in the database.
+     * @param {PricingTierCreateManyAndReturnArgs} args - Arguments to create many PricingTiers.
+     * @example
+     * // Create many PricingTiers
+     * const pricingTier = await prisma.pricingTier.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PricingTiers and only return the `id`
+     * const pricingTierWithIdOnly = await prisma.pricingTier.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PricingTierCreateManyAndReturnArgs>(args?: SelectSubset<T, PricingTierCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PricingTier.
+     * @param {PricingTierDeleteArgs} args - Arguments to delete one PricingTier.
+     * @example
+     * // Delete one PricingTier
+     * const PricingTier = await prisma.pricingTier.delete({
+     *   where: {
+     *     // ... filter to delete one PricingTier
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PricingTierDeleteArgs>(args: SelectSubset<T, PricingTierDeleteArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PricingTier.
+     * @param {PricingTierUpdateArgs} args - Arguments to update one PricingTier.
+     * @example
+     * // Update one PricingTier
+     * const pricingTier = await prisma.pricingTier.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PricingTierUpdateArgs>(args: SelectSubset<T, PricingTierUpdateArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PricingTiers.
+     * @param {PricingTierDeleteManyArgs} args - Arguments to filter PricingTiers to delete.
+     * @example
+     * // Delete a few PricingTiers
+     * const { count } = await prisma.pricingTier.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PricingTierDeleteManyArgs>(args?: SelectSubset<T, PricingTierDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PricingTiers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PricingTiers
+     * const pricingTier = await prisma.pricingTier.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PricingTierUpdateManyArgs>(args: SelectSubset<T, PricingTierUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PricingTiers and returns the data updated in the database.
+     * @param {PricingTierUpdateManyAndReturnArgs} args - Arguments to update many PricingTiers.
+     * @example
+     * // Update many PricingTiers
+     * const pricingTier = await prisma.pricingTier.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PricingTiers and only return the `id`
+     * const pricingTierWithIdOnly = await prisma.pricingTier.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PricingTierUpdateManyAndReturnArgs>(args: SelectSubset<T, PricingTierUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PricingTier.
+     * @param {PricingTierUpsertArgs} args - Arguments to update or create a PricingTier.
+     * @example
+     * // Update or create a PricingTier
+     * const pricingTier = await prisma.pricingTier.upsert({
+     *   create: {
+     *     // ... data to create a PricingTier
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PricingTier we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PricingTierUpsertArgs>(args: SelectSubset<T, PricingTierUpsertArgs<ExtArgs>>): Prisma__PricingTierClient<$Result.GetResult<Prisma.$PricingTierPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PricingTiers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierCountArgs} args - Arguments to filter PricingTiers to count.
+     * @example
+     * // Count the number of PricingTiers
+     * const count = await prisma.pricingTier.count({
+     *   where: {
+     *     // ... the filter for the PricingTiers we want to count
+     *   }
+     * })
+    **/
+    count<T extends PricingTierCountArgs>(
+      args?: Subset<T, PricingTierCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PricingTierCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PricingTier.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PricingTierAggregateArgs>(args: Subset<T, PricingTierAggregateArgs>): Prisma.PrismaPromise<GetPricingTierAggregateType<T>>
+
+    /**
+     * Group by PricingTier.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PricingTierGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PricingTierGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PricingTierGroupByArgs['orderBy'] }
+        : { orderBy?: PricingTierGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PricingTierGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPricingTierGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PricingTier model
+   */
+  readonly fields: PricingTierFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PricingTier.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PricingTierClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    space<T extends SpaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SpaceDefaultArgs<ExtArgs>>): Prisma__SpaceClient<$Result.GetResult<Prisma.$SpacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PricingTier model
+   */
+  interface PricingTierFieldRefs {
+    readonly id: FieldRef<"PricingTier", 'Int'>
+    readonly spaceId: FieldRef<"PricingTier", 'Int'>
+    readonly minutes: FieldRef<"PricingTier", 'Int'>
+    readonly label: FieldRef<"PricingTier", 'String'>
+    readonly price: FieldRef<"PricingTier", 'Float'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PricingTier findUnique
+   */
+  export type PricingTierFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier findUniqueOrThrow
+   */
+  export type PricingTierFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier findFirst
+   */
+  export type PricingTierFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PricingTiers.
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PricingTiers.
+     */
+    distinct?: PricingTierScalarFieldEnum | PricingTierScalarFieldEnum[]
+  }
+
+  /**
+   * PricingTier findFirstOrThrow
+   */
+  export type PricingTierFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * Filter, which PricingTier to fetch.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PricingTiers.
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PricingTiers.
+     */
+    distinct?: PricingTierScalarFieldEnum | PricingTierScalarFieldEnum[]
+  }
+
+  /**
+   * PricingTier findMany
+   */
+  export type PricingTierFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * Filter, which PricingTiers to fetch.
+     */
+    where?: PricingTierWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PricingTiers to fetch.
+     */
+    orderBy?: PricingTierOrderByWithRelationInput | PricingTierOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PricingTiers.
+     */
+    cursor?: PricingTierWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PricingTiers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PricingTiers.
+     */
+    skip?: number
+    distinct?: PricingTierScalarFieldEnum | PricingTierScalarFieldEnum[]
+  }
+
+  /**
+   * PricingTier create
+   */
+  export type PricingTierCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PricingTier.
+     */
+    data: XOR<PricingTierCreateInput, PricingTierUncheckedCreateInput>
+  }
+
+  /**
+   * PricingTier createMany
+   */
+  export type PricingTierCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PricingTiers.
+     */
+    data: PricingTierCreateManyInput | PricingTierCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PricingTier createManyAndReturn
+   */
+  export type PricingTierCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * The data used to create many PricingTiers.
+     */
+    data: PricingTierCreateManyInput | PricingTierCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PricingTier update
+   */
+  export type PricingTierUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PricingTier.
+     */
+    data: XOR<PricingTierUpdateInput, PricingTierUncheckedUpdateInput>
+    /**
+     * Choose, which PricingTier to update.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier updateMany
+   */
+  export type PricingTierUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PricingTiers.
+     */
+    data: XOR<PricingTierUpdateManyMutationInput, PricingTierUncheckedUpdateManyInput>
+    /**
+     * Filter which PricingTiers to update
+     */
+    where?: PricingTierWhereInput
+    /**
+     * Limit how many PricingTiers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PricingTier updateManyAndReturn
+   */
+  export type PricingTierUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * The data used to update PricingTiers.
+     */
+    data: XOR<PricingTierUpdateManyMutationInput, PricingTierUncheckedUpdateManyInput>
+    /**
+     * Filter which PricingTiers to update
+     */
+    where?: PricingTierWhereInput
+    /**
+     * Limit how many PricingTiers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PricingTier upsert
+   */
+  export type PricingTierUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PricingTier to update in case it exists.
+     */
+    where: PricingTierWhereUniqueInput
+    /**
+     * In case the PricingTier found by the `where` argument doesn't exist, create a new PricingTier with this data.
+     */
+    create: XOR<PricingTierCreateInput, PricingTierUncheckedCreateInput>
+    /**
+     * In case the PricingTier was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PricingTierUpdateInput, PricingTierUncheckedUpdateInput>
+  }
+
+  /**
+   * PricingTier delete
+   */
+  export type PricingTierDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+    /**
+     * Filter which PricingTier to delete.
+     */
+    where: PricingTierWhereUniqueInput
+  }
+
+  /**
+   * PricingTier deleteMany
+   */
+  export type PricingTierDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PricingTiers to delete
+     */
+    where?: PricingTierWhereInput
+    /**
+     * Limit how many PricingTiers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PricingTier without action
+   */
+  export type PricingTierDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PricingTier
+     */
+    select?: PricingTierSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PricingTier
+     */
+    omit?: PricingTierOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PricingTierInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Availability
    */
 
@@ -14230,6 +16638,7 @@ export namespace Prisma {
     cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
+    exchangeRate: number | null
   }
 
   export type BookingSumAggregateOutputType = {
@@ -14239,6 +16648,7 @@ export namespace Prisma {
     cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
+    exchangeRate: number | null
   }
 
   export type BookingMinAggregateOutputType = {
@@ -14256,6 +16666,8 @@ export namespace Prisma {
     cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
+    currency: $Enums.Currency | null
+    exchangeRate: number | null
     status: $Enums.BookingStatus | null
     guestMessage: string | null
     hostMessage: string | null
@@ -14283,6 +16695,8 @@ export namespace Prisma {
     cleaningFee: number | null
     serviceFee: number | null
     totalAmount: number | null
+    currency: $Enums.Currency | null
+    exchangeRate: number | null
     status: $Enums.BookingStatus | null
     guestMessage: string | null
     hostMessage: string | null
@@ -14310,6 +16724,8 @@ export namespace Prisma {
     cleaningFee: number
     serviceFee: number
     totalAmount: number
+    currency: number
+    exchangeRate: number
     status: number
     guestMessage: number
     hostMessage: number
@@ -14331,6 +16747,7 @@ export namespace Prisma {
     cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
+    exchangeRate?: true
   }
 
   export type BookingSumAggregateInputType = {
@@ -14340,6 +16757,7 @@ export namespace Prisma {
     cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
+    exchangeRate?: true
   }
 
   export type BookingMinAggregateInputType = {
@@ -14357,6 +16775,8 @@ export namespace Prisma {
     cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
+    currency?: true
+    exchangeRate?: true
     status?: true
     guestMessage?: true
     hostMessage?: true
@@ -14384,6 +16804,8 @@ export namespace Prisma {
     cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
+    currency?: true
+    exchangeRate?: true
     status?: true
     guestMessage?: true
     hostMessage?: true
@@ -14411,6 +16833,8 @@ export namespace Prisma {
     cleaningFee?: true
     serviceFee?: true
     totalAmount?: true
+    currency?: true
+    exchangeRate?: true
     status?: true
     guestMessage?: true
     hostMessage?: true
@@ -14525,6 +16949,8 @@ export namespace Prisma {
     cleaningFee: number
     serviceFee: number
     totalAmount: number
+    currency: $Enums.Currency
+    exchangeRate: number
     status: $Enums.BookingStatus
     guestMessage: string | null
     hostMessage: string | null
@@ -14571,6 +16997,8 @@ export namespace Prisma {
     cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
+    currency?: boolean
+    exchangeRate?: boolean
     status?: boolean
     guestMessage?: boolean
     hostMessage?: boolean
@@ -14602,6 +17030,8 @@ export namespace Prisma {
     cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
+    currency?: boolean
+    exchangeRate?: boolean
     status?: boolean
     guestMessage?: boolean
     hostMessage?: boolean
@@ -14632,6 +17062,8 @@ export namespace Prisma {
     cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
+    currency?: boolean
+    exchangeRate?: boolean
     status?: boolean
     guestMessage?: boolean
     hostMessage?: boolean
@@ -14662,6 +17094,8 @@ export namespace Prisma {
     cleaningFee?: boolean
     serviceFee?: boolean
     totalAmount?: boolean
+    currency?: boolean
+    exchangeRate?: boolean
     status?: boolean
     guestMessage?: boolean
     hostMessage?: boolean
@@ -14674,7 +17108,7 @@ export namespace Prisma {
     completedAt?: boolean
   }
 
-  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "guestId" | "hostId" | "spaceId" | "startDate" | "endDate" | "startTime" | "endTime" | "guests" | "isHourly" | "subtotal" | "cleaningFee" | "serviceFee" | "totalAmount" | "status" | "guestMessage" | "hostMessage" | "cancelledBy" | "cancellationReason" | "createdAt" | "updatedAt" | "approvedAt" | "cancelledAt" | "completedAt", ExtArgs["result"]["booking"]>
+  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "guestId" | "hostId" | "spaceId" | "startDate" | "endDate" | "startTime" | "endTime" | "guests" | "isHourly" | "subtotal" | "cleaningFee" | "serviceFee" | "totalAmount" | "currency" | "exchangeRate" | "status" | "guestMessage" | "hostMessage" | "cancelledBy" | "cancellationReason" | "createdAt" | "updatedAt" | "approvedAt" | "cancelledAt" | "completedAt", ExtArgs["result"]["booking"]>
   export type BookingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     guest?: boolean | UserDefaultArgs<ExtArgs>
     host?: boolean | UserDefaultArgs<ExtArgs>
@@ -14715,6 +17149,8 @@ export namespace Prisma {
       cleaningFee: number
       serviceFee: number
       totalAmount: number
+      currency: $Enums.Currency
+      exchangeRate: number
       status: $Enums.BookingStatus
       guestMessage: string | null
       hostMessage: string | null
@@ -15166,6 +17602,8 @@ export namespace Prisma {
     readonly cleaningFee: FieldRef<"Booking", 'Float'>
     readonly serviceFee: FieldRef<"Booking", 'Float'>
     readonly totalAmount: FieldRef<"Booking", 'Float'>
+    readonly currency: FieldRef<"Booking", 'Currency'>
+    readonly exchangeRate: FieldRef<"Booking", 'Float'>
     readonly status: FieldRef<"Booking", 'BookingStatus'>
     readonly guestMessage: FieldRef<"Booking", 'String'>
     readonly hostMessage: FieldRef<"Booking", 'String'>
@@ -18009,6 +20447,7 @@ export namespace Prisma {
     postalCode: 'postalCode',
     latitude: 'latitude',
     longitude: 'longitude',
+    currency: 'currency',
     hostId: 'hostId',
     isActive: 'isActive',
     createdAt: 'createdAt',
@@ -18016,6 +20455,18 @@ export namespace Prisma {
   };
 
   export type VenueScalarFieldEnum = (typeof VenueScalarFieldEnum)[keyof typeof VenueScalarFieldEnum]
+
+
+  export const ExchangeRateScalarFieldEnum: {
+    id: 'id',
+    fromCurrency: 'fromCurrency',
+    toCurrency: 'toCurrency',
+    rate: 'rate',
+    updatedAt: 'updatedAt',
+    updatedBy: 'updatedBy'
+  };
+
+  export type ExchangeRateScalarFieldEnum = (typeof ExchangeRateScalarFieldEnum)[keyof typeof ExchangeRateScalarFieldEnum]
 
 
   export const SpaceScalarFieldEnum: {
@@ -18028,6 +20479,7 @@ export namespace Prisma {
     pricePerHour: 'pricePerHour',
     pricePerDay: 'pricePerDay',
     cleaningFee: 'cleaningFee',
+    currency: 'currency',
     capacity: 'capacity',
     minBookingHours: 'minBookingHours',
     maxBookingHours: 'maxBookingHours',
@@ -18095,6 +20547,17 @@ export namespace Prisma {
   export type SpaceAmenityScalarFieldEnum = (typeof SpaceAmenityScalarFieldEnum)[keyof typeof SpaceAmenityScalarFieldEnum]
 
 
+  export const PricingTierScalarFieldEnum: {
+    id: 'id',
+    spaceId: 'spaceId',
+    minutes: 'minutes',
+    label: 'label',
+    price: 'price'
+  };
+
+  export type PricingTierScalarFieldEnum = (typeof PricingTierScalarFieldEnum)[keyof typeof PricingTierScalarFieldEnum]
+
+
   export const AvailabilityScalarFieldEnum: {
     id: 'id',
     spaceId: 'spaceId',
@@ -18132,6 +20595,8 @@ export namespace Prisma {
     cleaningFee: 'cleaningFee',
     serviceFee: 'serviceFee',
     totalAmount: 'totalAmount',
+    currency: 'currency',
+    exchangeRate: 'exchangeRate',
     status: 'status',
     guestMessage: 'guestMessage',
     hostMessage: 'hostMessage',
@@ -18312,6 +20777,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Currency'
+   */
+  export type EnumCurrencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Currency'>
+    
+
+
+  /**
+   * Reference to a field of type 'Currency[]'
+   */
+  export type ListEnumCurrencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Currency[]'>
     
 
 
@@ -18577,6 +21056,7 @@ export namespace Prisma {
     postalCode?: StringNullableFilter<"Venue"> | string | null
     latitude?: FloatNullableFilter<"Venue"> | number | null
     longitude?: FloatNullableFilter<"Venue"> | number | null
+    currency?: EnumCurrencyFilter<"Venue"> | $Enums.Currency
     hostId?: StringFilter<"Venue"> | string
     isActive?: BoolFilter<"Venue"> | boolean
     createdAt?: DateTimeFilter<"Venue"> | Date | string
@@ -18598,6 +21078,7 @@ export namespace Prisma {
     postalCode?: SortOrderInput | SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
+    currency?: SortOrder
     hostId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -18622,6 +21103,7 @@ export namespace Prisma {
     postalCode?: StringNullableFilter<"Venue"> | string | null
     latitude?: FloatNullableFilter<"Venue"> | number | null
     longitude?: FloatNullableFilter<"Venue"> | number | null
+    currency?: EnumCurrencyFilter<"Venue"> | $Enums.Currency
     hostId?: StringFilter<"Venue"> | string
     isActive?: BoolFilter<"Venue"> | boolean
     createdAt?: DateTimeFilter<"Venue"> | Date | string
@@ -18643,6 +21125,7 @@ export namespace Prisma {
     postalCode?: SortOrderInput | SortOrder
     latitude?: SortOrderInput | SortOrder
     longitude?: SortOrderInput | SortOrder
+    currency?: SortOrder
     hostId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -18670,10 +21153,71 @@ export namespace Prisma {
     postalCode?: StringNullableWithAggregatesFilter<"Venue"> | string | null
     latitude?: FloatNullableWithAggregatesFilter<"Venue"> | number | null
     longitude?: FloatNullableWithAggregatesFilter<"Venue"> | number | null
+    currency?: EnumCurrencyWithAggregatesFilter<"Venue"> | $Enums.Currency
     hostId?: StringWithAggregatesFilter<"Venue"> | string
     isActive?: BoolWithAggregatesFilter<"Venue"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Venue"> | Date | string
+  }
+
+  export type ExchangeRateWhereInput = {
+    AND?: ExchangeRateWhereInput | ExchangeRateWhereInput[]
+    OR?: ExchangeRateWhereInput[]
+    NOT?: ExchangeRateWhereInput | ExchangeRateWhereInput[]
+    id?: IntFilter<"ExchangeRate"> | number
+    fromCurrency?: EnumCurrencyFilter<"ExchangeRate"> | $Enums.Currency
+    toCurrency?: EnumCurrencyFilter<"ExchangeRate"> | $Enums.Currency
+    rate?: FloatFilter<"ExchangeRate"> | number
+    updatedAt?: DateTimeFilter<"ExchangeRate"> | Date | string
+    updatedBy?: StringNullableFilter<"ExchangeRate"> | string | null
+  }
+
+  export type ExchangeRateOrderByWithRelationInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+  }
+
+  export type ExchangeRateWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    fromCurrency_toCurrency?: ExchangeRateFromCurrencyToCurrencyCompoundUniqueInput
+    AND?: ExchangeRateWhereInput | ExchangeRateWhereInput[]
+    OR?: ExchangeRateWhereInput[]
+    NOT?: ExchangeRateWhereInput | ExchangeRateWhereInput[]
+    fromCurrency?: EnumCurrencyFilter<"ExchangeRate"> | $Enums.Currency
+    toCurrency?: EnumCurrencyFilter<"ExchangeRate"> | $Enums.Currency
+    rate?: FloatFilter<"ExchangeRate"> | number
+    updatedAt?: DateTimeFilter<"ExchangeRate"> | Date | string
+    updatedBy?: StringNullableFilter<"ExchangeRate"> | string | null
+  }, "id" | "fromCurrency_toCurrency">
+
+  export type ExchangeRateOrderByWithAggregationInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrderInput | SortOrder
+    _count?: ExchangeRateCountOrderByAggregateInput
+    _avg?: ExchangeRateAvgOrderByAggregateInput
+    _max?: ExchangeRateMaxOrderByAggregateInput
+    _min?: ExchangeRateMinOrderByAggregateInput
+    _sum?: ExchangeRateSumOrderByAggregateInput
+  }
+
+  export type ExchangeRateScalarWhereWithAggregatesInput = {
+    AND?: ExchangeRateScalarWhereWithAggregatesInput | ExchangeRateScalarWhereWithAggregatesInput[]
+    OR?: ExchangeRateScalarWhereWithAggregatesInput[]
+    NOT?: ExchangeRateScalarWhereWithAggregatesInput | ExchangeRateScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ExchangeRate"> | number
+    fromCurrency?: EnumCurrencyWithAggregatesFilter<"ExchangeRate"> | $Enums.Currency
+    toCurrency?: EnumCurrencyWithAggregatesFilter<"ExchangeRate"> | $Enums.Currency
+    rate?: FloatWithAggregatesFilter<"ExchangeRate"> | number
+    updatedAt?: DateTimeWithAggregatesFilter<"ExchangeRate"> | Date | string
+    updatedBy?: StringNullableWithAggregatesFilter<"ExchangeRate"> | string | null
   }
 
   export type SpaceWhereInput = {
@@ -18689,6 +21233,7 @@ export namespace Prisma {
     pricePerHour?: FloatNullableFilter<"Space"> | number | null
     pricePerDay?: FloatNullableFilter<"Space"> | number | null
     cleaningFee?: FloatFilter<"Space"> | number
+    currency?: EnumCurrencyFilter<"Space"> | $Enums.Currency
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -18713,6 +21258,7 @@ export namespace Prisma {
     venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     category?: XOR<SpaceCategoryScalarRelationFilter, SpaceCategoryWhereInput>
     amenities?: SpaceAmenityListRelationFilter
+    pricingTiers?: PricingTierListRelationFilter
     availability?: AvailabilityListRelationFilter
     blockedDates?: BlockedDateListRelationFilter
     bookings?: BookingListRelationFilter
@@ -18729,6 +21275,7 @@ export namespace Prisma {
     pricePerHour?: SortOrderInput | SortOrder
     pricePerDay?: SortOrderInput | SortOrder
     cleaningFee?: SortOrder
+    currency?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrderInput | SortOrder
     maxBookingHours?: SortOrderInput | SortOrder
@@ -18753,6 +21300,7 @@ export namespace Prisma {
     venue?: VenueOrderByWithRelationInput
     category?: SpaceCategoryOrderByWithRelationInput
     amenities?: SpaceAmenityOrderByRelationAggregateInput
+    pricingTiers?: PricingTierOrderByRelationAggregateInput
     availability?: AvailabilityOrderByRelationAggregateInput
     blockedDates?: BlockedDateOrderByRelationAggregateInput
     bookings?: BookingOrderByRelationAggregateInput
@@ -18772,6 +21320,7 @@ export namespace Prisma {
     pricePerHour?: FloatNullableFilter<"Space"> | number | null
     pricePerDay?: FloatNullableFilter<"Space"> | number | null
     cleaningFee?: FloatFilter<"Space"> | number
+    currency?: EnumCurrencyFilter<"Space"> | $Enums.Currency
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -18796,6 +21345,7 @@ export namespace Prisma {
     venue?: XOR<VenueScalarRelationFilter, VenueWhereInput>
     category?: XOR<SpaceCategoryScalarRelationFilter, SpaceCategoryWhereInput>
     amenities?: SpaceAmenityListRelationFilter
+    pricingTiers?: PricingTierListRelationFilter
     availability?: AvailabilityListRelationFilter
     blockedDates?: BlockedDateListRelationFilter
     bookings?: BookingListRelationFilter
@@ -18812,6 +21362,7 @@ export namespace Prisma {
     pricePerHour?: SortOrderInput | SortOrder
     pricePerDay?: SortOrderInput | SortOrder
     cleaningFee?: SortOrder
+    currency?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrderInput | SortOrder
     maxBookingHours?: SortOrderInput | SortOrder
@@ -18852,6 +21403,7 @@ export namespace Prisma {
     pricePerHour?: FloatNullableWithAggregatesFilter<"Space"> | number | null
     pricePerDay?: FloatNullableWithAggregatesFilter<"Space"> | number | null
     cleaningFee?: FloatWithAggregatesFilter<"Space"> | number
+    currency?: EnumCurrencyWithAggregatesFilter<"Space"> | $Enums.Currency
     capacity?: IntWithAggregatesFilter<"Space"> | number
     minBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
     maxBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
@@ -19099,6 +21651,64 @@ export namespace Prisma {
     amenityId?: IntWithAggregatesFilter<"SpaceAmenity"> | number
   }
 
+  export type PricingTierWhereInput = {
+    AND?: PricingTierWhereInput | PricingTierWhereInput[]
+    OR?: PricingTierWhereInput[]
+    NOT?: PricingTierWhereInput | PricingTierWhereInput[]
+    id?: IntFilter<"PricingTier"> | number
+    spaceId?: IntFilter<"PricingTier"> | number
+    minutes?: IntFilter<"PricingTier"> | number
+    label?: StringFilter<"PricingTier"> | string
+    price?: FloatFilter<"PricingTier"> | number
+    space?: XOR<SpaceScalarRelationFilter, SpaceWhereInput>
+  }
+
+  export type PricingTierOrderByWithRelationInput = {
+    id?: SortOrder
+    spaceId?: SortOrder
+    minutes?: SortOrder
+    label?: SortOrder
+    price?: SortOrder
+    space?: SpaceOrderByWithRelationInput
+  }
+
+  export type PricingTierWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    spaceId_minutes?: PricingTierSpaceIdMinutesCompoundUniqueInput
+    AND?: PricingTierWhereInput | PricingTierWhereInput[]
+    OR?: PricingTierWhereInput[]
+    NOT?: PricingTierWhereInput | PricingTierWhereInput[]
+    spaceId?: IntFilter<"PricingTier"> | number
+    minutes?: IntFilter<"PricingTier"> | number
+    label?: StringFilter<"PricingTier"> | string
+    price?: FloatFilter<"PricingTier"> | number
+    space?: XOR<SpaceScalarRelationFilter, SpaceWhereInput>
+  }, "id" | "spaceId_minutes">
+
+  export type PricingTierOrderByWithAggregationInput = {
+    id?: SortOrder
+    spaceId?: SortOrder
+    minutes?: SortOrder
+    label?: SortOrder
+    price?: SortOrder
+    _count?: PricingTierCountOrderByAggregateInput
+    _avg?: PricingTierAvgOrderByAggregateInput
+    _max?: PricingTierMaxOrderByAggregateInput
+    _min?: PricingTierMinOrderByAggregateInput
+    _sum?: PricingTierSumOrderByAggregateInput
+  }
+
+  export type PricingTierScalarWhereWithAggregatesInput = {
+    AND?: PricingTierScalarWhereWithAggregatesInput | PricingTierScalarWhereWithAggregatesInput[]
+    OR?: PricingTierScalarWhereWithAggregatesInput[]
+    NOT?: PricingTierScalarWhereWithAggregatesInput | PricingTierScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"PricingTier"> | number
+    spaceId?: IntWithAggregatesFilter<"PricingTier"> | number
+    minutes?: IntWithAggregatesFilter<"PricingTier"> | number
+    label?: StringWithAggregatesFilter<"PricingTier"> | string
+    price?: FloatWithAggregatesFilter<"PricingTier"> | number
+  }
+
   export type AvailabilityWhereInput = {
     AND?: AvailabilityWhereInput | AvailabilityWhereInput[]
     OR?: AvailabilityWhereInput[]
@@ -19232,6 +21842,8 @@ export namespace Prisma {
     cleaningFee?: FloatFilter<"Booking"> | number
     serviceFee?: FloatFilter<"Booking"> | number
     totalAmount?: FloatFilter<"Booking"> | number
+    currency?: EnumCurrencyFilter<"Booking"> | $Enums.Currency
+    exchangeRate?: FloatFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableFilter<"Booking"> | string | null
     hostMessage?: StringNullableFilter<"Booking"> | string | null
@@ -19263,6 +21875,8 @@ export namespace Prisma {
     cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
+    currency?: SortOrder
+    exchangeRate?: SortOrder
     status?: SortOrder
     guestMessage?: SortOrderInput | SortOrder
     hostMessage?: SortOrderInput | SortOrder
@@ -19297,6 +21911,8 @@ export namespace Prisma {
     cleaningFee?: FloatFilter<"Booking"> | number
     serviceFee?: FloatFilter<"Booking"> | number
     totalAmount?: FloatFilter<"Booking"> | number
+    currency?: EnumCurrencyFilter<"Booking"> | $Enums.Currency
+    exchangeRate?: FloatFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableFilter<"Booking"> | string | null
     hostMessage?: StringNullableFilter<"Booking"> | string | null
@@ -19328,6 +21944,8 @@ export namespace Prisma {
     cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
+    currency?: SortOrder
+    exchangeRate?: SortOrder
     status?: SortOrder
     guestMessage?: SortOrderInput | SortOrder
     hostMessage?: SortOrderInput | SortOrder
@@ -19363,6 +21981,8 @@ export namespace Prisma {
     cleaningFee?: FloatWithAggregatesFilter<"Booking"> | number
     serviceFee?: FloatWithAggregatesFilter<"Booking"> | number
     totalAmount?: FloatWithAggregatesFilter<"Booking"> | number
+    currency?: EnumCurrencyWithAggregatesFilter<"Booking"> | $Enums.Currency
+    exchangeRate?: FloatWithAggregatesFilter<"Booking"> | number
     status?: EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     hostMessage?: StringNullableWithAggregatesFilter<"Booking"> | string | null
@@ -19759,6 +22379,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -19779,6 +22400,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     hostId: string
     isActive?: boolean
     createdAt?: Date | string
@@ -19798,6 +22420,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19818,6 +22441,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     hostId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19838,6 +22462,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     hostId: string
     isActive?: boolean
     createdAt?: Date | string
@@ -19856,6 +22481,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19874,10 +22500,71 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     hostId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ExchangeRateCreateInput = {
+    fromCurrency: $Enums.Currency
+    toCurrency: $Enums.Currency
+    rate: number
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ExchangeRateUncheckedCreateInput = {
+    id?: number
+    fromCurrency: $Enums.Currency
+    toCurrency: $Enums.Currency
+    rate: number
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ExchangeRateUpdateInput = {
+    fromCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    toCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    rate?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ExchangeRateUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fromCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    toCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    rate?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ExchangeRateCreateManyInput = {
+    id?: number
+    fromCurrency: $Enums.Currency
+    toCurrency: $Enums.Currency
+    rate: number
+    updatedAt?: Date | string
+    updatedBy?: string | null
+  }
+
+  export type ExchangeRateUpdateManyMutationInput = {
+    fromCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    toCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    rate?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ExchangeRateUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    fromCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    toCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    rate?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedBy?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SpaceCreateInput = {
@@ -19889,6 +22576,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -19910,6 +22598,7 @@ export namespace Prisma {
     venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
@@ -19926,6 +22615,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -19947,6 +22637,7 @@ export namespace Prisma {
     venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
@@ -19962,6 +22653,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -19983,6 +22675,7 @@ export namespace Prisma {
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
@@ -19999,6 +22692,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -20020,6 +22714,7 @@ export namespace Prisma {
     venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
@@ -20036,6 +22731,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -20067,6 +22763,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -20096,6 +22793,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -20326,6 +23024,58 @@ export namespace Prisma {
     amenityId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type PricingTierCreateInput = {
+    minutes: number
+    label: string
+    price: number
+    space: SpaceCreateNestedOneWithoutPricingTiersInput
+  }
+
+  export type PricingTierUncheckedCreateInput = {
+    id?: number
+    spaceId: number
+    minutes: number
+    label: string
+    price: number
+  }
+
+  export type PricingTierUpdateInput = {
+    minutes?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+    space?: SpaceUpdateOneRequiredWithoutPricingTiersNestedInput
+  }
+
+  export type PricingTierUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    spaceId?: IntFieldUpdateOperationsInput | number
+    minutes?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PricingTierCreateManyInput = {
+    id?: number
+    spaceId: number
+    minutes: number
+    label: string
+    price: number
+  }
+
+  export type PricingTierUpdateManyMutationInput = {
+    minutes?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PricingTierUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    spaceId?: IntFieldUpdateOperationsInput | number
+    minutes?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
   export type AvailabilityCreateInput = {
     dayOfWeek: number
     startTime: string
@@ -20442,6 +23192,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -20473,6 +23225,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -20498,6 +23252,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20529,6 +23285,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20557,6 +23315,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -20581,6 +23341,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20608,6 +23370,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21131,6 +23895,13 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type EnumCurrencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.Currency | EnumCurrencyFieldRefInput<$PrismaModel>
+    in?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumCurrencyFilter<$PrismaModel> | $Enums.Currency
+  }
+
   export type VenueCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -21144,6 +23915,7 @@ export namespace Prisma {
     postalCode?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    currency?: SortOrder
     hostId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -21168,6 +23940,7 @@ export namespace Prisma {
     postalCode?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    currency?: SortOrder
     hostId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -21186,6 +23959,7 @@ export namespace Prisma {
     postalCode?: SortOrder
     latitude?: SortOrder
     longitude?: SortOrder
+    currency?: SortOrder
     hostId?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -21256,6 +24030,85 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type EnumCurrencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Currency | EnumCurrencyFieldRefInput<$PrismaModel>
+    in?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumCurrencyWithAggregatesFilter<$PrismaModel> | $Enums.Currency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCurrencyFilter<$PrismaModel>
+    _max?: NestedEnumCurrencyFilter<$PrismaModel>
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type ExchangeRateFromCurrencyToCurrencyCompoundUniqueInput = {
+    fromCurrency: $Enums.Currency
+    toCurrency: $Enums.Currency
+  }
+
+  export type ExchangeRateCountOrderByAggregateInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ExchangeRateAvgOrderByAggregateInput = {
+    id?: SortOrder
+    rate?: SortOrder
+  }
+
+  export type ExchangeRateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ExchangeRateMinOrderByAggregateInput = {
+    id?: SortOrder
+    fromCurrency?: SortOrder
+    toCurrency?: SortOrder
+    rate?: SortOrder
+    updatedAt?: SortOrder
+    updatedBy?: SortOrder
+  }
+
+  export type ExchangeRateSumOrderByAggregateInput = {
+    id?: SortOrder
+    rate?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type EnumSpaceTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel>
     in?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
@@ -21268,17 +24121,6 @@ export namespace Prisma {
     in?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.PricingType[] | ListEnumPricingTypeFieldRefInput<$PrismaModel>
     not?: NestedEnumPricingTypeFilter<$PrismaModel> | $Enums.PricingType
-  }
-
-  export type FloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -21315,6 +24157,12 @@ export namespace Prisma {
     none?: SpaceAmenityWhereInput
   }
 
+  export type PricingTierListRelationFilter = {
+    every?: PricingTierWhereInput
+    some?: PricingTierWhereInput
+    none?: PricingTierWhereInput
+  }
+
   export type AvailabilityListRelationFilter = {
     every?: AvailabilityWhereInput
     some?: AvailabilityWhereInput
@@ -21328,6 +24176,10 @@ export namespace Prisma {
   }
 
   export type SpaceAmenityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PricingTierOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21349,6 +24201,7 @@ export namespace Prisma {
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
     cleaningFee?: SortOrder
+    currency?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -21394,6 +24247,7 @@ export namespace Prisma {
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
     cleaningFee?: SortOrder
+    currency?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -21425,6 +24279,7 @@ export namespace Prisma {
     pricePerHour?: SortOrder
     pricePerDay?: SortOrder
     cleaningFee?: SortOrder
+    currency?: SortOrder
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
@@ -21477,22 +24332,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPricingTypeFilter<$PrismaModel>
     _max?: NestedEnumPricingTypeFilter<$PrismaModel>
-  }
-
-  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -21681,6 +24520,49 @@ export namespace Prisma {
     amenityId?: SortOrder
   }
 
+  export type PricingTierSpaceIdMinutesCompoundUniqueInput = {
+    spaceId: number
+    minutes: number
+  }
+
+  export type PricingTierCountOrderByAggregateInput = {
+    id?: SortOrder
+    spaceId?: SortOrder
+    minutes?: SortOrder
+    label?: SortOrder
+    price?: SortOrder
+  }
+
+  export type PricingTierAvgOrderByAggregateInput = {
+    id?: SortOrder
+    spaceId?: SortOrder
+    minutes?: SortOrder
+    price?: SortOrder
+  }
+
+  export type PricingTierMaxOrderByAggregateInput = {
+    id?: SortOrder
+    spaceId?: SortOrder
+    minutes?: SortOrder
+    label?: SortOrder
+    price?: SortOrder
+  }
+
+  export type PricingTierMinOrderByAggregateInput = {
+    id?: SortOrder
+    spaceId?: SortOrder
+    minutes?: SortOrder
+    label?: SortOrder
+    price?: SortOrder
+  }
+
+  export type PricingTierSumOrderByAggregateInput = {
+    id?: SortOrder
+    spaceId?: SortOrder
+    minutes?: SortOrder
+    price?: SortOrder
+  }
+
   export type AvailabilitySpaceIdDayOfWeekCompoundUniqueInput = {
     spaceId: number
     dayOfWeek: number
@@ -21783,6 +24665,8 @@ export namespace Prisma {
     cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
+    currency?: SortOrder
+    exchangeRate?: SortOrder
     status?: SortOrder
     guestMessage?: SortOrder
     hostMessage?: SortOrder
@@ -21802,6 +24686,7 @@ export namespace Prisma {
     cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
+    exchangeRate?: SortOrder
   }
 
   export type BookingMaxOrderByAggregateInput = {
@@ -21819,6 +24704,8 @@ export namespace Prisma {
     cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
+    currency?: SortOrder
+    exchangeRate?: SortOrder
     status?: SortOrder
     guestMessage?: SortOrder
     hostMessage?: SortOrder
@@ -21846,6 +24733,8 @@ export namespace Prisma {
     cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
+    currency?: SortOrder
+    exchangeRate?: SortOrder
     status?: SortOrder
     guestMessage?: SortOrder
     hostMessage?: SortOrder
@@ -21865,6 +24754,7 @@ export namespace Prisma {
     cleaningFee?: SortOrder
     serviceFee?: SortOrder
     totalAmount?: SortOrder
+    exchangeRate?: SortOrder
   }
 
   export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -22367,6 +25257,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type EnumCurrencyFieldUpdateOperationsInput = {
+    set?: $Enums.Currency
+  }
+
   export type UserUpdateOneRequiredWithoutVenuesNestedInput = {
     create?: XOR<UserCreateWithoutVenuesInput, UserUncheckedCreateWithoutVenuesInput>
     connectOrCreate?: UserCreateOrConnectWithoutVenuesInput
@@ -22411,6 +25305,14 @@ export namespace Prisma {
     deleteMany?: SpaceScalarWhereInput | SpaceScalarWhereInput[]
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type UserCreateNestedOneWithoutSpacesInput = {
     create?: XOR<UserCreateWithoutSpacesInput, UserUncheckedCreateWithoutSpacesInput>
     connectOrCreate?: UserCreateOrConnectWithoutSpacesInput
@@ -22434,6 +25336,13 @@ export namespace Prisma {
     connectOrCreate?: SpaceAmenityCreateOrConnectWithoutSpaceInput | SpaceAmenityCreateOrConnectWithoutSpaceInput[]
     createMany?: SpaceAmenityCreateManySpaceInputEnvelope
     connect?: SpaceAmenityWhereUniqueInput | SpaceAmenityWhereUniqueInput[]
+  }
+
+  export type PricingTierCreateNestedManyWithoutSpaceInput = {
+    create?: XOR<PricingTierCreateWithoutSpaceInput, PricingTierUncheckedCreateWithoutSpaceInput> | PricingTierCreateWithoutSpaceInput[] | PricingTierUncheckedCreateWithoutSpaceInput[]
+    connectOrCreate?: PricingTierCreateOrConnectWithoutSpaceInput | PricingTierCreateOrConnectWithoutSpaceInput[]
+    createMany?: PricingTierCreateManySpaceInputEnvelope
+    connect?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
   }
 
   export type AvailabilityCreateNestedManyWithoutSpaceInput = {
@@ -22471,6 +25380,13 @@ export namespace Prisma {
     connect?: SpaceAmenityWhereUniqueInput | SpaceAmenityWhereUniqueInput[]
   }
 
+  export type PricingTierUncheckedCreateNestedManyWithoutSpaceInput = {
+    create?: XOR<PricingTierCreateWithoutSpaceInput, PricingTierUncheckedCreateWithoutSpaceInput> | PricingTierCreateWithoutSpaceInput[] | PricingTierUncheckedCreateWithoutSpaceInput[]
+    connectOrCreate?: PricingTierCreateOrConnectWithoutSpaceInput | PricingTierCreateOrConnectWithoutSpaceInput[]
+    createMany?: PricingTierCreateManySpaceInputEnvelope
+    connect?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+  }
+
   export type AvailabilityUncheckedCreateNestedManyWithoutSpaceInput = {
     create?: XOR<AvailabilityCreateWithoutSpaceInput, AvailabilityUncheckedCreateWithoutSpaceInput> | AvailabilityCreateWithoutSpaceInput[] | AvailabilityUncheckedCreateWithoutSpaceInput[]
     connectOrCreate?: AvailabilityCreateOrConnectWithoutSpaceInput | AvailabilityCreateOrConnectWithoutSpaceInput[]
@@ -22505,14 +25421,6 @@ export namespace Prisma {
 
   export type EnumPricingTypeFieldUpdateOperationsInput = {
     set?: $Enums.PricingType
-  }
-
-  export type FloatFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -22563,6 +25471,20 @@ export namespace Prisma {
     update?: SpaceAmenityUpdateWithWhereUniqueWithoutSpaceInput | SpaceAmenityUpdateWithWhereUniqueWithoutSpaceInput[]
     updateMany?: SpaceAmenityUpdateManyWithWhereWithoutSpaceInput | SpaceAmenityUpdateManyWithWhereWithoutSpaceInput[]
     deleteMany?: SpaceAmenityScalarWhereInput | SpaceAmenityScalarWhereInput[]
+  }
+
+  export type PricingTierUpdateManyWithoutSpaceNestedInput = {
+    create?: XOR<PricingTierCreateWithoutSpaceInput, PricingTierUncheckedCreateWithoutSpaceInput> | PricingTierCreateWithoutSpaceInput[] | PricingTierUncheckedCreateWithoutSpaceInput[]
+    connectOrCreate?: PricingTierCreateOrConnectWithoutSpaceInput | PricingTierCreateOrConnectWithoutSpaceInput[]
+    upsert?: PricingTierUpsertWithWhereUniqueWithoutSpaceInput | PricingTierUpsertWithWhereUniqueWithoutSpaceInput[]
+    createMany?: PricingTierCreateManySpaceInputEnvelope
+    set?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    disconnect?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    delete?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    connect?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    update?: PricingTierUpdateWithWhereUniqueWithoutSpaceInput | PricingTierUpdateWithWhereUniqueWithoutSpaceInput[]
+    updateMany?: PricingTierUpdateManyWithWhereWithoutSpaceInput | PricingTierUpdateManyWithWhereWithoutSpaceInput[]
+    deleteMany?: PricingTierScalarWhereInput | PricingTierScalarWhereInput[]
   }
 
   export type AvailabilityUpdateManyWithoutSpaceNestedInput = {
@@ -22633,6 +25555,20 @@ export namespace Prisma {
     update?: SpaceAmenityUpdateWithWhereUniqueWithoutSpaceInput | SpaceAmenityUpdateWithWhereUniqueWithoutSpaceInput[]
     updateMany?: SpaceAmenityUpdateManyWithWhereWithoutSpaceInput | SpaceAmenityUpdateManyWithWhereWithoutSpaceInput[]
     deleteMany?: SpaceAmenityScalarWhereInput | SpaceAmenityScalarWhereInput[]
+  }
+
+  export type PricingTierUncheckedUpdateManyWithoutSpaceNestedInput = {
+    create?: XOR<PricingTierCreateWithoutSpaceInput, PricingTierUncheckedCreateWithoutSpaceInput> | PricingTierCreateWithoutSpaceInput[] | PricingTierUncheckedCreateWithoutSpaceInput[]
+    connectOrCreate?: PricingTierCreateOrConnectWithoutSpaceInput | PricingTierCreateOrConnectWithoutSpaceInput[]
+    upsert?: PricingTierUpsertWithWhereUniqueWithoutSpaceInput | PricingTierUpsertWithWhereUniqueWithoutSpaceInput[]
+    createMany?: PricingTierCreateManySpaceInputEnvelope
+    set?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    disconnect?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    delete?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    connect?: PricingTierWhereUniqueInput | PricingTierWhereUniqueInput[]
+    update?: PricingTierUpdateWithWhereUniqueWithoutSpaceInput | PricingTierUpdateWithWhereUniqueWithoutSpaceInput[]
+    updateMany?: PricingTierUpdateManyWithWhereWithoutSpaceInput | PricingTierUpdateManyWithWhereWithoutSpaceInput[]
+    deleteMany?: PricingTierScalarWhereInput | PricingTierScalarWhereInput[]
   }
 
   export type AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput = {
@@ -22857,6 +25793,20 @@ export namespace Prisma {
     upsert?: AmenityUpsertWithoutSpacesInput
     connect?: AmenityWhereUniqueInput
     update?: XOR<XOR<AmenityUpdateToOneWithWhereWithoutSpacesInput, AmenityUpdateWithoutSpacesInput>, AmenityUncheckedUpdateWithoutSpacesInput>
+  }
+
+  export type SpaceCreateNestedOneWithoutPricingTiersInput = {
+    create?: XOR<SpaceCreateWithoutPricingTiersInput, SpaceUncheckedCreateWithoutPricingTiersInput>
+    connectOrCreate?: SpaceCreateOrConnectWithoutPricingTiersInput
+    connect?: SpaceWhereUniqueInput
+  }
+
+  export type SpaceUpdateOneRequiredWithoutPricingTiersNestedInput = {
+    create?: XOR<SpaceCreateWithoutPricingTiersInput, SpaceUncheckedCreateWithoutPricingTiersInput>
+    connectOrCreate?: SpaceCreateOrConnectWithoutPricingTiersInput
+    upsert?: SpaceUpsertWithoutPricingTiersInput
+    connect?: SpaceWhereUniqueInput
+    update?: XOR<XOR<SpaceUpdateToOneWithWhereWithoutPricingTiersInput, SpaceUpdateWithoutPricingTiersInput>, SpaceUncheckedUpdateWithoutPricingTiersInput>
   }
 
   export type SpaceCreateNestedOneWithoutAvailabilityInput = {
@@ -23209,6 +26159,13 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumCurrencyFilter<$PrismaModel = never> = {
+    equals?: $Enums.Currency | EnumCurrencyFieldRefInput<$PrismaModel>
+    in?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumCurrencyFilter<$PrismaModel> | $Enums.Currency
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -23275,6 +26232,32 @@ export namespace Prisma {
     _max?: NestedFloatNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumCurrencyWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Currency | EnumCurrencyFieldRefInput<$PrismaModel>
+    in?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Currency[] | ListEnumCurrencyFieldRefInput<$PrismaModel>
+    not?: NestedEnumCurrencyWithAggregatesFilter<$PrismaModel> | $Enums.Currency
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCurrencyFilter<$PrismaModel>
+    _max?: NestedEnumCurrencyFilter<$PrismaModel>
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedEnumSpaceTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel>
     in?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
@@ -23314,22 +26297,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPricingTypeFilter<$PrismaModel>
     _max?: NestedEnumPricingTypeFilter<$PrismaModel>
-  }
-
-  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedFloatFilter<$PrismaModel>
-    _min?: NestedFloatFilter<$PrismaModel>
-    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -23428,6 +26395,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23447,6 +26415,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23472,6 +26441,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -23492,6 +26462,7 @@ export namespace Prisma {
     venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
@@ -23508,6 +26479,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -23528,6 +26500,7 @@ export namespace Prisma {
     venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
@@ -23556,6 +26529,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -23585,6 +26560,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -23620,6 +26597,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -23649,6 +26628,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -23798,6 +26779,7 @@ export namespace Prisma {
     postalCode?: StringNullableFilter<"Venue"> | string | null
     latitude?: FloatNullableFilter<"Venue"> | number | null
     longitude?: FloatNullableFilter<"Venue"> | number | null
+    currency?: EnumCurrencyFilter<"Venue"> | $Enums.Currency
     hostId?: StringFilter<"Venue"> | string
     isActive?: BoolFilter<"Venue"> | boolean
     createdAt?: DateTimeFilter<"Venue"> | Date | string
@@ -23833,6 +26815,7 @@ export namespace Prisma {
     pricePerHour?: FloatNullableFilter<"Space"> | number | null
     pricePerDay?: FloatNullableFilter<"Space"> | number | null
     cleaningFee?: FloatFilter<"Space"> | number
+    currency?: EnumCurrencyFilter<"Space"> | $Enums.Currency
     capacity?: IntFilter<"Space"> | number
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
@@ -23889,6 +26872,8 @@ export namespace Prisma {
     cleaningFee?: FloatFilter<"Booking"> | number
     serviceFee?: FloatFilter<"Booking"> | number
     totalAmount?: FloatFilter<"Booking"> | number
+    currency?: EnumCurrencyFilter<"Booking"> | $Enums.Currency
+    exchangeRate?: FloatFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     guestMessage?: StringNullableFilter<"Booking"> | string | null
     hostMessage?: StringNullableFilter<"Booking"> | string | null
@@ -24149,6 +27134,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -24169,6 +27155,7 @@ export namespace Prisma {
     host: UserCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
@@ -24185,6 +27172,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -24205,6 +27193,7 @@ export namespace Prisma {
     hostId: string
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
@@ -24357,6 +27346,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -24376,6 +27366,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     hostId: string
     isActive?: boolean
     createdAt?: Date | string
@@ -24427,6 +27418,29 @@ export namespace Prisma {
 
   export type SpaceAmenityCreateManySpaceInputEnvelope = {
     data: SpaceAmenityCreateManySpaceInput | SpaceAmenityCreateManySpaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PricingTierCreateWithoutSpaceInput = {
+    minutes: number
+    label: string
+    price: number
+  }
+
+  export type PricingTierUncheckedCreateWithoutSpaceInput = {
+    id?: number
+    minutes: number
+    label: string
+    price: number
+  }
+
+  export type PricingTierCreateOrConnectWithoutSpaceInput = {
+    where: PricingTierWhereUniqueInput
+    create: XOR<PricingTierCreateWithoutSpaceInput, PricingTierUncheckedCreateWithoutSpaceInput>
+  }
+
+  export type PricingTierCreateManySpaceInputEnvelope = {
+    data: PricingTierCreateManySpaceInput | PricingTierCreateManySpaceInput[]
     skipDuplicates?: boolean
   }
 
@@ -24488,6 +27502,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -24517,6 +27533,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -24653,6 +27671,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24672,6 +27691,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     hostId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24731,6 +27751,33 @@ export namespace Prisma {
     id?: IntFilter<"SpaceAmenity"> | number
     spaceId?: IntFilter<"SpaceAmenity"> | number
     amenityId?: IntFilter<"SpaceAmenity"> | number
+  }
+
+  export type PricingTierUpsertWithWhereUniqueWithoutSpaceInput = {
+    where: PricingTierWhereUniqueInput
+    update: XOR<PricingTierUpdateWithoutSpaceInput, PricingTierUncheckedUpdateWithoutSpaceInput>
+    create: XOR<PricingTierCreateWithoutSpaceInput, PricingTierUncheckedCreateWithoutSpaceInput>
+  }
+
+  export type PricingTierUpdateWithWhereUniqueWithoutSpaceInput = {
+    where: PricingTierWhereUniqueInput
+    data: XOR<PricingTierUpdateWithoutSpaceInput, PricingTierUncheckedUpdateWithoutSpaceInput>
+  }
+
+  export type PricingTierUpdateManyWithWhereWithoutSpaceInput = {
+    where: PricingTierScalarWhereInput
+    data: XOR<PricingTierUpdateManyMutationInput, PricingTierUncheckedUpdateManyWithoutSpaceInput>
+  }
+
+  export type PricingTierScalarWhereInput = {
+    AND?: PricingTierScalarWhereInput | PricingTierScalarWhereInput[]
+    OR?: PricingTierScalarWhereInput[]
+    NOT?: PricingTierScalarWhereInput | PricingTierScalarWhereInput[]
+    id?: IntFilter<"PricingTier"> | number
+    spaceId?: IntFilter<"PricingTier"> | number
+    minutes?: IntFilter<"PricingTier"> | number
+    label?: StringFilter<"PricingTier"> | string
+    price?: FloatFilter<"PricingTier"> | number
   }
 
   export type AvailabilityUpsertWithWhereUniqueWithoutSpaceInput = {
@@ -24846,6 +27893,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -24866,6 +27914,7 @@ export namespace Prisma {
     host: UserCreateNestedOneWithoutSpacesInput
     venue: VenueCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
@@ -24882,6 +27931,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -24902,6 +27952,7 @@ export namespace Prisma {
     hostId: string
     venueId: number
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
@@ -25060,6 +28111,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25080,6 +28132,7 @@ export namespace Prisma {
     host: UserCreateNestedOneWithoutSpacesInput
     venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
@@ -25096,6 +28149,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25116,6 +28170,7 @@ export namespace Prisma {
     hostId: string
     venueId: number
     categorySlug: string
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
@@ -25165,6 +28220,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25185,6 +28241,7 @@ export namespace Prisma {
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
@@ -25201,6 +28258,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25221,6 +28279,7 @@ export namespace Prisma {
     hostId?: StringFieldUpdateOperationsInput | string
     venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
@@ -25251,7 +28310,7 @@ export namespace Prisma {
     category?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type SpaceCreateWithoutAvailabilityInput = {
+  export type SpaceCreateWithoutPricingTiersInput = {
     name: string
     shortDescription: string
     description: string
@@ -25260,6 +28319,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25281,12 +28341,13 @@ export namespace Prisma {
     venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
     reviews?: ReviewCreateNestedManyWithoutSpaceInput
   }
 
-  export type SpaceUncheckedCreateWithoutAvailabilityInput = {
+  export type SpaceUncheckedCreateWithoutPricingTiersInput = {
     id?: number
     name: string
     shortDescription: string
@@ -25296,6 +28357,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25317,6 +28379,173 @@ export namespace Prisma {
     venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
+    blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
+    bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
+    reviews?: ReviewUncheckedCreateNestedManyWithoutSpaceInput
+  }
+
+  export type SpaceCreateOrConnectWithoutPricingTiersInput = {
+    where: SpaceWhereUniqueInput
+    create: XOR<SpaceCreateWithoutPricingTiersInput, SpaceUncheckedCreateWithoutPricingTiersInput>
+  }
+
+  export type SpaceUpsertWithoutPricingTiersInput = {
+    update: XOR<SpaceUpdateWithoutPricingTiersInput, SpaceUncheckedUpdateWithoutPricingTiersInput>
+    create: XOR<SpaceCreateWithoutPricingTiersInput, SpaceUncheckedCreateWithoutPricingTiersInput>
+    where?: SpaceWhereInput
+  }
+
+  export type SpaceUpdateToOneWithWhereWithoutPricingTiersInput = {
+    where?: SpaceWhereInput
+    data: XOR<SpaceUpdateWithoutPricingTiersInput, SpaceUncheckedUpdateWithoutPricingTiersInput>
+  }
+
+  export type SpaceUpdateWithoutPricingTiersInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
+    pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    capacity?: IntFieldUpdateOperationsInput | number
+    minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    instantBook?: BoolFieldUpdateOperationsInput | boolean
+    cancellationPolicy?: EnumCancellationPolicyFieldUpdateOperationsInput | $Enums.CancellationPolicy
+    houseRules?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    host?: UserUpdateOneRequiredWithoutSpacesNestedInput
+    venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
+    category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
+    amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
+    blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
+    bookings?: BookingUpdateManyWithoutSpaceNestedInput
+    reviews?: ReviewUpdateManyWithoutSpaceNestedInput
+  }
+
+  export type SpaceUncheckedUpdateWithoutPricingTiersInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    shortDescription?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
+    pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
+    pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
+    pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
+    cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    capacity?: IntFieldUpdateOperationsInput | number
+    minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
+    images?: JsonNullValueInput | InputJsonValue
+    address?: StringFieldUpdateOperationsInput | string
+    city?: StringFieldUpdateOperationsInput | string
+    state?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: StringFieldUpdateOperationsInput | string
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    latitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    instantBook?: BoolFieldUpdateOperationsInput | boolean
+    cancellationPolicy?: EnumCancellationPolicyFieldUpdateOperationsInput | $Enums.CancellationPolicy
+    houseRules?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    hostId?: StringFieldUpdateOperationsInput | string
+    venueId?: IntFieldUpdateOperationsInput | number
+    categorySlug?: StringFieldUpdateOperationsInput | string
+    amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
+    blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
+    bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
+    reviews?: ReviewUncheckedUpdateManyWithoutSpaceNestedInput
+  }
+
+  export type SpaceCreateWithoutAvailabilityInput = {
+    name: string
+    shortDescription: string
+    description: string
+    spaceType: $Enums.SpaceType
+    pricingType: $Enums.PricingType
+    pricePerHour?: number | null
+    pricePerDay?: number | null
+    cleaningFee?: number
+    currency?: $Enums.Currency
+    capacity: number
+    minBookingHours?: number | null
+    maxBookingHours?: number | null
+    images: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    instantBook?: boolean
+    cancellationPolicy?: $Enums.CancellationPolicy
+    houseRules?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    host: UserCreateNestedOneWithoutSpacesInput
+    venue: VenueCreateNestedOneWithoutSpacesInput
+    category: SpaceCategoryCreateNestedOneWithoutSpacesInput
+    amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
+    blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
+    bookings?: BookingCreateNestedManyWithoutSpaceInput
+    reviews?: ReviewCreateNestedManyWithoutSpaceInput
+  }
+
+  export type SpaceUncheckedCreateWithoutAvailabilityInput = {
+    id?: number
+    name: string
+    shortDescription: string
+    description: string
+    spaceType: $Enums.SpaceType
+    pricingType: $Enums.PricingType
+    pricePerHour?: number | null
+    pricePerDay?: number | null
+    cleaningFee?: number
+    currency?: $Enums.Currency
+    capacity: number
+    minBookingHours?: number | null
+    maxBookingHours?: number | null
+    images: JsonNullValueInput | InputJsonValue
+    address: string
+    city: string
+    state?: string | null
+    country: string
+    postalCode?: string | null
+    latitude?: number | null
+    longitude?: number | null
+    isActive?: boolean
+    instantBook?: boolean
+    cancellationPolicy?: $Enums.CancellationPolicy
+    houseRules?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    hostId: string
+    venueId: number
+    categorySlug: string
+    amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutSpaceInput
@@ -25347,6 +28576,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25368,6 +28598,7 @@ export namespace Prisma {
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
     reviews?: ReviewUpdateManyWithoutSpaceNestedInput
@@ -25383,6 +28614,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25404,6 +28636,7 @@ export namespace Prisma {
     venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutSpaceNestedInput
@@ -25418,6 +28651,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25439,6 +28673,7 @@ export namespace Prisma {
     venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
     reviews?: ReviewCreateNestedManyWithoutSpaceInput
@@ -25454,6 +28689,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25475,6 +28711,7 @@ export namespace Prisma {
     venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutSpaceInput
@@ -25505,6 +28742,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25526,6 +28764,7 @@ export namespace Prisma {
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
     reviews?: ReviewUpdateManyWithoutSpaceNestedInput
@@ -25541,6 +28780,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25562,6 +28802,7 @@ export namespace Prisma {
     venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutSpaceNestedInput
@@ -25678,6 +28919,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25699,6 +28941,7 @@ export namespace Prisma {
     venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     reviews?: ReviewCreateNestedManyWithoutSpaceInput
@@ -25714,6 +28957,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -25735,6 +28979,7 @@ export namespace Prisma {
     venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     reviews?: ReviewUncheckedCreateNestedManyWithoutSpaceInput
@@ -25907,6 +29152,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25928,6 +29174,7 @@ export namespace Prisma {
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     reviews?: ReviewUpdateManyWithoutSpaceNestedInput
@@ -25943,6 +29190,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -25964,6 +29212,7 @@ export namespace Prisma {
     venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     reviews?: ReviewUncheckedUpdateManyWithoutSpaceNestedInput
@@ -26063,6 +29312,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -26084,6 +29334,7 @@ export namespace Prisma {
     venue: VenueCreateNestedOneWithoutSpacesInput
     category: SpaceCategoryCreateNestedOneWithoutSpacesInput
     amenities?: SpaceAmenityCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateCreateNestedManyWithoutSpaceInput
     bookings?: BookingCreateNestedManyWithoutSpaceInput
@@ -26099,6 +29350,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -26120,6 +29372,7 @@ export namespace Prisma {
     venueId: number
     categorySlug: string
     amenities?: SpaceAmenityUncheckedCreateNestedManyWithoutSpaceInput
+    pricingTiers?: PricingTierUncheckedCreateNestedManyWithoutSpaceInput
     availability?: AvailabilityUncheckedCreateNestedManyWithoutSpaceInput
     blockedDates?: BlockedDateUncheckedCreateNestedManyWithoutSpaceInput
     bookings?: BookingUncheckedCreateNestedManyWithoutSpaceInput
@@ -26142,6 +29395,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -26172,6 +29427,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -26266,6 +29523,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -26287,6 +29545,7 @@ export namespace Prisma {
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
@@ -26302,6 +29561,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -26323,6 +29583,7 @@ export namespace Prisma {
     venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
@@ -26351,6 +29612,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26381,6 +29644,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26521,6 +29786,7 @@ export namespace Prisma {
     postalCode?: string | null
     latitude?: number | null
     longitude?: number | null
+    currency?: $Enums.Currency
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26536,6 +29802,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -26571,6 +29838,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -26597,6 +29866,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -26666,6 +29937,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26685,6 +29957,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26704,6 +29977,7 @@ export namespace Prisma {
     postalCode?: NullableStringFieldUpdateOperationsInput | string | null
     latitude?: NullableFloatFieldUpdateOperationsInput | number | null
     longitude?: NullableFloatFieldUpdateOperationsInput | number | null
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -26718,6 +29992,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -26738,6 +30013,7 @@ export namespace Prisma {
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
@@ -26754,6 +30030,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -26774,6 +30051,7 @@ export namespace Prisma {
     venueId?: IntFieldUpdateOperationsInput | number
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
@@ -26790,6 +30068,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -26823,6 +30102,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26852,6 +30133,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26879,6 +30162,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26903,6 +30188,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26932,6 +30219,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26959,6 +30248,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27052,6 +30343,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -27082,6 +30374,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27102,6 +30395,7 @@ export namespace Prisma {
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
     category?: SpaceCategoryUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
@@ -27118,6 +30412,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27138,6 +30433,7 @@ export namespace Prisma {
     hostId?: StringFieldUpdateOperationsInput | string
     categorySlug?: StringFieldUpdateOperationsInput | string
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
@@ -27154,6 +30450,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27178,6 +30475,13 @@ export namespace Prisma {
   export type SpaceAmenityCreateManySpaceInput = {
     id?: number
     amenityId: number
+  }
+
+  export type PricingTierCreateManySpaceInput = {
+    id?: number
+    minutes: number
+    label: string
+    price: number
   }
 
   export type AvailabilityCreateManySpaceInput = {
@@ -27208,6 +30512,8 @@ export namespace Prisma {
     cleaningFee?: number
     serviceFee: number
     totalAmount: number
+    currency?: $Enums.Currency
+    exchangeRate?: number
     status?: $Enums.BookingStatus
     guestMessage?: string | null
     hostMessage?: string | null
@@ -27244,6 +30550,26 @@ export namespace Prisma {
   export type SpaceAmenityUncheckedUpdateManyWithoutSpaceInput = {
     id?: IntFieldUpdateOperationsInput | number
     amenityId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PricingTierUpdateWithoutSpaceInput = {
+    minutes?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PricingTierUncheckedUpdateWithoutSpaceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    minutes?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type PricingTierUncheckedUpdateManyWithoutSpaceInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    minutes?: IntFieldUpdateOperationsInput | number
+    label?: StringFieldUpdateOperationsInput | string
+    price?: FloatFieldUpdateOperationsInput | number
   }
 
   export type AvailabilityUpdateWithoutSpaceInput = {
@@ -27298,6 +30624,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27327,6 +30655,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27354,6 +30684,8 @@ export namespace Prisma {
     cleaningFee?: FloatFieldUpdateOperationsInput | number
     serviceFee?: FloatFieldUpdateOperationsInput | number
     totalAmount?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
+    exchangeRate?: FloatFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     guestMessage?: NullableStringFieldUpdateOperationsInput | string | null
     hostMessage?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27411,6 +30743,7 @@ export namespace Prisma {
     pricePerHour?: number | null
     pricePerDay?: number | null
     cleaningFee?: number
+    currency?: $Enums.Currency
     capacity: number
     minBookingHours?: number | null
     maxBookingHours?: number | null
@@ -27441,6 +30774,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27461,6 +30795,7 @@ export namespace Prisma {
     host?: UserUpdateOneRequiredWithoutSpacesNestedInput
     venue?: VenueUpdateOneRequiredWithoutSpacesNestedInput
     amenities?: SpaceAmenityUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUpdateManyWithoutSpaceNestedInput
@@ -27477,6 +30812,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
@@ -27497,6 +30833,7 @@ export namespace Prisma {
     hostId?: StringFieldUpdateOperationsInput | string
     venueId?: IntFieldUpdateOperationsInput | number
     amenities?: SpaceAmenityUncheckedUpdateManyWithoutSpaceNestedInput
+    pricingTiers?: PricingTierUncheckedUpdateManyWithoutSpaceNestedInput
     availability?: AvailabilityUncheckedUpdateManyWithoutSpaceNestedInput
     blockedDates?: BlockedDateUncheckedUpdateManyWithoutSpaceNestedInput
     bookings?: BookingUncheckedUpdateManyWithoutSpaceNestedInput
@@ -27513,6 +30850,7 @@ export namespace Prisma {
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
     pricePerDay?: NullableFloatFieldUpdateOperationsInput | number | null
     cleaningFee?: FloatFieldUpdateOperationsInput | number
+    currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency
     capacity?: IntFieldUpdateOperationsInput | number
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null

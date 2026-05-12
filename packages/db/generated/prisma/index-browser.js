@@ -158,10 +158,20 @@ exports.Prisma.VenueScalarFieldEnum = {
   postalCode: 'postalCode',
   latitude: 'latitude',
   longitude: 'longitude',
+  currency: 'currency',
   hostId: 'hostId',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ExchangeRateScalarFieldEnum = {
+  id: 'id',
+  fromCurrency: 'fromCurrency',
+  toCurrency: 'toCurrency',
+  rate: 'rate',
+  updatedAt: 'updatedAt',
+  updatedBy: 'updatedBy'
 };
 
 exports.Prisma.SpaceScalarFieldEnum = {
@@ -174,6 +184,7 @@ exports.Prisma.SpaceScalarFieldEnum = {
   pricePerHour: 'pricePerHour',
   pricePerDay: 'pricePerDay',
   cleaningFee: 'cleaningFee',
+  currency: 'currency',
   capacity: 'capacity',
   minBookingHours: 'minBookingHours',
   maxBookingHours: 'maxBookingHours',
@@ -226,6 +237,14 @@ exports.Prisma.SpaceAmenityScalarFieldEnum = {
   amenityId: 'amenityId'
 };
 
+exports.Prisma.PricingTierScalarFieldEnum = {
+  id: 'id',
+  spaceId: 'spaceId',
+  minutes: 'minutes',
+  label: 'label',
+  price: 'price'
+};
+
 exports.Prisma.AvailabilityScalarFieldEnum = {
   id: 'id',
   spaceId: 'spaceId',
@@ -257,6 +276,8 @@ exports.Prisma.BookingScalarFieldEnum = {
   cleaningFee: 'cleaningFee',
   serviceFee: 'serviceFee',
   totalAmount: 'totalAmount',
+  currency: 'currency',
+  exchangeRate: 'exchangeRate',
   status: 'status',
   guestMessage: 'guestMessage',
   hostMessage: 'hostMessage',
@@ -325,6 +346,12 @@ exports.Role = exports.$Enums.Role = {
   ADMIN: 'ADMIN'
 };
 
+exports.Currency = exports.$Enums.Currency = {
+  USD: 'USD',
+  EUR: 'EUR',
+  MDL: 'MDL'
+};
+
 exports.SpaceType = exports.$Enums.SpaceType = {
   OFFICE_DESK: 'OFFICE_DESK',
   PRIVATE_OFFICE: 'PRIVATE_OFFICE',
@@ -368,11 +395,13 @@ exports.Prisma.ModelName = {
   User: 'User',
   Session: 'Session',
   Venue: 'Venue',
+  ExchangeRate: 'ExchangeRate',
   Space: 'Space',
   SpaceCategory: 'SpaceCategory',
   SpaceCategoryGroup: 'SpaceCategoryGroup',
   Amenity: 'Amenity',
   SpaceAmenity: 'SpaceAmenity',
+  PricingTier: 'PricingTier',
   Availability: 'Availability',
   BlockedDate: 'BlockedDate',
   Booking: 'Booking',

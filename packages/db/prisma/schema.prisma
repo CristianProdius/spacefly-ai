@@ -56,6 +56,12 @@ enum PayoutStatus {
   FAILED
 }
 
+enum Currency {
+  USD
+  EUR
+  MDL
+}
+
 // ==================== AUTH ====================
 
 model User {
@@ -120,6 +126,7 @@ model Venue {
   postalCode String?
   latitude   Float?
   longitude  Float?
+  currency Currency @default(USD) // Default currency for new spaces under this venue
 
   // Owner
   hostId String
@@ -137,6 +144,19 @@ model Venue {
   @@index([isActive])
 }
 
+// ==================== EXCHANGE RATES ====================
+
+model ExchangeRate {
+  id           Int      @id @default(autoincrement())
+  fromCurrency Currency
+  toCurrency   Currency
+  rate         Float    // 1 fromCurrency = rate toCurrency
+  updatedAt    DateTime @updatedAt
+  updatedBy    String?  // admin user ID who last updated
+
+  @@unique([fromCurrency, toCurrency])
+}
+
 // ==================== SPACES ====================
 
 model Space {
@@ -149,6 +169,7 @@ model Space {
   pricePerHour     Float?             // In dollars
   pricePerDay      Float?             // In dollars
   cleaningFee      Float              @default(0) // In dollars
+  currency         Currency           @default(USD)
   capacity         Int
   minBookingHours  Int?
   maxBookingHours  Int?
@@ -180,6 +201,7 @@ model Space {
   categorySlug String
   category     SpaceCategory  @relation(fields: [categorySlug], references: [slug])
   amenities    SpaceAmenity[]
+  pricingTiers PricingTier[]
   availability Availability[]
   blockedDates BlockedDate[]
   bookings     Booking[]
@@ -240,6 +262,19 @@ model SpaceAmenity {
   @@unique([spaceId, amenityId])
 }
 
+model PricingTier {
+  id       Int    @id @default(autoincrement())
+  spaceId  Int
+  minutes  Int    // duration in minutes: 60=1h, 240=4h, 480=8h, 1440=1day, 10080=1week, 43200=1month
+  label    String // display label: "1 hour", "Half day (4h)", "Full day", "1 week", "1 month"
+  price    Float  // price in the space's currency
+
+  space Space @relation(fields: [spaceId], references: [id], onDelete: Cascade)
+
+  @@unique([spaceId, minutes])
+  @@index([spaceId])
+}
+
 model Availability {
   id        Int     @id @default(autoincrement())
   spaceId   Int
@@ -286,7 +321,9 @@ model Booking {
   subtotal    Float
   cleaningFee Float @default(0)
   serviceFee  Float
-  totalAmount Float
+  totalAmount  Float
+  currency     Currency @default(USD)
+  exchangeRate Float    @default(1.0) // Rate to USD at time of booking
 
   // Status
   status       BookingStatus @default(PENDING)
