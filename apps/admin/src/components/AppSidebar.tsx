@@ -62,6 +62,7 @@ const AppSidebar = () => {
     { title: "All Bookings", url: "/admin/bookings", icon: CalendarCheck },
     { title: "Categories", url: "/admin/categories", icon: Tag },
     { title: "Amenities", url: "/admin/amenities", icon: Sparkles },
+    { title: "Exchange Rates", url: "/admin/exchange-rates", icon: DollarSign },
   ];
 
   return (

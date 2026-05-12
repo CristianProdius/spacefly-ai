@@ -18,6 +18,7 @@ export interface VenueFormValues {
   latitude: number | null;
   longitude: number | null;
   images: string[];
+  currency: string;
 }
 
 export interface VenueFormPayload {
@@ -32,6 +33,7 @@ export interface VenueFormPayload {
   latitude: number | null;
   longitude: number | null;
   images: string[];
+  currency: string;
 }
 
 export const createEmptyVenueFormValues = (): VenueFormValues => ({
@@ -46,6 +48,7 @@ export const createEmptyVenueFormValues = (): VenueFormValues => ({
   latitude: null,
   longitude: null,
   images: [],
+  currency: "USD",
 });
 
 export const buildVenuePayload = (
@@ -69,6 +72,7 @@ export interface VenueResponse {
   latitude: number | null;
   longitude: number | null;
   images: string[];
+  currency: string;
 }
 
 export const mapVenueToFormValues = (
@@ -85,4 +89,5 @@ export const mapVenueToFormValues = (
   latitude: venue.latitude ?? null,
   longitude: venue.longitude ?? null,
   images: Array.isArray(venue.images) ? venue.images : [],
+  currency: venue.currency ?? "USD",
 });

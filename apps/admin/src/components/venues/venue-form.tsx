@@ -206,6 +206,27 @@ const VenueForm = ({
                 placeholder="Detailed description of your venue"
               />
             </div>
+
+            <div>
+              <label className={labelClassName}>Default Currency</label>
+              <select
+                value={formData.currency}
+                onChange={(event) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    currency: event.target.value,
+                  }))
+                }
+                className={fieldClassName}
+              >
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (&euro;)</option>
+                <option value="MDL">MDL (L)</option>
+              </select>
+              <p className="mt-1 text-sm text-muted-foreground">
+                This currency will be used as the default for spaces in this venue.
+              </p>
+            </div>
           </div>
         </DashboardSection>
 

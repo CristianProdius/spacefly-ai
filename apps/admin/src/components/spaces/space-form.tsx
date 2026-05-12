@@ -29,6 +29,7 @@ import {
   type SpaceFormPayload,
   type SpaceFormValues,
 } from "./space-form.shared";
+import PricingTiersEditor from "./pricing-tiers-editor";
 
 interface VenueOption {
   id: number;
@@ -485,6 +486,24 @@ const SpaceForm = ({
         <DashboardSection title="Pricing" contentClassName="space-y-4">
           <div className="space-y-4">
             <div>
+              <label className={labelClassName}>Currency</label>
+              <select
+                value={formData.currency}
+                onChange={(event) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    currency: event.target.value,
+                  }))
+                }
+                className={fieldClassName}
+              >
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (&euro;)</option>
+                <option value="MDL">MDL (L)</option>
+              </select>
+            </div>
+
+            <div>
               <label className={labelClassName}>Pricing Type</label>
               <select
                 required
@@ -550,6 +569,14 @@ const SpaceForm = ({
                 </div>
               )}
             </div>
+
+            <PricingTiersEditor
+              tiers={formData.pricingTiers}
+              onChange={(tiers) =>
+                setFormData((prev) => ({ ...prev, pricingTiers: tiers }))
+              }
+              currency={formData.currency}
+            />
           </div>
         </DashboardSection>
 

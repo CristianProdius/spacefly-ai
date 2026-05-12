@@ -50,6 +50,8 @@ export interface SpaceFormValues {
   categorySlug: string;
   amenityIds: number[];
   images: string[];
+  currency: string;
+  pricingTiers: Array<{ minutes: number; label: string; price: string }>;
 }
 
 export interface SpaceFormPayload {
@@ -68,6 +70,8 @@ export interface SpaceFormPayload {
   categorySlug: string;
   amenityIds: number[];
   images: string[];
+  currency: string;
+  pricingTiers: Array<{ minutes: number; label: string; price: number }>;
 }
 
 export const createEmptySpaceFormValues = (): SpaceFormValues => ({
@@ -86,6 +90,8 @@ export const createEmptySpaceFormValues = (): SpaceFormValues => ({
   categorySlug: "",
   amenityIds: [],
   images: [],
+  currency: "USD",
+  pricingTiers: [],
 });
 
 export const buildSpacePayload = (
@@ -100,6 +106,10 @@ export const buildSpacePayload = (
   pricePerDay: formData.pricePerDay ? parseFloat(formData.pricePerDay) : null,
   capacity: parseInt(formData.capacity, 10),
   venueId: formData.venueId,
+  currency: formData.currency,
+  pricingTiers: formData.pricingTiers
+    .filter((t) => t.price !== "")
+    .map((t) => ({ minutes: t.minutes, label: t.label, price: parseFloat(t.price) || 0 })),
 });
 
 export const mapSpaceToFormValues = (
@@ -119,6 +129,8 @@ export const mapSpaceToFormValues = (
     | "categorySlug"
     | "images"
     | "amenities"
+    | "currency"
+    | "pricingTiers"
   > & { venueId?: number | null }
 ): SpaceFormValues => ({
   name: space.name,
@@ -136,4 +148,10 @@ export const mapSpaceToFormValues = (
   categorySlug: space.categorySlug,
   amenityIds: space.amenities?.map((spaceAmenity) => spaceAmenity.amenityId) ?? [],
   images: Array.isArray(space.images) ? space.images : [],
+  currency: space.currency ?? "USD",
+  pricingTiers: (space.pricingTiers ?? []).map((t) => ({
+    minutes: t.minutes,
+    label: t.label,
+    price: t.price.toString(),
+  })),
 });
