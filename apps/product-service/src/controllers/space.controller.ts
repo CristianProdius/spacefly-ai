@@ -92,8 +92,8 @@ export const getSpaces = async (req: Request, res: Response) => {
 
   const minCapacity = minCapacityParam || capacityParam;
 
-  const pageNum = parseInt(page as string);
-  const limitNum = parseInt(limit as string);
+  const pageNum = parseInt(page as string, 10);
+  const limitNum = Math.min(Math.max(parseInt(limit as string, 10) || 20, 1), 100);
 
   const hasBbox = neLat && neLng && swLat && swLng;
 
@@ -169,20 +169,24 @@ export const getSpaces = async (req: Request, res: Response) => {
 
   const lang = req.query.lang as string | undefined;
 
-  // Calculate average rating for each space
-  const spacesWithRating = await Promise.all(
-    spaces.map(async (space) => {
-      const avgRating = await prisma.review.aggregate({
-        where: { spaceId: space.id },
-        _avg: { rating: true },
-      });
-      return flattenVenue({
-        ...space,
-        averageRating: avgRating._avg.rating || 0,
-        reviewCount: space._count.reviews,
-      });
-    })
-  );
+  // Calculate average rating for each space (batch query to avoid N+1)
+  const spaceIds = spaces.map((s) => s.id);
+  const ratings = await prisma.review.groupBy({
+    by: ["spaceId"],
+    where: { spaceId: { in: spaceIds } },
+    _avg: { rating: true },
+    _count: { rating: true },
+  });
+  const ratingMap = new Map(ratings.map((r) => [r.spaceId, { avg: r._avg.rating || 0, count: r._count.rating }]));
+
+  const spacesWithRating = spaces.map((space) => {
+    const rating = ratingMap.get(space.id) || { avg: 0, count: 0 };
+    return flattenVenue({
+      ...space,
+      averageRating: rating.avg,
+      reviewCount: rating.count,
+    });
+  });
 
   const resolved = spacesWithRating.map((space) =>
     resolveTranslations(space, lang, SPACE_TRANSLATION_FIELDS)
@@ -202,7 +206,8 @@ export const getSpaces = async (req: Request, res: Response) => {
 // Get single space by ID
 export const getSpace = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id);
+  const spaceId = parseInt(id, 10);
+  if (Number.isNaN(spaceId)) return res.status(400).json({ message: "Invalid ID" });
 
   const space = await prisma.space.findUnique({
     where: { id: spaceId },
@@ -279,6 +284,12 @@ export const createSpace = async (req: Request, res: Response) => {
   const hostId = req.userId!;
   const { amenityIds, venueId, pricingTiers, ...spaceData } = req.body;
 
+  if (spaceData.videoUrl && typeof spaceData.videoUrl === "string") {
+    if (!/^https:\/\/(www\.)?youtube\.com\/|^https:\/\/youtu\.be\//.test(spaceData.videoUrl)) {
+      return res.status(400).json({ message: "videoUrl must be a valid YouTube URL" });
+    }
+  }
+
   if (!venueId) {
     return res.status(400).json({ message: "venueId is required" });
   }
@@ -335,7 +346,8 @@ export const createSpace = async (req: Request, res: Response) => {
 // Update space (HOST owner or ADMIN)
 export const updateSpace = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id);
+  const spaceId = parseInt(id, 10);
+  if (Number.isNaN(spaceId)) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
   const userRole = req.user?.role;
 
@@ -366,6 +378,12 @@ export const updateSpace = async (req: Request, res: Response) => {
   ] as const;
   for (const key of allowedKeys) {
     if (body[key] !== undefined) allowed[key] = body[key];
+  }
+
+  if (allowed.videoUrl && typeof allowed.videoUrl === "string") {
+    if (!/^https:\/\/(www\.)?youtube\.com\/|^https:\/\/youtu\.be\//.test(allowed.videoUrl)) {
+      return res.status(400).json({ message: "videoUrl must be a valid YouTube URL" });
+    }
   }
 
   // If venueId is being changed, validate ownership
@@ -408,43 +426,36 @@ export const updateSpace = async (req: Request, res: Response) => {
 
   // Update amenities if provided
   if (amenityIds !== undefined) {
-    await prisma.spaceAmenity.deleteMany({
-      where: { spaceId },
-    });
-    if (amenityIds.length > 0) {
-      await prisma.spaceAmenity.createMany({
-        data: amenityIds.map((amenityId: number) => ({
-          spaceId,
-          amenityId,
-        })),
-      });
-    }
+    await prisma.$transaction([
+      prisma.spaceAmenity.deleteMany({ where: { spaceId } }),
+      ...(amenityIds.length > 0 ? [prisma.spaceAmenity.createMany({ data: amenityIds.map((amenityId: number) => ({ spaceId, amenityId })) })] : []),
+    ]);
   }
 
   // Update pricing tiers if provided
   if (pricingTiers !== undefined) {
-    await prisma.pricingTier.deleteMany({ where: { spaceId } });
-    if (Array.isArray(pricingTiers) && pricingTiers.length > 0) {
-      await prisma.pricingTier.createMany({
-        data: pricingTiers.map((tier: { minutes: number; label: string; price: number }) => ({
-          spaceId,
-          minutes: tier.minutes,
-          label: tier.label,
-          price: tier.price,
-        })),
-      });
-    }
+    await prisma.$transaction([
+      prisma.pricingTier.deleteMany({ where: { spaceId } }),
+      ...(Array.isArray(pricingTiers) && pricingTiers.length > 0 ? [prisma.pricingTier.createMany({ data: pricingTiers.map((t: any) => ({ spaceId, minutes: t.minutes, label: t.label, price: t.price })) })] : []),
+    ]);
   }
 
-  producer.send("space.updated", { value: { id: space.id } });
+  // Re-fetch space after updates for fresh response (I2)
+  const freshSpace = await prisma.space.findUnique({
+    where: { id: spaceId },
+    include: { category: true, venue: venueInclude, amenities: { include: { amenity: true } }, pricingTiers: { orderBy: { minutes: "asc" } } },
+  });
 
-  res.status(200).json(space);
+  producer.send("space.updated", { value: { id: spaceId } });
+
+  res.status(200).json(flattenVenue(freshSpace));
 };
 
 // Delete space (HOST owner or ADMIN)
 export const deleteSpace = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id);
+  const spaceId = parseInt(id, 10);
+  if (Number.isNaN(spaceId)) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
   const userRole = req.user?.role;
 
@@ -497,7 +508,8 @@ export const getMySpaces = async (req: Request, res: Response) => {
 // Get/Update space availability
 export const getAvailability = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id);
+  const spaceId = parseInt(id, 10);
+  if (Number.isNaN(spaceId)) return res.status(400).json({ message: "Invalid ID" });
 
   const availability = await prisma.availability.findMany({
     where: { spaceId },
@@ -517,7 +529,8 @@ export const getAvailability = async (req: Request, res: Response) => {
 
 export const updateAvailability = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id);
+  const spaceId = parseInt(id, 10);
+  if (Number.isNaN(spaceId)) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
   const { availability, blockedDates } = req.body;
 
@@ -535,33 +548,37 @@ export const updateAvailability = async (req: Request, res: Response) => {
 
   // Update availability
   if (availability) {
-    await prisma.availability.deleteMany({ where: { spaceId } });
-    await prisma.availability.createMany({
-      data: availability.map((a: any) => ({
-        spaceId,
-        dayOfWeek: a.dayOfWeek,
-        startTime: a.startTime,
-        endTime: a.endTime,
-        isOpen: a.isOpen ?? true,
-      })),
-    });
+    await prisma.$transaction([
+      prisma.availability.deleteMany({ where: { spaceId } }),
+      ...(availability.length > 0 ? [prisma.availability.createMany({
+        data: availability.map((a: any) => ({
+          spaceId,
+          dayOfWeek: a.dayOfWeek,
+          startTime: a.startTime,
+          endTime: a.endTime,
+          isOpen: a.isOpen ?? true,
+        })),
+      })] : []),
+    ]);
   }
 
   // Update blocked dates
   if (blockedDates) {
-    await prisma.blockedDate.deleteMany({
-      where: {
-        spaceId,
-        date: { gte: new Date() },
-      },
-    });
-    await prisma.blockedDate.createMany({
-      data: blockedDates.map((d: any) => ({
-        spaceId,
-        date: new Date(d.date),
-        reason: d.reason,
-      })),
-    });
+    await prisma.$transaction([
+      prisma.blockedDate.deleteMany({
+        where: {
+          spaceId,
+          date: { gte: new Date() },
+        },
+      }),
+      ...(blockedDates.length > 0 ? [prisma.blockedDate.createMany({
+        data: blockedDates.map((d: any) => ({
+          spaceId,
+          date: new Date(d.date),
+          reason: d.reason,
+        })),
+      })] : []),
+    ]);
   }
 
   res.status(200).json({ message: "Availability updated" });
@@ -570,7 +587,8 @@ export const updateAvailability = async (req: Request, res: Response) => {
 // Check availability for specific dates
 export const checkAvailability = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id);
+  const spaceId = parseInt(id, 10);
+  if (Number.isNaN(spaceId)) return res.status(400).json({ message: "Invalid ID" });
   const { startDate, endDate } = req.body;
 
   const space = await prisma.space.findUnique({

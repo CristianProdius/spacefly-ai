@@ -38,7 +38,9 @@ const calculateBookingPrice = (
     totalMinutes = minutesPerDay * days;
   }
 
-  // Try pricing tiers first
+  // Pricing tiers use per-block pricing: if a booking spans 300 minutes
+  // and the best tier is 240 minutes at $35, charge ceil(300/240) = 2 blocks = $70.
+  // This is by design — tiers represent indivisible time blocks.
   let usedTier = false;
   if (space.pricingTiers && space.pricingTiers.length > 0) {
     // Find the best-fit tier: largest tier that fits within totalMinutes
@@ -90,7 +92,11 @@ async function getExchangeRate(fromCurrency: string): Promise<number> {
       },
     },
   });
-  return rate?.rate ?? 1.0;
+  if (!rate) {
+    console.error(`Exchange rate not configured: ${fromCurrency} -> USD, defaulting to 1.0`);
+    return 1.0; // Log error but don't break booking flow
+  }
+  return rate.rate;
 }
 
 export const bookingRoute = async (fastify: FastifyInstance) => {
@@ -135,24 +141,6 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         });
       }
 
-      // Check for conflicting bookings
-      const conflictingBooking = await prisma.booking.findFirst({
-        where: {
-          spaceId,
-          status: {
-            in: ["PENDING", "CONFIRMED"],
-          },
-          startDate: { lte: new Date(endDate) },
-          endDate: { gte: new Date(startDate) },
-        },
-      });
-
-      if (conflictingBooking) {
-        return reply.status(400).send({
-          message: "These dates conflict with an existing booking",
-        });
-      }
-
       // Calculate pricing
       const pricing = calculateBookingPrice(
         space,
@@ -162,36 +150,61 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         endTime || null
       );
 
-      // Create booking
-      const booking = await prisma.booking.create({
-        data: {
-          spaceId,
-          guestId,
-          hostId: space.hostId,
-          startDate: new Date(startDate),
-          endDate: new Date(endDate),
-          startTime,
-          endTime,
-          guests: guests || 1,
-          isHourly,
-          status: space.instantBook ? "CONFIRMED" : "PENDING",
-          subtotal: pricing.subtotal,
-          cleaningFee: pricing.cleaningFee,
-          serviceFee: pricing.serviceFee,
-          totalAmount: pricing.total,
-          guestMessage: message,
-          currency: space.currency,
-          exchangeRate: await getExchangeRate(space.currency),
+      const exchangeRate = await getExchangeRate(space.currency);
+
+      // Check for conflicts and create booking in a serializable transaction to prevent race conditions
+      const conflictWhere = {
+        spaceId,
+        status: {
+          in: ["PENDING", "CONFIRMED"] as const,
         },
-        include: {
-          space: {
-            include: { host: true },
-          },
-          guest: {
-            select: { id: true, name: true, email: true },
-          },
-        },
-      });
+        startDate: { lte: new Date(endDate) },
+        endDate: { gte: new Date(startDate) },
+      };
+
+      let booking;
+      try {
+        booking = await prisma.$transaction(async (tx) => {
+          const conflict = await tx.booking.findFirst({ where: conflictWhere });
+          if (conflict) throw new Error("CONFLICT");
+          return tx.booking.create({
+            data: {
+              spaceId,
+              guestId,
+              hostId: space.hostId,
+              startDate: new Date(startDate),
+              endDate: new Date(endDate),
+              startTime,
+              endTime,
+              guests: guests || 1,
+              isHourly,
+              status: space.instantBook ? "CONFIRMED" : "PENDING",
+              subtotal: pricing.subtotal,
+              cleaningFee: pricing.cleaningFee,
+              serviceFee: pricing.serviceFee,
+              totalAmount: pricing.total,
+              guestMessage: message,
+              currency: space.currency,
+              exchangeRate,
+            },
+            include: {
+              space: {
+                include: { host: true },
+              },
+              guest: {
+                select: { id: true, name: true, email: true },
+              },
+            },
+          });
+        }, { isolationLevel: 'Serializable' });
+      } catch (err: any) {
+        if (err.message === "CONFLICT") {
+          return reply.status(409).send({
+            message: "These dates conflict with an existing booking",
+          });
+        }
+        throw err;
+      }
 
       // Send Kafka event
       producer.send("booking.created", {

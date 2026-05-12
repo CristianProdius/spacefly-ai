@@ -35,7 +35,13 @@ export async function convertCurrency(
 ): Promise<number> {
   if (from === to) return amount;
   const rates = await loadRates();
-  const rate = rates.get(`${from}_${to}`);
+  let rate = rates.get(`${from}_${to}`);
+  // Fallback: chain through USD
+  if (!rate) {
+    const toUsd = rates.get(`${from}_USD`);
+    const fromUsd = rates.get(`USD_${to}`);
+    if (toUsd && fromUsd) rate = toUsd * fromUsd;
+  }
   if (!rate) throw new Error(`No exchange rate for ${from} → ${to}`);
   return Math.round(amount * rate * 100) / 100;
 }
@@ -43,7 +49,13 @@ export async function convertCurrency(
 export async function getRate(from: string, to: string): Promise<number> {
   if (from === to) return 1.0;
   const rates = await loadRates();
-  const rate = rates.get(`${from}_${to}`);
+  let rate = rates.get(`${from}_${to}`);
+  // Fallback: chain through USD
+  if (!rate) {
+    const toUsd = rates.get(`${from}_USD`);
+    const fromUsd = rates.get(`USD_${to}`);
+    if (toUsd && fromUsd) rate = toUsd * fromUsd;
+  }
   if (!rate) throw new Error(`No exchange rate for ${from} → ${to}`);
   return rate;
 }

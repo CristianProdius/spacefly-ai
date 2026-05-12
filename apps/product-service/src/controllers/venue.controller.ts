@@ -14,7 +14,8 @@ export const getMyVenues = async (req: Request, res: Response) => {
 };
 
 export const getVenue = async (req: Request, res: Response) => {
-  const venueId = parseInt(req.params.id as string);
+  const venueId = parseInt(req.params.id as string, 10);
+  if (Number.isNaN(venueId)) return res.status(400).json({ message: "Invalid ID" });
   const venue = await prisma.venue.findUnique({
     where: { id: venueId },
     include: {
@@ -83,7 +84,8 @@ export const createVenue = async (req: Request, res: Response) => {
 };
 
 export const updateVenue = async (req: Request, res: Response) => {
-  const venueId = parseInt(req.params.id as string);
+  const venueId = parseInt(req.params.id as string, 10);
+  if (Number.isNaN(venueId)) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
   const userRole = req.user?.role;
   const existing = await prisma.venue.findUnique({ where: { id: venueId } });
@@ -150,7 +152,8 @@ export const updateVenue = async (req: Request, res: Response) => {
 };
 
 export const deleteVenue = async (req: Request, res: Response) => {
-  const venueId = parseInt(req.params.id as string);
+  const venueId = parseInt(req.params.id as string, 10);
+  if (Number.isNaN(venueId)) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
   const userRole = req.user?.role;
   const existing = await prisma.venue.findUnique({ where: { id: venueId } });

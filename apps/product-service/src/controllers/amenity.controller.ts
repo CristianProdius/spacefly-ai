@@ -2,20 +2,28 @@ import { Prisma, prisma } from "@repo/db";
 import { Request, Response } from "express";
 
 export const createAmenity = async (req: Request, res: Response) => {
-  const data: Prisma.AmenityCreateInput = req.body;
+  const { name, icon, category, spaceTypes } = req.body;
 
-  const amenity = await prisma.amenity.create({ data });
+  const amenity = await prisma.amenity.create({
+    data: { name, icon, category, spaceTypes },
+  });
   res.status(201).json(amenity);
 };
 
 export const updateAmenity = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const amenityId = parseInt(id);
-  const data: Prisma.AmenityUpdateInput = req.body;
+  const amenityId = parseInt(id, 10);
+  if (Number.isNaN(amenityId)) return res.status(400).json({ message: "Invalid ID" });
+  const { name, icon, category, spaceTypes } = req.body;
 
   const amenity = await prisma.amenity.update({
     where: { id: amenityId },
-    data,
+    data: {
+      ...(name !== undefined && { name }),
+      ...(icon !== undefined && { icon }),
+      ...(category !== undefined && { category }),
+      ...(spaceTypes !== undefined && { spaceTypes }),
+    },
   });
 
   return res.status(200).json(amenity);
@@ -23,7 +31,8 @@ export const updateAmenity = async (req: Request, res: Response) => {
 
 export const deleteAmenity = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const amenityId = parseInt(id);
+  const amenityId = parseInt(id, 10);
+  if (Number.isNaN(amenityId)) return res.status(400).json({ message: "Invalid ID" });
 
   // First remove from all spaces
   await prisma.spaceAmenity.deleteMany({
@@ -63,7 +72,8 @@ export const getAmenities = async (req: Request, res: Response) => {
 
 export const getAmenity = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const amenityId = parseInt(id);
+  const amenityId = parseInt(id, 10);
+  if (Number.isNaN(amenityId)) return res.status(400).json({ message: "Invalid ID" });
 
   const amenity = await prisma.amenity.findUnique({
     where: { id: amenityId },

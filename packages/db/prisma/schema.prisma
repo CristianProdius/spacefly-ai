@@ -146,6 +146,7 @@ model Venue {
   @@index([hostId])
   @@index([city])
   @@index([isActive])
+  @@index([latitude, longitude])
 }
 
 // ==================== EXCHANGE RATES ====================
@@ -326,7 +327,7 @@ model Booking {
   guests    Int      @default(1)
   isHourly  Boolean
 
-  // Pricing (all in dollars)
+  // Pricing (in the space's currency, see currency field)
   subtotal    Float
   cleaningFee Float @default(0)
   serviceFee  Float
