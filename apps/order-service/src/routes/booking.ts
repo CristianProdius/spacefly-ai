@@ -18,6 +18,8 @@ const calculateBookingPrice = (
     pricePerHour: number | null;
     pricePerDay: number | null;
     cleaningFee: number;
+    currency: string;
+    pricingTiers?: Array<{ minutes: number; price: number }>;
   },
   startDate: Date,
   endDate: Date,
@@ -26,27 +28,48 @@ const calculateBookingPrice = (
 ): { subtotal: number; cleaningFee: number; serviceFee: number; total: number } => {
   let subtotal = 0;
 
-  if (space.pricingType === "HOURLY" && space.pricePerHour && startTime && endTime) {
-    // Calculate hours
+  // Calculate total minutes for the booking
+  const days = differenceInDays(endDate, startDate) + 1;
+  let totalMinutes = days * 24 * 60; // default to full days
+  if (startTime && endTime) {
     const [startH, startM] = startTime.split(":").map(Number);
     const [endH, endM] = endTime.split(":").map(Number);
-    const hours = (endH! - startH!) + (endM! - startM!) / 60;
-    const days = differenceInDays(endDate, startDate) + 1;
-    subtotal = roundCurrency(space.pricePerHour * hours * days);
-  } else if (space.pricingType === "DAILY" && space.pricePerDay) {
-    const days = differenceInDays(endDate, startDate) + 1;
-    subtotal = roundCurrency(space.pricePerDay * days);
-  } else if (space.pricingType === "BOTH") {
-    // For BOTH, calculate based on what's provided
-    if (startTime && endTime && space.pricePerHour) {
+    const minutesPerDay = (endH! - startH!) * 60 + (endM! - startM!);
+    totalMinutes = minutesPerDay * days;
+  }
+
+  // Try pricing tiers first
+  let usedTier = false;
+  if (space.pricingTiers && space.pricingTiers.length > 0) {
+    // Find the best-fit tier: largest tier that fits within totalMinutes
+    const eligibleTiers = space.pricingTiers.filter((t) => t.minutes <= totalMinutes);
+    if (eligibleTiers.length > 0) {
+      const bestTier = eligibleTiers[eligibleTiers.length - 1]!; // already sorted asc
+      const units = Math.ceil(totalMinutes / bestTier.minutes);
+      subtotal = roundCurrency(units * bestTier.price);
+      usedTier = true;
+    }
+  }
+
+  // Fall back to pricePerHour / pricePerDay if no tier matched
+  if (!usedTier) {
+    if (space.pricingType === "HOURLY" && space.pricePerHour && startTime && endTime) {
       const [startH, startM] = startTime.split(":").map(Number);
       const [endH, endM] = endTime.split(":").map(Number);
       const hours = (endH! - startH!) + (endM! - startM!) / 60;
-      const days = differenceInDays(endDate, startDate) + 1;
       subtotal = roundCurrency(space.pricePerHour * hours * days);
-    } else if (space.pricePerDay) {
-      const days = differenceInDays(endDate, startDate) + 1;
+    } else if (space.pricingType === "DAILY" && space.pricePerDay) {
       subtotal = roundCurrency(space.pricePerDay * days);
+    } else if (space.pricingType === "BOTH") {
+      // For BOTH, calculate based on what's provided
+      if (startTime && endTime && space.pricePerHour) {
+        const [startH, startM] = startTime.split(":").map(Number);
+        const [endH, endM] = endTime.split(":").map(Number);
+        const hours = (endH! - startH!) + (endM! - startM!) / 60;
+        subtotal = roundCurrency(space.pricePerHour * hours * days);
+      } else if (space.pricePerDay) {
+        subtotal = roundCurrency(space.pricePerDay * days);
+      }
     }
   }
 
@@ -56,6 +79,19 @@ const calculateBookingPrice = (
 
   return { subtotal, cleaningFee, serviceFee, total };
 };
+
+async function getExchangeRate(fromCurrency: string): Promise<number> {
+  if (fromCurrency === "USD") return 1.0;
+  const rate = await prisma.exchangeRate.findUnique({
+    where: {
+      fromCurrency_toCurrency: {
+        fromCurrency: fromCurrency as any,
+        toCurrency: "USD" as any,
+      },
+    },
+  });
+  return rate?.rate ?? 1.0;
+}
 
 export const bookingRoute = async (fastify: FastifyInstance) => {
   // Create a new booking request (Guest)
@@ -78,7 +114,10 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
       // Get space details
       const space = await prisma.space.findUnique({
         where: { id: spaceId },
-        include: { host: true },
+        include: {
+          host: true,
+          pricingTiers: { orderBy: { minutes: "asc" } },
+        },
       });
 
       if (!space) {
@@ -141,6 +180,8 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
           serviceFee: pricing.serviceFee,
           totalAmount: pricing.total,
           guestMessage: message,
+          currency: space.currency,
+          exchangeRate: await getExchangeRate(space.currency),
         },
         include: {
           space: {
