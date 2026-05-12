@@ -10,6 +10,9 @@ export interface VenueFormValues {
   name: string;
   shortDescription: string;
   description: string;
+  nameTranslations: Record<string, string>;
+  shortDescTranslations: Record<string, string>;
+  descriptionTranslations: Record<string, string>;
   address: string;
   city: string;
   state: string;
@@ -18,6 +21,7 @@ export interface VenueFormValues {
   latitude: number | null;
   longitude: number | null;
   images: string[];
+  videoUrl: string;
   currency: string;
 }
 
@@ -25,6 +29,9 @@ export interface VenueFormPayload {
   name: string;
   shortDescription: string;
   description: string;
+  nameTranslations: Record<string, string> | null;
+  shortDescTranslations: Record<string, string> | null;
+  descriptionTranslations: Record<string, string> | null;
   address: string;
   city: string;
   state: string | null;
@@ -33,6 +40,7 @@ export interface VenueFormPayload {
   latitude: number | null;
   longitude: number | null;
   images: string[];
+  videoUrl: string | null;
   currency: string;
 }
 
@@ -40,6 +48,9 @@ export const createEmptyVenueFormValues = (): VenueFormValues => ({
   name: "",
   shortDescription: "",
   description: "",
+  nameTranslations: {},
+  shortDescTranslations: {},
+  descriptionTranslations: {},
   address: "",
   city: "",
   state: "",
@@ -48,13 +59,21 @@ export const createEmptyVenueFormValues = (): VenueFormValues => ({
   latitude: null,
   longitude: null,
   images: [],
+  videoUrl: "",
   currency: "USD",
 });
+
+const emptyToNull = (obj: Record<string, string>): Record<string, string> | null =>
+  Object.keys(obj).length === 0 ? null : obj;
 
 export const buildVenuePayload = (
   formData: VenueFormValues
 ): VenueFormPayload => ({
   ...formData,
+  nameTranslations: emptyToNull(formData.nameTranslations),
+  shortDescTranslations: emptyToNull(formData.shortDescTranslations),
+  descriptionTranslations: emptyToNull(formData.descriptionTranslations),
+  videoUrl: formData.videoUrl || null,
   state: formData.state || null,
   postalCode: formData.postalCode || null,
 });
@@ -64,6 +83,9 @@ export interface VenueResponse {
   name: string;
   shortDescription: string;
   description: string;
+  nameTranslations?: Record<string, string> | null;
+  shortDescTranslations?: Record<string, string> | null;
+  descriptionTranslations?: Record<string, string> | null;
   address: string;
   city: string;
   state: string | null;
@@ -72,6 +94,7 @@ export interface VenueResponse {
   latitude: number | null;
   longitude: number | null;
   images: string[];
+  videoUrl?: string | null;
   currency: string;
 }
 
@@ -81,6 +104,9 @@ export const mapVenueToFormValues = (
   name: venue.name,
   shortDescription: venue.shortDescription,
   description: venue.description,
+  nameTranslations: venue.nameTranslations ?? {},
+  shortDescTranslations: venue.shortDescTranslations ?? {},
+  descriptionTranslations: venue.descriptionTranslations ?? {},
   address: venue.address,
   city: venue.city,
   state: venue.state ?? "",
@@ -89,5 +115,6 @@ export const mapVenueToFormValues = (
   latitude: venue.latitude ?? null,
   longitude: venue.longitude ?? null,
   images: Array.isArray(venue.images) ? venue.images : [],
+  videoUrl: venue.videoUrl ?? "",
   currency: venue.currency ?? "USD",
 });

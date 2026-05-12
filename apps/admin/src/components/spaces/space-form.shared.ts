@@ -38,6 +38,9 @@ export interface SpaceFormValues {
   name: string;
   shortDescription: string;
   description: string;
+  nameTranslations: Record<string, string>;
+  shortDescTranslations: Record<string, string>;
+  descriptionTranslations: Record<string, string>;
   spaceType: SpaceType;
   pricingType: PricingType;
   pricePerHour: string;
@@ -50,6 +53,7 @@ export interface SpaceFormValues {
   categorySlug: string;
   amenityIds: number[];
   images: string[];
+  videoUrl: string;
   currency: string;
   pricingTiers: Array<{ minutes: number; label: string; price: string }>;
 }
@@ -58,6 +62,9 @@ export interface SpaceFormPayload {
   name: string;
   shortDescription: string;
   description: string;
+  nameTranslations: Record<string, string> | null;
+  shortDescTranslations: Record<string, string> | null;
+  descriptionTranslations: Record<string, string> | null;
   spaceType: SpaceType;
   pricingType: PricingType;
   pricePerHour: number | null;
@@ -70,6 +77,7 @@ export interface SpaceFormPayload {
   categorySlug: string;
   amenityIds: number[];
   images: string[];
+  videoUrl: string | null;
   currency: string;
   pricingTiers: Array<{ minutes: number; label: string; price: number }>;
 }
@@ -78,6 +86,9 @@ export const createEmptySpaceFormValues = (): SpaceFormValues => ({
   name: "",
   shortDescription: "",
   description: "",
+  nameTranslations: {},
+  shortDescTranslations: {},
+  descriptionTranslations: {},
   spaceType: "MEETING_ROOM",
   pricingType: "BOTH",
   pricePerHour: "",
@@ -90,15 +101,23 @@ export const createEmptySpaceFormValues = (): SpaceFormValues => ({
   categorySlug: "",
   amenityIds: [],
   images: [],
+  videoUrl: "",
   currency: "USD",
   pricingTiers: [],
 });
+
+const emptyToNull = (obj: Record<string, string>): Record<string, string> | null =>
+  Object.keys(obj).length === 0 ? null : obj;
 
 export const buildSpacePayload = (
   formData: SpaceFormValues,
   category?: Pick<NormalizedTaxonomyCategory, "legacySpaceType" | "slug" | "spaceType">
 ): SpaceFormPayload => ({
   ...formData,
+  nameTranslations: emptyToNull(formData.nameTranslations),
+  shortDescTranslations: emptyToNull(formData.shortDescTranslations),
+  descriptionTranslations: emptyToNull(formData.descriptionTranslations),
+  videoUrl: formData.videoUrl || null,
   spaceType: category
     ? resolveLegacySpaceType(category, formData.spaceType)
     : formData.spaceType,
@@ -131,11 +150,20 @@ export const mapSpaceToFormValues = (
     | "amenities"
     | "currency"
     | "pricingTiers"
-  > & { venueId?: number | null }
+  > & {
+    venueId?: number | null;
+    videoUrl?: string | null;
+    nameTranslations?: Record<string, string> | null;
+    shortDescTranslations?: Record<string, string> | null;
+    descriptionTranslations?: Record<string, string> | null;
+  }
 ): SpaceFormValues => ({
   name: space.name,
   shortDescription: space.shortDescription,
   description: space.description,
+  nameTranslations: space.nameTranslations ?? {},
+  shortDescTranslations: space.shortDescTranslations ?? {},
+  descriptionTranslations: space.descriptionTranslations ?? {},
   spaceType: space.spaceType,
   pricingType: space.pricingType,
   pricePerHour: space.pricePerHour?.toString() ?? "",
@@ -148,6 +176,7 @@ export const mapSpaceToFormValues = (
   categorySlug: space.categorySlug,
   amenityIds: space.amenities?.map((spaceAmenity) => spaceAmenity.amenityId) ?? [],
   images: Array.isArray(space.images) ? space.images : [],
+  videoUrl: space.videoUrl ?? "",
   currency: space.currency ?? "USD",
   pricingTiers: (space.pricingTiers ?? []).map((t) => ({
     minutes: t.minutes,

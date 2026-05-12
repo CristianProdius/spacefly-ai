@@ -14,6 +14,7 @@ interface Amenity {
   name: string;
   icon: string | null;
   category: string | null;
+  spaceTypes: string[];
 }
 
 const PRODUCT_SERVICE_URL =
@@ -26,6 +27,7 @@ const AmenitiesPage = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [newName, setNewName] = useState("");
   const [newCategory, setNewCategory] = useState("");
+  const [newSpaceTypes, setNewSpaceTypes] = useState<string[]>([]);
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
@@ -60,6 +62,7 @@ const AmenitiesPage = () => {
         body: JSON.stringify({
           name: newName,
           category: newCategory || null,
+          spaceTypes: newSpaceTypes,
         }),
       });
 
@@ -68,6 +71,7 @@ const AmenitiesPage = () => {
         setAmenities((prev) => [...prev, data]);
         setNewName("");
         setNewCategory("");
+        setNewSpaceTypes([]);
         setShowAdd(false);
         toast.success("Amenity added");
       } else {
@@ -140,54 +144,72 @@ const AmenitiesPage = () => {
             <CardTitle className="text-base">Add amenity</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            <form
-              onSubmit={addAmenity}
-              className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto]"
-            >
-              <div className="space-y-2">
-                <label
-                  htmlFor="amenity-name"
-                  className="block text-sm font-medium text-muted-foreground"
-                >
-                  Name
-                </label>
-                <Input
-                  id="amenity-name"
-                  type="text"
-                  required
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  placeholder="e.g. Wi-Fi"
-                />
+            <form onSubmit={addAmenity} className="space-y-4">
+              <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto_auto]">
+                <div className="space-y-2">
+                  <label
+                    htmlFor="amenity-name"
+                    className="block text-sm font-medium text-muted-foreground"
+                  >
+                    Name
+                  </label>
+                  <Input
+                    id="amenity-name"
+                    type="text"
+                    required
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                    placeholder="e.g. Wi-Fi"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label
+                    htmlFor="amenity-category"
+                    className="block text-sm font-medium text-muted-foreground"
+                  >
+                    Category (optional)
+                  </label>
+                  <Input
+                    id="amenity-category"
+                    type="text"
+                    value={newCategory}
+                    onChange={(e) => setNewCategory(e.target.value)}
+                    placeholder="e.g. Technology"
+                  />
+                </div>
+                <div className="flex items-end">
+                  <Button type="submit" disabled={adding}>
+                    {adding ? "Adding..." : "Add"}
+                  </Button>
+                </div>
+                <div className="flex items-end">
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => setShowAdd(false)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label
-                  htmlFor="amenity-category"
-                  className="block text-sm font-medium text-muted-foreground"
-                >
-                  Category (optional)
-                </label>
-                <Input
-                  id="amenity-category"
-                  type="text"
-                  value={newCategory}
-                  onChange={(e) => setNewCategory(e.target.value)}
-                  placeholder="e.g. Technology"
-                />
-              </div>
-              <div className="flex items-end">
-                <Button type="submit" disabled={adding}>
-                  {adding ? "Adding..." : "Add"}
-                </Button>
-              </div>
-              <div className="flex items-end">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => setShowAdd(false)}
-                >
-                  Cancel
-                </Button>
+              <div>
+                <label className="text-sm font-medium">Applies to (leave empty for all types)</label>
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {["OFFICE_DESK", "PRIVATE_OFFICE", "MEETING_ROOM", "EVENT_VENUE", "WEDDING_VENUE", "COWORKING_SPACE"].map((type) => (
+                    <label key={type} className="flex items-center gap-1.5 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={newSpaceTypes.includes(type)}
+                        onChange={(e) => {
+                          if (e.target.checked) setNewSpaceTypes(prev => [...prev, type]);
+                          else setNewSpaceTypes(prev => prev.filter(t => t !== type));
+                        }}
+                        className="rounded"
+                      />
+                      {type.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
+                    </label>
+                  ))}
+                </div>
               </div>
             </form>
           </CardContent>
@@ -208,9 +230,21 @@ const AmenitiesPage = () => {
                 key={amenity.id}
                 className="flex items-center justify-between px-4 py-3 transition-colors hover:bg-accent/30"
               >
-                <span className="text-sm text-card-foreground">
-                  {amenity.icon ? <span className="mr-2">{amenity.icon}</span> : null}
+                <span className="flex items-center gap-2 text-sm text-card-foreground">
+                  {amenity.icon ? <span>{amenity.icon}</span> : null}
                   {amenity.name}
+                  {amenity.spaceTypes?.length > 0 && (
+                    <span className="flex flex-wrap gap-1">
+                      {amenity.spaceTypes.map((st) => (
+                        <span
+                          key={st}
+                          className="inline-block rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground"
+                        >
+                          {st.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
+                        </span>
+                      ))}
+                    </span>
+                  )}
                 </span>
                 <Button
                   variant="ghost"

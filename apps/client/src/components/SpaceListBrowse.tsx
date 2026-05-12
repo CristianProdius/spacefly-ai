@@ -122,6 +122,8 @@ export default function SpaceListBrowse({
       const params = new URLSearchParams(apiParamsRef.current);
       params.set("page", String(nextPage));
       params.set("limit", "20");
+      const locale = window.location.pathname.split("/")[1] || "en";
+      params.set("lang", locale);
 
       const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${params.toString()}`;
       const res = await fetch(url);

@@ -30,6 +30,7 @@ import {
   type SpaceFormValues,
 } from "./space-form.shared";
 import PricingTiersEditor from "./pricing-tiers-editor";
+import TranslationTabs from "@/components/translation-tabs";
 
 interface VenueOption {
   id: number;
@@ -88,24 +89,16 @@ const SpaceForm = ({
   }, [initialValues]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategories = async () => {
       try {
-        const [catRes, amenRes] = await Promise.all([
-          fetch(`${PRODUCT_SERVICE_URL}/categories?grouped=true`),
-          fetch(`${PRODUCT_SERVICE_URL}/amenities`),
-        ]);
+        const catRes = await fetch(`${PRODUCT_SERVICE_URL}/categories?grouped=true`);
 
         if (catRes.ok) {
           const catData = (await catRes.json()) as TaxonomyApiResponse;
           setCategoryGroups(normalizeCategoryGroups(catData));
         }
-
-        if (amenRes.ok) {
-          const amenData = (await amenRes.json()) as Amenity[];
-          setAmenities(amenData);
-        }
       } catch (fetchError) {
-        console.error("Error fetching data:", fetchError);
+        console.error("Error fetching categories:", fetchError);
       }
     };
 
@@ -126,9 +119,30 @@ const SpaceForm = ({
       }
     };
 
-    fetchData();
+    fetchCategories();
     fetchVenues();
   }, [token]);
+
+  useEffect(() => {
+    const fetchAmenities = async () => {
+      try {
+        const spaceType = formData.spaceType;
+        const amenityUrl = spaceType
+          ? `${PRODUCT_SERVICE_URL}/amenities?spaceType=${spaceType}`
+          : `${PRODUCT_SERVICE_URL}/amenities`;
+        const amenRes = await fetch(amenityUrl);
+
+        if (amenRes.ok) {
+          const amenData = (await amenRes.json()) as Amenity[];
+          setAmenities(amenData);
+        }
+      } catch (fetchError) {
+        console.error("Error fetching amenities:", fetchError);
+      }
+    };
+
+    fetchAmenities();
+  }, [formData.spaceType]);
 
   useEffect(() => {
     if (categories.length === 0 || !formData.categorySlug) {
@@ -336,6 +350,47 @@ const SpaceForm = ({
               />
             </div>
 
+            <TranslationTabs
+              fields={[
+                {
+                  name: "name",
+                  label: "Name",
+                  type: "input",
+                  value: formData.name,
+                  translations: formData.nameTranslations,
+                  onTranslationChange: (lang, val) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      nameTranslations: { ...prev.nameTranslations, [lang]: val },
+                    })),
+                },
+                {
+                  name: "shortDescription",
+                  label: "Short Description",
+                  type: "input",
+                  value: formData.shortDescription,
+                  translations: formData.shortDescTranslations,
+                  onTranslationChange: (lang, val) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      shortDescTranslations: { ...prev.shortDescTranslations, [lang]: val },
+                    })),
+                },
+                {
+                  name: "description",
+                  label: "Description",
+                  type: "textarea",
+                  value: formData.description,
+                  translations: formData.descriptionTranslations,
+                  onTranslationChange: (lang, val) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      descriptionTranslations: { ...prev.descriptionTranslations, [lang]: val },
+                    })),
+                },
+              ]}
+            />
+
             <div>
               <label className={labelClassName}>Category</label>
               <select
@@ -452,6 +507,18 @@ const SpaceForm = ({
             Upload high-quality photos of your space. First image will be the
             cover.
           </p>
+
+          <div>
+            <label className={labelClassName}>YouTube Video URL (optional)</label>
+            <input
+              type="url"
+              placeholder="https://www.youtube.com/watch?v=..."
+              value={formData.videoUrl}
+              onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
+              className={fieldClassName}
+            />
+            <p className="text-sm text-muted-foreground mt-1">Paste a YouTube link to embed a video on the listing page</p>
+          </div>
         </DashboardSection>
 
         <DashboardSection title="Venue" contentClassName="space-y-4">

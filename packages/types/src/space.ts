@@ -91,6 +91,7 @@ export interface Amenity {
   name: string;
   icon: string | null;
   category: string | null;
+  spaceTypes: SpaceType[];
 }
 
 export interface SpaceAmenity {
@@ -132,6 +133,7 @@ export interface Space {
   minBookingHours: number | null;
   maxBookingHours: number | null;
   images: string[];
+  videoUrl: string | null;
   address: string;
   city: string;
   state: string | null;

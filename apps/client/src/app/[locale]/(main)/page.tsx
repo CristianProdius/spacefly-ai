@@ -3,6 +3,7 @@ import SpaceList from "@/components/SpaceList";
 import HowItWorks from "@/components/landing/HowItWorks";
 import HostCTA from "@/components/landing/HostCTA";
 import FAQ from "@/components/landing/FAQ";
+import { getLocale } from "next-intl/server";
 
 const Homepage = async ({
   searchParams,
@@ -16,6 +17,7 @@ const Homepage = async ({
   }>;
 }) => {
   const { category, categorySlug, group, groupSlug, type } = await searchParams;
+  const locale = await getLocale();
 
   return (
     <div>
@@ -32,6 +34,7 @@ const Homepage = async ({
           type={type}
           variant="homepage"
           showCategories
+          locale={locale}
         />
       </section>
 

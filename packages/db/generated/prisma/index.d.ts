@@ -4965,6 +4965,7 @@ export namespace Prisma {
     name: string | null
     shortDescription: string | null
     description: string | null
+    videoUrl: string | null
     address: string | null
     city: string | null
     state: string | null
@@ -4984,6 +4985,7 @@ export namespace Prisma {
     name: string | null
     shortDescription: string | null
     description: string | null
+    videoUrl: string | null
     address: string | null
     city: string | null
     state: string | null
@@ -5003,7 +5005,11 @@ export namespace Prisma {
     name: number
     shortDescription: number
     description: number
+    nameTranslations: number
+    shortDescTranslations: number
+    descriptionTranslations: number
     images: number
+    videoUrl: number
     address: number
     city: number
     state: number
@@ -5037,6 +5043,7 @@ export namespace Prisma {
     name?: true
     shortDescription?: true
     description?: true
+    videoUrl?: true
     address?: true
     city?: true
     state?: true
@@ -5056,6 +5063,7 @@ export namespace Prisma {
     name?: true
     shortDescription?: true
     description?: true
+    videoUrl?: true
     address?: true
     city?: true
     state?: true
@@ -5075,7 +5083,11 @@ export namespace Prisma {
     name?: true
     shortDescription?: true
     description?: true
+    nameTranslations?: true
+    shortDescTranslations?: true
+    descriptionTranslations?: true
     images?: true
+    videoUrl?: true
     address?: true
     city?: true
     state?: true
@@ -5182,7 +5194,11 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations: JsonValue | null
+    shortDescTranslations: JsonValue | null
+    descriptionTranslations: JsonValue | null
     images: JsonValue
+    videoUrl: string | null
     address: string
     city: string
     state: string | null
@@ -5221,7 +5237,11 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5244,7 +5264,11 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5265,7 +5289,11 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5286,7 +5314,11 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5301,7 +5333,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "currency" | "hostId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
+  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "images" | "videoUrl" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "currency" | "hostId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
   export type VenueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     spaces?: boolean | Venue$spacesArgs<ExtArgs>
@@ -5325,7 +5357,11 @@ export namespace Prisma {
       name: string
       shortDescription: string
       description: string
+      nameTranslations: Prisma.JsonValue | null
+      shortDescTranslations: Prisma.JsonValue | null
+      descriptionTranslations: Prisma.JsonValue | null
       images: Prisma.JsonValue
+      videoUrl: string | null
       address: string
       city: string
       state: string | null
@@ -5767,7 +5803,11 @@ export namespace Prisma {
     readonly name: FieldRef<"Venue", 'String'>
     readonly shortDescription: FieldRef<"Venue", 'String'>
     readonly description: FieldRef<"Venue", 'String'>
+    readonly nameTranslations: FieldRef<"Venue", 'Json'>
+    readonly shortDescTranslations: FieldRef<"Venue", 'Json'>
+    readonly descriptionTranslations: FieldRef<"Venue", 'Json'>
     readonly images: FieldRef<"Venue", 'Json'>
+    readonly videoUrl: FieldRef<"Venue", 'String'>
     readonly address: FieldRef<"Venue", 'String'>
     readonly city: FieldRef<"Venue", 'String'>
     readonly state: FieldRef<"Venue", 'String'>
@@ -7316,6 +7356,7 @@ export namespace Prisma {
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
+    videoUrl: string | null
     address: string | null
     city: string | null
     state: string | null
@@ -7348,6 +7389,7 @@ export namespace Prisma {
     capacity: number | null
     minBookingHours: number | null
     maxBookingHours: number | null
+    videoUrl: string | null
     address: string | null
     city: string | null
     state: string | null
@@ -7371,6 +7413,9 @@ export namespace Prisma {
     name: number
     shortDescription: number
     description: number
+    nameTranslations: number
+    shortDescTranslations: number
+    descriptionTranslations: number
     spaceType: number
     pricingType: number
     pricePerHour: number
@@ -7381,6 +7426,7 @@ export namespace Prisma {
     minBookingHours: number
     maxBookingHours: number
     images: number
+    videoUrl: number
     address: number
     city: number
     state: number
@@ -7441,6 +7487,7 @@ export namespace Prisma {
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
+    videoUrl?: true
     address?: true
     city?: true
     state?: true
@@ -7473,6 +7520,7 @@ export namespace Prisma {
     capacity?: true
     minBookingHours?: true
     maxBookingHours?: true
+    videoUrl?: true
     address?: true
     city?: true
     state?: true
@@ -7496,6 +7544,9 @@ export namespace Prisma {
     name?: true
     shortDescription?: true
     description?: true
+    nameTranslations?: true
+    shortDescTranslations?: true
+    descriptionTranslations?: true
     spaceType?: true
     pricingType?: true
     pricePerHour?: true
@@ -7506,6 +7557,7 @@ export namespace Prisma {
     minBookingHours?: true
     maxBookingHours?: true
     images?: true
+    videoUrl?: true
     address?: true
     city?: true
     state?: true
@@ -7616,6 +7668,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations: JsonValue | null
+    shortDescTranslations: JsonValue | null
+    descriptionTranslations: JsonValue | null
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour: number | null
@@ -7626,6 +7681,7 @@ export namespace Prisma {
     minBookingHours: number | null
     maxBookingHours: number | null
     images: JsonValue
+    videoUrl: string | null
     address: string
     city: string
     state: string | null
@@ -7668,6 +7724,9 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     spaceType?: boolean
     pricingType?: boolean
     pricePerHour?: boolean
@@ -7678,6 +7737,7 @@ export namespace Prisma {
     minBookingHours?: boolean
     maxBookingHours?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -7711,6 +7771,9 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     spaceType?: boolean
     pricingType?: boolean
     pricePerHour?: boolean
@@ -7721,6 +7784,7 @@ export namespace Prisma {
     minBookingHours?: boolean
     maxBookingHours?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -7747,6 +7811,9 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     spaceType?: boolean
     pricingType?: boolean
     pricePerHour?: boolean
@@ -7757,6 +7824,7 @@ export namespace Prisma {
     minBookingHours?: boolean
     maxBookingHours?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -7783,6 +7851,9 @@ export namespace Prisma {
     name?: boolean
     shortDescription?: boolean
     description?: boolean
+    nameTranslations?: boolean
+    shortDescTranslations?: boolean
+    descriptionTranslations?: boolean
     spaceType?: boolean
     pricingType?: boolean
     pricePerHour?: boolean
@@ -7793,6 +7864,7 @@ export namespace Prisma {
     minBookingHours?: boolean
     maxBookingHours?: boolean
     images?: boolean
+    videoUrl?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -7811,7 +7883,7 @@ export namespace Prisma {
     categorySlug?: boolean
   }
 
-  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "currency" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
+  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "cleaningFee" | "currency" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "videoUrl" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
   export type SpaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     venue?: boolean | VenueDefaultArgs<ExtArgs>
@@ -7853,6 +7925,9 @@ export namespace Prisma {
       name: string
       shortDescription: string
       description: string
+      nameTranslations: Prisma.JsonValue | null
+      shortDescTranslations: Prisma.JsonValue | null
+      descriptionTranslations: Prisma.JsonValue | null
       spaceType: $Enums.SpaceType
       pricingType: $Enums.PricingType
       pricePerHour: number | null
@@ -7863,6 +7938,7 @@ export namespace Prisma {
       minBookingHours: number | null
       maxBookingHours: number | null
       images: Prisma.JsonValue
+      videoUrl: string | null
       address: string
       city: string
       state: string | null
@@ -8315,6 +8391,9 @@ export namespace Prisma {
     readonly name: FieldRef<"Space", 'String'>
     readonly shortDescription: FieldRef<"Space", 'String'>
     readonly description: FieldRef<"Space", 'String'>
+    readonly nameTranslations: FieldRef<"Space", 'Json'>
+    readonly shortDescTranslations: FieldRef<"Space", 'Json'>
+    readonly descriptionTranslations: FieldRef<"Space", 'Json'>
     readonly spaceType: FieldRef<"Space", 'SpaceType'>
     readonly pricingType: FieldRef<"Space", 'PricingType'>
     readonly pricePerHour: FieldRef<"Space", 'Float'>
@@ -8325,6 +8404,7 @@ export namespace Prisma {
     readonly minBookingHours: FieldRef<"Space", 'Int'>
     readonly maxBookingHours: FieldRef<"Space", 'Int'>
     readonly images: FieldRef<"Space", 'Json'>
+    readonly videoUrl: FieldRef<"Space", 'String'>
     readonly address: FieldRef<"Space", 'String'>
     readonly city: FieldRef<"Space", 'String'>
     readonly state: FieldRef<"Space", 'String'>
@@ -11185,6 +11265,7 @@ export namespace Prisma {
     name: number
     icon: number
     category: number
+    spaceTypes: number
     _all: number
   }
 
@@ -11216,6 +11297,7 @@ export namespace Prisma {
     name?: true
     icon?: true
     category?: true
+    spaceTypes?: true
     _all?: true
   }
 
@@ -11310,6 +11392,7 @@ export namespace Prisma {
     name: string
     icon: string | null
     category: string | null
+    spaceTypes: $Enums.SpaceType[]
     _count: AmenityCountAggregateOutputType | null
     _avg: AmenityAvgAggregateOutputType | null
     _sum: AmenitySumAggregateOutputType | null
@@ -11336,6 +11419,7 @@ export namespace Prisma {
     name?: boolean
     icon?: boolean
     category?: boolean
+    spaceTypes?: boolean
     spaces?: boolean | Amenity$spacesArgs<ExtArgs>
     _count?: boolean | AmenityCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["amenity"]>
@@ -11345,6 +11429,7 @@ export namespace Prisma {
     name?: boolean
     icon?: boolean
     category?: boolean
+    spaceTypes?: boolean
   }, ExtArgs["result"]["amenity"]>
 
   export type AmenitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11352,6 +11437,7 @@ export namespace Prisma {
     name?: boolean
     icon?: boolean
     category?: boolean
+    spaceTypes?: boolean
   }, ExtArgs["result"]["amenity"]>
 
   export type AmenitySelectScalar = {
@@ -11359,9 +11445,10 @@ export namespace Prisma {
     name?: boolean
     icon?: boolean
     category?: boolean
+    spaceTypes?: boolean
   }
 
-  export type AmenityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "icon" | "category", ExtArgs["result"]["amenity"]>
+  export type AmenityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "icon" | "category" | "spaceTypes", ExtArgs["result"]["amenity"]>
   export type AmenityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     spaces?: boolean | Amenity$spacesArgs<ExtArgs>
     _count?: boolean | AmenityCountOutputTypeDefaultArgs<ExtArgs>
@@ -11379,6 +11466,7 @@ export namespace Prisma {
       name: string
       icon: string | null
       category: string | null
+      spaceTypes: $Enums.SpaceType[]
     }, ExtArgs["result"]["amenity"]>
     composites: {}
   }
@@ -11807,6 +11895,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Amenity", 'String'>
     readonly icon: FieldRef<"Amenity", 'String'>
     readonly category: FieldRef<"Amenity", 'String'>
+    readonly spaceTypes: FieldRef<"Amenity", 'SpaceType[]'>
   }
     
 
@@ -20439,7 +20528,11 @@ export namespace Prisma {
     name: 'name',
     shortDescription: 'shortDescription',
     description: 'description',
+    nameTranslations: 'nameTranslations',
+    shortDescTranslations: 'shortDescTranslations',
+    descriptionTranslations: 'descriptionTranslations',
     images: 'images',
+    videoUrl: 'videoUrl',
     address: 'address',
     city: 'city',
     state: 'state',
@@ -20474,6 +20567,9 @@ export namespace Prisma {
     name: 'name',
     shortDescription: 'shortDescription',
     description: 'description',
+    nameTranslations: 'nameTranslations',
+    shortDescTranslations: 'shortDescTranslations',
+    descriptionTranslations: 'descriptionTranslations',
     spaceType: 'spaceType',
     pricingType: 'pricingType',
     pricePerHour: 'pricePerHour',
@@ -20484,6 +20580,7 @@ export namespace Prisma {
     minBookingHours: 'minBookingHours',
     maxBookingHours: 'maxBookingHours',
     images: 'images',
+    videoUrl: 'videoUrl',
     address: 'address',
     city: 'city',
     state: 'state',
@@ -20532,7 +20629,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     icon: 'icon',
-    category: 'category'
+    category: 'category',
+    spaceTypes: 'spaceTypes'
   };
 
   export type AmenityScalarFieldEnum = (typeof AmenityScalarFieldEnum)[keyof typeof AmenityScalarFieldEnum]
@@ -20650,6 +20748,14 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const JsonNullValueInput: {
@@ -21048,7 +21154,11 @@ export namespace Prisma {
     name?: StringFilter<"Venue"> | string
     shortDescription?: StringFilter<"Venue"> | string
     description?: StringFilter<"Venue"> | string
+    nameTranslations?: JsonNullableFilter<"Venue">
+    shortDescTranslations?: JsonNullableFilter<"Venue">
+    descriptionTranslations?: JsonNullableFilter<"Venue">
     images?: JsonFilter<"Venue">
+    videoUrl?: StringNullableFilter<"Venue"> | string | null
     address?: StringFilter<"Venue"> | string
     city?: StringFilter<"Venue"> | string
     state?: StringNullableFilter<"Venue"> | string | null
@@ -21070,7 +21180,11 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    nameTranslations?: SortOrderInput | SortOrder
+    shortDescTranslations?: SortOrderInput | SortOrder
+    descriptionTranslations?: SortOrderInput | SortOrder
     images?: SortOrder
+    videoUrl?: SortOrderInput | SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrderInput | SortOrder
@@ -21095,7 +21209,11 @@ export namespace Prisma {
     name?: StringFilter<"Venue"> | string
     shortDescription?: StringFilter<"Venue"> | string
     description?: StringFilter<"Venue"> | string
+    nameTranslations?: JsonNullableFilter<"Venue">
+    shortDescTranslations?: JsonNullableFilter<"Venue">
+    descriptionTranslations?: JsonNullableFilter<"Venue">
     images?: JsonFilter<"Venue">
+    videoUrl?: StringNullableFilter<"Venue"> | string | null
     address?: StringFilter<"Venue"> | string
     city?: StringFilter<"Venue"> | string
     state?: StringNullableFilter<"Venue"> | string | null
@@ -21117,7 +21235,11 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    nameTranslations?: SortOrderInput | SortOrder
+    shortDescTranslations?: SortOrderInput | SortOrder
+    descriptionTranslations?: SortOrderInput | SortOrder
     images?: SortOrder
+    videoUrl?: SortOrderInput | SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrderInput | SortOrder
@@ -21145,7 +21267,11 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Venue"> | string
     shortDescription?: StringWithAggregatesFilter<"Venue"> | string
     description?: StringWithAggregatesFilter<"Venue"> | string
+    nameTranslations?: JsonNullableWithAggregatesFilter<"Venue">
+    shortDescTranslations?: JsonNullableWithAggregatesFilter<"Venue">
+    descriptionTranslations?: JsonNullableWithAggregatesFilter<"Venue">
     images?: JsonWithAggregatesFilter<"Venue">
+    videoUrl?: StringNullableWithAggregatesFilter<"Venue"> | string | null
     address?: StringWithAggregatesFilter<"Venue"> | string
     city?: StringWithAggregatesFilter<"Venue"> | string
     state?: StringNullableWithAggregatesFilter<"Venue"> | string | null
@@ -21228,6 +21354,9 @@ export namespace Prisma {
     name?: StringFilter<"Space"> | string
     shortDescription?: StringFilter<"Space"> | string
     description?: StringFilter<"Space"> | string
+    nameTranslations?: JsonNullableFilter<"Space">
+    shortDescTranslations?: JsonNullableFilter<"Space">
+    descriptionTranslations?: JsonNullableFilter<"Space">
     spaceType?: EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
     pricePerHour?: FloatNullableFilter<"Space"> | number | null
@@ -21238,6 +21367,7 @@ export namespace Prisma {
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
     images?: JsonFilter<"Space">
+    videoUrl?: StringNullableFilter<"Space"> | string | null
     address?: StringFilter<"Space"> | string
     city?: StringFilter<"Space"> | string
     state?: StringNullableFilter<"Space"> | string | null
@@ -21270,6 +21400,9 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    nameTranslations?: SortOrderInput | SortOrder
+    shortDescTranslations?: SortOrderInput | SortOrder
+    descriptionTranslations?: SortOrderInput | SortOrder
     spaceType?: SortOrder
     pricingType?: SortOrder
     pricePerHour?: SortOrderInput | SortOrder
@@ -21280,6 +21413,7 @@ export namespace Prisma {
     minBookingHours?: SortOrderInput | SortOrder
     maxBookingHours?: SortOrderInput | SortOrder
     images?: SortOrder
+    videoUrl?: SortOrderInput | SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrderInput | SortOrder
@@ -21315,6 +21449,9 @@ export namespace Prisma {
     name?: StringFilter<"Space"> | string
     shortDescription?: StringFilter<"Space"> | string
     description?: StringFilter<"Space"> | string
+    nameTranslations?: JsonNullableFilter<"Space">
+    shortDescTranslations?: JsonNullableFilter<"Space">
+    descriptionTranslations?: JsonNullableFilter<"Space">
     spaceType?: EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
     pricePerHour?: FloatNullableFilter<"Space"> | number | null
@@ -21325,6 +21462,7 @@ export namespace Prisma {
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
     images?: JsonFilter<"Space">
+    videoUrl?: StringNullableFilter<"Space"> | string | null
     address?: StringFilter<"Space"> | string
     city?: StringFilter<"Space"> | string
     state?: StringNullableFilter<"Space"> | string | null
@@ -21357,6 +21495,9 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    nameTranslations?: SortOrderInput | SortOrder
+    shortDescTranslations?: SortOrderInput | SortOrder
+    descriptionTranslations?: SortOrderInput | SortOrder
     spaceType?: SortOrder
     pricingType?: SortOrder
     pricePerHour?: SortOrderInput | SortOrder
@@ -21367,6 +21508,7 @@ export namespace Prisma {
     minBookingHours?: SortOrderInput | SortOrder
     maxBookingHours?: SortOrderInput | SortOrder
     images?: SortOrder
+    videoUrl?: SortOrderInput | SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrderInput | SortOrder
@@ -21398,6 +21540,9 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Space"> | string
     shortDescription?: StringWithAggregatesFilter<"Space"> | string
     description?: StringWithAggregatesFilter<"Space"> | string
+    nameTranslations?: JsonNullableWithAggregatesFilter<"Space">
+    shortDescTranslations?: JsonNullableWithAggregatesFilter<"Space">
+    descriptionTranslations?: JsonNullableWithAggregatesFilter<"Space">
     spaceType?: EnumSpaceTypeWithAggregatesFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeWithAggregatesFilter<"Space"> | $Enums.PricingType
     pricePerHour?: FloatNullableWithAggregatesFilter<"Space"> | number | null
@@ -21408,6 +21553,7 @@ export namespace Prisma {
     minBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
     maxBookingHours?: IntNullableWithAggregatesFilter<"Space"> | number | null
     images?: JsonWithAggregatesFilter<"Space">
+    videoUrl?: StringNullableWithAggregatesFilter<"Space"> | string | null
     address?: StringWithAggregatesFilter<"Space"> | string
     city?: StringWithAggregatesFilter<"Space"> | string
     state?: StringNullableWithAggregatesFilter<"Space"> | string | null
@@ -21556,6 +21702,7 @@ export namespace Prisma {
     name?: StringFilter<"Amenity"> | string
     icon?: StringNullableFilter<"Amenity"> | string | null
     category?: StringNullableFilter<"Amenity"> | string | null
+    spaceTypes?: EnumSpaceTypeNullableListFilter<"Amenity">
     spaces?: SpaceAmenityListRelationFilter
   }
 
@@ -21564,6 +21711,7 @@ export namespace Prisma {
     name?: SortOrder
     icon?: SortOrderInput | SortOrder
     category?: SortOrderInput | SortOrder
+    spaceTypes?: SortOrder
     spaces?: SpaceAmenityOrderByRelationAggregateInput
   }
 
@@ -21575,6 +21723,7 @@ export namespace Prisma {
     NOT?: AmenityWhereInput | AmenityWhereInput[]
     icon?: StringNullableFilter<"Amenity"> | string | null
     category?: StringNullableFilter<"Amenity"> | string | null
+    spaceTypes?: EnumSpaceTypeNullableListFilter<"Amenity">
     spaces?: SpaceAmenityListRelationFilter
   }, "id" | "name">
 
@@ -21583,6 +21732,7 @@ export namespace Prisma {
     name?: SortOrder
     icon?: SortOrderInput | SortOrder
     category?: SortOrderInput | SortOrder
+    spaceTypes?: SortOrder
     _count?: AmenityCountOrderByAggregateInput
     _avg?: AmenityAvgOrderByAggregateInput
     _max?: AmenityMaxOrderByAggregateInput
@@ -21598,6 +21748,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Amenity"> | string
     icon?: StringNullableWithAggregatesFilter<"Amenity"> | string | null
     category?: StringNullableWithAggregatesFilter<"Amenity"> | string | null
+    spaceTypes?: EnumSpaceTypeNullableListFilter<"Amenity">
   }
 
   export type SpaceAmenityWhereInput = {
@@ -22371,7 +22522,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -22392,7 +22547,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -22412,7 +22571,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22433,7 +22596,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22454,7 +22621,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -22473,7 +22644,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22492,7 +22667,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22571,6 +22750,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -22581,6 +22763,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -22610,6 +22793,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -22620,6 +22806,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -22648,6 +22835,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -22658,6 +22848,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22687,6 +22878,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -22697,6 +22891,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22726,6 +22921,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -22736,6 +22934,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -22758,6 +22957,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -22768,6 +22970,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22788,6 +22991,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -22798,6 +23004,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22940,6 +23147,7 @@ export namespace Prisma {
     name: string
     icon?: string | null
     category?: string | null
+    spaceTypes?: AmenityCreatespaceTypesInput | $Enums.SpaceType[]
     spaces?: SpaceAmenityCreateNestedManyWithoutAmenityInput
   }
 
@@ -22948,6 +23156,7 @@ export namespace Prisma {
     name: string
     icon?: string | null
     category?: string | null
+    spaceTypes?: AmenityCreatespaceTypesInput | $Enums.SpaceType[]
     spaces?: SpaceAmenityUncheckedCreateNestedManyWithoutAmenityInput
   }
 
@@ -22955,6 +23164,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceTypes?: AmenityUpdatespaceTypesInput | $Enums.SpaceType[]
     spaces?: SpaceAmenityUpdateManyWithoutAmenityNestedInput
   }
 
@@ -22963,6 +23173,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceTypes?: AmenityUpdatespaceTypesInput | $Enums.SpaceType[]
     spaces?: SpaceAmenityUncheckedUpdateManyWithoutAmenityNestedInput
   }
 
@@ -22971,12 +23182,14 @@ export namespace Prisma {
     name: string
     icon?: string | null
     category?: string | null
+    spaceTypes?: AmenityCreatespaceTypesInput | $Enums.SpaceType[]
   }
 
   export type AmenityUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceTypes?: AmenityUpdatespaceTypesInput | $Enums.SpaceType[]
   }
 
   export type AmenityUncheckedUpdateManyInput = {
@@ -22984,6 +23197,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceTypes?: AmenityUpdatespaceTypesInput | $Enums.SpaceType[]
   }
 
   export type SpaceAmenityCreateInput = {
@@ -23860,6 +24074,29 @@ export namespace Prisma {
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
   }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
   export type JsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -23907,7 +24144,11 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    nameTranslations?: SortOrder
+    shortDescTranslations?: SortOrder
+    descriptionTranslations?: SortOrder
     images?: SortOrder
+    videoUrl?: SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrder
@@ -23933,6 +24174,7 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    videoUrl?: SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrder
@@ -23952,6 +24194,7 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    videoUrl?: SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrder
@@ -23986,6 +24229,32 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> =
     | PatchUndefined<
@@ -24196,6 +24465,9 @@ export namespace Prisma {
     name?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
+    nameTranslations?: SortOrder
+    shortDescTranslations?: SortOrder
+    descriptionTranslations?: SortOrder
     spaceType?: SortOrder
     pricingType?: SortOrder
     pricePerHour?: SortOrder
@@ -24206,6 +24478,7 @@ export namespace Prisma {
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
     images?: SortOrder
+    videoUrl?: SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrder
@@ -24251,6 +24524,7 @@ export namespace Prisma {
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
+    videoUrl?: SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrder
@@ -24283,6 +24557,7 @@ export namespace Prisma {
     capacity?: SortOrder
     minBookingHours?: SortOrder
     maxBookingHours?: SortOrder
+    videoUrl?: SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrder
@@ -24446,11 +24721,20 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
+  export type EnumSpaceTypeNullableListFilter<$PrismaModel = never> = {
+    equals?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel> | null
+    has?: $Enums.SpaceType | EnumSpaceTypeFieldRefInput<$PrismaModel> | null
+    hasEvery?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
+    hasSome?: $Enums.SpaceType[] | ListEnumSpaceTypeFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type AmenityCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     icon?: SortOrder
     category?: SortOrder
+    spaceTypes?: SortOrder
   }
 
   export type AmenityAvgOrderByAggregateInput = {
@@ -25725,6 +26009,10 @@ export namespace Prisma {
     deleteMany?: SpaceCategoryScalarWhereInput | SpaceCategoryScalarWhereInput[]
   }
 
+  export type AmenityCreatespaceTypesInput = {
+    set: $Enums.SpaceType[]
+  }
+
   export type SpaceAmenityCreateNestedManyWithoutAmenityInput = {
     create?: XOR<SpaceAmenityCreateWithoutAmenityInput, SpaceAmenityUncheckedCreateWithoutAmenityInput> | SpaceAmenityCreateWithoutAmenityInput[] | SpaceAmenityUncheckedCreateWithoutAmenityInput[]
     connectOrCreate?: SpaceAmenityCreateOrConnectWithoutAmenityInput | SpaceAmenityCreateOrConnectWithoutAmenityInput[]
@@ -25737,6 +26025,11 @@ export namespace Prisma {
     connectOrCreate?: SpaceAmenityCreateOrConnectWithoutAmenityInput | SpaceAmenityCreateOrConnectWithoutAmenityInput[]
     createMany?: SpaceAmenityCreateManyAmenityInputEnvelope
     connect?: SpaceAmenityWhereUniqueInput | SpaceAmenityWhereUniqueInput[]
+  }
+
+  export type AmenityUpdatespaceTypesInput = {
+    set?: $Enums.SpaceType[]
+    push?: $Enums.SpaceType | $Enums.SpaceType[]
   }
 
   export type SpaceAmenityUpdateManyWithoutAmenityNestedInput = {
@@ -26192,6 +26485,29 @@ export namespace Prisma {
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
   export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
         Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
@@ -26387,7 +26703,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -26407,7 +26727,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -26436,6 +26760,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -26446,6 +26773,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -26474,6 +26802,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -26484,6 +26815,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -26771,7 +27103,11 @@ export namespace Prisma {
     name?: StringFilter<"Venue"> | string
     shortDescription?: StringFilter<"Venue"> | string
     description?: StringFilter<"Venue"> | string
+    nameTranslations?: JsonNullableFilter<"Venue">
+    shortDescTranslations?: JsonNullableFilter<"Venue">
+    descriptionTranslations?: JsonNullableFilter<"Venue">
     images?: JsonFilter<"Venue">
+    videoUrl?: StringNullableFilter<"Venue"> | string | null
     address?: StringFilter<"Venue"> | string
     city?: StringFilter<"Venue"> | string
     state?: StringNullableFilter<"Venue"> | string | null
@@ -26810,6 +27146,9 @@ export namespace Prisma {
     name?: StringFilter<"Space"> | string
     shortDescription?: StringFilter<"Space"> | string
     description?: StringFilter<"Space"> | string
+    nameTranslations?: JsonNullableFilter<"Space">
+    shortDescTranslations?: JsonNullableFilter<"Space">
+    descriptionTranslations?: JsonNullableFilter<"Space">
     spaceType?: EnumSpaceTypeFilter<"Space"> | $Enums.SpaceType
     pricingType?: EnumPricingTypeFilter<"Space"> | $Enums.PricingType
     pricePerHour?: FloatNullableFilter<"Space"> | number | null
@@ -26820,6 +27159,7 @@ export namespace Prisma {
     minBookingHours?: IntNullableFilter<"Space"> | number | null
     maxBookingHours?: IntNullableFilter<"Space"> | number | null
     images?: JsonFilter<"Space">
+    videoUrl?: StringNullableFilter<"Space"> | string | null
     address?: StringFilter<"Space"> | string
     city?: StringFilter<"Space"> | string
     state?: StringNullableFilter<"Space"> | string | null
@@ -27129,6 +27469,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -27139,6 +27482,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -27167,6 +27511,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -27177,6 +27524,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -27338,7 +27686,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -27358,7 +27710,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -27663,7 +28019,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27683,7 +28043,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -27888,6 +28252,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -27898,6 +28265,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -27926,6 +28294,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -27936,6 +28307,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28106,6 +28478,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28116,6 +28491,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28144,6 +28520,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28154,6 +28533,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28186,6 +28566,7 @@ export namespace Prisma {
     name: string
     icon?: string | null
     category?: string | null
+    spaceTypes?: AmenityCreatespaceTypesInput | $Enums.SpaceType[]
   }
 
   export type AmenityUncheckedCreateWithoutSpacesInput = {
@@ -28193,6 +28574,7 @@ export namespace Prisma {
     name: string
     icon?: string | null
     category?: string | null
+    spaceTypes?: AmenityCreatespaceTypesInput | $Enums.SpaceType[]
   }
 
   export type AmenityCreateOrConnectWithoutSpacesInput = {
@@ -28215,6 +28597,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28225,6 +28610,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28253,6 +28639,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28263,6 +28652,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28301,6 +28691,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceTypes?: AmenityUpdatespaceTypesInput | $Enums.SpaceType[]
   }
 
   export type AmenityUncheckedUpdateWithoutSpacesInput = {
@@ -28308,12 +28699,16 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     icon?: NullableStringFieldUpdateOperationsInput | string | null
     category?: NullableStringFieldUpdateOperationsInput | string | null
+    spaceTypes?: AmenityUpdatespaceTypesInput | $Enums.SpaceType[]
   }
 
   export type SpaceCreateWithoutPricingTiersInput = {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28324,6 +28719,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28352,6 +28748,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28362,6 +28761,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28405,6 +28805,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28415,6 +28818,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28443,6 +28847,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28453,6 +28860,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28480,6 +28888,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28490,6 +28901,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28518,6 +28930,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28528,6 +28943,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28571,6 +28987,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28581,6 +29000,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28609,6 +29029,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28619,6 +29042,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28646,6 +29070,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28656,6 +29083,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28684,6 +29112,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28694,6 +29125,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28737,6 +29169,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28747,6 +29182,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28775,6 +29211,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -28785,6 +29224,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28914,6 +29354,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28924,6 +29367,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -28952,6 +29396,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -28962,6 +29409,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -29147,6 +29595,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -29157,6 +29608,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29185,6 +29637,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -29195,6 +29650,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29307,6 +29763,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -29317,6 +29776,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -29345,6 +29805,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -29355,6 +29818,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -29518,6 +29982,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -29528,6 +29995,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29556,6 +30024,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -29566,6 +30037,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29778,7 +30250,11 @@ export namespace Prisma {
     name: string
     shortDescription?: string
     description?: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -29797,6 +30273,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -29807,6 +30286,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -29929,7 +30409,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29949,7 +30433,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29969,7 +30457,11 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -29987,6 +30479,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -29997,6 +30492,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30025,6 +30521,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30035,6 +30534,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30063,6 +30563,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30073,6 +30576,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30338,6 +30842,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -30348,6 +30855,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -30369,6 +30877,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30379,6 +30890,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30407,6 +30919,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30417,6 +30932,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30445,6 +30961,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30455,6 +30974,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30738,6 +31258,9 @@ export namespace Prisma {
     name: string
     shortDescription: string
     description: string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType: $Enums.SpaceType
     pricingType: $Enums.PricingType
     pricePerHour?: number | null
@@ -30748,6 +31271,7 @@ export namespace Prisma {
     minBookingHours?: number | null
     maxBookingHours?: number | null
     images: JsonNullValueInput | InputJsonValue
+    videoUrl?: string | null
     address: string
     city: string
     state?: string | null
@@ -30769,6 +31293,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30779,6 +31306,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30807,6 +31335,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30817,6 +31348,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30845,6 +31377,9 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    nameTranslations?: NullableJsonNullValueInput | InputJsonValue
+    shortDescTranslations?: NullableJsonNullValueInput | InputJsonValue
+    descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     spaceType?: EnumSpaceTypeFieldUpdateOperationsInput | $Enums.SpaceType
     pricingType?: EnumPricingTypeFieldUpdateOperationsInput | $Enums.PricingType
     pricePerHour?: NullableFloatFieldUpdateOperationsInput | number | null
@@ -30855,6 +31390,7 @@ export namespace Prisma {
     minBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     maxBookingHours?: NullableIntFieldUpdateOperationsInput | number | null
     images?: JsonNullValueInput | InputJsonValue
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null

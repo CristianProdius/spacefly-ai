@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "@repo/db";
 import { producer } from "../utils/kafka.js";
+import { resolveTranslations, VENUE_TRANSLATION_FIELDS } from "../lib/translations.js";
 
 export const getMyVenues = async (req: Request, res: Response) => {
   const hostId = req.userId!;
@@ -36,7 +37,9 @@ export const getVenue = async (req: Request, res: Response) => {
     },
   });
   if (!venue) return res.status(404).json({ message: "Venue not found" });
-  res.status(200).json(venue);
+
+  const lang = req.query.lang as string | undefined;
+  res.status(200).json(resolveTranslations(venue, lang, VENUE_TRANSLATION_FIELDS));
 };
 
 export const createVenue = async (req: Request, res: Response) => {
@@ -94,6 +97,9 @@ export const updateVenue = async (req: Request, res: Response) => {
     name,
     shortDescription,
     description,
+    nameTranslations,
+    shortDescTranslations,
+    descriptionTranslations,
     images,
     address,
     city,
@@ -108,6 +114,9 @@ export const updateVenue = async (req: Request, res: Response) => {
     ...(name !== undefined && { name }),
     ...(shortDescription !== undefined && { shortDescription }),
     ...(description !== undefined && { description }),
+    ...(nameTranslations !== undefined && { nameTranslations }),
+    ...(shortDescTranslations !== undefined && { shortDescTranslations }),
+    ...(descriptionTranslations !== undefined && { descriptionTranslations }),
     ...(images !== undefined && { images }),
     ...(address !== undefined && { address }),
     ...(city !== undefined && { city }),

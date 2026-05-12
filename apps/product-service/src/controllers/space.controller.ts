@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma, Prisma, PricingType, SpaceType, CancellationPolicy } from "@repo/db";
 import { producer } from "../utils/kafka.js";
 import { buildCategoryPayload } from "../lib/space-taxonomy.js";
+import { resolveTranslations, SPACE_TRANSLATION_FIELDS } from "../lib/translations.js";
 
 const venueInclude = {
   select: {
@@ -154,6 +155,8 @@ export const getSpaces = async (req: Request, res: Response) => {
     prisma.space.count({ where }),
   ]);
 
+  const lang = req.query.lang as string | undefined;
+
   // Calculate average rating for each space
   const spacesWithRating = await Promise.all(
     spaces.map(async (space) => {
@@ -169,8 +172,12 @@ export const getSpaces = async (req: Request, res: Response) => {
     })
   );
 
+  const resolved = spacesWithRating.map((space) =>
+    resolveTranslations(space, lang, SPACE_TRANSLATION_FIELDS)
+  );
+
   res.status(200).json({
-    spaces: spacesWithRating,
+    spaces: resolved,
     pagination: {
       page: pageNum,
       limit: limitNum,
@@ -232,6 +239,8 @@ export const getSpace = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "Space not found" });
   }
 
+  const lang = req.query.lang as string | undefined;
+
   // Get average rating
   const avgRating = await prisma.review.aggregate({
     where: { spaceId: space.id },
@@ -242,12 +251,14 @@ export const getSpace = async (req: Request, res: Response) => {
     where: { spaceId: space.id },
   });
 
+  const spaceWithRating = flattenVenue({
+    ...space,
+    averageRating: avgRating._avg.rating || 0,
+    reviewCount,
+  });
+
   res.status(200).json(
-    flattenVenue({
-      ...space,
-      averageRating: avgRating._avg.rating || 0,
-      reviewCount,
-    })
+    resolveTranslations(spaceWithRating, lang, SPACE_TRANSLATION_FIELDS)
   );
 };
 
@@ -338,6 +349,8 @@ export const updateSpace = async (req: Request, res: Response) => {
     "pricePerHour", "pricePerDay", "cleaningFee", "capacity",
     "minBookingHours", "maxBookingHours", "images", "isActive",
     "instantBook", "cancellationPolicy", "houseRules", "categorySlug", "currency",
+    "nameTranslations", "shortDescTranslations", "descriptionTranslations",
+    "videoUrl",
   ] as const;
   for (const key of allowedKeys) {
     if (body[key] !== undefined) allowed[key] = body[key];

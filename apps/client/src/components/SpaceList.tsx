@@ -45,6 +45,7 @@ interface FetchParams {
   instantBook?: string;
   sort?: string;
   limit?: string;
+  lang?: string;
 }
 
 export interface PaginationData {
@@ -98,6 +99,7 @@ const fetchSpaces = async (
   if (params.instantBook) searchParams.set("instantBook", params.instantBook);
   if (params.sort) searchParams.set("sort", params.sort);
   if (params.limit) searchParams.set("limit", params.limit);
+  if (params.lang) searchParams.set("lang", params.lang);
 
   const apiParams = searchParams.toString();
   const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${apiParams}`;
@@ -134,6 +136,7 @@ interface SpaceListProps {
   sort?: string;
   variant: "homepage" | "browse";
   showCategories?: boolean;
+  locale?: string;
 }
 
 const SpaceList = async ({
@@ -150,6 +153,7 @@ const SpaceList = async ({
   sort,
   variant,
   showCategories = true,
+  locale,
 }: SpaceListProps) => {
   const taxonomy = await getBrowseTaxonomy();
   const browseSelection = resolveBrowseSelection(
@@ -169,6 +173,7 @@ const SpaceList = async ({
     type,
     sort: sort || "newest",
     limit: variant === "homepage" ? "8" : "20",
+    lang: locale,
   }, taxonomy);
 
   const t = await getTranslations("spaces");

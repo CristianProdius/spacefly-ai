@@ -17,6 +17,7 @@ import {
   type VenueFormPayload,
   type VenueFormValues,
 } from "./venue-form.shared";
+import TranslationTabs from "@/components/translation-tabs";
 
 interface VenueFormProps {
   title: string;
@@ -207,6 +208,47 @@ const VenueForm = ({
               />
             </div>
 
+            <TranslationTabs
+              fields={[
+                {
+                  name: "name",
+                  label: "Name",
+                  type: "input",
+                  value: formData.name,
+                  translations: formData.nameTranslations,
+                  onTranslationChange: (lang, val) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      nameTranslations: { ...prev.nameTranslations, [lang]: val },
+                    })),
+                },
+                {
+                  name: "shortDescription",
+                  label: "Short Description",
+                  type: "input",
+                  value: formData.shortDescription,
+                  translations: formData.shortDescTranslations,
+                  onTranslationChange: (lang, val) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      shortDescTranslations: { ...prev.shortDescTranslations, [lang]: val },
+                    })),
+                },
+                {
+                  name: "description",
+                  label: "Description",
+                  type: "textarea",
+                  value: formData.description,
+                  translations: formData.descriptionTranslations,
+                  onTranslationChange: (lang, val) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      descriptionTranslations: { ...prev.descriptionTranslations, [lang]: val },
+                    })),
+                },
+              ]}
+            />
+
             <div>
               <label className={labelClassName}>Default Currency</label>
               <select
@@ -285,6 +327,18 @@ const VenueForm = ({
             Upload high-quality photos of your venue. First image will be the
             cover.
           </p>
+
+          <div>
+            <label className={labelClassName}>YouTube Video URL (optional)</label>
+            <input
+              type="url"
+              placeholder="https://www.youtube.com/watch?v=..."
+              value={formData.videoUrl}
+              onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
+              className={fieldClassName}
+            />
+            <p className="text-sm text-muted-foreground mt-1">Paste a YouTube link to embed a video on the listing page</p>
+          </div>
         </DashboardSection>
 
         <DashboardSection title="Location" contentClassName="space-y-4">

@@ -9,11 +9,13 @@ import { getTranslations } from "next-intl/server";
 import { parseImages, formatPrice } from "@/lib/utils";
 import { getSpaceCategoryLabel } from "@/lib/taxonomy";
 import ImageGallery from "@/components/ImageGallery";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
 
-async function getSpace(id: string): Promise<SpaceWithHost | null> {
+async function getSpace(id: string, locale?: string): Promise<SpaceWithHost | null> {
   try {
+    const langParam = locale && locale !== "en" ? `?lang=${locale}` : "";
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${id}`,
+      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${id}${langParam}`,
       { next: { revalidate: 60 } }
     );
     if (!res.ok) return null;
@@ -24,12 +26,12 @@ async function getSpace(id: string): Promise<SpaceWithHost | null> {
 }
 
 interface SpaceDetailPageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }
 
 const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
-  const { id } = await params;
-  const space = await getSpace(id);
+  const { id, locale } = await params;
+  const space = await getSpace(id, locale);
 
   if (!space) {
     notFound();
@@ -57,6 +59,12 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Image Gallery */}
       <ImageGallery images={images} spaceName={space.name} />
+
+      {(space as any).videoUrl && (
+        <div className="mb-8">
+          <YouTubeEmbed url={(space as any).videoUrl} title={space.name} />
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Content */}

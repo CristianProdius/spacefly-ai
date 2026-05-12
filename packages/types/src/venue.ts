@@ -4,6 +4,7 @@ export interface Venue {
   shortDescription: string;
   description: string;
   images: string[];
+  videoUrl: string | null;
   address: string;
   city: string;
   state: string | null;

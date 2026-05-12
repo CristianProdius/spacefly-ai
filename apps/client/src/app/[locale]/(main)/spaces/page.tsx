@@ -1,5 +1,6 @@
 import SpaceList from "@/components/SpaceList";
 import { getTranslations } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 
 interface SpacesPageProps {
   searchParams: Promise<{
@@ -20,6 +21,7 @@ interface SpacesPageProps {
 const SpacesPage = async ({ searchParams }: SpacesPageProps) => {
   const params = await searchParams;
   const t = await getTranslations("spaces");
+  const locale = await getLocale();
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -43,6 +45,7 @@ const SpacesPage = async ({ searchParams }: SpacesPageProps) => {
         instantBook={params.instantBook}
         sort={params.sort}
         variant="browse"
+        locale={locale}
       />
     </div>
   );

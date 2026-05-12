@@ -150,7 +150,11 @@ exports.Prisma.VenueScalarFieldEnum = {
   name: 'name',
   shortDescription: 'shortDescription',
   description: 'description',
+  nameTranslations: 'nameTranslations',
+  shortDescTranslations: 'shortDescTranslations',
+  descriptionTranslations: 'descriptionTranslations',
   images: 'images',
+  videoUrl: 'videoUrl',
   address: 'address',
   city: 'city',
   state: 'state',
@@ -179,6 +183,9 @@ exports.Prisma.SpaceScalarFieldEnum = {
   name: 'name',
   shortDescription: 'shortDescription',
   description: 'description',
+  nameTranslations: 'nameTranslations',
+  shortDescTranslations: 'shortDescTranslations',
+  descriptionTranslations: 'descriptionTranslations',
   spaceType: 'spaceType',
   pricingType: 'pricingType',
   pricePerHour: 'pricePerHour',
@@ -189,6 +196,7 @@ exports.Prisma.SpaceScalarFieldEnum = {
   minBookingHours: 'minBookingHours',
   maxBookingHours: 'maxBookingHours',
   images: 'images',
+  videoUrl: 'videoUrl',
   address: 'address',
   city: 'city',
   state: 'state',
@@ -228,7 +236,8 @@ exports.Prisma.AmenityScalarFieldEnum = {
   id: 'id',
   name: 'name',
   icon: 'icon',
-  category: 'category'
+  category: 'category',
+  spaceTypes: 'spaceTypes'
 };
 
 exports.Prisma.SpaceAmenityScalarFieldEnum = {
@@ -319,6 +328,11 @@ exports.Prisma.PayoutScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.JsonNullValueInput = {

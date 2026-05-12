@@ -38,14 +38,23 @@ export const deleteAmenity = async (req: Request, res: Response) => {
 };
 
 export const getAmenities = async (req: Request, res: Response) => {
-  const { category } = req.query;
+  const { category, spaceType } = req.query;
+
+  const where: Prisma.AmenityWhereInput = {};
+
+  if (category) {
+    where.category = category as string;
+  }
+
+  if (spaceType) {
+    where.OR = [
+      { spaceTypes: { has: spaceType as any } },
+      { spaceTypes: { isEmpty: true } },
+    ];
+  }
 
   const amenities = await prisma.amenity.findMany({
-    where: category
-      ? {
-          category: category as string,
-        }
-      : undefined,
+    where: Object.keys(where).length > 0 ? where : undefined,
     orderBy: [{ category: "asc" }, { name: "asc" }],
   });
 

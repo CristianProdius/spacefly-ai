@@ -112,11 +112,15 @@ model Session {
 // ==================== VENUES ====================
 
 model Venue {
-  id               Int    @id @default(autoincrement())
-  name             String
-  shortDescription String @default("")
-  description      String @default("")
-  images           Json   @default("[]")
+  id                      Int     @id @default(autoincrement())
+  name                    String
+  shortDescription        String  @default("")
+  description             String  @default("")
+  nameTranslations        Json? // { "ro": "...", "ru": "..." }
+  shortDescTranslations   Json? // { "ro": "...", "ru": "..." }
+  descriptionTranslations Json? // { "ro": "...", "ru": "..." }
+  images                  Json    @default("[]")
+  videoUrl                String? // YouTube URL
 
   // Location
   address    String
@@ -160,20 +164,24 @@ model ExchangeRate {
 // ==================== SPACES ====================
 
 model Space {
-  id               Int         @id @default(autoincrement())
-  name             String
-  shortDescription String
-  description      String
-  spaceType        SpaceType
-  pricingType      PricingType
-  pricePerHour     Float? // In dollars
-  pricePerDay      Float? // In dollars
-  cleaningFee      Float       @default(0) // In dollars
-  currency         Currency    @default(USD)
-  capacity         Int
-  minBookingHours  Int?
-  maxBookingHours  Int?
-  images           Json // Array of image URLs
+  id                      Int         @id @default(autoincrement())
+  name                    String
+  shortDescription        String
+  description             String
+  nameTranslations        Json? // { "ro": "...", "ru": "..." }
+  shortDescTranslations   Json? // { "ro": "...", "ru": "..." }
+  descriptionTranslations Json? // { "ro": "...", "ru": "..." }
+  spaceType               SpaceType
+  pricingType             PricingType
+  pricePerHour            Float? // In dollars
+  pricePerDay             Float? // In dollars
+  cleaningFee             Float       @default(0) // In dollars
+  currency                Currency    @default(USD)
+  capacity                Int
+  minBookingHours         Int?
+  maxBookingHours         Int?
+  images                  Json // Array of image URLs
+  videoUrl                String? // YouTube URL
 
   // Location
   address    String
@@ -243,10 +251,11 @@ model SpaceCategoryGroup {
 }
 
 model Amenity {
-  id       Int     @id @default(autoincrement())
-  name     String  @unique
-  icon     String?
-  category String?
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  icon       String?
+  category   String?
+  spaceTypes SpaceType[] // Which space types this amenity applies to (empty = all)
 
   spaces SpaceAmenity[]
 }
