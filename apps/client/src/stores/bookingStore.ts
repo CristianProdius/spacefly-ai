@@ -19,6 +19,7 @@ export interface BookingDraft {
   cleaningFee: number;
   serviceFee: number;
   totalAmount: number;
+  currency: string;
 }
 
 interface BookingState {

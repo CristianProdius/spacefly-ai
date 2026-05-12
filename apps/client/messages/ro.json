@@ -204,7 +204,8 @@
     "showingResults": "{shown} din {total} spații",
     "loadingMore": "Se încarcă mai multe spații...",
     "noMoreResults": "Ai văzut toate rezultatele",
-    "atVenue": "la {venue}"
+    "atVenue": "la {venue}",
+    "pricingTiers": "Prețuri"
   },
   "booking": {
     "date": "Data",

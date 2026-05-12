@@ -6,7 +6,7 @@ import BookingForm from "./BookingForm";
 import ReviewSection from "./ReviewSection";
 import LocationMapLoader from "./LocationMapLoader";
 import { getTranslations } from "next-intl/server";
-import { parseImages } from "@/lib/utils";
+import { parseImages, formatPrice } from "@/lib/utils";
 import { getSpaceCategoryLabel } from "@/lib/taxonomy";
 import ImageGallery from "@/components/ImageGallery";
 
@@ -162,6 +162,25 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
                     <Check className="size-3.5 text-success" />
                     {sa.amenity.name}
                   </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Pricing Tiers */}
+          {(space as any).pricingTiers?.length > 0 && (
+            <div>
+              <h2 className="text-xl font-bold text-foreground mb-4 text-balance">
+                {t("pricingTiers")}
+              </h2>
+              <div className="space-y-2">
+                {(space as any).pricingTiers.map((tier: any) => (
+                  <div key={tier.id} className="flex justify-between py-2 border-b border-border last:border-0">
+                    <span className="text-muted">{tier.label}</span>
+                    <span className="font-medium text-foreground">
+                      {formatPrice(tier.price, (space as any).currency)}
+                    </span>
+                  </div>
                 ))}
               </div>
             </div>

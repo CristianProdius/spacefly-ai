@@ -176,19 +176,19 @@ const CheckoutPage = () => {
           <div className="border-t border-gray-200 mt-4 pt-4 space-y-2">
             <div className="flex justify-between text-gray-600">
               <span>{tCommon("subtotal")}</span>
-              <span>{formatPriceFull(draft.subtotal)}</span>
+              <span>{formatPriceFull(draft.subtotal, draft.currency)}</span>
             </div>
             <div className="flex justify-between text-gray-600">
               <span>{tCommon("cleaningFee")}</span>
-              <span>{formatPriceFull(draft.cleaningFee)}</span>
+              <span>{formatPriceFull(draft.cleaningFee, draft.currency)}</span>
             </div>
             <div className="flex justify-between text-gray-600">
               <span>{tCommon("serviceFee")}</span>
-              <span>{formatPriceFull(draft.serviceFee)}</span>
+              <span>{formatPriceFull(draft.serviceFee, draft.currency)}</span>
             </div>
             <div className="flex justify-between font-semibold text-gray-900 pt-2 border-t">
               <span>{tCommon("total")}</span>
-              <span>{formatPriceFull(draft.totalAmount)}</span>
+              <span>{formatPriceFull(draft.totalAmount, draft.currency)}</span>
             </div>
           </div>
         </div>

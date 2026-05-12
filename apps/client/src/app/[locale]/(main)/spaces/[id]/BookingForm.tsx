@@ -96,6 +96,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
       cleaningFee: pricing.cleaningFee,
       serviceFee: pricing.serviceFee,
       totalAmount: pricing.totalAmount,
+      currency: (space as any).currency || "USD",
     });
 
     router.push("/bookings/checkout");
@@ -110,14 +111,14 @@ const BookingForm = ({ space }: BookingFormProps) => {
         {bookingType === "hourly" && space.pricePerHour ? (
           <>
             <span className="text-2xl font-bold text-foreground">
-              {formatPrice(space.pricePerHour)}
+              {formatPrice(space.pricePerHour, (space as any).currency)}
             </span>
             <span className="text-muted">{tCommon("perHour")}</span>
           </>
         ) : (
           <>
             <span className="text-2xl font-bold text-foreground">
-              {formatPrice(space.pricePerDay)}
+              {formatPrice(space.pricePerDay, (space as any).currency)}
             </span>
             <span className="text-muted">{tCommon("perDay")}</span>
           </>
@@ -277,19 +278,19 @@ const BookingForm = ({ space }: BookingFormProps) => {
                 ? t("hoursCalc", { price: space.pricePerHour ?? 0, count: pricing.hours })
                 : t("daysCalc", { price: space.pricePerDay ?? 0, count: pricing.days })}
             </span>
-            <span>{formatPriceFull(pricing.subtotal)}</span>
+            <span>{formatPriceFull(pricing.subtotal, (space as any).currency)}</span>
           </div>
           <div className="flex justify-between text-muted">
             <span>{tCommon("cleaningFee")}</span>
-            <span>{formatPriceFull(pricing.cleaningFee)}</span>
+            <span>{formatPriceFull(pricing.cleaningFee, (space as any).currency)}</span>
           </div>
           <div className="flex justify-between text-muted">
             <span>{tCommon("serviceFee")}</span>
-            <span>{formatPriceFull(pricing.serviceFee)}</span>
+            <span>{formatPriceFull(pricing.serviceFee, (space as any).currency)}</span>
           </div>
           <div className="flex justify-between font-semibold text-foreground pt-2 border-t border-border">
             <span>{tCommon("total")}</span>
-            <span>{formatPriceFull(pricing.totalAmount)}</span>
+            <span>{formatPriceFull(pricing.totalAmount, (space as any).currency)}</span>
           </div>
         </div>
       )}

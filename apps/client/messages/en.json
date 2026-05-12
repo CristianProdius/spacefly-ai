@@ -204,7 +204,8 @@
     "showingResults": "{shown} of {total} spaces",
     "loadingMore": "Loading more spaces...",
     "noMoreResults": "You've seen all results",
-    "atVenue": "at {venue}"
+    "atVenue": "at {venue}",
+    "pricingTiers": "Pricing"
   },
   "booking": {
     "date": "Date",

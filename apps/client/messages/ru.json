@@ -204,7 +204,8 @@
     "showingResults": "{shown} из {total} пространств",
     "loadingMore": "Загрузка пространств...",
     "noMoreResults": "Вы просмотрели все результаты",
-    "atVenue": "в {venue}"
+    "atVenue": "в {venue}",
+    "pricingTiers": "Цены"
   },
   "booking": {
     "date": "Дата",
