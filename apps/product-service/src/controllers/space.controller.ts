@@ -80,6 +80,7 @@ export const getSpaces = async (req: Request, res: Response) => {
     capacity: capacityParam,
     amenityIds,
     instantBook,
+    currency: currencyParam,
     page = "1",
     limit = "20",
   } = req.query;
@@ -98,6 +99,7 @@ export const getSpaces = async (req: Request, res: Response) => {
     ...(categorySlug && { categorySlug: categorySlug as string }),
     ...(minCapacity && { capacity: { gte: parseInt(minCapacity as string) } }),
     ...(instantBook !== undefined && { instantBook: instantBook === "true" }),
+    ...(currencyParam && { currency: currencyParam as string }),
     ...((minPrice || maxPrice) && {
       OR: [
         {
@@ -143,6 +145,7 @@ export const getSpaces = async (req: Request, res: Response) => {
             amenity: true,
           },
         },
+        pricingTiers: { orderBy: { minutes: "asc" } },
         _count: {
           select: { reviews: true },
         },
@@ -202,6 +205,7 @@ export const getSpace = async (req: Request, res: Response) => {
           amenity: true,
         },
       },
+      pricingTiers: { orderBy: { minutes: "asc" } },
       availability: true,
       blockedDates: {
         where: {
@@ -250,7 +254,7 @@ export const getSpace = async (req: Request, res: Response) => {
 // Create space (HOST only)
 export const createSpace = async (req: Request, res: Response) => {
   const hostId = req.userId!;
-  const { amenityIds, venueId, ...spaceData } = req.body;
+  const { amenityIds, venueId, pricingTiers, ...spaceData } = req.body;
 
   if (!venueId) {
     return res.status(400).json({ message: "venueId is required" });
@@ -289,6 +293,17 @@ export const createSpace = async (req: Request, res: Response) => {
     },
   });
 
+  if (Array.isArray(pricingTiers) && pricingTiers.length > 0) {
+    await prisma.pricingTier.createMany({
+      data: pricingTiers.map((tier: { minutes: number; label: string; price: number }) => ({
+        spaceId: space.id,
+        minutes: tier.minutes,
+        label: tier.label,
+        price: tier.price,
+      })),
+    });
+  }
+
   producer.send("space.created", { value: { id: space.id, hostId } });
 
   res.status(201).json(space);
@@ -314,7 +329,7 @@ export const updateSpace = async (req: Request, res: Response) => {
     return res.status(403).json({ message: "Not authorized to update this space" });
   }
 
-  const { amenityIds, venueId, ...body } = req.body;
+  const { amenityIds, venueId, pricingTiers, ...body } = req.body;
 
   // Whitelist allowed update fields to prevent mass assignment
   const allowed: Record<string, unknown> = {};
@@ -322,7 +337,7 @@ export const updateSpace = async (req: Request, res: Response) => {
     "name", "shortDescription", "description", "spaceType", "pricingType",
     "pricePerHour", "pricePerDay", "cleaningFee", "capacity",
     "minBookingHours", "maxBookingHours", "images", "isActive",
-    "instantBook", "cancellationPolicy", "houseRules", "categorySlug",
+    "instantBook", "cancellationPolicy", "houseRules", "categorySlug", "currency",
   ] as const;
   for (const key of allowedKeys) {
     if (body[key] !== undefined) allowed[key] = body[key];
@@ -381,6 +396,21 @@ export const updateSpace = async (req: Request, res: Response) => {
     }
   }
 
+  // Update pricing tiers if provided
+  if (pricingTiers !== undefined) {
+    await prisma.pricingTier.deleteMany({ where: { spaceId } });
+    if (Array.isArray(pricingTiers) && pricingTiers.length > 0) {
+      await prisma.pricingTier.createMany({
+        data: pricingTiers.map((tier: { minutes: number; label: string; price: number }) => ({
+          spaceId,
+          minutes: tier.minutes,
+          label: tier.label,
+          price: tier.price,
+        })),
+      });
+    }
+  }
+
   producer.send("space.updated", { value: { id: space.id } });
 
   res.status(200).json(space);
@@ -425,6 +455,7 @@ export const getMySpaces = async (req: Request, res: Response) => {
     include: {
       category: true,
       venue: venueInclude,
+      pricingTiers: { orderBy: { minutes: "asc" } },
       _count: {
         select: {
           bookings: true,
