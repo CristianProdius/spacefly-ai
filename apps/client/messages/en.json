@@ -204,6 +204,8 @@
     "showingResults": "{shown} of {total} spaces",
     "loadingMore": "Loading more spaces...",
     "noMoreResults": "You've seen all results",
+    "listView": "List",
+    "mapView": "Map",
     "atVenue": "at {venue}",
     "pricingTiers": "Pricing",
     "video": "Video"

@@ -204,6 +204,8 @@
     "showingResults": "{shown} из {total} пространств",
     "loadingMore": "Загрузка пространств...",
     "noMoreResults": "Вы просмотрели все результаты",
+    "listView": "Список",
+    "mapView": "Карта",
     "atVenue": "в {venue}",
     "pricingTiers": "Цены",
     "video": "Видео"

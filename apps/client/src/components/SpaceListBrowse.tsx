@@ -3,12 +3,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { Loader2, Search } from "lucide-react";
+import dynamic from "next/dynamic";
+import { LayoutGrid, Loader2, Map as MapIcon, Search } from "lucide-react";
 import SpaceCard from "./SpaceCard";
 import SpaceCategories from "./SpaceCategories";
 import SpaceFilter from "./SpaceFilter";
 import type { SpaceWithCategory, PaginationData } from "./SpaceList";
 import type { BrowseSelection, BrowseTaxonomy } from "@/lib/taxonomy";
+
+const SpaceMapDynamic = dynamic(() => import("./SpaceMap"), { ssr: false });
 
 interface SpaceListBrowseProps {
   initialSpaces: SpaceWithCategory[];
@@ -37,6 +40,9 @@ export default function SpaceListBrowse({
   const [hasMore, setHasMore] = useState(
     initialPagination.page < initialPagination.totalPages
   );
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
+  const [mapSpaces, setMapSpaces] = useState<SpaceWithCategory[]>([]);
+  const [mapLoading, setMapLoading] = useState(false);
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const prevParamsRef = useRef(searchParams.toString());
@@ -152,6 +158,29 @@ export default function SpaceListBrowse({
     }
   }, [hasMore, page, total]);
 
+  const fetchMapSpaces = useCallback(async (bounds: { neLat: number; neLng: number; swLat: number; swLng: number }) => {
+    setMapLoading(true);
+    try {
+      const params = new URLSearchParams(apiParamsRef.current);
+      params.set("neLat", String(bounds.neLat));
+      params.set("neLng", String(bounds.neLng));
+      params.set("swLat", String(bounds.swLat));
+      params.set("swLng", String(bounds.swLng));
+      params.set("limit", "100");
+      const locale = window.location.pathname.split("/")[1] || "en";
+      params.set("lang", locale);
+      const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${params.toString()}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
+      setMapSpaces(data.spaces || []);
+    } catch (err) {
+      console.error("Error fetching map spaces:", err);
+    } finally {
+      setMapLoading(false);
+    }
+  }, []);
+
   // IntersectionObserver on sentinel
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -208,46 +237,79 @@ export default function SpaceListBrowse({
       <SpaceCategories selection={browseSelection} taxonomy={taxonomy} />
       <SpaceFilter />
 
-      {/* Results count */}
-      {total > 0 && (
-        <p className="text-sm text-muted mb-4">
-          {t("showingResults", { shown, total })}
-        </p>
-      )}
+      <div className="flex items-center gap-2 mb-4">
+        <button
+          onClick={() => setViewMode("list")}
+          className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg border transition-colors cursor-pointer ${
+            viewMode === "list" ? "bg-primary text-white border-primary" : "border-border text-muted hover:text-foreground"
+          }`}
+        >
+          <LayoutGrid className="size-4" />
+          {t("listView")}
+        </button>
+        <button
+          onClick={() => setViewMode("map")}
+          className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg border transition-colors cursor-pointer ${
+            viewMode === "map" ? "bg-primary text-white border-primary" : "border-border text-muted hover:text-foreground"
+          }`}
+        >
+          <MapIcon className="size-4" />
+          {t("mapView")}
+        </button>
+      </div>
 
-      {spaces.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-subtle flex items-center justify-center">
-            <Search className="w-8 h-8 text-muted" />
-          </div>
-          <p className="text-muted text-lg">{t("noSpacesFound")}</p>
-          <p className="text-muted mt-2">{t("tryAdjusting")}</p>
+      {viewMode === "map" ? (
+        <div className="h-[calc(100vh-280px)] min-h-[500px] rounded-xl overflow-hidden border border-border">
+          <SpaceMapDynamic
+            spaces={mapSpaces.length > 0 ? mapSpaces : spaces}
+            onBoundsChange={fetchMapSpaces}
+            isLoading={mapLoading}
+          />
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {spaces.map((space) => (
-              <SpaceCard key={space.id} space={space} />
-            ))}
-          </div>
-
-          {/* Loading spinner */}
-          {isLoadingMore && (
-            <div className="flex items-center justify-center py-8 gap-2 text-muted">
-              <Loader2 className="size-5 animate-spin" />
-              <span className="text-sm">{t("loadingMore")}</span>
-            </div>
-          )}
-
-          {/* End of results */}
-          {!hasMore && spaces.length > 0 && (
-            <p className="text-center text-sm text-muted py-8">
-              {t("noMoreResults")}
+          {/* Results count */}
+          {total > 0 && (
+            <p className="text-sm text-muted mb-4">
+              {t("showingResults", { shown, total })}
             </p>
           )}
 
-          {/* Sentinel for IntersectionObserver */}
-          {hasMore && <div ref={sentinelRef} className="h-1" />}
+          {spaces.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-subtle flex items-center justify-center">
+                <Search className="w-8 h-8 text-muted" />
+              </div>
+              <p className="text-muted text-lg">{t("noSpacesFound")}</p>
+              <p className="text-muted mt-2">{t("tryAdjusting")}</p>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {spaces.map((space) => (
+                  <SpaceCard key={space.id} space={space} />
+                ))}
+              </div>
+
+              {/* Loading spinner */}
+              {isLoadingMore && (
+                <div className="flex items-center justify-center py-8 gap-2 text-muted">
+                  <Loader2 className="size-5 animate-spin" />
+                  <span className="text-sm">{t("loadingMore")}</span>
+                </div>
+              )}
+
+              {/* End of results */}
+              {!hasMore && spaces.length > 0 && (
+                <p className="text-center text-sm text-muted py-8">
+                  {t("noMoreResults")}
+                </p>
+              )}
+
+              {/* Sentinel for IntersectionObserver */}
+              {hasMore && <div ref={sentinelRef} className="h-1" />}
+            </>
+          )}
         </>
       )}
     </>

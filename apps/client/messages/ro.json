@@ -204,6 +204,8 @@
     "showingResults": "{shown} din {total} spații",
     "loadingMore": "Se încarcă mai multe spații...",
     "noMoreResults": "Ai văzut toate rezultatele",
+    "listView": "Listă",
+    "mapView": "Hartă",
     "atVenue": "la {venue}",
     "pricingTiers": "Prețuri",
     "video": "Video"

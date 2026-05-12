@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowLeft, Loader2, Upload, X } from "lucide-react";
+
+const MapPickerDynamic = dynamic(() => import("./map-picker"), { ssr: false });
 
 import { DashboardPageHeader, DashboardSection } from "@/components/dashboard";
 import { Button } from "@/components/ui/button";
@@ -419,6 +422,22 @@ const VenueForm = ({
                   className={fieldClassName}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className={labelClassName}>Location on Map (click to set pin)</label>
+              <MapPickerDynamic
+                latitude={formData.latitude}
+                longitude={formData.longitude}
+                onChange={(lat, lng) =>
+                  setFormData((prev) => ({ ...prev, latitude: lat, longitude: lng }))
+                }
+              />
+              {formData.latitude != null && formData.longitude != null && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {formData.latitude.toFixed(6)}, {formData.longitude.toFixed(6)}
+                </p>
+              )}
             </div>
           </div>
         </DashboardSection>

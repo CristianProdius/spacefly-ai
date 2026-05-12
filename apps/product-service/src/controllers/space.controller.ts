@@ -82,6 +82,10 @@ export const getSpaces = async (req: Request, res: Response) => {
     amenityIds,
     instantBook,
     currency: currencyParam,
+    neLat,
+    neLng,
+    swLat,
+    swLng,
     page = "1",
     limit = "20",
   } = req.query;
@@ -91,11 +95,19 @@ export const getSpaces = async (req: Request, res: Response) => {
   const pageNum = parseInt(page as string);
   const limitNum = parseInt(limit as string);
 
+  const hasBbox = neLat && neLng && swLat && swLng;
+
   const where: Prisma.SpaceWhereInput = {
     isActive: true,
-    ...(city && {
-      venue: { city: { contains: city as string, mode: "insensitive" } },
-    }),
+    ...(hasBbox ? {
+      venue: {
+        ...(city ? { city: { contains: city as string, mode: "insensitive" as const } } : {}),
+        latitude: { gte: parseFloat(swLat as string), lte: parseFloat(neLat as string) },
+        longitude: { gte: parseFloat(swLng as string), lte: parseFloat(neLng as string) },
+      },
+    } : city ? {
+      venue: { city: { contains: city as string, mode: "insensitive" as const } },
+    } : {}),
     ...(spaceType && { spaceType: spaceType as SpaceType }),
     ...(categorySlug && { categorySlug: categorySlug as string }),
     ...(minCapacity && { capacity: { gte: parseInt(minCapacity as string) } }),
