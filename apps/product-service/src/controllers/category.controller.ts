@@ -1,5 +1,6 @@
 import { Prisma, prisma } from "@repo/db";
 import { Request, Response } from "express";
+import { parsePositiveInteger } from "../lib/validation.js";
 
 const buildCategoryCreateInput = (
   body: Record<string, unknown>
@@ -78,7 +79,8 @@ export const createCategory = async (req: Request, res: Response) => {
 
 export const updateCategory = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const categoryId = parseInt(id);
+  const categoryId = parsePositiveInteger(id);
+  if (categoryId === null) return res.status(400).json({ message: "Invalid ID" });
 
   const category = await prisma.spaceCategory.update({
     where: { id: categoryId },
@@ -93,7 +95,8 @@ export const updateCategory = async (req: Request, res: Response) => {
 
 export const deleteCategory = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const categoryId = parseInt(id);
+  const categoryId = parsePositiveInteger(id);
+  if (categoryId === null) return res.status(400).json({ message: "Invalid ID" });
 
   const category = await prisma.spaceCategory.findUnique({
     where: { id: categoryId },
@@ -156,7 +159,8 @@ export const getCategories = async (req: Request, res: Response) => {
 
 export const getCategory = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const categoryId = parseInt(id);
+  const categoryId = parsePositiveInteger(id);
+  if (categoryId === null) return res.status(400).json({ message: "Invalid ID" });
 
   const category = await prisma.spaceCategory.findUnique({
     where: { id: categoryId },

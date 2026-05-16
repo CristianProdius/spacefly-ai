@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import { DataLoadError } from "@/components/dashboard";
 
 interface User {
   id: string;
@@ -21,8 +22,11 @@ const UsersPage = () => {
   const { isAuthenticated, isAdmin, isLoading: authLoading, getToken } = useAuthStore();
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchUsers = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
     try {
       const token = await getToken();
       if (!token) {
@@ -47,6 +51,7 @@ const UsersPage = () => {
       setUsers(data);
     } catch (err) {
       console.error(err);
+      setError("Users could not be loaded. Check the auth service and retry.");
     } finally {
       setIsLoading(false);
     }
@@ -72,7 +77,11 @@ const UsersPage = () => {
       <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
         <h1 className="font-semibold">All Users</h1>
       </div>
-      <DataTable columns={columns} data={users} />
+      {error ? (
+        <DataLoadError message={error} onRetry={fetchUsers} />
+      ) : (
+        <DataTable columns={columns} data={users} />
+      )}
     </div>
   );
 };

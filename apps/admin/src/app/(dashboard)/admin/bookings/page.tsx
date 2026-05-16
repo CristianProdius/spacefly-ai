@@ -6,14 +6,18 @@ import useAuthStore from "@/stores/authStore";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import { Booking } from "@repo/types";
+import { DataLoadError } from "@/components/dashboard";
 
 const BookingsPage = () => {
   const router = useRouter();
   const { isAuthenticated, isAdmin, isLoading: authLoading, getToken } = useAuthStore();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchBookings = useCallback(async () => {
+    setError(null);
+    setIsLoading(true);
     try {
       const token = await getToken();
       if (!token) {
@@ -38,6 +42,7 @@ const BookingsPage = () => {
       setBookings(data.bookings || []);
     } catch (err) {
       console.error(err);
+      setError("Bookings could not be loaded. Check the order service and retry.");
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +68,11 @@ const BookingsPage = () => {
       <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
         <h1 className="font-semibold">All Bookings</h1>
       </div>
-      <DataTable columns={columns} data={bookings} />
+      {error ? (
+        <DataLoadError message={error} onRetry={fetchBookings} />
+      ) : (
+        <DataTable columns={columns} data={bookings} />
+      )}
     </div>
   );
 };

@@ -229,4 +229,15 @@ describe("category routes", () => {
       },
     ]);
   });
+
+  it("rejects invalid category IDs without calling Prisma", async () => {
+    const response = await invokeApp({
+      method: "GET",
+      url: "/categories/not-a-number",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.json).toEqual({ message: "Invalid ID" });
+    expect(mocks.categoryFindUnique).not.toHaveBeenCalled();
+  });
 });

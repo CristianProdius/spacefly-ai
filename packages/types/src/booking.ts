@@ -2,6 +2,21 @@ import z from "zod";
 import type { Space } from "./space";
 import type { User } from "./auth";
 
+const dateOnlySchema = z
+  .string()
+  .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must use YYYY-MM-DD")
+  .refine((value) => {
+    const date = new Date(`${value}T00:00:00.000Z`);
+    return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+  }, "Date must be valid");
+
+const timeSchema = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/, "Time must use HH:mm");
+
+const minutesFromTime = (value: string) => {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours! * 60 + minutes!;
+};
+
 export type BookingStatus =
   | "PENDING"
   | "APPROVED"
@@ -68,13 +83,50 @@ export interface BookingChartType {
 // Zod Schemas
 export const CreateBookingSchema = z.object({
   spaceId: z.number(),
-  startDate: z.string(),
-  endDate: z.string(),
-  startTime: z.string().optional(),
-  endTime: z.string().optional(),
+  startDate: dateOnlySchema,
+  endDate: dateOnlySchema,
+  startTime: timeSchema.optional(),
+  endTime: timeSchema.optional(),
   guests: z.number().min(1).default(1),
   isHourly: z.boolean(),
   message: z.string().optional(),
+}).superRefine((value, ctx) => {
+  const startDate = new Date(`${value.startDate}T00:00:00.000Z`);
+  const endDate = new Date(`${value.endDate}T00:00:00.000Z`);
+
+  if (endDate < startDate) {
+    ctx.addIssue({
+      code: "custom",
+      message: "endDate must be on or after startDate",
+      path: ["endDate"],
+    });
+  }
+
+  if (value.isHourly && (!value.startTime || !value.endTime)) {
+    ctx.addIssue({
+      code: "custom",
+      message: "startTime and endTime are required for hourly bookings",
+      path: ["startTime"],
+    });
+    return;
+  }
+
+  if ((value.startTime && !value.endTime) || (!value.startTime && value.endTime)) {
+    ctx.addIssue({
+      code: "custom",
+      message: "startTime and endTime must be provided together",
+      path: ["endTime"],
+    });
+    return;
+  }
+
+  if (value.startTime && value.endTime && minutesFromTime(value.endTime) <= minutesFromTime(value.startTime)) {
+    ctx.addIssue({
+      code: "custom",
+      message: "endTime must be after startTime",
+      path: ["endTime"],
+    });
+  }
 });
 
 export const ApproveBookingSchema = z.object({

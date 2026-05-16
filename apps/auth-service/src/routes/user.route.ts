@@ -1,17 +1,31 @@
 import { Router } from "express";
-import { prisma } from "@repo/db";
+import { prisma, Role } from "@repo/db";
 import { hashPassword } from "@repo/auth-middleware";
 import { producer } from "../utils/kafka.js";
 
 const router: Router = Router();
 
+const USER_ROLES = new Set<Role>(["USER", "HOST", "ADMIN"]);
+
+const parseRole = (role: unknown) =>
+  typeof role === "string" && USER_ROLES.has(role as Role) ? (role as Role) : null;
+
+const parseOptionalRole = (role: unknown) => {
+  if (role === undefined || role === null || role === "") return undefined;
+  return parseRole(role);
+};
+
 // Get all users (admin only)
 router.get("/", async (req, res) => {
   try {
     const { role } = req.query;
+    const parsedRole = parseOptionalRole(role);
+    if (parsedRole === null) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
 
     const users = await prisma.user.findMany({
-      where: role ? { role: role as any } : undefined,
+      where: parsedRole ? { role: parsedRole } : undefined,
       select: {
         id: true,
         email: true,
@@ -108,9 +122,13 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { email, username, password, name, role } = req.body;
+    const parsedRole = parseOptionalRole(role);
 
     if (!email || !username || !password) {
       return res.status(400).json({ message: "Email, username, and password are required" });
+    }
+    if (parsedRole === null) {
+      return res.status(400).json({ message: "Invalid role" });
     }
 
     // Check if user already exists
@@ -134,7 +152,7 @@ router.post("/", async (req, res) => {
         username,
         password: hashedPassword,
         name: name || null,
-        role: role || "USER",
+        role: parsedRole || "USER",
       },
       select: {
         id: true,
@@ -167,6 +185,10 @@ router.put("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { email, username, name, role, image } = req.body;
+    const parsedRole = parseOptionalRole(role);
+    if (parsedRole === null) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
 
     const user = await prisma.user.update({
       where: { id },
@@ -174,7 +196,7 @@ router.put("/:id", async (req, res) => {
         ...(email && { email }),
         ...(username && { username }),
         ...(name !== undefined && { name }),
-        ...(role && { role }),
+        ...(parsedRole && { role: parsedRole }),
         ...(image !== undefined && { image }),
       },
       select: {
@@ -217,6 +239,9 @@ router.put("/:id/verify-host", async (req, res) => {
   try {
     const { id } = req.params;
     const { verified } = req.body;
+    if (typeof verified !== "boolean") {
+      return res.status(400).json({ message: "verified must be a boolean" });
+    }
 
     const user = await prisma.user.findUnique({
       where: { id },
@@ -257,15 +282,16 @@ router.put("/:id/role", async (req, res) => {
     const { id } = req.params;
     const { role } = req.body;
 
-    if (!["USER", "HOST", "ADMIN"].includes(role)) {
+    const parsedRole = parseRole(role);
+    if (!parsedRole) {
       return res.status(400).json({ message: "Invalid role" });
     }
 
     const user = await prisma.user.update({
       where: { id },
       data: {
-        role,
-        ...(role === "HOST" && { hostingSince: new Date() }),
+        role: parsedRole,
+        ...(parsedRole === "HOST" && { hostingSince: new Date() }),
       },
       select: {
         id: true,

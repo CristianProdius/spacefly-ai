@@ -4,6 +4,7 @@ export interface JwtPayload {
   userId: string;
   email: string;
   role: Role;
+  hostVerified?: boolean;
   iat?: number;
   exp?: number;
 }
@@ -12,6 +13,7 @@ export interface AuthUser {
   userId: string;
   email: string;
   role: Role;
+  hostVerified?: boolean;
 }
 
 export interface TokenPair {

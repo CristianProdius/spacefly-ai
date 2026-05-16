@@ -12,6 +12,7 @@ const mocks = vi.hoisted(() => ({
   create: vi.fn(),
   createMany: vi.fn(),
   deleteMany: vi.fn(),
+  bookingFindMany: vi.fn(),
   findMany: vi.fn(),
   findUnique: vi.fn(),
   groupBy: vi.fn(),
@@ -25,6 +26,19 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("@repo/db", () => ({
+  Currency: {
+    EUR: "EUR",
+    MDL: "MDL",
+    USD: "USD",
+  },
+  SpaceType: {
+    COWORKING_SPACE: "COWORKING_SPACE",
+    EVENT_VENUE: "EVENT_VENUE",
+    MEETING_ROOM: "MEETING_ROOM",
+    OFFICE_DESK: "OFFICE_DESK",
+    PRIVATE_OFFICE: "PRIVATE_OFFICE",
+    WEDDING_VENUE: "WEDDING_VENUE",
+  },
   prisma: {
     $transaction: vi.fn((operations) => Promise.all(operations)),
     availability: {
@@ -32,6 +46,9 @@ vi.mock("@repo/db", () => ({
     },
     blockedDate: {
       findMany: mocks.blockedDateFindMany,
+    },
+    booking: {
+      findMany: mocks.bookingFindMany,
     },
     pricingTier: {
       createMany: mocks.pricingTierCreateMany,
@@ -128,11 +145,16 @@ const createTestApp = () => {
   return app;
 };
 
-const createToken = (role: "USER" | "HOST" | "ADMIN", userId = "host-user-1") =>
+const createToken = (
+  role: "USER" | "HOST" | "ADMIN",
+  userId = "host-user-1",
+  hostVerified = role !== "HOST" ? undefined : true
+) =>
   signAccessToken({
     userId,
     email: `${role.toLowerCase()}@example.com`,
     role,
+    ...(hostVerified !== undefined && { hostVerified }),
   });
 
 const invokeApp = async (input: {
@@ -230,8 +252,31 @@ describe("space routes", () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.json).toEqual({ message: "Host or Admin access required" });
+    expect(response.json).toEqual({ message: "Verified host or Admin access required" });
     expect(mocks.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("rejects unverified hosts before reaching space management controllers", async () => {
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("HOST", "pending-host-1", false)}`,
+      body: {
+        categorySlug: "meeting-training-room",
+        country: "Moldova",
+        description: "A private meeting space for product work.",
+        images: ["/space.png"],
+        name: "Pending host space",
+        pricingType: "HOURLY",
+        shortDescription: "Private meeting space",
+        spaceType: "MEETING_ROOM",
+        venueId: 22,
+      },
+      method: "POST",
+      url: "/spaces",
+    });
+
+    expect(response.status).toBe(403);
+    expect(response.json).toEqual({ message: "Verified host access required" });
+    expect(mocks.create).not.toHaveBeenCalled();
   });
 
   it("routes host/my before the public id route", async () => {
@@ -502,5 +547,50 @@ describe("space routes", () => {
       })
     );
     expect(response.json.pagination.total).toBe(1);
+  });
+
+  it("rejects invalid space type filters before querying Prisma", async () => {
+    const response = await invokeApp({
+      method: "GET",
+      url: "/spaces?spaceType=NOT_A_SPACE_TYPE",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.json).toEqual({ message: "Invalid spaceType" });
+    expect(mocks.findMany).not.toHaveBeenCalled();
+  });
+
+  it("rejects invalid availability check dates with a 400 response", async () => {
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("USER", "guest-1")}`,
+      body: {
+        endDate: "2026-05-20",
+        startDate: "not-a-date",
+      },
+      method: "POST",
+      url: "/spaces/123/check",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.json).toEqual({ message: "startDate must be a valid date" });
+    expect(mocks.findUnique).not.toHaveBeenCalled();
+    expect(mocks.bookingFindMany).not.toHaveBeenCalled();
+  });
+
+  it("rejects reversed availability date ranges before querying Prisma", async () => {
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("USER", "guest-1")}`,
+      body: {
+        endDate: "2026-05-19",
+        startDate: "2026-05-20",
+      },
+      method: "POST",
+      url: "/spaces/123/check",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.json).toEqual({ message: "endDate must be on or after startDate" });
+    expect(mocks.findUnique).not.toHaveBeenCalled();
+    expect(mocks.bookingFindMany).not.toHaveBeenCalled();
   });
 });

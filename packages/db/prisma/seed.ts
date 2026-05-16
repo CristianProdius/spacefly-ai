@@ -404,8 +404,28 @@ async function main() {
   ];
 
   for (const spaceData of demoSpaces) {
+    const venue = await prisma.venue.create({
+      data: {
+        name: `${spaceData.name} Venue`,
+        shortDescription: spaceData.shortDescription,
+        description: spaceData.description,
+        images: spaceData.images,
+        address: spaceData.address,
+        city: spaceData.city,
+        state: spaceData.state,
+        country: spaceData.country,
+        postalCode: spaceData.postalCode,
+        latitude: spaceData.latitude,
+        longitude: spaceData.longitude,
+        hostId: spaceData.hostId,
+      },
+    });
+
     const space = await prisma.space.create({
-      data: spaceData,
+      data: {
+        ...spaceData,
+        venueId: venue.id,
+      },
     });
 
     // Add some amenities to each space

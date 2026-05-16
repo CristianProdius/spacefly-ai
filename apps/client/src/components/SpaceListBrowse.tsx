@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import { LayoutGrid, Loader2, Map as MapIcon, Search } from "lucide-react";
+import { AlertCircle, LayoutGrid, Loader2, Map as MapIcon, RefreshCw, Search } from "lucide-react";
 import SpaceCard from "./SpaceCard";
 import SpaceCategories from "./SpaceCategories";
 import SpaceFilter from "./SpaceFilter";
@@ -18,6 +18,7 @@ interface SpaceListBrowseProps {
   initialSpaces: SpaceWithCategory[];
   initialPagination: PaginationData;
   initialApiParams: string;
+  initialError: boolean;
   taxonomy: BrowseTaxonomy;
   browseSelection: BrowseSelection;
 }
@@ -28,6 +29,7 @@ export default function SpaceListBrowse({
   initialSpaces,
   initialPagination,
   initialApiParams,
+  initialError,
   taxonomy,
   browseSelection,
 }: SpaceListBrowseProps) {
@@ -44,6 +46,8 @@ export default function SpaceListBrowse({
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
   const [mapSpaces, setMapSpaces] = useState<SpaceWithCategory[]>([]);
   const [mapLoading, setMapLoading] = useState(false);
+  const [loadError, setLoadError] = useState(initialError);
+  const [mapError, setMapError] = useState(false);
 
   const sentinelRef = useRef<HTMLDivElement>(null);
   const prevParamsRef = useRef(searchParams.toString());
@@ -114,8 +118,9 @@ export default function SpaceListBrowse({
       setPage(initialPagination.page);
       setTotal(initialPagination.total);
       setHasMore(initialPagination.page < initialPagination.totalPages);
+      setLoadError(initialError);
     }
-  }, [searchParams, initialSpaces, initialPagination, initialApiParams]);
+  }, [searchParams, initialSpaces, initialPagination, initialApiParams, initialError]);
 
   // Fetch next page using resolved API params (not raw browser searchParams)
   const loadMore = useCallback(async () => {
@@ -151,8 +156,10 @@ export default function SpaceListBrowse({
       setPage(nextPage);
       setTotal(data.pagination?.total ?? total);
       setHasMore(nextPage < (data.pagination?.totalPages ?? 0));
+      setLoadError(false);
     } catch (err) {
       console.error("Error loading more spaces:", err);
+      setLoadError(true);
     } finally {
       isLoadingRef.current = false;
       setIsLoadingMore(false);
@@ -161,6 +168,7 @@ export default function SpaceListBrowse({
 
   const fetchMapSpaces = useCallback(async (bounds: { neLat: number; neLng: number; swLat: number; swLng: number }) => {
     setMapLoading(true);
+    setMapError(false);
     try {
       const params = new URLSearchParams(apiParamsRef.current);
       params.set("neLat", String(bounds.neLat));
@@ -177,6 +185,7 @@ export default function SpaceListBrowse({
       setMapSpaces(data.spaces || []);
     } catch (err) {
       console.error("Error fetching map spaces:", err);
+      setMapError(true);
     } finally {
       setMapLoading(false);
     }
@@ -260,12 +269,17 @@ export default function SpaceListBrowse({
       </div>
 
       {viewMode === "map" ? (
-        <div className="h-[calc(100vh-280px)] min-h-[500px] rounded-xl overflow-hidden border border-border">
+        <div className="h-[calc(100vh-280px)] min-h-[500px] rounded-xl overflow-hidden border border-border relative">
           <SpaceMapDynamic
             spaces={mapSpaces.length > 0 ? mapSpaces : spaces}
             onBoundsChange={fetchMapSpaces}
             isLoading={mapLoading}
           />
+          {mapError && (
+            <div className="absolute left-4 right-4 top-4 rounded-lg border border-red-500/20 bg-background/95 p-3 text-sm text-red-700 shadow-sm">
+              {t("mapLoadError")}
+            </div>
+          )}
         </div>
       ) : (
         <>
@@ -276,7 +290,22 @@ export default function SpaceListBrowse({
             </p>
           )}
 
-          {spaces.length === 0 ? (
+          {loadError && spaces.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+                <AlertCircle className="w-8 h-8 text-red-600" />
+              </div>
+              <p className="text-foreground text-lg font-medium">{t("serviceError")}</p>
+              <button
+                type="button"
+                onClick={() => window.location.reload()}
+                className="inline-flex items-center gap-2 mt-4 px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-subtle transition-colors"
+              >
+                <RefreshCw className="size-4" />
+                {t("retry")}
+              </button>
+            </div>
+          ) : spaces.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-subtle flex items-center justify-center">
                 <Search className="w-8 h-8 text-muted" />
@@ -297,6 +326,19 @@ export default function SpaceListBrowse({
                 <div className="flex items-center justify-center py-8 gap-2 text-muted">
                   <Loader2 className="size-5 animate-spin" />
                   <span className="text-sm">{t("loadingMore")}</span>
+                </div>
+              )}
+
+              {loadError && (
+                <div className="flex items-center justify-center py-6">
+                  <button
+                    type="button"
+                    onClick={loadMore}
+                    className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium hover:bg-subtle transition-colors"
+                  >
+                    <RefreshCw className="size-4" />
+                    {t("loadMoreError")}
+                  </button>
                 </div>
               )}
 

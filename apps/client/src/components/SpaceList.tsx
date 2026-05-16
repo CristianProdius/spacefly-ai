@@ -1,9 +1,8 @@
 import { Space } from "@repo/types";
 import SpaceCategories from "./SpaceCategories";
 import SpaceCard from "./SpaceCard";
-import SpaceFilter from "./SpaceFilter";
 import SpaceListBrowse from "./SpaceListBrowse";
-import { Search } from "lucide-react";
+import { AlertCircle, RefreshCw, Search } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getTranslations } from "next-intl/server";
 import { getBrowseTaxonomy } from "@/lib/taxonomy.server";
@@ -60,7 +59,10 @@ interface FetchResult {
   spaces: SpaceWithCategory[];
   pagination: PaginationData;
   apiParams: string;
+  error: boolean;
 }
+
+const emptyPagination = { page: 1, limit: 20, total: 0, totalPages: 0 };
 
 const fetchSpaces = async (
   params: FetchParams,
@@ -109,17 +111,18 @@ const fetchSpaces = async (
     const res = await fetch(url, { next: { revalidate: 60 } });
     if (!res.ok) {
       console.error("Failed to fetch spaces:", res.status);
-      return { spaces: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }, apiParams };
+      return { spaces: [], pagination: emptyPagination, apiParams, error: true };
     }
     const data = await res.json();
     return {
       spaces: data.spaces || data || [],
-      pagination: data.pagination || { page: 1, limit: 20, total: 0, totalPages: 0 },
+      pagination: data.pagination || emptyPagination,
       apiParams,
+      error: false,
     };
   } catch (error) {
     console.error("Error fetching spaces:", error);
-    return { spaces: [], pagination: { page: 1, limit: 20, total: 0, totalPages: 0 }, apiParams };
+    return { spaces: [], pagination: emptyPagination, apiParams, error: true };
   }
 };
 
@@ -187,6 +190,7 @@ const SpaceList = async ({
           initialSpaces={result.spaces}
           initialPagination={result.pagination}
           initialApiParams={result.apiParams}
+          initialError={result.error}
           taxonomy={taxonomy}
           browseSelection={browseSelection}
         />
@@ -202,7 +206,21 @@ const SpaceList = async ({
         <SpaceCategories selection={browseSelection} taxonomy={taxonomy} />
       )}
 
-      {spaces.length === 0 ? (
+      {result.error ? (
+        <div className="text-center py-16">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+            <AlertCircle className="w-8 h-8 text-red-600" />
+          </div>
+          <p className="text-foreground text-lg font-medium">{t("serviceError")}</p>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 mt-4 px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-subtle transition-colors"
+          >
+            <RefreshCw className="size-4" />
+            {t("retry")}
+          </Link>
+        </div>
+      ) : spaces.length === 0 ? (
         <div className="text-center py-16">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-subtle flex items-center justify-center">
             <Search className="w-8 h-8 text-muted" />

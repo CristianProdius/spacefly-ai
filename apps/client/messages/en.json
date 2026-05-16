@@ -171,6 +171,11 @@
     "description": "Find the perfect workspace, meeting room, or event venue for your needs",
     "noSpacesFound": "No spaces found matching your criteria.",
     "tryAdjusting": "Try adjusting your filters or search terms.",
+    "serviceError": "Spaces could not be loaded right now.",
+    "detailLoadError": "This space could not be loaded",
+    "loadMoreError": "Loading failed. Try again",
+    "mapLoadError": "Map results could not be loaded.",
+    "retry": "Try again",
     "spaceTypes": {
       "OFFICE_DESK": "Office Desk",
       "PRIVATE_OFFICE": "Private Office",

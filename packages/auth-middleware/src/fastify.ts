@@ -1,6 +1,7 @@
 import type { FastifyRequest, FastifyReply } from "fastify";
 import { verifyAccessToken, extractTokenFromHeader } from "./jwt.js";
 import type { AuthUser } from "./types.js";
+import { hasVerifiedHostAccess } from "./authorization.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -26,6 +27,7 @@ export async function shouldBeUser(request: FastifyRequest, reply: FastifyReply)
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   request.user = user;
@@ -53,6 +55,7 @@ export async function shouldBeAdmin(request: FastifyRequest, reply: FastifyReply
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   request.user = user;
@@ -72,14 +75,15 @@ export async function shouldBeHost(request: FastifyRequest, reply: FastifyReply)
     return reply.status(401).send({ message: "Invalid or expired token" });
   }
 
-  if (payload.role !== "HOST" && payload.role !== "ADMIN") {
-    return reply.status(403).send({ message: "Host access required" });
+  if (!hasVerifiedHostAccess(payload)) {
+    return reply.status(403).send({ message: "Verified host access required" });
   }
 
   const user: AuthUser = {
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   request.user = user;
@@ -99,14 +103,15 @@ export async function shouldBeHostOrAdmin(request: FastifyRequest, reply: Fastif
     return reply.status(401).send({ message: "Invalid or expired token" });
   }
 
-  if (payload.role !== "HOST" && payload.role !== "ADMIN") {
-    return reply.status(403).send({ message: "Host or Admin access required" });
+  if (!hasVerifiedHostAccess(payload)) {
+    return reply.status(403).send({ message: "Verified host or Admin access required" });
   }
 
   const user: AuthUser = {
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   request.user = user;

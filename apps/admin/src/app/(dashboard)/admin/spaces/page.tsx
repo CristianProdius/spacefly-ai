@@ -6,12 +6,14 @@ import useAuthStore from "@/stores/authStore";
 import { Space } from "@repo/types";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import { DataLoadError } from "@/components/dashboard";
 
 const SpacesPage = () => {
   const router = useRouter();
   const { isAuthenticated, isAdmin, isLoading: authLoading } = useAuthStore();
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && (!isAuthenticated || !isAdmin)) {
@@ -25,6 +27,8 @@ const SpacesPage = () => {
   }, [authLoading, isAuthenticated, isAdmin, router]);
 
   const fetchSpaces = async () => {
+    setError(null);
+    setIsLoading(true);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces`
@@ -38,6 +42,7 @@ const SpacesPage = () => {
       setSpaces(data.spaces || []);
     } catch (err) {
       console.error(err);
+      setError("Spaces could not be loaded. Check the product service and retry.");
     } finally {
       setIsLoading(false);
     }
@@ -52,7 +57,11 @@ const SpacesPage = () => {
       <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
         <h1 className="font-semibold">All Spaces</h1>
       </div>
-      <DataTable columns={columns} data={spaces} />
+      {error ? (
+        <DataLoadError message={error} onRetry={fetchSpaces} />
+      ) : (
+        <DataTable columns={columns} data={spaces} />
+      )}
     </div>
   );
 };
