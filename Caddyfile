@@ -44,6 +44,16 @@ api.spacefly.ai {
 		reverse_proxy product-service:8000
 	}
 
+	@venues path /venues /venues/*
+	handle @venues {
+		reverse_proxy product-service:8000
+	}
+
+	@currencies path /currencies /currencies/*
+	handle @currencies {
+		reverse_proxy product-service:8000
+	}
+
 	@categories path /categories /categories/*
 	handle @categories {
 		reverse_proxy product-service:8000
