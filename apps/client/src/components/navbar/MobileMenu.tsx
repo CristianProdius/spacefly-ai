@@ -66,7 +66,7 @@ const MobileMenu = () => {
             {isAuthenticated && isHost && (
               <Dialog.Close
                 render={
-                  <a href={`${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003"}/host`} />
+                  <a href={`${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001"}/host`} />
                 }
                 className="block px-4 py-3 text-sm font-medium text-foreground"
               >

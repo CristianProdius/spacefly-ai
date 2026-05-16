@@ -34,5 +34,6 @@ describe("admin auth layout", () => {
     expect(html).toContain("Spacefly.ai home");
     expect(html).toContain("Manage spaces, bookings, and hosts from one place.");
     expect(html).toContain("Auth child");
+    expect(html).toMatch(/auth-card[^"]*text-\[var\(--auth-foreground\)\]/);
   });
 });

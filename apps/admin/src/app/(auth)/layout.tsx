@@ -35,14 +35,14 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <Link
             href="/"
             aria-label="Spacefly.ai home"
-            className="text-lg font-semibold text-foreground"
+            className="text-lg font-semibold text-[var(--auth-foreground)]"
           >
             Spacefly.ai
           </Link>
         </div>
 
         <div className="flex flex-1 items-center justify-center px-4 py-6 sm:px-6 sm:py-10 lg:px-10">
-          <div className="auth-card w-full max-w-md rounded-[28px] bg-white p-8 sm:p-10">
+          <div className="auth-card w-full max-w-md rounded-[28px] bg-white p-8 text-[var(--auth-foreground)] sm:p-10">
             {children}
           </div>
         </div>

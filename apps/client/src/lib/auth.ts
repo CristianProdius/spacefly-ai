@@ -1,4 +1,18 @@
 const AUTH_SERVICE_URL = process.env.NEXT_PUBLIC_AUTH_SERVICE_URL || "http://localhost:8003";
+const AUTH_SERVICE_UNREACHABLE_MESSAGE =
+  "Unable to reach the authentication service. Check that it is running and allows this local app.";
+
+async function fetchAuth(path: string, init?: RequestInit): Promise<Response> {
+  try {
+    return await fetch(`${AUTH_SERVICE_URL}${path}`, init);
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(AUTH_SERVICE_UNREACHABLE_MESSAGE);
+    }
+
+    throw error;
+  }
+}
 
 export interface User {
   id: string;
@@ -16,7 +30,7 @@ export interface AuthResponse {
 }
 
 export async function login(email: string, password: string): Promise<AuthResponse> {
-  const res = await fetch(`${AUTH_SERVICE_URL}/auth/login`, {
+  const res = await fetchAuth("/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -36,7 +50,7 @@ export async function register(
   password: string,
   name?: string
 ): Promise<AuthResponse> {
-  const res = await fetch(`${AUTH_SERVICE_URL}/auth/register`, {
+  const res = await fetchAuth("/auth/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, username, password, name }),
@@ -52,7 +66,7 @@ export async function register(
 
 export async function logout(refreshToken: string): Promise<void> {
   const token = getAccessToken();
-  await fetch(`${AUTH_SERVICE_URL}/auth/logout`, {
+  await fetchAuth("/auth/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -63,7 +77,7 @@ export async function logout(refreshToken: string): Promise<void> {
 }
 
 export async function refreshAccessToken(refreshToken: string): Promise<string> {
-  const res = await fetch(`${AUTH_SERVICE_URL}/auth/refresh`, {
+  const res = await fetchAuth("/auth/refresh", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refreshToken }),
@@ -78,7 +92,7 @@ export async function refreshAccessToken(refreshToken: string): Promise<string> 
 }
 
 export async function getMe(token: string): Promise<User> {
-  const res = await fetch(`${AUTH_SERVICE_URL}/auth/me`, {
+  const res = await fetchAuth("/auth/me", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

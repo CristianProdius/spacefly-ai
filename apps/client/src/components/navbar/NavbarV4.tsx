@@ -51,7 +51,7 @@ export const NavbarV4 = () => {
               )}
               {isAuthenticated && user?.role === "HOST" && (
                 <a
-                  href={`${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003"}/host`}
+                  href={`${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001"}/host`}
                   className="text-sm font-semibold text-foreground hover:text-primary transition-colors"
                 >
                   {t("hostDashboard")}

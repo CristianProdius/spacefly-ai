@@ -80,6 +80,7 @@
   --custom-color: oklch(0.6 0.2 150);
   --auth-brand: oklch(0.66 0.17 46);
   --auth-brand-hover: oklch(0.59 0.16 46);
+  --auth-foreground: oklch(0.21 0.025 70);
   --auth-subtle: oklch(0.975 0.01 70);
   --auth-muted: oklch(0.52 0.02 70);
   --auth-shadow: 0 6px 18px rgba(15, 23, 42, 0.06),

@@ -6,7 +6,12 @@ import authRoute from "./routes/auth.route.js";
 import { producer } from "./utils/kafka.js";
 
 const PORT = Number(process.env.PORT || 8003);
-const DEFAULT_CORS_ORIGINS = ["http://localhost:3002", "http://localhost:3003"];
+const DEFAULT_CORS_ORIGINS = [
+  "http://localhost:5001",
+  "http://localhost:5002",
+  "http://localhost:3002",
+  "http://localhost:3003",
+];
 
 const configuredCorsOrigins = process.env.CORS_ORIGINS?.split(",")
   .map((origin) => origin.trim())

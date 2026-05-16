@@ -64,7 +64,7 @@ const ProfileButton = () => {
               {isHost && (
                 <Menu.Item
                   onClick={() => {
-                    window.location.href = `${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003"}/host`;
+                    window.location.href = `${process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001"}/host`;
                   }}
                   className={cn(
                     "w-full px-4 py-2 text-left text-sm text-foreground flex items-center gap-3 cursor-pointer",

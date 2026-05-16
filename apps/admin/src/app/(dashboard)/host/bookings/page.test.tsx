@@ -123,6 +123,28 @@ describe("host bookings page", () => {
     );
   });
 
+  it("renders a service unavailable state when bookings cannot be fetched", async () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
+
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(container.textContent).toContain("Booking service unavailable");
+    expect(container.textContent).toContain("Retry");
+    expect(consoleError).not.toHaveBeenCalled();
+  });
+
   it("renders readable status filters and action buttons without light-only classes", async () => {
     vi.stubGlobal(
       "fetch",

@@ -29,7 +29,7 @@ const BecomeHostPage = () => {
   useEffect(() => {
     if (!authLoading && user?.role === "HOST") {
       window.location.href =
-        process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003";
+        process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001";
     }
   }, [authLoading, user]);
 
@@ -67,7 +67,7 @@ const BecomeHostPage = () => {
       // Redirect to admin app host dashboard after a short delay
       setTimeout(() => {
         window.location.href =
-          process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003";
+          process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001";
       }, 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");

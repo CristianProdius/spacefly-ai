@@ -40,27 +40,27 @@ const Footer = async () => {
         { href: "/become-host", label: t("becomeAHost") },
         {
           external: true,
-          href: (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") + "/host",
+          href: (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001") + "/host",
           label: t("hostDashboard"),
         },
         {
           external: true,
           href:
-            (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") +
+            (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001") +
             "/host/spaces/new",
           label: t("listYourSpace"),
         },
         {
           external: true,
           href:
-            (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") +
+            (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001") +
             "/host/bookings",
           label: t("hostBookings"),
         },
         {
           external: true,
           href:
-            (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3003") +
+            (process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:5001") +
             "/host/earnings",
           label: t("hostEarnings"),
         },

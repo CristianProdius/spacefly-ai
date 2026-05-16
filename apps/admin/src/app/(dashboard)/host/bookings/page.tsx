@@ -95,11 +95,10 @@ const HostBookingsPage = () => {
         const data = await res.json();
         setBookings(data);
       } else {
-        throw new Error("Failed to fetch bookings");
+        setError("Booking service unavailable");
       }
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-      setError("Bookings could not be loaded. Check the order service and retry.");
+    } catch {
+      setError("Booking service unavailable");
     } finally {
       setLoading(false);
     }
