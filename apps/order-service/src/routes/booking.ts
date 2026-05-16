@@ -153,10 +153,11 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
       const exchangeRate = await getExchangeRate(space.currency);
 
       // Check for conflicts and create booking in a serializable transaction to prevent race conditions
+      const conflictingStatuses: BookingStatus[] = ["PENDING", "CONFIRMED"];
       const conflictWhere = {
         spaceId,
         status: {
-          in: ["PENDING", "CONFIRMED"] as const,
+          in: conflictingStatuses,
         },
         startDate: { lte: new Date(endDate) },
         endDate: { gte: new Date(startDate) },
