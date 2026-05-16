@@ -5,6 +5,7 @@ import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vite
 
 const mockStore = vi.fn();
 const push = vi.fn();
+let searchParams = new URLSearchParams();
 const groupedCategoriesResponse = [
   {
     categories: [
@@ -27,6 +28,7 @@ vi.mock("@/stores/authStore", () => ({
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push }),
+  useSearchParams: () => searchParams,
 }));
 
 vi.mock("next/link", () => ({
@@ -95,15 +97,9 @@ describe("host new space page", () => {
     const capacityInput = container.querySelector(
       'input[placeholder="Maximum number of people"]'
     ) as HTMLInputElement | null;
-    const addressInput = container.querySelector(
-      'input[placeholder="Street address"]'
-    ) as HTMLInputElement | null;
-    const cityInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "City"
-    ) as HTMLInputElement | undefined;
-    const countryInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Country"
-    ) as HTMLInputElement | undefined;
+    const venueSelect = Array.from(container.querySelectorAll("select")).find(
+      (select) => select.textContent?.includes("Select a venue")
+    ) as HTMLSelectElement | undefined;
     const hourlyInput = Array.from(container.querySelectorAll("input")).find(
       (input) => input.previousElementSibling?.textContent === "Price Per Hour"
     ) as HTMLInputElement | undefined;
@@ -119,9 +115,7 @@ describe("host new space page", () => {
       !shortDescriptionInput ||
       !descriptionInput ||
       !capacityInput ||
-      !addressInput ||
-      !cityInput ||
-      !countryInput ||
+      !venueSelect ||
       !hourlyInput ||
       !dailyInput ||
       !categorySelect
@@ -138,9 +132,7 @@ describe("host new space page", () => {
       );
       setInputValue(categorySelect, "retail-store-shop-front");
       setInputValue(capacityInput, "8");
-      setInputValue(addressInput, "Main Street 1");
-      setInputValue(cityInput, "Chisinau");
-      setInputValue(countryInput, "Moldova");
+      setInputValue(venueSelect, "7");
       setInputValue(hourlyInput, "25");
       setInputValue(dailyInput, "120");
     });
@@ -163,22 +155,41 @@ describe("host new space page", () => {
     mockStore.mockReset();
     mockStore.mockReturnValue({ token: "test-token" });
     push.mockReset();
+    searchParams = new URLSearchParams();
 
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => groupedCategoriesResponse,
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => [
-            { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
-            { id: 2, name: "Projector", icon: null, category: "Equipment" },
-          ],
-        })
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = input.toString();
+
+        if (url.endsWith("/categories?grouped=true")) {
+          return {
+            ok: true,
+            json: async () => groupedCategoriesResponse,
+          };
+        }
+
+        if (url.endsWith("/venues/host/my")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+            ],
+          };
+        }
+
+        if (url.includes("/amenities")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
+              { id: 2, name: "Projector", icon: null, category: "Equipment" },
+            ],
+          };
+        }
+
+        throw new Error(`Unexpected fetch call: ${url}`);
+      })
     );
 
     container = document.createElement("div");
@@ -210,7 +221,7 @@ describe("host new space page", () => {
     expect(container.textContent).toContain("Fill in the details to list your space");
     expect(container.textContent).toContain("Basic Information");
     expect(container.textContent).toContain("Images");
-    expect(container.textContent).toContain("Location");
+    expect(container.textContent).toContain("Venue");
     expect(container.textContent).toContain("Pricing");
     expect(container.textContent).toContain("Amenities");
     expect(container.textContent).toContain("Settings");
@@ -261,22 +272,37 @@ describe("host new space page", () => {
   it("shows upload errors and tokenized selected amenity/toggle surfaces", async () => {
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => groupedCategoriesResponse,
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => [
-            { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
-          ],
-        })
-        .mockResolvedValueOnce({
-          ok: false,
-          json: async () => ({ message: "Upload failed" }),
-        })
+      vi.fn(async (input: RequestInfo | URL) => {
+        const url = input.toString();
+
+        if (url.endsWith("/categories?grouped=true")) {
+          return { ok: true, json: async () => groupedCategoriesResponse };
+        }
+
+        if (url.endsWith("/venues/host/my")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+            ],
+          };
+        }
+
+        if (url.includes("/amenities")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
+            ],
+          };
+        }
+
+        if (url.endsWith("/uploads/images")) {
+          return { ok: false, json: async () => ({ message: "Upload failed" }) };
+        }
+
+        throw new Error(`Unexpected fetch call: ${url}`);
+      })
     );
 
     const pageModule = await import("./page");
@@ -340,26 +366,41 @@ describe("host new space page", () => {
   it("renders uploaded image controls and a tokenized top-level submit error", async () => {
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => groupedCategoriesResponse,
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => [
-            { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
-          ],
-        })
-        .mockResolvedValueOnce({
-          ok: true,
-          json: async () => ({ url: "/uploaded-space.png" }),
-        })
-        .mockResolvedValueOnce({
-          ok: false,
-          json: async () => ({ message: "Creation failed" }),
-        })
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = input.toString();
+
+        if (url.endsWith("/categories?grouped=true")) {
+          return { ok: true, json: async () => groupedCategoriesResponse };
+        }
+
+        if (url.endsWith("/venues/host/my")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+            ],
+          };
+        }
+
+        if (url.includes("/amenities")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
+            ],
+          };
+        }
+
+        if (url.endsWith("/uploads/images")) {
+          return { ok: true, json: async () => ({ url: "/uploaded-space.png" }) };
+        }
+
+        if (url.endsWith("/spaces") && init?.method === "POST") {
+          return { ok: false, json: async () => ({ message: "Creation failed" }) };
+        }
+
+        throw new Error(`Unexpected fetch call: ${url}`);
+      })
     );
 
     const pageModule = await import("./page");
@@ -438,7 +479,16 @@ describe("host new space page", () => {
         };
       }
 
-      if (url.endsWith("/amenities")) {
+      if (url.endsWith("/venues/host/my")) {
+        return {
+          ok: true,
+          json: async () => [
+            { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+          ],
+        };
+      }
+
+      if (url.includes("/amenities")) {
         return {
           ok: true,
           json: async () => [
@@ -526,22 +576,44 @@ describe("host new space page", () => {
       pricePerHour: 25,
       pricePerDay: 120,
       capacity: 8,
-      address: "Main Street 1",
-      city: "Chisinau",
-      state: "",
-      country: "Moldova",
-      postalCode: "",
+      venueId: 7,
       instantBook: false,
       cancellationPolicy: "MODERATE",
       houseRules: "",
       categorySlug: "retail-store-shop-front",
       amenityIds: [1],
       images: ["/uploaded-space.png"],
+      nameTranslations: null,
+      shortDescTranslations: null,
+      descriptionTranslations: null,
+      videoUrl: null,
+      currency: "USD",
+      pricingTiers: [],
     });
     expect(createRequest?.[1]?.headers).toEqual({
       "Content-Type": "application/json",
       Authorization: "Bearer test-token",
     });
     expect(push).toHaveBeenCalledWith("/host/spaces");
+  });
+
+  it("preselects the venue from the venueId query parameter", async () => {
+    searchParams = new URLSearchParams("venueId=7");
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    const venueSelect = Array.from(container.querySelectorAll("select")).find(
+      (select) => select.textContent?.includes("Select a venue")
+    ) as HTMLSelectElement | undefined;
+
+    expect(venueSelect?.value).toBe("7");
   });
 });

@@ -137,6 +137,10 @@ describe("host edit space page", () => {
             cancellationPolicy: "STRICT",
             houseRules: "Leave the studio as you found it.",
             categorySlug: "retail-store-shop-front",
+            venueId: 7,
+            videoUrl: null,
+            currency: "USD",
+            pricingTiers: [],
             images: ["/loft.jpg"],
             amenities: [
               {
@@ -169,7 +173,16 @@ describe("host edit space page", () => {
         };
       }
 
-      if (url.endsWith("/amenities")) {
+      if (url.endsWith("/venues/host/my")) {
+        return {
+          ok: true,
+          json: async () => [
+            { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+          ],
+        };
+      }
+
+      if (url.includes("/amenities")) {
         return {
           ok: true,
           json: async () => [
@@ -275,17 +288,19 @@ describe("host edit space page", () => {
       pricePerHour: 55,
       pricePerDay: 300,
       capacity: 12,
-      address: "River Street 9",
-      city: "Chisinau",
-      state: "Center",
-      country: "Moldova",
-      postalCode: "MD-2001",
+      venueId: 7,
       instantBook: false,
       cancellationPolicy: "STRICT",
       houseRules: "Leave the studio as you found it.",
       categorySlug: "retail-store-shop-front",
       amenityIds: [2],
       images: ["/loft.jpg"],
+      nameTranslations: null,
+      shortDescTranslations: null,
+      descriptionTranslations: null,
+      videoUrl: null,
+      currency: "USD",
+      pricingTiers: [],
     });
     expect(updateRequest?.[1]?.headers).toEqual({
       "Content-Type": "application/json",

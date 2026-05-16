@@ -146,6 +146,10 @@ describe("admin edit space page", () => {
             cancellationPolicy: "STRICT",
             houseRules: "Leave the studio as you found it.",
             categorySlug: "retail-store-shop-front",
+            venueId: 7,
+            videoUrl: null,
+            currency: "USD",
+            pricingTiers: [],
             images: ["/loft.jpg"],
             amenities: [
               {
@@ -178,7 +182,16 @@ describe("admin edit space page", () => {
         };
       }
 
-      if (url.endsWith("/amenities")) {
+      if (url.endsWith("/venues/host/my")) {
+        return {
+          ok: true,
+          json: async () => [
+            { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+          ],
+        };
+      }
+
+      if (url.includes("/amenities")) {
         return {
           ok: true,
           json: async () => [

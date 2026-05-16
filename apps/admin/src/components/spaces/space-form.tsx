@@ -51,6 +51,17 @@ interface SpaceFormProps {
   onSubmit: (payload: SpaceFormPayload) => Promise<void>;
 }
 
+const getInitialSpaceFormValues = (
+  initialValues: SpaceFormValues | undefined,
+  defaultVenueId: number | undefined
+) => {
+  const values = initialValues ?? createEmptySpaceFormValues();
+  if (defaultVenueId && !values.venueId) {
+    return { ...values, venueId: defaultVenueId };
+  }
+  return values;
+};
+
 const SpaceForm = ({
   title,
   description,
@@ -71,13 +82,9 @@ const SpaceForm = ({
   const [venues, setVenues] = useState<VenueOption[]>([]);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<SpaceFormValues>(() => {
-    const values = initialValues ?? createEmptySpaceFormValues();
-    if (defaultVenueId && !values.venueId) {
-      return { ...values, venueId: defaultVenueId };
-    }
-    return values;
-  });
+  const [formData, setFormData] = useState<SpaceFormValues>(() =>
+    getInitialSpaceFormValues(initialValues, defaultVenueId)
+  );
   const categories = useMemo(
     () => flattenCategoryGroups(categoryGroups),
     [categoryGroups]
@@ -85,8 +92,8 @@ const SpaceForm = ({
   const selectedCategory = findCategoryBySlug(categories, formData.categorySlug);
 
   useEffect(() => {
-    setFormData(initialValues ?? createEmptySpaceFormValues());
-  }, [initialValues]);
+    setFormData(getInitialSpaceFormValues(initialValues, defaultVenueId));
+  }, [initialValues, defaultVenueId]);
 
   useEffect(() => {
     const fetchCategories = async () => {
