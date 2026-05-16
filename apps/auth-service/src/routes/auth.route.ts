@@ -171,7 +171,7 @@ router.post("/logout", shouldBeUser, async (req, res) => {
     if (refreshToken) {
       // Delete the session
       await prisma.session.deleteMany({
-        where: { token: refreshToken },
+        where: { token: refreshToken, userId: req.userId },
       });
     }
 
