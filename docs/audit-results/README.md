@@ -33,4 +33,3 @@ Priority labels:
 - `P1`: Broken core user flow or major user-facing regression.
 - `P2`: Medium bug, confusing UX, missing validation, brittle behavior, or important missing test.
 - `P3`: Cleanup, polish, performance, maintainability, or documentation improvement.
-
