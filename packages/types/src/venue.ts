@@ -3,6 +3,9 @@ export interface Venue {
   name: string;
   shortDescription: string;
   description: string;
+  nameTranslations?: Record<string, string> | null;
+  shortDescTranslations?: Record<string, string> | null;
+  descriptionTranslations?: Record<string, string> | null;
   images: string[];
   videoUrl: string | null;
   address: string;
@@ -12,6 +15,7 @@ export interface Venue {
   postalCode: string | null;
   latitude: number | null;
   longitude: number | null;
+  currency?: string;
   hostId: string;
   isActive: boolean;
   createdAt: string;
@@ -32,6 +36,10 @@ export interface VenueWithSpaces extends Venue {
     name: string;
     spaceType: string;
     capacity: number;
+    pricePerHour: number | null;
+    pricePerDay: number | null;
+    pricingType: string;
+    images: string[];
     isActive: boolean;
   }>;
   _count?: { spaces: number };
