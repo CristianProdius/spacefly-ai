@@ -50,7 +50,12 @@ export default function RegisterPage() {
 
     try {
       await register(formData.email, formData.username, formData.password, formData.name || undefined);
-      router.push("/");
+      const redirectTo = new URLSearchParams(window.location.search).get("redirect");
+      router.push(
+        redirectTo?.startsWith("/") && !redirectTo.startsWith("//")
+          ? redirectTo
+          : "/"
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : t("registrationFailed"));
     } finally {

@@ -4,11 +4,12 @@ import { Link } from "@/i18n/navigation";
 import { MapPin, Star } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { parseImages } from "@/lib/utils";
+import { PRODUCT_SERVICE_URL } from "@/lib/config";
 
 const fetchFeaturedSpace = async (): Promise<Space | null> => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?sort=newest&limit=1`,
+      `${PRODUCT_SERVICE_URL}/spaces?sort=newest&limit=1`,
       { next: { revalidate: 60 } }
     );
     if (!res.ok) return null;

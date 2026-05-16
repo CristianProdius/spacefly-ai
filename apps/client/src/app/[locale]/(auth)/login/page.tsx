@@ -27,7 +27,12 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      router.push("/");
+      const redirectTo = new URLSearchParams(window.location.search).get("redirect");
+      router.push(
+        redirectTo?.startsWith("/") && !redirectTo.startsWith("//")
+          ? redirectTo
+          : "/"
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : t("loginFailed"));
     } finally {

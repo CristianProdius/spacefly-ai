@@ -6,6 +6,7 @@ import BookingForm from "./BookingForm";
 import ReviewSection from "./ReviewSection";
 import LocationMapLoader from "./LocationMapLoader";
 import { getTranslations } from "next-intl/server";
+import { PRODUCT_SERVICE_URL } from "@/lib/config";
 import { parseImages, formatPrice } from "@/lib/utils";
 import { getSpaceCategoryLabel } from "@/lib/taxonomy";
 import ImageGallery from "@/components/ImageGallery";
@@ -15,7 +16,7 @@ async function getSpace(id: string, locale?: string): Promise<SpaceWithHost | nu
   try {
     const langParam = locale && locale !== "en" ? `?lang=${locale}` : "";
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${id}${langParam}`,
+      `${PRODUCT_SERVICE_URL}/spaces/${id}${langParam}`,
       { next: { revalidate: 60 } }
     );
     if (!res.ok) return null;

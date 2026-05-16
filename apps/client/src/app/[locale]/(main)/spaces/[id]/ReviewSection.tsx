@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Star, RefreshCw } from "lucide-react";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
+import { PRODUCT_SERVICE_URL } from "@/lib/config";
 
 interface Review {
   id: number;
@@ -54,7 +55,7 @@ const ReviewSection = ({ spaceId }: ReviewSectionProps) => {
     setError(false);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${spaceId}/reviews?page=${page}&limit=5`
+        `${PRODUCT_SERVICE_URL}/spaces/${spaceId}/reviews?page=${page}&limit=5`
       );
       if (res.ok) {
         const reviewData = await res.json();

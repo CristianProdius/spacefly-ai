@@ -12,6 +12,7 @@ import {
   resolveBrowseSelection,
   type BrowseTaxonomy,
 } from "@/lib/taxonomy";
+import { PRODUCT_SERVICE_URL } from "@/lib/config";
 
 export type SpaceWithCategory = Space & {
   category?: {
@@ -102,7 +103,7 @@ const fetchSpaces = async (
   if (params.lang) searchParams.set("lang", params.lang);
 
   const apiParams = searchParams.toString();
-  const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${apiParams}`;
+  const url = `${PRODUCT_SERVICE_URL}/spaces?${apiParams}`;
 
   try {
     const res = await fetch(url, { next: { revalidate: 60 } });

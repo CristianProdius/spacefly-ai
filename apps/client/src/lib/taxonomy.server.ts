@@ -4,9 +4,7 @@ import {
   type BrowseTaxonomy,
   normalizeBrowseTaxonomy,
 } from "./taxonomy";
-
-const PRODUCT_SERVICE_URL =
-  process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL || "http://localhost:8000";
+import { PRODUCT_SERVICE_URL } from "./config";
 
 const fetchTaxonomyPayload = async (url: string) => {
   try {

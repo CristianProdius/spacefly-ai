@@ -135,7 +135,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
         toast.info(message);
       });
       const returnPath = window.location.pathname + window.location.search;
-      window.location.href = `/${locale}/login?redirect=${encodeURIComponent(returnPath)}`;
+      window.location.href = `/login?redirect=${encodeURIComponent(returnPath)}`;
     }
   },
 }));

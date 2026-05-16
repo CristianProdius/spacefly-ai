@@ -10,6 +10,7 @@ import SpaceCategories from "./SpaceCategories";
 import SpaceFilter from "./SpaceFilter";
 import type { SpaceWithCategory, PaginationData } from "./SpaceList";
 import type { BrowseSelection, BrowseTaxonomy } from "@/lib/taxonomy";
+import { PRODUCT_SERVICE_URL } from "@/lib/config";
 
 const SpaceMapDynamic = dynamic(() => import("./SpaceMap"), { ssr: false });
 
@@ -131,7 +132,7 @@ export default function SpaceListBrowse({
       const locale = window.location.pathname.split("/")[1] || "en";
       params.set("lang", locale);
 
-      const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${params.toString()}`;
+      const url = `${PRODUCT_SERVICE_URL}/spaces?${params.toString()}`;
       const res = await fetch(url);
 
       if (!res.ok) throw new Error("Failed to fetch");
@@ -169,7 +170,7 @@ export default function SpaceListBrowse({
       params.set("limit", "100");
       const locale = window.location.pathname.split("/")[1] || "en";
       params.set("lang", locale);
-      const url = `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces?${params.toString()}`;
+      const url = `${PRODUCT_SERVICE_URL}/spaces?${params.toString()}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
