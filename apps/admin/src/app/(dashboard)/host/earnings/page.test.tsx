@@ -188,4 +188,26 @@ describe("host earnings page", () => {
       classNames.some((className) => className.includes("border-gray-200"))
     ).toBe(false);
   });
+
+  it("renders a retryable service unavailable state when earnings cannot be fetched", async () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
+
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(container.textContent).toContain("Booking service unavailable");
+    expect(container.textContent).toContain("Retry");
+    expect(consoleError).not.toHaveBeenCalled();
+  });
 });

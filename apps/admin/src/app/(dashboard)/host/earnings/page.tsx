@@ -101,11 +101,10 @@ const HostEarningsPage = () => {
           completedBookings: completedBookings.length,
         });
       } else {
-        throw new Error("Failed to fetch earnings");
+        setError("Booking service unavailable");
       }
-    } catch (error) {
-      console.error("Error fetching earnings:", error);
-      setError("Earnings could not be loaded. Check the order service and retry.");
+    } catch {
+      setError("Booking service unavailable");
     } finally {
       setLoading(false);
     }

@@ -22,6 +22,11 @@ const getProductServiceUploadPattern = () => {
 };
 
 const productServiceUploadPattern = getProductServiceUploadPattern();
+const productionUploadPattern = {
+  protocol: "https",
+  hostname: "api.spacefly.ai",
+  pathname: "/uploads/**",
+} as const;
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -35,6 +40,7 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      productionUploadPattern,
       ...(productServiceUploadPattern ? [productServiceUploadPattern] : []),
     ],
   },

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
 import BackgroundVideo from "./BackgroundVideo";
 
@@ -14,9 +15,16 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <Link
             href="/"
             aria-label="Spacefly.ai home"
-            className="text-xl font-semibold"
+            className="inline-flex"
           >
-            Spacefly.ai
+            <Image
+              src="/brand/wordmark_dark_transparent.png"
+              alt="Spacefly.ai"
+              width={210}
+              height={67}
+              priority
+              className="h-11 w-auto object-contain"
+            />
           </Link>
           <div className="max-w-sm space-y-4">
             <p className="text-sm font-medium text-white/80">Host and admin access</p>
@@ -35,9 +43,16 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <Link
             href="/"
             aria-label="Spacefly.ai home"
-            className="text-lg font-semibold text-[var(--auth-foreground)]"
+            className="inline-flex"
           >
-            Spacefly.ai
+            <Image
+              src="/brand/wordmark_transparent.png"
+              alt="Spacefly.ai"
+              width={160}
+              height={52}
+              priority
+              className="h-8 w-auto object-contain"
+            />
           </Link>
         </div>
 

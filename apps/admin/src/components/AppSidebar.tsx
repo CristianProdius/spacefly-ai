@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import {
   Home,
   Plus,
@@ -70,10 +71,23 @@ const AppSidebar = () => {
       <SidebarHeader className="py-4">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
+            <SidebarMenuButton asChild size="lg" tooltip="Spacefly.ai Dashboard">
               <Link href="/">
-                <Building2 className="w-5 h-5" />
-                <span>Spacefly.ai Dashboard</span>
+                <Image
+                  src="/brand/symbol_transparent.png"
+                  alt=""
+                  width={24}
+                  height={33}
+                  className="hidden size-5 shrink-0 object-contain group-data-[collapsible=icon]:block"
+                />
+                <Image
+                  src="/brand/wordmark_transparent.png"
+                  alt="Spacefly.ai Dashboard"
+                  width={154}
+                  height={50}
+                  priority
+                  className="h-8 w-auto object-contain group-data-[collapsible=icon]:hidden"
+                />
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

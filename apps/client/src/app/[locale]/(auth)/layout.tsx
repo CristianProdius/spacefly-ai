@@ -1,4 +1,5 @@
 import { Link } from "@/i18n/navigation";
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import BackgroundVideo from "./BackgroundVideo";
 
@@ -22,9 +23,14 @@ export default async function AuthLayout({
         {/* Content */}
         <div className="relative flex flex-col items-center justify-center w-full p-12">
           <Link href="/" aria-label="Spacefly.ai home">
-            <span className="text-3xl font-extrabold text-white tracking-widest font-[family-name:var(--font-geist-sans)]">
-              Spacefly.ai
-            </span>
+            <Image
+              src="/brand/wordmark_dark_transparent.png"
+              alt="Spacefly.ai"
+              width={220}
+              height={70}
+              priority
+              className="h-12 w-auto object-contain"
+            />
           </Link>
           <p className="mt-4 text-sm text-white/60 text-center text-pretty max-w-xs">
             {t("tagline")}
@@ -37,9 +43,14 @@ export default async function AuthLayout({
         {/* Mobile header — Spacefly.ai logo */}
         <div className="px-4 pt-8 pb-4 flex justify-center lg:hidden">
           <Link href="/" aria-label="Spacefly.ai home">
-            <span className="text-lg font-extrabold text-foreground tracking-widest font-[family-name:var(--font-geist-sans)]">
-              Spacefly.ai
-            </span>
+            <Image
+              src="/brand/wordmark_transparent.png"
+              alt="Spacefly.ai"
+              width={160}
+              height={52}
+              priority
+              className="h-8 w-auto object-contain"
+            />
           </Link>
         </div>
 

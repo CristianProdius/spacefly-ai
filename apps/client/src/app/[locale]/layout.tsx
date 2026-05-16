@@ -27,6 +27,18 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    icons: {
+      icon: [
+        { url: "/favicon.ico" },
+        { url: "/brand/app_icon_16x16.png", sizes: "16x16", type: "image/png" },
+        { url: "/brand/app_icon_32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/brand/app_icon_64x64.png", sizes: "64x64", type: "image/png" },
+        { url: "/brand/app_icon_512x512.png", sizes: "512x512", type: "image/png" },
+      ],
+      apple: [
+        { url: "/brand/app_icon_180x180.png", sizes: "180x180", type: "image/png" },
+      ],
+    },
   };
 }
 

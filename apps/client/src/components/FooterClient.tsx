@@ -2,8 +2,10 @@
 
 import { Link } from "@/i18n/navigation";
 import { Instagram, Facebook, Linkedin, Twitter, ChevronDown } from "lucide-react";
+import Image from "next/image";
 import { Accordion } from "@base-ui/react/accordion";
 import { cn } from "@/lib/utils";
+import { getFooterLinkKey } from "./footer-link-key";
 
 interface FooterColumnLink {
   external?: boolean;
@@ -47,9 +49,16 @@ const FooterClient = ({
           <div>
             <Link
               href="/"
-              className="text-lg font-extrabold tracking-widest text-foreground"
+              aria-label="Spacefly.ai home"
+              className="inline-flex"
             >
-              Spacefly.ai
+              <Image
+                src="/brand/wordmark_transparent.png"
+                alt="Spacefly.ai"
+                width={172}
+                height={56}
+                className="h-8 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm text-muted mt-1 text-pretty">{tagline}</p>
           </div>
@@ -80,8 +89,8 @@ const FooterClient = ({
                 {column.title}
               </p>
               <ul className="space-y-3">
-                {column.links.map((link) => (
-                  <li key={`${column.title}-${link.href}`}>
+                {column.links.map((link, linkIndex) => (
+                  <li key={getFooterLinkKey(column.title, link, linkIndex)}>
                     {link.external ? (
                       <a
                         href={link.href}
@@ -117,8 +126,8 @@ const FooterClient = ({
                 <Accordion.Panel>
                   <nav aria-label={column.title}>
                     <ul className="pb-3 space-y-2">
-                      {column.links.map((link) => (
-                        <li key={`${column.title}-${link.href}`}>
+                      {column.links.map((link, linkIndex) => (
+                        <li key={getFooterLinkKey(column.title, link, linkIndex)}>
                           {link.external ? (
                             <a
                               href={link.href}

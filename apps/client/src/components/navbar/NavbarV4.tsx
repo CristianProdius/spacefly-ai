@@ -1,5 +1,6 @@
 "use client";
 import { Link, usePathname } from "@/i18n/navigation";
+import Image from "next/image";
 import ProfileButton from "../ProfileButton";
 import LanguageSwitcher from "../LanguageSwitcher";
 import MobileMenu from "./MobileMenu";
@@ -22,9 +23,14 @@ export const NavbarV4 = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" aria-label="Spacefly.ai">
-              <span className="text-lg font-extrabold text-foreground tracking-widest font-[family-name:var(--font-geist-sans)]">
-                Spacefly.ai
-              </span>
+              <Image
+                src="/brand/wordmark_transparent.png"
+                alt="Spacefly.ai"
+                width={188}
+                height={62}
+                priority
+                className="h-8 w-auto object-contain"
+              />
             </Link>
 
             {/* Desktop nav links */}
