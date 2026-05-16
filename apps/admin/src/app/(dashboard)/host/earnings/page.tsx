@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import {
+  DataLoadError,
   DashboardPageHeader,
   DashboardSection,
   DashboardStatCard,
@@ -44,8 +45,11 @@ const HostEarningsPage = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [stats, setStats] = useState<EarningsStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchEarnings = useCallback(async () => {
+    setError(null);
+    setLoading(true);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
@@ -96,9 +100,12 @@ const HostEarningsPage = () => {
           thisMonth,
           completedBookings: completedBookings.length,
         });
+      } else {
+        throw new Error("Failed to fetch earnings");
       }
     } catch (error) {
       console.error("Error fetching earnings:", error);
+      setError("Earnings could not be loaded. Check the order service and retry.");
     } finally {
       setLoading(false);
     }
@@ -140,6 +147,18 @@ const HostEarningsPage = () => {
             <Skeleton className="h-20 w-full rounded-lg" />
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <DashboardPageHeader
+          title="Earnings"
+          description="Track your hosting income"
+        />
+        <DataLoadError message={error} onRetry={fetchEarnings} />
       </div>
     );
   }

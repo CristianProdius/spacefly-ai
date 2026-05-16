@@ -33,3 +33,7 @@ Priority labels:
 - `P1`: Broken core user flow or major user-facing regression.
 - `P2`: Medium bug, confusing UX, missing validation, brittle behavior, or important missing test.
 - `P3`: Cleanup, polish, performance, maintainability, or documentation improvement.
+
+## Prepared Worktree Checks
+
+For a clean worktree, run `pnpm install` before targeted package checks. Service tests that import `@repo/db` use Vitest aliases to resolve the workspace source directly, so `pnpm --filter space-service test` and `pnpm --filter booking-service test` do not require a prebuilt `packages/db/dist`.

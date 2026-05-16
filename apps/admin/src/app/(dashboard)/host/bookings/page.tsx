@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 
 import {
+  DataLoadError,
   DashboardPageHeader,
   DashboardSection,
   DashboardStatCard,
@@ -67,6 +68,7 @@ const HostBookingsPage = () => {
   const { token } = useAuthStore();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState(searchParams.get("status") || "all");
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
@@ -80,6 +82,8 @@ const HostBookingsPage = () => {
   ];
 
   const fetchBookings = useCallback(async () => {
+    setError(null);
+    setLoading(true);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
@@ -90,9 +94,12 @@ const HostBookingsPage = () => {
       if (res.ok) {
         const data = await res.json();
         setBookings(data);
+      } else {
+        throw new Error("Failed to fetch bookings");
       }
     } catch (error) {
       console.error("Error fetching bookings:", error);
+      setError("Bookings could not be loaded. Check the order service and retry.");
     } finally {
       setLoading(false);
     }
@@ -121,9 +128,12 @@ const HostBookingsPage = () => {
               : booking
           )
         );
+      } else {
+        throw new Error("Failed to approve booking");
       }
     } catch (error) {
       console.error("Error approving booking:", error);
+      setError("Booking could not be approved. Retry after checking the order service.");
     } finally {
       setActionLoading(null);
     }
@@ -154,9 +164,12 @@ const HostBookingsPage = () => {
               : booking
           )
         );
+      } else {
+        throw new Error("Failed to reject booking");
       }
     } catch (error) {
       console.error("Error rejecting booking:", error);
+      setError("Booking could not be rejected. Retry after checking the order service.");
     } finally {
       setActionLoading(null);
     }
@@ -181,9 +194,12 @@ const HostBookingsPage = () => {
               : booking
           )
         );
+      } else {
+        throw new Error("Failed to complete booking");
       }
     } catch (error) {
       console.error("Error completing booking:", error);
+      setError("Booking could not be completed. Retry after checking the order service.");
     } finally {
       setActionLoading(null);
     }
@@ -251,6 +267,18 @@ const HostBookingsPage = () => {
             ))}
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <DashboardPageHeader
+          title="Bookings"
+          description="Manage booking requests for your spaces"
+        />
+        <DataLoadError message={error} onRetry={fetchBookings} />
       </div>
     );
   }

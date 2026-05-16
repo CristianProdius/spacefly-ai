@@ -70,6 +70,7 @@ router.post("/register", async (req, res) => {
       userId: user.id,
       email: user.email,
       role: user.role,
+      hostVerified: user.hostVerified,
     });
 
     // Create session
@@ -96,6 +97,7 @@ router.post("/register", async (req, res) => {
         username: user.username,
         name: user.name,
         role: user.role,
+        hostVerified: user.hostVerified,
       },
       ...tokens,
     });
@@ -135,6 +137,7 @@ router.post("/login", async (req, res) => {
       userId: user.id,
       email: user.email,
       role: user.role,
+      hostVerified: user.hostVerified,
     });
 
     // Create session
@@ -154,6 +157,7 @@ router.post("/login", async (req, res) => {
         name: user.name,
         role: user.role,
         image: user.image,
+        hostVerified: user.hostVerified,
       },
       ...tokens,
     });
@@ -213,6 +217,7 @@ router.post("/refresh", async (req, res) => {
       userId: session.user.id,
       email: session.user.email,
       role: session.user.role,
+      hostVerified: session.user.hostVerified,
     });
 
     return res.status(200).json({ accessToken });
@@ -348,6 +353,7 @@ router.post("/become-host", shouldBeUser, async (req, res) => {
       userId: user.id,
       email: user.email,
       role: user.role,
+      hostVerified: user.hostVerified,
     });
 
     return res.status(200).json({

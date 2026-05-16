@@ -1,6 +1,7 @@
 import { createMiddleware } from "hono/factory";
 import { verifyAccessToken, extractTokenFromHeader } from "./jwt.js";
 import type { AuthUser } from "./types.js";
+import { hasVerifiedHostAccess } from "./authorization.js";
 
 type AuthVariables = {
   user: AuthUser;
@@ -25,6 +26,7 @@ export const shouldBeUser = createMiddleware<{ Variables: AuthVariables }>(
       userId: payload.userId,
       email: payload.email,
       role: payload.role,
+      hostVerified: payload.hostVerified,
     };
 
     c.set("user", user);
@@ -56,6 +58,7 @@ export const shouldBeAdmin = createMiddleware<{ Variables: AuthVariables }>(
       userId: payload.userId,
       email: payload.email,
       role: payload.role,
+      hostVerified: payload.hostVerified,
     };
 
     c.set("user", user);
@@ -79,14 +82,15 @@ export const shouldBeHost = createMiddleware<{ Variables: AuthVariables }>(
       return c.json({ message: "Invalid or expired token" }, 401);
     }
 
-    if (payload.role !== "HOST" && payload.role !== "ADMIN") {
-      return c.json({ message: "Host access required" }, 403);
+    if (!hasVerifiedHostAccess(payload)) {
+      return c.json({ message: "Verified host access required" }, 403);
     }
 
     const user: AuthUser = {
       userId: payload.userId,
       email: payload.email,
       role: payload.role,
+      hostVerified: payload.hostVerified,
     };
 
     c.set("user", user);
@@ -110,14 +114,15 @@ export const shouldBeHostOrAdmin = createMiddleware<{ Variables: AuthVariables }
       return c.json({ message: "Invalid or expired token" }, 401);
     }
 
-    if (payload.role !== "HOST" && payload.role !== "ADMIN") {
-      return c.json({ message: "Host or Admin access required" }, 403);
+    if (!hasVerifiedHostAccess(payload)) {
+      return c.json({ message: "Verified host or Admin access required" }, 403);
     }
 
     const user: AuthUser = {
       userId: payload.userId,
       email: payload.email,
       role: payload.role,
+      hostVerified: payload.hostVerified,
     };
 
     c.set("user", user);

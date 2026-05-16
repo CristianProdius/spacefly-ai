@@ -49,7 +49,11 @@ export const createVenue = async (req: Request, res: Response) => {
     name,
     shortDescription,
     description,
+    nameTranslations,
+    shortDescTranslations,
+    descriptionTranslations,
     images,
+    videoUrl,
     address,
     city,
     state,
@@ -57,6 +61,7 @@ export const createVenue = async (req: Request, res: Response) => {
     postalCode,
     latitude,
     longitude,
+    currency,
   } = req.body;
   if (!name || !address || !city || !country) {
     return res
@@ -68,7 +73,11 @@ export const createVenue = async (req: Request, res: Response) => {
       name,
       shortDescription: shortDescription || "",
       description: description || "",
+      nameTranslations: nameTranslations ?? undefined,
+      shortDescTranslations: shortDescTranslations ?? undefined,
+      descriptionTranslations: descriptionTranslations ?? undefined,
       images: images || [],
+      videoUrl: videoUrl || null,
       address,
       city,
       state: state || null,
@@ -76,6 +85,7 @@ export const createVenue = async (req: Request, res: Response) => {
       postalCode: postalCode || null,
       latitude: latitude || null,
       longitude: longitude || null,
+      currency: currency || undefined,
       hostId,
     },
   });
@@ -103,6 +113,7 @@ export const updateVenue = async (req: Request, res: Response) => {
     shortDescTranslations,
     descriptionTranslations,
     images,
+    videoUrl,
     address,
     city,
     state,
@@ -110,6 +121,7 @@ export const updateVenue = async (req: Request, res: Response) => {
     postalCode,
     latitude,
     longitude,
+    currency,
     isActive,
   } = req.body;
   const venueData = {
@@ -120,6 +132,7 @@ export const updateVenue = async (req: Request, res: Response) => {
     ...(shortDescTranslations !== undefined && { shortDescTranslations }),
     ...(descriptionTranslations !== undefined && { descriptionTranslations }),
     ...(images !== undefined && { images }),
+    ...(videoUrl !== undefined && { videoUrl }),
     ...(address !== undefined && { address }),
     ...(city !== undefined && { city }),
     ...(state !== undefined && { state }),
@@ -127,6 +140,7 @@ export const updateVenue = async (req: Request, res: Response) => {
     ...(postalCode !== undefined && { postalCode }),
     ...(latitude !== undefined && { latitude }),
     ...(longitude !== undefined && { longitude }),
+    ...(currency !== undefined && { currency }),
     ...(isActive !== undefined && { isActive }),
   };
 

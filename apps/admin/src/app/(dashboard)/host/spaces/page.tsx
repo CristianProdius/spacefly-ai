@@ -22,6 +22,7 @@ import {
 
 import {
   DashboardActionCard,
+  DataLoadError,
   DashboardPageHeader,
   DashboardSection,
   DashboardStatCard,
@@ -51,9 +52,12 @@ const HostSpacesPage = () => {
   const { token } = useAuthStore();
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
 
   const fetchSpaces = useCallback(async () => {
+    setError(null);
+    setLoading(true);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/host/my`,
@@ -64,9 +68,12 @@ const HostSpacesPage = () => {
       if (res.ok) {
         const data = await res.json();
         setSpaces(data);
+      } else {
+        throw new Error("Failed to fetch spaces");
       }
     } catch (error) {
       console.error("Error fetching spaces:", error);
+      setError("Spaces could not be loaded. Check the product service and retry.");
     } finally {
       setLoading(false);
     }
@@ -98,9 +105,12 @@ const HostSpacesPage = () => {
               : space
           )
         );
+      } else {
+        throw new Error("Failed to update space status");
       }
     } catch (error) {
       console.error("Error toggling space status:", error);
+      setError("Space status could not be updated. Retry after checking the product service.");
     }
     setMenuOpen(null);
   };
@@ -119,9 +129,12 @@ const HostSpacesPage = () => {
 
       if (res.ok) {
         setSpaces((prev) => prev.filter((space) => space.id !== spaceId));
+      } else {
+        throw new Error("Failed to delete space");
       }
     } catch (error) {
       console.error("Error deleting space:", error);
+      setError("Space could not be deleted. Retry after checking the product service.");
     }
     setMenuOpen(null);
   };
@@ -191,6 +204,27 @@ const HostSpacesPage = () => {
             ))}
           </div>
         </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="space-y-6">
+        <DashboardPageHeader
+          title="My Spaces"
+          description="Manage your listed spaces"
+          action={
+            <Link
+              href="/host/spaces/new"
+              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+            >
+              <Plus className="size-4" />
+              Add Space
+            </Link>
+          }
+        />
+        <DataLoadError message={error} onRetry={fetchSpaces} />
       </div>
     );
   }

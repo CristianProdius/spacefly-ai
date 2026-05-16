@@ -11,6 +11,159 @@ import { producer } from "../utils/kafka.js";
 
 const roundCurrency = (amount: number) => Math.round(amount * 100) / 100;
 
+const BOOKING_STATUSES = new Set<BookingStatus>([
+  "PENDING",
+  "APPROVED",
+  "CONFIRMED",
+  "COMPLETED",
+  "CANCELLED",
+  "REJECTED",
+  "EXPIRED",
+]);
+
+const parseBookingStatus = (value: unknown) => {
+  if (value === undefined || value === null || value === "") return undefined;
+  return typeof value === "string" && BOOKING_STATUSES.has(value as BookingStatus)
+    ? (value as BookingStatus)
+    : null;
+};
+
+const parsePositiveInteger = (value: unknown, fallback?: number, max?: number) => {
+  if ((value === undefined || value === null || value === "") && fallback !== undefined) {
+    return fallback;
+  }
+  if (typeof value !== "string" && typeof value !== "number") return null;
+  const normalized = String(value);
+  if (!/^\d+$/.test(normalized)) return null;
+  const parsed = Number(normalized);
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) return null;
+  return max ? Math.min(parsed, max) : parsed;
+};
+
+const dateFromInput = (value: string) => new Date(`${value}T00:00:00.000Z`);
+
+const dateKey = (date: Date) => date.toISOString().slice(0, 10);
+
+const minutesFromTime = (value: string) => {
+  const [hours, minutes] = value.split(":").map(Number);
+  return hours! * 60 + minutes!;
+};
+
+const datesBetweenInclusive = (startDate: Date, endDate: Date) => {
+  const dates: Date[] = [];
+  const cursor = new Date(startDate);
+  while (cursor <= endDate) {
+    dates.push(new Date(cursor));
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
+  }
+  return dates;
+};
+
+const bookingHours = (
+  startDate: Date,
+  endDate: Date,
+  startTime: string | null,
+  endTime: string | null
+) => {
+  const days = datesBetweenInclusive(startDate, endDate).length;
+  if (!startTime || !endTime) return days * 24;
+  return ((minutesFromTime(endTime) - minutesFromTime(startTime)) / 60) * days;
+};
+
+const validateAvailabilityRules = (
+  space: {
+    availability?: Array<{
+      dayOfWeek: number;
+      startTime: string;
+      endTime: string;
+      isOpen: boolean;
+    }>;
+    blockedDates?: Array<{ date: Date }>;
+    minBookingHours: number | null;
+    maxBookingHours: number | null;
+  },
+  startDate: Date,
+  endDate: Date,
+  startTime: string | null,
+  endTime: string | null
+) => {
+  const requestedDates = datesBetweenInclusive(startDate, endDate);
+  const blockedDates = new Set((space.blockedDates ?? []).map((blockedDate) => dateKey(blockedDate.date)));
+  if (requestedDates.some((date) => blockedDates.has(dateKey(date)))) {
+    return "Some requested dates are blocked";
+  }
+
+  if (!space.availability || space.availability.length === 0) {
+    return "Space has no availability configured";
+  }
+
+  for (const date of requestedDates) {
+    const dayAvailability = space.availability.find((item) => item.dayOfWeek === date.getUTCDay());
+    if (!dayAvailability || !dayAvailability.isOpen) {
+      return "Space is closed on one or more requested dates";
+    }
+
+    if (
+      startTime &&
+      endTime &&
+      (minutesFromTime(startTime) < minutesFromTime(dayAvailability.startTime) ||
+        minutesFromTime(endTime) > minutesFromTime(dayAvailability.endTime))
+    ) {
+      return "Booking time is outside availability";
+    }
+  }
+
+  const hours = bookingHours(startDate, endDate, startTime, endTime);
+  if (space.minBookingHours !== null && hours < space.minBookingHours) {
+    return `Minimum booking duration is ${space.minBookingHours} hours`;
+  }
+  if (space.maxBookingHours !== null && hours > space.maxBookingHours) {
+    return `Maximum booking duration is ${space.maxBookingHours} hours`;
+  }
+
+  return null;
+};
+
+const dateRangesOverlap = (aStart: Date, aEnd: Date, bStart: Date, bEnd: Date) =>
+  aStart <= bEnd && aEnd >= bStart;
+
+const bookingIntervalsOverlap = (
+  existing: {
+    startDate: Date;
+    endDate: Date;
+    startTime: string | null;
+    endTime: string | null;
+    isHourly: boolean;
+  },
+  incoming: {
+    startDate: Date;
+    endDate: Date;
+    startTime: string | null;
+    endTime: string | null;
+    isHourly: boolean;
+  }
+) => {
+  if (!dateRangesOverlap(existing.startDate, existing.endDate, incoming.startDate, incoming.endDate)) {
+    return false;
+  }
+
+  if (
+    !existing.isHourly ||
+    !incoming.isHourly ||
+    !existing.startTime ||
+    !existing.endTime ||
+    !incoming.startTime ||
+    !incoming.endTime
+  ) {
+    return true;
+  }
+
+  return (
+    minutesFromTime(incoming.startTime) < minutesFromTime(existing.endTime) &&
+    minutesFromTime(incoming.endTime) > minutesFromTime(existing.startTime)
+  );
+};
+
 // Calculate booking price based on space pricing and duration
 const calculateBookingPrice = (
   space: {
@@ -116,11 +269,15 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
       }
 
       const { spaceId, startDate, endDate, startTime, endTime, guests, isHourly, message } = result.data;
+      const requestedStartDate = dateFromInput(startDate);
+      const requestedEndDate = dateFromInput(endDate);
 
       // Get space details
       const space = await prisma.space.findUnique({
         where: { id: spaceId },
         include: {
+          availability: true,
+          blockedDates: true,
           host: true,
           pricingTiers: { orderBy: { minutes: "asc" } },
         },
@@ -141,11 +298,22 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         });
       }
 
+      const availabilityError = validateAvailabilityRules(
+        space,
+        requestedStartDate,
+        requestedEndDate,
+        startTime || null,
+        endTime || null
+      );
+      if (availabilityError) {
+        return reply.status(400).send({ message: availabilityError });
+      }
+
       // Calculate pricing
       const pricing = calculateBookingPrice(
         space,
-        new Date(startDate),
-        new Date(endDate),
+        requestedStartDate,
+        requestedEndDate,
         startTime || null,
         endTime || null
       );
@@ -159,22 +327,40 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
         status: {
           in: conflictingStatuses,
         },
-        startDate: { lte: new Date(endDate) },
-        endDate: { gte: new Date(startDate) },
+        startDate: { lte: requestedEndDate },
+        endDate: { gte: requestedStartDate },
       };
 
       let booking;
       try {
         booking = await prisma.$transaction(async (tx) => {
-          const conflict = await tx.booking.findFirst({ where: conflictWhere });
+          const candidateConflicts = await tx.booking.findMany({ where: conflictWhere });
+          const conflict = candidateConflicts.find((candidate) =>
+            bookingIntervalsOverlap(
+              {
+                endDate: candidate.endDate,
+                endTime: candidate.endTime,
+                isHourly: candidate.isHourly,
+                startDate: candidate.startDate,
+                startTime: candidate.startTime,
+              },
+              {
+                endDate: requestedEndDate,
+                endTime: endTime || null,
+                isHourly,
+                startDate: requestedStartDate,
+                startTime: startTime || null,
+              }
+            )
+          );
           if (conflict) throw new Error("CONFLICT");
           return tx.booking.create({
             data: {
               spaceId,
               guestId,
               hostId: space.hostId,
-              startDate: new Date(startDate),
-              endDate: new Date(endDate),
+              startDate: requestedStartDate,
+              endDate: requestedEndDate,
               startTime,
               endTime,
               guests: guests || 1,
@@ -231,7 +417,11 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
     { preHandler: shouldBeUser },
     async (request, reply) => {
       const guestId = request.userId!;
-      const { status } = request.query as { status?: BookingStatus };
+      const { status: statusParam } = request.query as { status?: string };
+      const status = parseBookingStatus(statusParam);
+      if (status === null) {
+        return reply.status(400).send({ message: "Invalid booking status" });
+      }
 
       const bookings = await prisma.booking.findMany({
         where: {
@@ -261,19 +451,23 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
     async (request, reply) => {
       const hostId = request.userId!;
       const { status, spaceId } = request.query as {
-        status?: BookingStatus;
+        status?: string;
         spaceId?: string;
       };
-      const spaceIdFilter = spaceId ? Number(spaceId) : undefined;
+      const parsedStatus = parseBookingStatus(status);
+      if (parsedStatus === null) {
+        return reply.status(400).send({ message: "Invalid booking status" });
+      }
 
-      if (spaceId && Number.isNaN(spaceIdFilter)) {
-        return reply.status(400).send({ message: "spaceId must be a number" });
+      const spaceIdFilter = spaceId ? parsePositiveInteger(spaceId) : undefined;
+      if (spaceIdFilter === null) {
+        return reply.status(400).send({ message: "spaceId must be a positive integer" });
       }
 
       const bookings = await prisma.booking.findMany({
         where: {
           hostId,
-          ...(status && { status }),
+          ...(parsedStatus && { status: parsedStatus }),
           ...(spaceIdFilter !== undefined && { spaceId: spaceIdFilter }),
         },
         include: {
@@ -549,17 +743,26 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
     { preHandler: shouldBeAdmin },
     async (request, reply) => {
       const { status, limit, page = 1 } = request.query as {
-        status?: BookingStatus;
+        status?: string;
         limit?: string;
         page?: string;
       };
+      const parsedStatus = parseBookingStatus(status);
+      if (parsedStatus === null) {
+        return reply.status(400).send({ message: "Invalid booking status" });
+      }
 
-      const take = limit ? Number(limit) : 20;
-      const skip = (Number(page) - 1) * take;
+      const take = parsePositiveInteger(limit, 20, 100);
+      const pageNumber = parsePositiveInteger(page, 1);
+      if (take === null || pageNumber === null) {
+        return reply.status(400).send({ message: "Invalid pagination" });
+      }
+      const skip = (pageNumber - 1) * take;
+      const where = parsedStatus ? { status: parsedStatus } : undefined;
 
       const [bookings, total] = await Promise.all([
         prisma.booking.findMany({
-          where: status ? { status } : undefined,
+          where,
           take,
           skip,
           orderBy: { createdAt: "desc" },
@@ -569,13 +772,13 @@ export const bookingRoute = async (fastify: FastifyInstance) => {
             host: { select: { id: true, name: true, email: true } },
           },
         }),
-        prisma.booking.count({ where: status ? { status } : undefined }),
+        prisma.booking.count({ where }),
       ]);
 
       return reply.send({
         bookings,
         pagination: {
-          page: Number(page),
+          page: pageNumber,
           limit: take,
           total,
           totalPages: Math.ceil(total / take),

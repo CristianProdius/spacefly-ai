@@ -76,11 +76,15 @@ const createTestApp = () => {
   return app;
 };
 
-const createToken = (role: "USER" | "HOST" | "ADMIN") =>
+const createToken = (
+  role: "USER" | "HOST" | "ADMIN",
+  hostVerified = role !== "HOST" ? undefined : true
+) =>
   signAccessToken({
     userId: "host-user-1",
     email: "host@example.com",
     role,
+    ...(hostVerified !== undefined && { hostVerified }),
   });
 
 const createMultipartBody = (file: {
@@ -241,7 +245,7 @@ describe("upload routes", () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.json).toEqual({ message: "Host or Admin access required" });
+    expect(response.json).toEqual({ message: "Verified host or Admin access required" });
   });
 
   it("rejects requests without a file", async () => {

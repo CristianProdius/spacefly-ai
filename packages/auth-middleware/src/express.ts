@@ -1,6 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { verifyAccessToken, extractTokenFromHeader } from "./jwt.js";
 import type { AuthUser } from "./types.js";
+import { hasVerifiedHostAccess } from "./authorization.js";
 
 export function shouldBeUser(req: Request, res: Response, next: NextFunction) {
   const token = extractTokenFromHeader(req.headers.authorization);
@@ -19,6 +20,7 @@ export function shouldBeUser(req: Request, res: Response, next: NextFunction) {
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   req.user = user;
@@ -48,6 +50,7 @@ export function shouldBeAdmin(req: Request, res: Response, next: NextFunction) {
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   req.user = user;
@@ -69,14 +72,15 @@ export function shouldBeHost(req: Request, res: Response, next: NextFunction) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 
-  if (payload.role !== "HOST" && payload.role !== "ADMIN") {
-    return res.status(403).json({ message: "Host access required" });
+  if (!hasVerifiedHostAccess(payload)) {
+    return res.status(403).json({ message: "Verified host access required" });
   }
 
   const user: AuthUser = {
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   req.user = user;
@@ -98,14 +102,15 @@ export function shouldBeHostOrAdmin(req: Request, res: Response, next: NextFunct
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 
-  if (payload.role !== "HOST" && payload.role !== "ADMIN") {
-    return res.status(403).json({ message: "Host or Admin access required" });
+  if (!hasVerifiedHostAccess(payload)) {
+    return res.status(403).json({ message: "Verified host or Admin access required" });
   }
 
   const user: AuthUser = {
     userId: payload.userId,
     email: payload.email,
     role: payload.role,
+    hostVerified: payload.hostVerified,
   };
 
   req.user = user;

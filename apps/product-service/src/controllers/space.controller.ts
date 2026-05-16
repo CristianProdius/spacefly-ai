@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { prisma, Prisma, PricingType, SpaceType, CancellationPolicy } from "@repo/db";
+import { prisma, Prisma, PricingType, SpaceType, CancellationPolicy, Currency } from "@repo/db";
 import { producer } from "../utils/kafka.js";
 import { buildCategoryPayload } from "../lib/space-taxonomy.js";
 import { resolveTranslations, SPACE_TRANSLATION_FIELDS } from "../lib/translations.js";
+import { isDateOnlyOrIsoDate, parsePositiveInteger } from "../lib/validation.js";
 
 const venueInclude = {
   select: {
@@ -10,7 +11,11 @@ const venueInclude = {
     name: true,
     shortDescription: true,
     description: true,
+    nameTranslations: true,
+    shortDescTranslations: true,
+    descriptionTranslations: true,
     images: true,
+    videoUrl: true,
     address: true,
     city: true,
     state: true,
@@ -18,6 +23,7 @@ const venueInclude = {
     postalCode: true,
     latitude: true,
     longitude: true,
+    currency: true,
     hostId: true,
     isActive: true,
   },
@@ -25,6 +31,8 @@ const venueInclude = {
 
 const SORT_FIELDS = new Set(["createdAt", "pricePerHour", "pricePerDay", "capacity"]);
 const SORT_ORDERS = new Set(["asc", "desc"]);
+const SPACE_TYPES = new Set<SpaceType>(Object.values(SpaceType));
+const CURRENCIES = new Set<Currency>(Object.values(Currency));
 
 const parsePositiveInt = (value: unknown, fallback: number) => {
   const parsed = parseInt(String(value ?? ""), 10);
@@ -115,6 +123,20 @@ export const getSpaces = async (req: Request, res: Response) => {
   const minCapacityNum = parseNumberFilter(minCapacity);
   const minPriceNum = parseNumberFilter(minPrice);
   const maxPriceNum = parseNumberFilter(maxPrice);
+  const resolvedSpaceType =
+    typeof spaceType === "string" && SPACE_TYPES.has(spaceType as SpaceType)
+      ? (spaceType as SpaceType)
+      : undefined;
+  if (spaceType && !resolvedSpaceType) {
+    return res.status(400).json({ message: "Invalid spaceType" });
+  }
+  const resolvedCurrency =
+    typeof currencyParam === "string" && CURRENCIES.has(currencyParam as Currency)
+      ? (currencyParam as Currency)
+      : undefined;
+  if (currencyParam && !resolvedCurrency) {
+    return res.status(400).json({ message: "Invalid currency" });
+  }
 
   const pageNum = parsePositiveInt(page, 1);
   const limitNum = Math.min(parsePositiveInt(limit, 20), 100);
@@ -146,12 +168,12 @@ export const getSpaces = async (req: Request, res: Response) => {
     } : city ? {
       venue: { city: { contains: city as string, mode: "insensitive" as const } },
     } : {}),
-    ...(spaceType && { spaceType: spaceType as SpaceType }),
+    ...(resolvedSpaceType && { spaceType: resolvedSpaceType }),
     ...(categorySlug && { categorySlug: categorySlug as string }),
     ...(groupSlug && { category: { is: { groupSlug: groupSlug as string } } }),
     ...(minCapacityNum !== undefined && { capacity: { gte: minCapacityNum } }),
     ...(instantBook !== undefined && { instantBook: instantBook === "true" }),
-    ...(currencyParam && { currency: currencyParam as "USD" | "EUR" | "MDL" }),
+    ...(resolvedCurrency && { currency: resolvedCurrency }),
     ...((minPriceNum !== undefined || maxPriceNum !== undefined) && {
       OR: [
         {
@@ -626,9 +648,21 @@ export const updateAvailability = async (req: Request, res: Response) => {
 // Check availability for specific dates
 export const checkAvailability = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id, 10);
-  if (Number.isNaN(spaceId)) return res.status(400).json({ message: "Invalid ID" });
+  const spaceId = parsePositiveInteger(id);
+  if (spaceId === null) return res.status(400).json({ message: "Invalid ID" });
   const { startDate, endDate } = req.body;
+
+  if (!isDateOnlyOrIsoDate(startDate)) {
+    return res.status(400).json({ message: "startDate must be a valid date" });
+  }
+  if (!isDateOnlyOrIsoDate(endDate)) {
+    return res.status(400).json({ message: "endDate must be a valid date" });
+  }
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  if (end < start) {
+    return res.status(400).json({ message: "endDate must be on or after startDate" });
+  }
 
   const space = await prisma.space.findUnique({
     where: { id: spaceId },
@@ -641,9 +675,6 @@ export const checkAvailability = async (req: Request, res: Response) => {
   if (!space) {
     return res.status(404).json({ message: "Space not found" });
   }
-
-  const start = new Date(startDate);
-  const end = new Date(endDate);
 
   // Check blocked dates
   const blockedInRange = space.blockedDates.filter((bd) => {

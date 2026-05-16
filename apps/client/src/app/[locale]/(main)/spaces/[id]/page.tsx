@@ -1,7 +1,7 @@
 import { SpaceWithHost } from "@repo/types";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { MapPin, Users, Star, Check, RotateCcw } from "lucide-react";
+import { AlertCircle, MapPin, Users, Star, Check, RotateCcw, RefreshCw } from "lucide-react";
 import BookingForm from "./BookingForm";
 import ReviewSection from "./ReviewSection";
 import LocationMapLoader from "./LocationMapLoader";
@@ -9,20 +9,26 @@ import { getTranslations } from "next-intl/server";
 import { PRODUCT_SERVICE_URL } from "@/lib/config";
 import { parseImages, formatPrice } from "@/lib/utils";
 import { getSpaceCategoryLabel } from "@/lib/taxonomy";
+import { Link } from "@/i18n/navigation";
 import ImageGallery from "@/components/ImageGallery";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 
-async function getSpace(id: string, locale?: string): Promise<SpaceWithHost | null> {
+async function getSpace(id: string, locale?: string): Promise<{
+  error: boolean;
+  notFound: boolean;
+  space: SpaceWithHost | null;
+}> {
   try {
     const langParam = locale && locale !== "en" ? `?lang=${locale}` : "";
     const res = await fetch(
       `${PRODUCT_SERVICE_URL}/spaces/${id}${langParam}`,
       { next: { revalidate: 60 } }
     );
-    if (!res.ok) return null;
-    return res.json();
+    if (res.status === 404) return { error: false, notFound: true, space: null };
+    if (!res.ok) return { error: true, notFound: false, space: null };
+    return { error: false, notFound: false, space: await res.json() };
   } catch {
-    return null;
+    return { error: true, notFound: false, space: null };
   }
 }
 
@@ -32,15 +38,35 @@ interface SpaceDetailPageProps {
 
 const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
   const { id, locale } = await params;
-  const space = await getSpace(id, locale);
+  const result = await getSpace(id, locale);
 
-  if (!space) {
+  if (result.notFound) {
     notFound();
   }
 
   const t = await getTranslations("spaces");
   const tCancellation = await getTranslations("cancellation");
   const tCommon = await getTranslations("common");
+  const space = result.space;
+
+  if (result.error || !space) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+          <AlertCircle className="w-8 h-8 text-red-600" />
+        </div>
+        <h1 className="text-2xl font-bold text-foreground text-balance">{t("detailLoadError")}</h1>
+        <p className="text-muted mt-2 text-pretty">{t("serviceError")}</p>
+        <Link
+          href={`/spaces/${id}`}
+          className="inline-flex items-center gap-2 mt-6 px-4 py-2 border border-border rounded-lg text-sm font-medium hover:bg-subtle transition-colors"
+        >
+          <RefreshCw className="size-4" />
+          {t("retry")}
+        </Link>
+      </div>
+    );
+  }
 
   const images = parseImages(space.images);
   const categoryLabel = getSpaceCategoryLabel(space);

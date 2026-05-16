@@ -171,6 +171,11 @@
     "description": "Gaseste spatiul de lucru, sala de sedinte sau locatia pentru evenimente perfecta pentru nevoile tale",
     "noSpacesFound": "Nu s-au gasit spatii care sa corespunda criteriilor tale.",
     "tryAdjusting": "Incearca sa ajustezi filtrele sau termenii de cautare.",
+    "serviceError": "Spatiile nu pot fi incarcate acum.",
+    "detailLoadError": "Acest spatiu nu poate fi incarcat",
+    "loadMoreError": "Incarcarea a esuat. Incearca din nou",
+    "mapLoadError": "Rezultatele pe harta nu pot fi incarcate.",
+    "retry": "Incearca din nou",
     "spaceTypes": {
       "OFFICE_DESK": "Birou Individual",
       "PRIVATE_OFFICE": "Birou Privat",

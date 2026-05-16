@@ -1,13 +1,15 @@
 import { prisma } from "@repo/db";
 import { Request, Response } from "express";
+import { parsePositiveInteger, parsePositiveIntegerWithDefault, parseRating } from "../lib/validation.js";
 
 export const createReview = async (req: Request, res: Response) => {
   const id = req.params.id as string; // space ID
-  const spaceId = parseInt(id);
+  const spaceId = parsePositiveInteger(id);
+  if (spaceId === null) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
   const { bookingId, rating, comment } = req.body;
 
-  if (!rating || rating < 1 || rating > 5) {
+  if (parseRating(rating) === null) {
     return res.status(400).json({ message: "Rating must be between 1 and 5" });
   }
 
@@ -71,11 +73,15 @@ export const createReview = async (req: Request, res: Response) => {
 
 export const getSpaceReviews = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id);
+  const spaceId = parsePositiveInteger(id);
+  if (spaceId === null) return res.status(400).json({ message: "Invalid ID" });
   const { page = "1", limit = "10" } = req.query;
 
-  const pageNum = parseInt(page as string);
-  const limitNum = parseInt(limit as string);
+  const pageNum = parsePositiveIntegerWithDefault(page, 1);
+  const limitNum = parsePositiveIntegerWithDefault(limit, 10, 100);
+  if (pageNum === null || limitNum === null) {
+    return res.status(400).json({ message: "Invalid pagination" });
+  }
   const skip = (pageNum - 1) * limitNum;
 
   const [reviews, total] = await Promise.all([
@@ -133,9 +139,14 @@ export const getSpaceReviews = async (req: Request, res: Response) => {
 
 export const updateReview = async (req: Request, res: Response) => {
   const reviewId = req.params.reviewId as string;
-  const reviewIdNum = parseInt(reviewId);
+  const reviewIdNum = parsePositiveInteger(reviewId);
+  if (reviewIdNum === null) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
   const { rating, comment } = req.body;
+
+  if (rating !== undefined && parseRating(rating) === null) {
+    return res.status(400).json({ message: "Rating must be between 1 and 5" });
+  }
 
   const review = await prisma.review.findUnique({
     where: { id: reviewIdNum },
@@ -152,7 +163,7 @@ export const updateReview = async (req: Request, res: Response) => {
   const updatedReview = await prisma.review.update({
     where: { id: reviewIdNum },
     data: {
-      ...(rating && { rating }),
+      ...(rating !== undefined && { rating }),
       ...(comment !== undefined && { comment }),
     },
     include: {
@@ -171,7 +182,8 @@ export const updateReview = async (req: Request, res: Response) => {
 
 export const deleteReview = async (req: Request, res: Response) => {
   const reviewId = req.params.reviewId as string;
-  const reviewIdNum = parseInt(reviewId);
+  const reviewIdNum = parsePositiveInteger(reviewId);
+  if (reviewIdNum === null) return res.status(400).json({ message: "Invalid ID" });
   const userId = req.userId!;
 
   const review = await prisma.review.findUnique({
@@ -196,7 +208,8 @@ export const deleteReview = async (req: Request, res: Response) => {
 // Add host response to review
 export const respondToReview = async (req: Request, res: Response) => {
   const reviewId = req.params.reviewId as string;
-  const reviewIdNum = parseInt(reviewId);
+  const reviewIdNum = parsePositiveInteger(reviewId);
+  if (reviewIdNum === null) return res.status(400).json({ message: "Invalid ID" });
   const hostId = req.userId!;
   const { response } = req.body;
 
