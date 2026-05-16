@@ -1,135 +1,107 @@
-# Turborepo starter
+# Spacefly
 
-This Turborepo starter is maintained by the Turborepo core team.
+Spacefly is a pnpm/Turborepo monorepo for a workspace and venue booking product.
+It contains public customer browsing and booking flows, an admin/host dashboard,
+backend API services, shared packages, and Docker Compose deployment assets.
 
-## Using this example
+## Workspace Map
 
-Run the following command:
+### Apps
+
+- `apps/client` (`client`): Next.js public app on local port `3002`; localized routes live under `src/app/[locale]`.
+- `apps/admin` (`admin`): Next.js admin and host dashboard on local port `3003`.
+- `apps/product-service` (`space-service`): Express API for spaces, venues, categories, amenities, currencies, uploads, and reviews; default port `8000`.
+- `apps/order-service` (`booking-service`): Fastify booking API; default port `8001`.
+- `apps/auth-service` (`auth-service`): Express auth and user management API; default port `8003`.
+- `apps/email-service` (`email-service`): Kafka/Resend email worker with health server; default port `8004`.
+
+### Packages
+
+- `packages/db` (`@repo/db`): Prisma schema, generated client, migrations, and shared Prisma export.
+- `packages/types` (`@repo/types`): Shared domain types.
+- `packages/auth-middleware` (`@repo/auth-middleware`): JWT/password helpers and Express/Fastify/Hono auth middleware.
+- `packages/kafka` (`@repo/kafka`): Shared KafkaJS helpers.
+- `packages/eslint-config` and `packages/typescript-config`: shared tooling config.
+
+## Common Commands
+
+Install dependencies:
 
 ```sh
-npx create-turbo@latest
+pnpm install --frozen-lockfile
 ```
 
-## What's inside?
+Run type checks across packages that define `check-types`:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```sh
+pnpm check-types
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Run targeted checks:
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```sh
+pnpm --filter client check-types
+pnpm --filter admin check-types
+pnpm --filter admin test
+pnpm --filter space-service check-types
+pnpm --filter space-service test
+pnpm --filter booking-service check-types
+pnpm --filter auth-service check-types
+pnpm --filter email-service check-types
+pnpm --filter @repo/auth-middleware typecheck
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+Note the package names are not always the same as their directory or Compose
+service names: `apps/product-service` is package `space-service`, and
+`apps/order-service` is package `booking-service`.
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+## Local Development
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+Run all dev tasks through Turbo:
 
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+```sh
+pnpm dev
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+Or run a single app/service by package name:
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+```sh
+pnpm --filter client dev
+pnpm --filter admin dev
+pnpm --filter space-service dev
+pnpm --filter booking-service dev
+pnpm --filter auth-service dev
+pnpm --filter email-service dev
 ```
 
-## Useful Links
+Backend services expect database, JWT, Kafka, and service-specific environment
+variables. Use `.env.example` as the production/deployment reference and app
+`.env.example` files where present for frontend public URLs.
 
-Learn more about the power of Turborepo:
+## Database
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+The Prisma workspace package is `@repo/db`.
+
+Safe generation command:
+
+```sh
+pnpm --filter @repo/db db:generate
+```
+
+Migration commands are intentionally separate from normal build/test commands:
+
+```sh
+pnpm --filter @repo/db db:migrate
+pnpm --filter @repo/db db:deploy
+```
+
+Do not run migrations unless you are targeting the intended database.
+
+## Deployment Assets
+
+- `docker-compose.yml`: shared internal service stack.
+- `docker-compose.nginx.yml`: localhost port bindings for a VPS where host Nginx owns ports `80` and `443`.
+- `docker-compose.caddy.yml` and `Caddyfile`: Caddy ingress for a dedicated VPS.
+- `deploy/nginx/spacefly.conf`: Nginx virtual host configuration.
+- `scripts/deploy.sh`: build, config, up, migrate, health, logs, and full deploy helper.
+- `docs/vps-nginx-deployment.md`: shared VPS deployment runbook.
