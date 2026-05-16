@@ -23,6 +23,20 @@ const venueInclude = {
   },
 };
 
+const SORT_FIELDS = new Set(["createdAt", "pricePerHour", "pricePerDay", "capacity"]);
+const SORT_ORDERS = new Set(["asc", "desc"]);
+
+const parsePositiveInt = (value: unknown, fallback: number) => {
+  const parsed = parseInt(String(value ?? ""), 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+};
+
+const parseNumberFilter = (value: unknown) => {
+  if (value === undefined || value === null || value === "") return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+};
+
 /**
  * Flatten venue location fields onto space for backward compat.
  * Existing clients read space.city, space.address — this keeps them working.
@@ -70,11 +84,18 @@ export const getSpaces = async (req: Request, res: Response) => {
         break;
     }
   }
+  if (!SORT_FIELDS.has(resolvedSortBy)) {
+    resolvedSortBy = "createdAt";
+  }
+  if (!SORT_ORDERS.has(resolvedSortOrder)) {
+    resolvedSortOrder = "desc";
+  }
 
   const {
     city,
     spaceType,
     categorySlug,
+    groupSlug,
     minPrice,
     maxPrice,
     minCapacity: minCapacityParam,
@@ -91,40 +112,58 @@ export const getSpaces = async (req: Request, res: Response) => {
   } = req.query;
 
   const minCapacity = minCapacityParam || capacityParam;
+  const minCapacityNum = parseNumberFilter(minCapacity);
+  const minPriceNum = parseNumberFilter(minPrice);
+  const maxPriceNum = parseNumberFilter(maxPrice);
 
-  const pageNum = parseInt(page as string, 10);
-  const limitNum = Math.min(Math.max(parseInt(limit as string, 10) || 20, 1), 100);
+  const pageNum = parsePositiveInt(page, 1);
+  const limitNum = Math.min(parsePositiveInt(limit, 20), 100);
 
   const hasBbox = neLat && neLng && swLat && swLng;
+  const bbox = hasBbox
+    ? {
+        neLat: parseNumberFilter(neLat),
+        neLng: parseNumberFilter(neLng),
+        swLat: parseNumberFilter(swLat),
+        swLng: parseNumberFilter(swLng),
+      }
+    : null;
+  const hasValidBbox =
+    bbox &&
+    bbox.neLat !== undefined &&
+    bbox.neLng !== undefined &&
+    bbox.swLat !== undefined &&
+    bbox.swLng !== undefined;
 
   const where: Prisma.SpaceWhereInput = {
     isActive: true,
-    ...(hasBbox ? {
+    ...(hasValidBbox ? {
       venue: {
         ...(city ? { city: { contains: city as string, mode: "insensitive" as const } } : {}),
-        latitude: { gte: parseFloat(swLat as string), lte: parseFloat(neLat as string) },
-        longitude: { gte: parseFloat(swLng as string), lte: parseFloat(neLng as string) },
+        latitude: { gte: bbox.swLat, lte: bbox.neLat },
+        longitude: { gte: bbox.swLng, lte: bbox.neLng },
       },
     } : city ? {
       venue: { city: { contains: city as string, mode: "insensitive" as const } },
     } : {}),
     ...(spaceType && { spaceType: spaceType as SpaceType }),
     ...(categorySlug && { categorySlug: categorySlug as string }),
-    ...(minCapacity && { capacity: { gte: parseInt(minCapacity as string) } }),
+    ...(groupSlug && { category: { is: { groupSlug: groupSlug as string } } }),
+    ...(minCapacityNum !== undefined && { capacity: { gte: minCapacityNum } }),
     ...(instantBook !== undefined && { instantBook: instantBook === "true" }),
     ...(currencyParam && { currency: currencyParam as "USD" | "EUR" | "MDL" }),
-    ...((minPrice || maxPrice) && {
+    ...((minPriceNum !== undefined || maxPriceNum !== undefined) && {
       OR: [
         {
           pricePerHour: {
-            ...(minPrice && { gte: parseInt(minPrice as string) }),
-            ...(maxPrice && { lte: parseInt(maxPrice as string) }),
+            ...(minPriceNum !== undefined && { gte: minPriceNum }),
+            ...(maxPriceNum !== undefined && { lte: maxPriceNum }),
           },
         },
         {
           pricePerDay: {
-            ...(minPrice && { gte: parseInt(minPrice as string) }),
-            ...(maxPrice && { lte: parseInt(maxPrice as string) }),
+            ...(minPriceNum !== undefined && { gte: minPriceNum }),
+            ...(maxPriceNum !== undefined && { lte: maxPriceNum }),
           },
         },
       ],

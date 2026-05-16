@@ -6,20 +6,37 @@ import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import spaceRouter from "./space.route.js";
 
 const mocks = vi.hoisted(() => ({
+  availabilityFindMany: vi.fn(),
+  blockedDateFindMany: vi.fn(),
   count: vi.fn(),
   create: vi.fn(),
   createMany: vi.fn(),
   deleteMany: vi.fn(),
   findMany: vi.fn(),
   findUnique: vi.fn(),
+  groupBy: vi.fn(),
+  pricingTierCreateMany: vi.fn(),
+  pricingTierDeleteMany: vi.fn(),
   producerSend: vi.fn(),
   reviewAggregate: vi.fn(),
   spaceCategoryFindUnique: vi.fn(),
   update: vi.fn(),
+  venueFindUnique: vi.fn(),
 }));
 
 vi.mock("@repo/db", () => ({
   prisma: {
+    $transaction: vi.fn((operations) => Promise.all(operations)),
+    availability: {
+      findMany: mocks.availabilityFindMany,
+    },
+    blockedDate: {
+      findMany: mocks.blockedDateFindMany,
+    },
+    pricingTier: {
+      createMany: mocks.pricingTierCreateMany,
+      deleteMany: mocks.pricingTierDeleteMany,
+    },
     space: {
       count: mocks.count,
       create: mocks.create,
@@ -36,6 +53,10 @@ vi.mock("@repo/db", () => ({
     },
     review: {
       aggregate: mocks.reviewAggregate,
+      groupBy: mocks.groupBy,
+    },
+    venue: {
+      findUnique: mocks.venueFindUnique,
     },
   },
 }));
@@ -197,7 +218,7 @@ describe("space routes", () => {
   });
 
   afterEach(() => {
-    vi.clearAllMocks();
+    vi.resetAllMocks();
   });
 
   it("rejects non-host, non-admin users before reaching the update controller", async () => {
@@ -210,6 +231,40 @@ describe("space routes", () => {
 
     expect(response.status).toBe(403);
     expect(response.json).toEqual({ message: "Host or Admin access required" });
+    expect(mocks.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("routes host/my before the public id route", async () => {
+    mocks.findMany.mockResolvedValue([
+      {
+        _count: { bookings: 0, reviews: 0 },
+        id: 123,
+        name: "Host space",
+        venue: {
+          address: "Main Street 1",
+          city: "Chisinau",
+          country: "Moldova",
+          latitude: null,
+          longitude: null,
+          postalCode: null,
+          state: null,
+        },
+      },
+    ]);
+
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("HOST", "host-user-1")}`,
+      method: "GET",
+      url: "/spaces/host/my",
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.json).toMatchObject([{ id: 123, name: "Host space" }]);
+    expect(mocks.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { hostId: "host-user-1" },
+      })
+    );
     expect(mocks.findUnique).not.toHaveBeenCalled();
   });
 
@@ -232,9 +287,14 @@ describe("space routes", () => {
   });
 
   it("allows admins to update a space they do not own", async () => {
-    mocks.findUnique.mockResolvedValue({
+    mocks.findUnique.mockResolvedValueOnce({
       hostId: "different-host",
       id: 123,
+    }).mockResolvedValueOnce({
+      category: null,
+      id: 123,
+      spaceType: "MEETING_ROOM",
+      name: "Updated title",
     });
     mocks.spaceCategoryFindUnique.mockResolvedValue({
       slug: "meeting-training-room",
@@ -243,7 +303,7 @@ describe("space routes", () => {
       category: null,
       id: 123,
       spaceType: "MEETING_ROOM",
-      title: "Updated title",
+      name: "Updated title",
     });
 
     const response = await invokeApp({
@@ -251,7 +311,7 @@ describe("space routes", () => {
       body: {
         categorySlug: "meeting-training-room",
         spaceType: "EVENT_VENUE",
-        title: "Updated title",
+        name: "Updated title",
       },
       method: "PUT",
       url: "/spaces/123",
@@ -262,14 +322,14 @@ describe("space routes", () => {
       category: null,
       id: 123,
       spaceType: "MEETING_ROOM",
-      title: "Updated title",
+      name: "Updated title",
     });
     expect(mocks.update).toHaveBeenCalledWith(
       expect.objectContaining({
         data: {
           categorySlug: "meeting-training-room",
           spaceType: "MEETING_ROOM",
-          title: "Updated title",
+          name: "Updated title",
         },
         where: { id: 123 },
       })
@@ -280,6 +340,17 @@ describe("space routes", () => {
   it("derives the canonical legacy space type from categorySlug on create", async () => {
     mocks.spaceCategoryFindUnique.mockResolvedValue({
       slug: "retail-store-shop-front",
+    });
+    mocks.venueFindUnique.mockResolvedValue({
+      address: "Main Street 1",
+      city: "Chisinau",
+      country: "Moldova",
+      hostId: "host-user-1",
+      id: 22,
+      latitude: null,
+      longitude: null,
+      postalCode: null,
+      state: null,
     });
     mocks.create.mockResolvedValue({
       amenities: [],
@@ -314,6 +385,7 @@ describe("space routes", () => {
         pricingType: "DAILY",
         shortDescription: "Flexible retail frontage in the city center",
         spaceType: "MEETING_ROOM",
+        venueId: 22,
       },
       method: "POST",
       url: "/spaces",
@@ -410,6 +482,7 @@ describe("space routes", () => {
     mocks.reviewAggregate.mockResolvedValue({
       _avg: { rating: null },
     });
+    mocks.groupBy.mockResolvedValue([]);
 
     const response = await invokeApp({
       method: "GET",

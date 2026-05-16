@@ -23,12 +23,10 @@ const router: Router = Router();
 
 // Public routes
 router.get("/", getSpaces);
+router.get("/host/my", shouldBeHost, getMySpaces);
 router.get("/:id", getSpace);
 router.get("/:id/availability", getAvailability);
 router.get("/:id/reviews", getSpaceReviews);
-
-// Host routes (my spaces)
-router.get("/host/my", shouldBeHost, getMySpaces);
 
 // Protected routes (authenticated users)
 router.post("/:id/check", shouldBeUser, checkAvailability);
