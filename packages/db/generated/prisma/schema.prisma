@@ -121,6 +121,7 @@ model Venue {
   descriptionTranslations Json? // { "ro": "...", "ru": "..." }
   images                  Json    @default("[]")
   videoUrl                String? // YouTube URL
+  workingHours            Json? // { monday: { open: "HH:MM", close: "HH:MM" } | null, ... }
 
   // Location
   address    String

@@ -155,6 +155,7 @@ exports.Prisma.VenueScalarFieldEnum = {
   descriptionTranslations: 'descriptionTranslations',
   images: 'images',
   videoUrl: 'videoUrl',
+  workingHours: 'workingHours',
   address: 'address',
   city: 'city',
   state: 'state',

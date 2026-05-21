@@ -5010,6 +5010,7 @@ export namespace Prisma {
     descriptionTranslations: number
     images: number
     videoUrl: number
+    workingHours: number
     address: number
     city: number
     state: number
@@ -5088,6 +5089,7 @@ export namespace Prisma {
     descriptionTranslations?: true
     images?: true
     videoUrl?: true
+    workingHours?: true
     address?: true
     city?: true
     state?: true
@@ -5199,6 +5201,7 @@ export namespace Prisma {
     descriptionTranslations: JsonValue | null
     images: JsonValue
     videoUrl: string | null
+    workingHours: JsonValue | null
     address: string
     city: string
     state: string | null
@@ -5242,6 +5245,7 @@ export namespace Prisma {
     descriptionTranslations?: boolean
     images?: boolean
     videoUrl?: boolean
+    workingHours?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5269,6 +5273,7 @@ export namespace Prisma {
     descriptionTranslations?: boolean
     images?: boolean
     videoUrl?: boolean
+    workingHours?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5294,6 +5299,7 @@ export namespace Prisma {
     descriptionTranslations?: boolean
     images?: boolean
     videoUrl?: boolean
+    workingHours?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5319,6 +5325,7 @@ export namespace Prisma {
     descriptionTranslations?: boolean
     images?: boolean
     videoUrl?: boolean
+    workingHours?: boolean
     address?: boolean
     city?: boolean
     state?: boolean
@@ -5333,7 +5340,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "images" | "videoUrl" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "currency" | "hostId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
+  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "images" | "videoUrl" | "workingHours" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "currency" | "hostId" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
   export type VenueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     spaces?: boolean | Venue$spacesArgs<ExtArgs>
@@ -5362,6 +5369,7 @@ export namespace Prisma {
       descriptionTranslations: Prisma.JsonValue | null
       images: Prisma.JsonValue
       videoUrl: string | null
+      workingHours: Prisma.JsonValue | null
       address: string
       city: string
       state: string | null
@@ -5808,6 +5816,7 @@ export namespace Prisma {
     readonly descriptionTranslations: FieldRef<"Venue", 'Json'>
     readonly images: FieldRef<"Venue", 'Json'>
     readonly videoUrl: FieldRef<"Venue", 'String'>
+    readonly workingHours: FieldRef<"Venue", 'Json'>
     readonly address: FieldRef<"Venue", 'String'>
     readonly city: FieldRef<"Venue", 'String'>
     readonly state: FieldRef<"Venue", 'String'>
@@ -20533,6 +20542,7 @@ export namespace Prisma {
     descriptionTranslations: 'descriptionTranslations',
     images: 'images',
     videoUrl: 'videoUrl',
+    workingHours: 'workingHours',
     address: 'address',
     city: 'city',
     state: 'state',
@@ -21159,6 +21169,7 @@ export namespace Prisma {
     descriptionTranslations?: JsonNullableFilter<"Venue">
     images?: JsonFilter<"Venue">
     videoUrl?: StringNullableFilter<"Venue"> | string | null
+    workingHours?: JsonNullableFilter<"Venue">
     address?: StringFilter<"Venue"> | string
     city?: StringFilter<"Venue"> | string
     state?: StringNullableFilter<"Venue"> | string | null
@@ -21185,6 +21196,7 @@ export namespace Prisma {
     descriptionTranslations?: SortOrderInput | SortOrder
     images?: SortOrder
     videoUrl?: SortOrderInput | SortOrder
+    workingHours?: SortOrderInput | SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrderInput | SortOrder
@@ -21214,6 +21226,7 @@ export namespace Prisma {
     descriptionTranslations?: JsonNullableFilter<"Venue">
     images?: JsonFilter<"Venue">
     videoUrl?: StringNullableFilter<"Venue"> | string | null
+    workingHours?: JsonNullableFilter<"Venue">
     address?: StringFilter<"Venue"> | string
     city?: StringFilter<"Venue"> | string
     state?: StringNullableFilter<"Venue"> | string | null
@@ -21240,6 +21253,7 @@ export namespace Prisma {
     descriptionTranslations?: SortOrderInput | SortOrder
     images?: SortOrder
     videoUrl?: SortOrderInput | SortOrder
+    workingHours?: SortOrderInput | SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrderInput | SortOrder
@@ -21272,6 +21286,7 @@ export namespace Prisma {
     descriptionTranslations?: JsonNullableWithAggregatesFilter<"Venue">
     images?: JsonWithAggregatesFilter<"Venue">
     videoUrl?: StringNullableWithAggregatesFilter<"Venue"> | string | null
+    workingHours?: JsonNullableWithAggregatesFilter<"Venue">
     address?: StringWithAggregatesFilter<"Venue"> | string
     city?: StringWithAggregatesFilter<"Venue"> | string
     state?: StringNullableWithAggregatesFilter<"Venue"> | string | null
@@ -22527,6 +22542,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -22552,6 +22568,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -22576,6 +22593,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22601,6 +22619,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22626,6 +22645,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -22649,6 +22669,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22672,6 +22693,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24149,6 +24171,7 @@ export namespace Prisma {
     descriptionTranslations?: SortOrder
     images?: SortOrder
     videoUrl?: SortOrder
+    workingHours?: SortOrder
     address?: SortOrder
     city?: SortOrder
     state?: SortOrder
@@ -26708,6 +26731,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -26732,6 +26756,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -27108,6 +27133,7 @@ export namespace Prisma {
     descriptionTranslations?: JsonNullableFilter<"Venue">
     images?: JsonFilter<"Venue">
     videoUrl?: StringNullableFilter<"Venue"> | string | null
+    workingHours?: JsonNullableFilter<"Venue">
     address?: StringFilter<"Venue"> | string
     city?: StringFilter<"Venue"> | string
     state?: StringNullableFilter<"Venue"> | string | null
@@ -27691,6 +27717,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -27715,6 +27742,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -28024,6 +28052,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -28048,6 +28077,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30255,6 +30285,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address: string
     city: string
     state?: string | null
@@ -30414,6 +30445,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30438,6 +30470,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
@@ -30462,6 +30495,7 @@ export namespace Prisma {
     descriptionTranslations?: NullableJsonNullValueInput | InputJsonValue
     images?: JsonNullValueInput | InputJsonValue
     videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    workingHours?: NullableJsonNullValueInput | InputJsonValue
     address?: StringFieldUpdateOperationsInput | string
     city?: StringFieldUpdateOperationsInput | string
     state?: NullableStringFieldUpdateOperationsInput | string | null
