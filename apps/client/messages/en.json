@@ -8,6 +8,7 @@
     "signOut": "Sign Out",
     "signUp": "Sign Up",
     "browseSpaces": "Browse Spaces",
+    "browseHosts": "Browse Hosts",
     "myBookings": "My Bookings",
     "hostDashboard": "Host Dashboard",
     "becomeAHost": "Become a Host",
@@ -481,5 +482,49 @@
     "trustLine": "Trusted by 1,000+ hosts across 50+ cities",
     "copyright": "© 2026 Spacefly.ai.",
     "allRightsReserved": "All rights reserved."
+  },
+  "venue": {
+    "metaTitle": "{name} — Spacefly.ai",
+    "backToSpaces": "Back to spaces",
+    "hostedBy": "Hosted by {name}",
+    "viewHost": "View host",
+    "hostingSince": "Hosting since {year}",
+    "verified": "Verified host",
+    "about": "About this venue",
+    "address": "Address",
+    "spaces": "Spaces at this venue",
+    "noSpaces": "No spaces are currently available at this venue.",
+    "detailLoadError": "We couldn't load this venue.",
+    "retry": "Retry",
+    "workingHours": {
+      "title": "Working hours",
+      "closed": "Closed",
+      "day": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    }
+  },
+  "hosts": {
+    "title": "Hosts on Spacefly.ai",
+    "description": "Discover the people and companies hosting on Spacefly.ai.",
+    "card": {
+      "venues": "{count, plural, one {# venue} other {# venues}}",
+      "spaces": "{count, plural, one {# space} other {# spaces}}",
+      "hostingSince": "Since {year}"
+    },
+    "profile": {
+      "backToHosts": "Back to hosts",
+      "venues": "Venues",
+      "noVenues": "This host has no public venues yet.",
+      "viewVenue": "View venue"
+    },
+    "empty": "No hosts to show yet.",
+    "loadError": "We couldn't load hosts."
   }
 }

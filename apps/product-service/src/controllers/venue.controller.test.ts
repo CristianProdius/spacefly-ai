@@ -114,4 +114,63 @@ describe("venue controller contract", () => {
       where: { id: 12 },
     });
   });
+
+  it("persists workingHours when creating venues", async () => {
+    mocks.venueCreate.mockResolvedValue({ id: 42 });
+    const workingHours = {
+      monday: { open: "09:00", close: "18:00" },
+      tuesday: { open: "09:00", close: "18:00" },
+      wednesday: { open: "09:00", close: "18:00" },
+      thursday: { open: "09:00", close: "18:00" },
+      friday: { open: "09:00", close: "18:00" },
+      saturday: null,
+      sunday: null,
+    };
+    const req = {
+      body: {
+        address: "Main 1",
+        city: "Chisinau",
+        country: "Moldova",
+        name: "Venue",
+        workingHours,
+      },
+      userId: "host-1",
+    } as unknown as Request;
+    const res = createResponse();
+
+    await createVenue(req, res);
+
+    expect(mocks.venueCreate).toHaveBeenCalledWith({
+      data: expect.objectContaining({ workingHours }),
+    });
+  });
+
+  it("applies workingHours on update when provided", async () => {
+    mocks.venueFindUnique.mockResolvedValueOnce({ id: 7, hostId: "host-1" });
+    mocks.venueFindUnique.mockResolvedValueOnce({ id: 7 });
+    mocks.venueUpdate.mockResolvedValue({ id: 7 });
+    const workingHours = {
+      monday: { open: "10:00", close: "20:00" },
+      tuesday: null,
+      wednesday: null,
+      thursday: null,
+      friday: null,
+      saturday: null,
+      sunday: null,
+    };
+    const req = {
+      params: { id: "7" },
+      body: { workingHours },
+      userId: "host-1",
+      user: { role: "HOST" },
+    } as unknown as Request;
+    const res = createResponse();
+
+    await updateVenue(req, res);
+
+    expect(mocks.venueUpdate).toHaveBeenCalledWith({
+      where: { id: 7 },
+      data: expect.objectContaining({ workingHours }),
+    });
+  });
 });

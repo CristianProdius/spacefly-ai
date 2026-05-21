@@ -44,6 +44,15 @@ export const NavbarV4 = () => {
               >
                 {t("browseSpaces")}
               </Link>
+              <Link
+                href="/hosts"
+                className={cn(
+                  "text-sm font-semibold transition-colors",
+                  pathname === "/hosts" ? "text-primary" : "text-foreground hover:text-primary"
+                )}
+              >
+                {t("browseHosts")}
+              </Link>
               {isAuthenticated && (
                 <Link
                   href="/bookings"

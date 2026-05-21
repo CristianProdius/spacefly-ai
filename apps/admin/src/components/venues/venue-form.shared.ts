@@ -6,6 +6,49 @@ export const fieldClassName =
 
 export const labelClassName = "mb-1 block text-sm font-medium text-foreground";
 
+export type WeekdayKey =
+  | "monday"
+  | "tuesday"
+  | "wednesday"
+  | "thursday"
+  | "friday"
+  | "saturday"
+  | "sunday";
+
+export const WEEKDAYS: WeekdayKey[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
+
+export interface WorkingHoursDay {
+  open: string;
+  close: string;
+}
+
+export type WorkingHoursValue = Record<WeekdayKey, WorkingHoursDay | null>;
+
+export const createEmptyWorkingHours = (): WorkingHoursValue => ({
+  monday: null,
+  tuesday: null,
+  wednesday: null,
+  thursday: null,
+  friday: null,
+  saturday: null,
+  sunday: null,
+});
+
+export const sanitizeWorkingHours = (
+  value: WorkingHoursValue
+): WorkingHoursValue | null => {
+  const hasAny = WEEKDAYS.some((day) => value[day] !== null);
+  return hasAny ? value : null;
+};
+
 export interface VenueFormValues {
   name: string;
   shortDescription: string;
@@ -23,6 +66,7 @@ export interface VenueFormValues {
   images: string[];
   videoUrl: string;
   currency: string;
+  workingHours: WorkingHoursValue;
 }
 
 export interface VenueFormPayload {
@@ -42,6 +86,7 @@ export interface VenueFormPayload {
   images: string[];
   videoUrl: string | null;
   currency: string;
+  workingHours: WorkingHoursValue | null;
 }
 
 export const createEmptyVenueFormValues = (): VenueFormValues => ({
@@ -61,6 +106,7 @@ export const createEmptyVenueFormValues = (): VenueFormValues => ({
   images: [],
   videoUrl: "",
   currency: "USD",
+  workingHours: createEmptyWorkingHours(),
 });
 
 const emptyToNull = (obj: Record<string, string>): Record<string, string> | null =>
@@ -76,6 +122,7 @@ export const buildVenuePayload = (
   videoUrl: formData.videoUrl || null,
   state: formData.state || null,
   postalCode: formData.postalCode || null,
+  workingHours: sanitizeWorkingHours(formData.workingHours),
 });
 
 export interface VenueResponse {
@@ -95,6 +142,7 @@ export interface VenueResponse {
   longitude: number | null;
   images: string[];
   videoUrl?: string | null;
+  workingHours?: WorkingHoursValue | null;
   currency: string;
 }
 
@@ -117,4 +165,5 @@ export const mapVenueToFormValues = (
   images: Array.isArray(venue.images) ? venue.images : [],
   videoUrl: venue.videoUrl ?? "",
   currency: venue.currency ?? "USD",
+  workingHours: venue.workingHours ?? createEmptyWorkingHours(),
 });

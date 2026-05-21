@@ -55,7 +55,12 @@ export const compactPriceLabels: PriceLabels = {
 };
 
 export const getPriceDisplay = (
-  space: Pick<Space, "pricingType" | "pricePerHour" | "pricePerDay"> & { currency?: string },
+  space: {
+    pricingType: Space["pricingType"] | string;
+    pricePerHour: number | null;
+    pricePerDay: number | null;
+    currency?: string;
+  },
   labels: PriceLabels = defaultPriceLabels,
 ): string => {
   const c = (space as any).currency;

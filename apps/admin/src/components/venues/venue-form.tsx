@@ -13,12 +13,15 @@ import { Button } from "@/components/ui/button";
 
 import {
   PRODUCT_SERVICE_URL,
+  WEEKDAYS,
   buildVenuePayload,
   createEmptyVenueFormValues,
   fieldClassName,
   labelClassName,
   type VenueFormPayload,
   type VenueFormValues,
+  type WeekdayKey,
+  type WorkingHoursDay,
 } from "./venue-form.shared";
 import TranslationTabs from "@/components/translation-tabs";
 
@@ -439,6 +442,73 @@ const VenueForm = ({
                 </p>
               )}
             </div>
+          </div>
+        </DashboardSection>
+
+        <DashboardSection
+          title="Working hours"
+          description="Set per-day open/close times. Leave a day closed to omit it from the public venue page."
+        >
+          <div className="space-y-2">
+            {WEEKDAYS.map((day: WeekdayKey) => {
+              const value = formData.workingHours[day];
+              const isOpen = value !== null;
+              const setDay = (next: WorkingHoursDay | null) => {
+                setFormData((prev) => ({
+                  ...prev,
+                  workingHours: { ...prev.workingHours, [day]: next },
+                }));
+              };
+              return (
+                <div
+                  key={day}
+                  className="grid grid-cols-[120px_100px_1fr_1fr] items-center gap-3"
+                >
+                  <span className="text-sm capitalize">{day}</span>
+                  <label className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={isOpen}
+                      aria-label={`${day} open`}
+                      onChange={(event) => {
+                        if (event.target.checked) {
+                          setDay({ open: "09:00", close: "18:00" });
+                        } else {
+                          setDay(null);
+                        }
+                      }}
+                    />
+                    Open
+                  </label>
+                  <input
+                    type="time"
+                    disabled={!isOpen}
+                    aria-label={`${day} opening time`}
+                    value={value?.open ?? ""}
+                    onChange={(event) =>
+                      setDay({
+                        open: event.target.value,
+                        close: value?.close ?? "18:00",
+                      })
+                    }
+                    className={fieldClassName}
+                  />
+                  <input
+                    type="time"
+                    disabled={!isOpen}
+                    aria-label={`${day} closing time`}
+                    value={value?.close ?? ""}
+                    onChange={(event) =>
+                      setDay({
+                        open: value?.open ?? "09:00",
+                        close: event.target.value,
+                      })
+                    }
+                    className={fieldClassName}
+                  />
+                </div>
+              );
+            })}
           </div>
         </DashboardSection>
 
