@@ -28,8 +28,9 @@ const SpaceCard = ({ space }: { space: Space | SpaceWithCategory | VenueSpaceSum
   };
 
   return (
-    <Link href={`/spaces/${space.id}`} className="group">
-        {/* IMAGE */}
+    <div className="group">
+      {/* IMAGE — links to the space */}
+      <Link href={`/spaces/${space.id}`} className="block">
         <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
           <Image
             src={images[0] || "/placeholder-space.jpg"}
@@ -46,36 +47,42 @@ const SpaceCard = ({ space }: { space: Space | SpaceWithCategory | VenueSpaceSum
             {categoryLabel || t(`spaceTypes.${space.spaceType}`) || space.spaceType}
           </span>
         </div>
+      </Link>
 
-        {/* SPACE DETAILS */}
-        <div className="pt-3 flex flex-col gap-0.5">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="font-semibold text-foreground line-clamp-1">
+      {/* DETAILS */}
+      <div className="pt-3 flex flex-col gap-0.5">
+        <div className="flex items-start justify-between gap-2">
+          <Link href={`/spaces/${space.id}`} className="min-w-0">
+            <h3 className="font-semibold text-foreground line-clamp-1 hover:underline">
               {space.name}
             </h3>
-            {averageRating !== undefined && averageRating > 0 && (
-              <div className="flex items-center gap-1 text-sm shrink-0">
-                <Star className="w-3.5 h-3.5 fill-foreground text-foreground" />
-                <span className="font-medium">{averageRating.toFixed(1)}</span>
-              </div>
-            )}
-          </div>
-
-          {"venue" in space && space.venue && space.venue.name !== space.name && (
-            <p className="text-xs text-muted line-clamp-1">
-              {t("atVenue", { venue: space.venue.name })}
-            </p>
+          </Link>
+          {averageRating !== undefined && averageRating > 0 && (
+            <div className="flex items-center gap-1 text-sm shrink-0">
+              <Star className="w-3.5 h-3.5 fill-foreground text-foreground" />
+              <span className="font-medium">{averageRating.toFixed(1)}</span>
+            </div>
           )}
-
-          <p className="text-sm text-muted line-clamp-1">
-            {space.city}, {space.country}
-          </p>
-
-          <p className="text-sm font-semibold text-foreground mt-1">
-            {getPriceDisplay(space, priceLabels)}
-          </p>
         </div>
-    </Link>
+
+        {"venue" in space && space.venue && space.venue.name !== space.name && (
+          <Link
+            href={`/venues/${space.venue.id}`}
+            className="text-xs text-muted line-clamp-1 hover:underline"
+          >
+            {t("atVenue", { venue: space.venue.name })}
+          </Link>
+        )}
+
+        <p className="text-sm text-muted line-clamp-1">
+          {space.city}, {space.country}
+        </p>
+
+        <p className="text-sm font-semibold text-foreground mt-1">
+          {getPriceDisplay(space, priceLabels)}
+        </p>
+      </div>
+    </div>
   );
 };
 
