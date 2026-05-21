@@ -1,5 +1,9 @@
 import { signAccessToken } from "@repo/auth-middleware/jwt";
-import express, { type NextFunction, type Request, type Response } from "express";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import { IncomingMessage, ServerResponse } from "node:http";
 import { Duplex } from "node:stream";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
@@ -9,8 +13,10 @@ const mocks = vi.hoisted(() => ({
   availabilityFindMany: vi.fn(),
   blockedDateFindMany: vi.fn(),
   count: vi.fn(),
+  availabilityCreateMany: vi.fn(),
   create: vi.fn(),
   createMany: vi.fn(),
+  availabilityDeleteMany: vi.fn(),
   deleteMany: vi.fn(),
   bookingFindMany: vi.fn(),
   findMany: vi.fn(),
@@ -42,6 +48,8 @@ vi.mock("@repo/db", () => ({
   prisma: {
     $transaction: vi.fn((operations) => Promise.all(operations)),
     availability: {
+      createMany: mocks.availabilityCreateMany,
+      deleteMany: mocks.availabilityDeleteMany,
       findMany: mocks.availabilityFindMany,
     },
     blockedDate: {
@@ -105,7 +113,7 @@ class MockSocket extends Duplex {
   _write(
     _chunk: Buffer | string,
     _encoding: BufferEncoding,
-    callback: (error?: Error | null) => void
+    callback: (error?: Error | null) => void,
   ) {
     callback();
   }
@@ -139,8 +147,16 @@ const createTestApp = () => {
   const app = express();
   app.use(express.json());
   app.use("/spaces", spaceRouter);
-  app.use((err: { status?: number; message?: string }, _req: Request, res: Response, _next: NextFunction) =>
-    res.status(err.status || 500).json({ message: err.message || "Internal Server Error!" })
+  app.use(
+    (
+      err: { status?: number; message?: string },
+      _req: Request,
+      res: Response,
+      _next: NextFunction,
+    ) =>
+      res
+        .status(err.status || 500)
+        .json({ message: err.message || "Internal Server Error!" }),
   );
   return app;
 };
@@ -148,7 +164,7 @@ const createTestApp = () => {
 const createToken = (
   role: "USER" | "HOST" | "ADMIN",
   userId = "host-user-1",
-  hostVerified = role !== "HOST" ? undefined : true
+  hostVerified = role !== "HOST" ? undefined : true,
 ) =>
   signAccessToken({
     userId,
@@ -156,6 +172,16 @@ const createToken = (
     role,
     ...(hostVerified !== undefined && { hostVerified }),
   });
+
+const validAvailability = [
+  { dayOfWeek: 0, startTime: "09:00", endTime: "21:00", isOpen: false },
+  { dayOfWeek: 1, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 2, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 3, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 4, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 5, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 6, startTime: "09:00", endTime: "21:00", isOpen: false },
+];
 
 const invokeApp = async (input: {
   authorization?: string;
@@ -168,7 +194,9 @@ const invokeApp = async (input: {
   const req = new IncomingMessage(socket as never);
   const res = new ServerResponse(req);
   const chunks: Buffer[] = [];
-  const bodyBuffer = input.body ? Buffer.from(JSON.stringify(input.body)) : undefined;
+  const bodyBuffer = input.body
+    ? Buffer.from(JSON.stringify(input.body))
+    : undefined;
 
   req.on("end", () => {
     req.complete = true;
@@ -177,7 +205,7 @@ const invokeApp = async (input: {
   res.write = ((
     chunk: string | Buffer | Uint8Array,
     _encoding?: BufferEncoding,
-    callback?: (error?: Error | null) => void
+    callback?: (error?: Error | null) => void,
   ) => {
     chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
     callback?.();
@@ -187,7 +215,7 @@ const invokeApp = async (input: {
   res.end = ((
     chunk?: string | Buffer | Uint8Array,
     _encoding?: BufferEncoding,
-    callback?: () => void
+    callback?: () => void,
   ) => {
     if (chunk) {
       chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
@@ -252,7 +280,9 @@ describe("space routes", () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.json).toEqual({ message: "Verified host or Admin access required" });
+    expect(response.json).toEqual({
+      message: "Verified host or Admin access required",
+    });
     expect(mocks.findUnique).not.toHaveBeenCalled();
   });
 
@@ -308,7 +338,7 @@ describe("space routes", () => {
     expect(mocks.findMany).toHaveBeenCalledWith(
       expect.objectContaining({
         where: { hostId: "host-user-1" },
-      })
+      }),
     );
     expect(mocks.findUnique).not.toHaveBeenCalled();
   });
@@ -327,20 +357,24 @@ describe("space routes", () => {
     });
 
     expect(response.status).toBe(403);
-    expect(response.json).toEqual({ message: "Not authorized to update this space" });
+    expect(response.json).toEqual({
+      message: "Not authorized to update this space",
+    });
     expect(mocks.update).not.toHaveBeenCalled();
   });
 
   it("allows admins to update a space they do not own", async () => {
-    mocks.findUnique.mockResolvedValueOnce({
-      hostId: "different-host",
-      id: 123,
-    }).mockResolvedValueOnce({
-      category: null,
-      id: 123,
-      spaceType: "MEETING_ROOM",
-      name: "Updated title",
-    });
+    mocks.findUnique
+      .mockResolvedValueOnce({
+        hostId: "different-host",
+        id: 123,
+      })
+      .mockResolvedValueOnce({
+        category: null,
+        id: 123,
+        spaceType: "MEETING_ROOM",
+        name: "Updated title",
+      });
     mocks.spaceCategoryFindUnique.mockResolvedValue({
       slug: "meeting-training-room",
     });
@@ -377,9 +411,11 @@ describe("space routes", () => {
           name: "Updated title",
         },
         where: { id: 123 },
-      })
+      }),
     );
-    expect(mocks.producerSend).toHaveBeenCalledWith("space.updated", { value: { id: 123 } });
+    expect(mocks.producerSend).toHaveBeenCalledWith("space.updated", {
+      value: { id: 123 },
+    });
   });
 
   it("derives the canonical legacy space type from categorySlug on create", async () => {
@@ -420,6 +456,7 @@ describe("space routes", () => {
       body: {
         address: "Main Street 1",
         amenities: [],
+        availability: validAvailability,
         categorySlug: "retail-store-shop-front",
         city: "Chisinau",
         country: "Moldova",
@@ -447,9 +484,49 @@ describe("space routes", () => {
           categorySlug: "retail-store-shop-front",
           hostId: "host-user-1",
           spaceType: "PRIVATE_OFFICE",
+          availability: {
+            create: validAvailability,
+          },
         }),
-      })
+      }),
     );
+  });
+
+  it("requires availability when hosts create spaces", async () => {
+    mocks.venueFindUnique.mockResolvedValue({
+      address: "Main Street 1",
+      city: "Chisinau",
+      country: "Moldova",
+      hostId: "host-user-1",
+      id: 22,
+      latitude: null,
+      longitude: null,
+      postalCode: null,
+      state: null,
+    });
+
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("HOST", "host-user-1")}`,
+      body: {
+        categorySlug: "meeting-training-room",
+        country: "Moldova",
+        description: "A private meeting space for product work.",
+        images: ["/space.png"],
+        name: "Pending host space",
+        pricingType: "HOURLY",
+        shortDescription: "Private meeting space",
+        spaceType: "MEETING_ROOM",
+        venueId: 22,
+      },
+      method: "POST",
+      url: "/spaces",
+    });
+
+    expect(response.status).toBe(400);
+    expect(response.json).toEqual({
+      message: "availability must include all 7 days and at least one open day",
+    });
+    expect(mocks.create).not.toHaveBeenCalled();
   });
 
   it("normalizes the legacy meeting-room slug on update", async () => {
@@ -494,8 +571,44 @@ describe("space routes", () => {
           categorySlug: "meeting-training-room",
           spaceType: "MEETING_ROOM",
         },
-      })
+      }),
     );
+  });
+
+  it("replaces availability when hosts update a space", async () => {
+    mocks.findUnique
+      .mockResolvedValueOnce({
+        hostId: "host-user-1",
+        id: 123,
+        venueId: 22,
+      })
+      .mockResolvedValueOnce({
+        availability: validAvailability,
+        id: 123,
+      });
+    mocks.update.mockResolvedValue({
+      id: 123,
+    });
+
+    const response = await invokeApp({
+      authorization: `Bearer ${createToken("HOST", "host-user-1")}`,
+      body: {
+        availability: validAvailability,
+      },
+      method: "PUT",
+      url: "/spaces/123",
+    });
+
+    expect(response.status).toBe(200);
+    expect(mocks.availabilityDeleteMany).toHaveBeenCalledWith({
+      where: { spaceId: 123 },
+    });
+    expect(mocks.availabilityCreateMany).toHaveBeenCalledWith({
+      data: validAvailability.map((entry) => ({ ...entry, spaceId: 123 })),
+    });
+    expect(mocks.producerSend).toHaveBeenCalledWith("space.updated", {
+      value: { id: 123 },
+    });
   });
 
   it("applies groupSlug filters through the category relation on list endpoints", async () => {
@@ -544,7 +657,7 @@ describe("space routes", () => {
             },
           },
         }),
-      })
+      }),
     );
     expect(response.json.pagination.total).toBe(1);
   });
@@ -572,7 +685,9 @@ describe("space routes", () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.json).toEqual({ message: "startDate must be a valid date" });
+    expect(response.json).toEqual({
+      message: "startDate must be a valid date",
+    });
     expect(mocks.findUnique).not.toHaveBeenCalled();
     expect(mocks.bookingFindMany).not.toHaveBeenCalled();
   });
@@ -589,7 +704,9 @@ describe("space routes", () => {
     });
 
     expect(response.status).toBe(400);
-    expect(response.json).toEqual({ message: "endDate must be on or after startDate" });
+    expect(response.json).toEqual({
+      message: "endDate must be on or after startDate",
+    });
     expect(mocks.findUnique).not.toHaveBeenCalled();
     expect(mocks.bookingFindMany).not.toHaveBeenCalled();
   });

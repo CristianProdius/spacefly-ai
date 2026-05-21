@@ -1,7 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 const mockStore = vi.fn();
 const push = vi.fn();
@@ -21,6 +29,72 @@ const groupedCategoriesResponse = [
     slug: "retail-commercial",
   },
 ];
+const existingAvailabilityPayload = [
+  {
+    id: 1,
+    spaceId: 42,
+    dayOfWeek: 0,
+    startTime: "10:00",
+    endTime: "18:00",
+    isOpen: false,
+  },
+  {
+    id: 2,
+    spaceId: 42,
+    dayOfWeek: 1,
+    startTime: "10:00",
+    endTime: "18:00",
+    isOpen: true,
+  },
+  {
+    id: 3,
+    spaceId: 42,
+    dayOfWeek: 2,
+    startTime: "10:00",
+    endTime: "18:00",
+    isOpen: true,
+  },
+  {
+    id: 4,
+    spaceId: 42,
+    dayOfWeek: 3,
+    startTime: "10:00",
+    endTime: "18:00",
+    isOpen: true,
+  },
+  {
+    id: 5,
+    spaceId: 42,
+    dayOfWeek: 4,
+    startTime: "10:00",
+    endTime: "18:00",
+    isOpen: true,
+  },
+  {
+    id: 6,
+    spaceId: 42,
+    dayOfWeek: 5,
+    startTime: "10:00",
+    endTime: "18:00",
+    isOpen: true,
+  },
+  {
+    id: 7,
+    spaceId: 42,
+    dayOfWeek: 6,
+    startTime: "10:00",
+    endTime: "18:00",
+    isOpen: false,
+  },
+];
+const expectedAvailabilityPayload = existingAvailabilityPayload.map(
+  ({ dayOfWeek, startTime, endTime, isOpen }) => ({
+    dayOfWeek,
+    startTime,
+    endTime,
+    isOpen,
+  }),
+);
 
 vi.mock("@/stores/authStore", () => ({
   default: () => mockStore(),
@@ -68,7 +142,7 @@ describe("host edit space page", () => {
 
   const setInputValue = (
     input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
-    value: string
+    value: string,
   ) => {
     const prototype = Object.getPrototypeOf(input) as
       | HTMLInputElement
@@ -76,7 +150,7 @@ describe("host edit space page", () => {
       | HTMLSelectElement;
     const valueSetter = Object.getOwnPropertyDescriptor(
       prototype,
-      "value"
+      "value",
     )?.set;
 
     valueSetter?.call(input, value);
@@ -111,96 +185,104 @@ describe("host edit space page", () => {
   });
 
   it("prefills the shared form and updates the space with the existing field scope", async () => {
-    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = input.toString();
+    const fetchMock = vi.fn(
+      async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = input.toString();
 
-      if (url.endsWith("/spaces/42") && !init?.method) {
-        return {
-          ok: true,
-          json: async () => ({
-            id: 42,
-            name: "Riverside Loft",
-            shortDescription: "Bright loft for team meetings",
-            description:
-              "Bright loft for team meetings, planning sessions, and workshops with flexible furniture and natural light.",
-            spaceType: "MEETING_ROOM",
-            pricingType: "BOTH",
-            pricePerHour: 45,
-            pricePerDay: 240,
-            capacity: 12,
-            address: "River Street 9",
-            city: "Chisinau",
-            state: "Center",
-            country: "Moldova",
-            postalCode: "MD-2001",
-            instantBook: true,
-            cancellationPolicy: "STRICT",
-            houseRules: "Leave the studio as you found it.",
-            categorySlug: "retail-store-shop-front",
-            venueId: 7,
-            videoUrl: null,
-            currency: "USD",
-            pricingTiers: [],
-            images: ["/loft.jpg"],
-            amenities: [
-              {
-                id: 10,
-                spaceId: 42,
-                amenityId: 2,
-                amenity: {
-                  id: 2,
-                  name: "Projector",
-                  icon: null,
-                  category: "Equipment",
+        if (url.endsWith("/spaces/42") && !init?.method) {
+          return {
+            ok: true,
+            json: async () => ({
+              id: 42,
+              name: "Riverside Loft",
+              shortDescription: "Bright loft for team meetings",
+              description:
+                "Bright loft for team meetings, planning sessions, and workshops with flexible furniture and natural light.",
+              spaceType: "MEETING_ROOM",
+              pricingType: "BOTH",
+              pricePerHour: 45,
+              pricePerDay: 240,
+              capacity: 12,
+              address: "River Street 9",
+              city: "Chisinau",
+              state: "Center",
+              country: "Moldova",
+              postalCode: "MD-2001",
+              instantBook: true,
+              cancellationPolicy: "STRICT",
+              houseRules: "Leave the studio as you found it.",
+              categorySlug: "retail-store-shop-front",
+              venueId: 7,
+              videoUrl: null,
+              currency: "USD",
+              pricingTiers: [],
+              availability: existingAvailabilityPayload,
+              images: ["/loft.jpg"],
+              amenities: [
+                {
+                  id: 10,
+                  spaceId: 42,
+                  amenityId: 2,
+                  amenity: {
+                    id: 2,
+                    name: "Projector",
+                    icon: null,
+                    category: "Equipment",
+                  },
                 },
+              ],
+            }),
+          };
+        }
+
+        if (url.endsWith("/categories")) {
+          return {
+            ok: true,
+            json: async () => groupedCategoriesResponse,
+          };
+        }
+
+        if (url.endsWith("/categories?grouped=true")) {
+          return {
+            ok: true,
+            json: async () => groupedCategoriesResponse,
+          };
+        }
+
+        if (url.endsWith("/venues/host/my")) {
+          return {
+            ok: true,
+            json: async () => [
+              {
+                id: 7,
+                name: "Downtown Hub",
+                city: "Chisinau",
+                country: "Moldova",
               },
             ],
-          }),
-        };
-      }
+          };
+        }
 
-      if (url.endsWith("/categories")) {
-        return {
-          ok: true,
-          json: async () => groupedCategoriesResponse,
-        };
-      }
+        if (url.includes("/amenities")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
+              { id: 2, name: "Projector", icon: null, category: "Equipment" },
+            ],
+          };
+        }
 
-      if (url.endsWith("/categories?grouped=true")) {
-        return {
-          ok: true,
-          json: async () => groupedCategoriesResponse,
-        };
-      }
+        if (url.endsWith("/spaces/42") && init?.method === "PUT") {
+          return {
+            ok: true,
+            json: async () => ({ id: 42 }),
+          };
+        }
 
-      if (url.endsWith("/venues/host/my")) {
-        return {
-          ok: true,
-          json: async () => [
-            { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
-          ],
-        };
-      }
-
-      if (url.includes("/amenities")) {
-        return {
-          ok: true,
-          json: async () => [
-            { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
-            { id: 2, name: "Projector", icon: null, category: "Equipment" },
-          ],
-        };
-      }
-
-      if (url.endsWith("/spaces/42") && init?.method === "PUT") {
-        return {
-          ok: true,
-          json: async () => ({ id: 42 }),
-        };
-      }
-
-      throw new Error(`Unexpected fetch call: ${url}`);
-    });
+        throw new Error(`Unexpected fetch call: ${url}`);
+      },
+    );
 
     vi.stubGlobal("fetch", fetchMock);
 
@@ -217,32 +299,35 @@ describe("host edit space page", () => {
     });
 
     expect(container.textContent).toContain("Edit Space");
+    expect(container.textContent).toContain("Availability");
     expect(container.textContent).not.toContain("Space Type");
-    expect(container.querySelector('a[href="/host/spaces"]')?.textContent).toContain(
-      "Back to Spaces"
-    );
+    expect(
+      container.querySelector('a[href="/host/spaces"]')?.textContent,
+    ).toContain("Back to Spaces");
 
     const nameInput = container.querySelector(
-      'input[placeholder="e.g. Modern Downtown Meeting Room"]'
+      'input[placeholder="e.g. Modern Downtown Meeting Room"]',
     ) as HTMLInputElement | null;
     const descriptionInput = container.querySelector(
-      'textarea[placeholder="Detailed description of your space"]'
+      'textarea[placeholder="Detailed description of your space"]',
     ) as HTMLTextAreaElement | null;
     const hourlyInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Price Per Hour"
+      (input) => input.previousElementSibling?.textContent === "Price Per Hour",
     ) as HTMLInputElement | undefined;
     const dailyInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Price Per Day"
+      (input) => input.previousElementSibling?.textContent === "Price Per Day",
     ) as HTMLInputElement | undefined;
-    const categorySelect = Array.from(container.querySelectorAll("select")).find(
-      (select) => select.textContent?.includes("Select a category")
-    ) as HTMLSelectElement | undefined;
+    const categorySelect = Array.from(
+      container.querySelectorAll("select"),
+    ).find((select) => select.textContent?.includes("Select a category")) as
+      | HTMLSelectElement
+      | undefined;
     const amenityButton = Array.from(container.querySelectorAll("button")).find(
-      (button) => button.textContent?.includes("Projector")
+      (button) => button.textContent?.includes("Projector"),
     ) as HTMLButtonElement | undefined;
-    const instantBook = container.querySelector("#instantBook") as
-      | HTMLInputElement
-      | null;
+    const instantBook = container.querySelector(
+      "#instantBook",
+    ) as HTMLInputElement | null;
     const form = container.querySelector("form");
 
     expect(nameInput?.value).toBe("Riverside Loft");
@@ -252,9 +337,9 @@ describe("host edit space page", () => {
     expect(categorySelect?.value).toBe("retail-store-shop-front");
     expect(amenityButton?.className).toContain("bg-primary/10");
     expect(instantBook?.checked).toBe(true);
-    expect(container.querySelector('button[type="submit"]')?.textContent).toContain(
-      "Update Space"
-    );
+    expect(
+      container.querySelector('button[type="submit"]')?.textContent,
+    ).toContain("Update Space");
 
     if (!nameInput || !hourlyInput || !dailyInput || !instantBook || !form) {
       throw new Error("Missing edit form controls");
@@ -268,13 +353,16 @@ describe("host edit space page", () => {
     });
 
     await act(async () => {
-      form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      form.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true }),
+      );
       await Promise.resolve();
       await Promise.resolve();
     });
 
     const updateRequest = fetchMock.mock.calls.find(
-      ([url, init]) => url.toString().endsWith("/spaces/42") && init?.method === "PUT"
+      ([url, init]) =>
+        url.toString().endsWith("/spaces/42") && init?.method === "PUT",
     );
 
     expect(updateRequest).toBeDefined();
@@ -301,6 +389,7 @@ describe("host edit space page", () => {
       videoUrl: null,
       currency: "USD",
       pricingTiers: [],
+      availability: expectedAvailabilityPayload,
     });
     expect(updateRequest?.[1]?.headers).toEqual({
       "Content-Type": "application/json",

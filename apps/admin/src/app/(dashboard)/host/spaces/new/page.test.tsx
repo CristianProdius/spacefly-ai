@@ -1,7 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 const mockStore = vi.fn();
 const push = vi.fn();
@@ -20,6 +28,15 @@ const groupedCategoriesResponse = [
     name: "Retail & Commercial",
     slug: "retail-commercial",
   },
+];
+const defaultAvailabilityPayload = [
+  { dayOfWeek: 0, startTime: "09:00", endTime: "21:00", isOpen: false },
+  { dayOfWeek: 1, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 2, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 3, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 4, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 5, startTime: "09:00", endTime: "21:00", isOpen: true },
+  { dayOfWeek: 6, startTime: "09:00", endTime: "21:00", isOpen: false },
 ];
 
 vi.mock("@/stores/authStore", () => ({
@@ -68,7 +85,7 @@ describe("host new space page", () => {
 
   const setInputValue = (
     input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement,
-    value: string
+    value: string,
   ) => {
     const prototype = Object.getPrototypeOf(input) as
       | HTMLInputElement
@@ -76,7 +93,7 @@ describe("host new space page", () => {
       | HTMLSelectElement;
     const valueSetter = Object.getOwnPropertyDescriptor(
       prototype,
-      "value"
+      "value",
     )?.set;
 
     valueSetter?.call(input, value);
@@ -86,29 +103,31 @@ describe("host new space page", () => {
 
   const fillRequiredFields = async () => {
     const nameInput = container.querySelector(
-      'input[placeholder="e.g. Modern Downtown Meeting Room"]'
+      'input[placeholder="e.g. Modern Downtown Meeting Room"]',
     ) as HTMLInputElement | null;
     const shortDescriptionInput = container.querySelector(
-      'input[placeholder="Brief description for search results"]'
+      'input[placeholder="Brief description for search results"]',
     ) as HTMLInputElement | null;
     const descriptionInput = container.querySelector(
-      'textarea[placeholder="Detailed description of your space"]'
+      'textarea[placeholder="Detailed description of your space"]',
     ) as HTMLTextAreaElement | null;
     const capacityInput = container.querySelector(
-      'input[placeholder="Maximum number of people"]'
+      'input[placeholder="Maximum number of people"]',
     ) as HTMLInputElement | null;
     const venueSelect = Array.from(container.querySelectorAll("select")).find(
-      (select) => select.textContent?.includes("Select a venue")
+      (select) => select.textContent?.includes("Select a venue"),
     ) as HTMLSelectElement | undefined;
     const hourlyInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Price Per Hour"
+      (input) => input.previousElementSibling?.textContent === "Price Per Hour",
     ) as HTMLInputElement | undefined;
     const dailyInput = Array.from(container.querySelectorAll("input")).find(
-      (input) => input.previousElementSibling?.textContent === "Price Per Day"
+      (input) => input.previousElementSibling?.textContent === "Price Per Day",
     ) as HTMLInputElement | undefined;
-    const categorySelect = Array.from(container.querySelectorAll("select")).find(
-      (select) => select.textContent?.includes("Select a category")
-    ) as HTMLSelectElement | undefined;
+    const categorySelect = Array.from(
+      container.querySelectorAll("select"),
+    ).find((select) => select.textContent?.includes("Select a category")) as
+      | HTMLSelectElement
+      | undefined;
 
     if (
       !nameInput ||
@@ -128,7 +147,7 @@ describe("host new space page", () => {
       setInputValue(shortDescriptionInput, "A bright studio for workshops");
       setInputValue(
         descriptionInput,
-        "A bright studio for workshops and events with plenty of natural light."
+        "A bright studio for workshops and events with plenty of natural light.",
       );
       setInputValue(categorySelect, "retail-store-shop-front");
       setInputValue(capacityInput, "8");
@@ -141,7 +160,9 @@ describe("host new space page", () => {
   const getClassNames = () =>
     Array.from(container.querySelectorAll<HTMLElement>("*"))
       .map((element) => element.className)
-      .filter((className): className is string => typeof className === "string");
+      .filter(
+        (className): className is string => typeof className === "string",
+      );
 
   beforeAll(() => {
     (
@@ -173,7 +194,12 @@ describe("host new space page", () => {
           return {
             ok: true,
             json: async () => [
-              { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+              {
+                id: 7,
+                name: "Downtown Hub",
+                city: "Chisinau",
+                country: "Moldova",
+              },
             ],
           };
         }
@@ -189,7 +215,7 @@ describe("host new space page", () => {
         }
 
         throw new Error(`Unexpected fetch call: ${url}`);
-      })
+      }),
     );
 
     container = document.createElement("div");
@@ -218,54 +244,62 @@ describe("host new space page", () => {
     });
 
     expect(container.textContent).toContain("Create New Space");
-    expect(container.textContent).toContain("Fill in the details to list your space");
+    expect(container.textContent).toContain(
+      "Fill in the details to list your space",
+    );
     expect(container.textContent).toContain("Basic Information");
     expect(container.textContent).toContain("Images");
     expect(container.textContent).toContain("Venue");
     expect(container.textContent).toContain("Pricing");
+    expect(container.textContent).toContain("Availability");
+    expect(container.textContent).toContain("Monday");
     expect(container.textContent).toContain("Amenities");
     expect(container.textContent).toContain("Settings");
     expect(container.textContent).toContain("Enable instant booking");
     expect(container.textContent).not.toContain("Space Type");
-    expect(container.querySelector('a[href="/host/spaces"]')?.textContent).toContain(
-      "Back to Spaces"
-    );
-    expect(container.querySelector('button[type="submit"]')?.textContent).toContain(
-      "Create Space"
-    );
+    expect(
+      container.querySelector('a[href="/host/spaces"]')?.textContent,
+    ).toContain("Back to Spaces");
+    expect(
+      container.querySelector('button[type="submit"]')?.textContent,
+    ).toContain("Create Space");
     expect(container.querySelector('label input[type="file"]')).not.toBeNull();
 
     const classNames = getClassNames();
-    expect(classNames.some((className) => className.includes("bg-card"))).toBe(true);
+    expect(classNames.some((className) => className.includes("bg-card"))).toBe(
+      true,
+    );
     expect(
-      classNames.some((className) => className.includes("border-border/60"))
+      classNames.some((className) => className.includes("border-border/60")),
     ).toBe(true);
     expect(
-      classNames.some((className) => className.includes("text-muted-foreground"))
+      classNames.some((className) =>
+        className.includes("text-muted-foreground"),
+      ),
     ).toBe(true);
-    expect(classNames.some((className) => className.includes("border-input"))).toBe(
-      true
-    );
-    expect(classNames.some((className) => className.includes("focus:ring-ring/50"))).toBe(
-      true
-    );
+    expect(
+      classNames.some((className) => className.includes("border-input")),
+    ).toBe(true);
+    expect(
+      classNames.some((className) => className.includes("focus:ring-ring/50")),
+    ).toBe(true);
     expect(classNames.some((className) => className.includes("bg-white"))).toBe(
-      false
-    );
-    expect(classNames.some((className) => className.includes("text-gray-600"))).toBe(
-      false
-    );
-    expect(classNames.some((className) => className.includes("text-gray-700"))).toBe(
-      false
-    );
-    expect(classNames.some((className) => className.includes("text-gray-900"))).toBe(
-      false
+      false,
     );
     expect(
-      classNames.some((className) => className.includes("border-gray-200"))
+      classNames.some((className) => className.includes("text-gray-600")),
     ).toBe(false);
     expect(
-      classNames.some((className) => className.includes("hover:bg-gray-50"))
+      classNames.some((className) => className.includes("text-gray-700")),
+    ).toBe(false);
+    expect(
+      classNames.some((className) => className.includes("text-gray-900")),
+    ).toBe(false);
+    expect(
+      classNames.some((className) => className.includes("border-gray-200")),
+    ).toBe(false);
+    expect(
+      classNames.some((className) => className.includes("hover:bg-gray-50")),
     ).toBe(false);
   });
 
@@ -283,7 +317,12 @@ describe("host new space page", () => {
           return {
             ok: true,
             json: async () => [
-              { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+              {
+                id: 7,
+                name: "Downtown Hub",
+                city: "Chisinau",
+                country: "Moldova",
+              },
             ],
           };
         }
@@ -298,11 +337,14 @@ describe("host new space page", () => {
         }
 
         if (url.endsWith("/uploads/images")) {
-          return { ok: false, json: async () => ({ message: "Upload failed" }) };
+          return {
+            ok: false,
+            json: async () => ({ message: "Upload failed" }),
+          };
         }
 
         throw new Error(`Unexpected fetch call: ${url}`);
-      })
+      }),
     );
 
     const pageModule = await import("./page");
@@ -317,14 +359,14 @@ describe("host new space page", () => {
     });
 
     const amenityButton = Array.from(container.querySelectorAll("button")).find(
-      (button) => button.textContent?.includes("Wi-Fi")
+      (button) => button.textContent?.includes("Wi-Fi"),
     ) as HTMLButtonElement | undefined;
-    const instantBook = container.querySelector("#instantBook") as
-      | HTMLInputElement
-      | null;
-    const fileInput = container.querySelector('input[type="file"]') as
-      | HTMLInputElement
-      | null;
+    const instantBook = container.querySelector(
+      "#instantBook",
+    ) as HTMLInputElement | null;
+    const fileInput = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement | null;
 
     expect(amenityButton).toBeDefined();
     expect(instantBook).not.toBeNull();
@@ -353,8 +395,8 @@ describe("host new space page", () => {
     expect(instantBook?.checked).toBe(true);
     expect(container.textContent).toContain("Upload failed");
 
-    const uploadError = Array.from(container.querySelectorAll("p")).find((node) =>
-      node.textContent?.includes("Upload failed")
+    const uploadError = Array.from(container.querySelectorAll("p")).find(
+      (node) => node.textContent?.includes("Upload failed"),
     );
     const instantBookRow = instantBook?.closest("div.rounded-lg");
     expect(uploadError?.className).toContain("bg-destructive/10");
@@ -377,7 +419,12 @@ describe("host new space page", () => {
           return {
             ok: true,
             json: async () => [
-              { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
+              {
+                id: 7,
+                name: "Downtown Hub",
+                city: "Chisinau",
+                country: "Moldova",
+              },
             ],
           };
         }
@@ -392,15 +439,21 @@ describe("host new space page", () => {
         }
 
         if (url.endsWith("/uploads/images")) {
-          return { ok: true, json: async () => ({ url: "/uploaded-space.png" }) };
+          return {
+            ok: true,
+            json: async () => ({ url: "/uploaded-space.png" }),
+          };
         }
 
         if (url.endsWith("/spaces") && init?.method === "POST") {
-          return { ok: false, json: async () => ({ message: "Creation failed" }) };
+          return {
+            ok: false,
+            json: async () => ({ message: "Creation failed" }),
+          };
         }
 
         throw new Error(`Unexpected fetch call: ${url}`);
-      })
+      }),
     );
 
     const pageModule = await import("./page");
@@ -414,9 +467,9 @@ describe("host new space page", () => {
       await Promise.resolve();
     });
 
-    const fileInput = container.querySelector('input[type="file"]') as
-      | HTMLInputElement
-      | null;
+    const fileInput = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement | null;
 
     if (fileInput) {
       Object.defineProperty(fileInput, "files", {
@@ -433,12 +486,16 @@ describe("host new space page", () => {
 
     const form = container.querySelector("form");
 
-    expect(container.querySelector('button[aria-label="Remove image 1"]')).not.toBeNull();
+    expect(
+      container.querySelector('button[aria-label="Remove image 1"]'),
+    ).not.toBeNull();
 
     if (form) {
       await fillRequiredFields();
       await act(async () => {
-        form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+        form.dispatchEvent(
+          new Event("submit", { bubbles: true, cancelable: true }),
+        );
         await Promise.resolve();
         await Promise.resolve();
       });
@@ -449,71 +506,78 @@ describe("host new space page", () => {
     const topLevelError = Array.from(container.querySelectorAll("div")).find(
       (node) =>
         node.textContent?.trim() === "Creation failed" &&
-        node.className.includes("bg-destructive/10")
+        node.className.includes("bg-destructive/10"),
     );
     expect(topLevelError?.className).toContain("bg-destructive/10");
     expect(topLevelError?.className).toContain("text-destructive");
-    expect(container.querySelector('button[type="submit"]')?.className).toContain(
-      "bg-primary"
-    );
-    expect(container.querySelector('a[href="/host/spaces"]')?.className).toContain(
-      "hover:bg-accent"
-    );
+    expect(
+      container.querySelector('button[type="submit"]')?.className,
+    ).toContain("bg-primary");
+    expect(
+      container.querySelector('a[href="/host/spaces"]')?.className,
+    ).toContain("hover:bg-accent");
   });
 
   it("submits the current create payload shape and redirects back to host spaces", async () => {
-    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = input.toString();
+    const fetchMock = vi.fn(
+      async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = input.toString();
 
-      if (url.endsWith("/categories")) {
-        return {
-          ok: true,
-          json: async () => groupedCategoriesResponse,
-        };
-      }
+        if (url.endsWith("/categories")) {
+          return {
+            ok: true,
+            json: async () => groupedCategoriesResponse,
+          };
+        }
 
-      if (url.endsWith("/categories?grouped=true")) {
-        return {
-          ok: true,
-          json: async () => groupedCategoriesResponse,
-        };
-      }
+        if (url.endsWith("/categories?grouped=true")) {
+          return {
+            ok: true,
+            json: async () => groupedCategoriesResponse,
+          };
+        }
 
-      if (url.endsWith("/venues/host/my")) {
-        return {
-          ok: true,
-          json: async () => [
-            { id: 7, name: "Downtown Hub", city: "Chisinau", country: "Moldova" },
-          ],
-        };
-      }
+        if (url.endsWith("/venues/host/my")) {
+          return {
+            ok: true,
+            json: async () => [
+              {
+                id: 7,
+                name: "Downtown Hub",
+                city: "Chisinau",
+                country: "Moldova",
+              },
+            ],
+          };
+        }
 
-      if (url.includes("/amenities")) {
-        return {
-          ok: true,
-          json: async () => [
-            { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
-            { id: 2, name: "Projector", icon: null, category: "Equipment" },
-          ],
-        };
-      }
+        if (url.includes("/amenities")) {
+          return {
+            ok: true,
+            json: async () => [
+              { id: 1, name: "Wi-Fi", icon: null, category: "Connectivity" },
+              { id: 2, name: "Projector", icon: null, category: "Equipment" },
+            ],
+          };
+        }
 
-      if (url.endsWith("/uploads/images")) {
-        return {
-          ok: true,
-          json: async () => ({ url: "/uploaded-space.png" }),
-        };
-      }
+        if (url.endsWith("/uploads/images")) {
+          return {
+            ok: true,
+            json: async () => ({ url: "/uploaded-space.png" }),
+          };
+        }
 
-      if (url.endsWith("/spaces") && init?.method === "POST") {
-        return {
-          ok: true,
-          json: async () => ({ id: 99 }),
-        };
-      }
+        if (url.endsWith("/spaces") && init?.method === "POST") {
+          return {
+            ok: true,
+            json: async () => ({ id: 99 }),
+          };
+        }
 
-      throw new Error(`Unexpected fetch call: ${url}`);
-    });
+        throw new Error(`Unexpected fetch call: ${url}`);
+      },
+    );
 
     vi.stubGlobal("fetch", fetchMock);
 
@@ -529,11 +593,11 @@ describe("host new space page", () => {
     });
 
     const amenityButton = Array.from(container.querySelectorAll("button")).find(
-      (button) => button.textContent?.includes("Wi-Fi")
+      (button) => button.textContent?.includes("Wi-Fi"),
     ) as HTMLButtonElement | undefined;
-    const fileInput = container.querySelector('input[type="file"]') as
-      | HTMLInputElement
-      | null;
+    const fileInput = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement | null;
     const form = container.querySelector("form");
 
     expect(fileInput).not.toBeNull();
@@ -546,7 +610,9 @@ describe("host new space page", () => {
       });
 
       await act(async () => {
-        amenityButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+        amenityButton?.dispatchEvent(
+          new MouseEvent("click", { bubbles: true }),
+        );
         fileInput.dispatchEvent(new Event("change", { bubbles: true }));
         await Promise.resolve();
         await Promise.resolve();
@@ -556,13 +622,16 @@ describe("host new space page", () => {
     await fillRequiredFields();
 
     await act(async () => {
-      form?.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      form?.dispatchEvent(
+        new Event("submit", { bubbles: true, cancelable: true }),
+      );
       await Promise.resolve();
       await Promise.resolve();
     });
 
     const createRequest = fetchMock.mock.calls.find(
-      ([url, init]) => url.toString().endsWith("/spaces") && init?.method === "POST"
+      ([url, init]) =>
+        url.toString().endsWith("/spaces") && init?.method === "POST",
     );
 
     expect(createRequest).toBeDefined();
@@ -589,6 +658,7 @@ describe("host new space page", () => {
       videoUrl: null,
       currency: "USD",
       pricingTiers: [],
+      availability: defaultAvailabilityPayload,
     });
     expect(createRequest?.[1]?.headers).toEqual({
       "Content-Type": "application/json",
@@ -611,7 +681,7 @@ describe("host new space page", () => {
     });
 
     const venueSelect = Array.from(container.querySelectorAll("select")).find(
-      (select) => select.textContent?.includes("Select a venue")
+      (select) => select.textContent?.includes("Select a venue"),
     ) as HTMLSelectElement | undefined;
 
     expect(venueSelect?.value).toBe("7");

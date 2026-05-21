@@ -26,6 +26,8 @@ import {
   fieldClassName,
   labelClassName,
   pricingTypes,
+  weekdayLabels,
+  type AvailabilityFormValue,
   type SpaceFormPayload,
   type SpaceFormValues,
 } from "./space-form.shared";
@@ -53,7 +55,7 @@ interface SpaceFormProps {
 
 const getInitialSpaceFormValues = (
   initialValues: SpaceFormValues | undefined,
-  defaultVenueId: number | undefined
+  defaultVenueId: number | undefined,
 ) => {
   const values = initialValues ?? createEmptySpaceFormValues();
   if (defaultVenueId && !values.venueId) {
@@ -83,13 +85,17 @@ const SpaceForm = ({
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [formData, setFormData] = useState<SpaceFormValues>(() =>
-    getInitialSpaceFormValues(initialValues, defaultVenueId)
+    getInitialSpaceFormValues(initialValues, defaultVenueId),
   );
   const categories = useMemo(
     () => flattenCategoryGroups(categoryGroups),
-    [categoryGroups]
+    [categoryGroups],
   );
-  const selectedCategory = findCategoryBySlug(categories, formData.categorySlug);
+  const selectedCategory = findCategoryBySlug(
+    categories,
+    formData.categorySlug,
+  );
+  const hasOpenAvailability = formData.availability.some((day) => day.isOpen);
 
   useEffect(() => {
     setFormData(getInitialSpaceFormValues(initialValues, defaultVenueId));
@@ -98,7 +104,9 @@ const SpaceForm = ({
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const catRes = await fetch(`${PRODUCT_SERVICE_URL}/categories?grouped=true`);
+        const catRes = await fetch(
+          `${PRODUCT_SERVICE_URL}/categories?grouped=true`,
+        );
 
         if (catRes.ok) {
           const catData = (await catRes.json()) as TaxonomyApiResponse;
@@ -157,7 +165,10 @@ const SpaceForm = ({
     }
 
     setFormData((prev) => {
-      const nextCategorySlug = normalizeCategorySlug(prev.categorySlug, categories);
+      const nextCategorySlug = normalizeCategorySlug(
+        prev.categorySlug,
+        categories,
+      );
       const nextCategory = findCategoryBySlug(categories, nextCategorySlug);
       const nextSpaceType = nextCategory
         ? resolveLegacySpaceType(nextCategory, prev.spaceType)
@@ -178,7 +189,9 @@ const SpaceForm = ({
     });
   }, [categories, formData.categorySlug]);
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const files = event.target.files;
     if (!files || files.length === 0) {
       return;
@@ -228,7 +241,7 @@ const SpaceForm = ({
       setUploadError(
         uploadingError instanceof Error
           ? uploadingError.message
-          : "Failed to upload image"
+          : "Failed to upload image",
       );
     } finally {
       setUploadingImage(false);
@@ -252,15 +265,40 @@ const SpaceForm = ({
     }));
   };
 
+  const updateAvailability = (
+    dayOfWeek: number,
+    changes: Partial<Omit<AvailabilityFormValue, "dayOfWeek">>,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      availability: prev.availability.map((day) =>
+        day.dayOfWeek === dayOfWeek ? { ...day, ...changes } : day,
+      ),
+    }));
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
+      if (!hasOpenAvailability) {
+        throw new Error("Select at least one open availability day");
+      }
+      const invalidAvailabilityDay = formData.availability.find(
+        (day) => day.isOpen && day.endTime <= day.startTime,
+      );
+
+      if (invalidAvailabilityDay) {
+        throw new Error(
+          `${weekdayLabels[invalidAvailabilityDay.dayOfWeek]} end time must be after start time`,
+        );
+      }
+
       const normalizedCategorySlug = normalizeCategorySlug(
         formData.categorySlug,
-        categories
+        categories,
       );
       const category = findCategoryBySlug(categories, normalizedCategorySlug);
 
@@ -270,12 +308,14 @@ const SpaceForm = ({
             ...formData,
             categorySlug: normalizedCategorySlug,
           },
-          category
-        )
+          category,
+        ),
       );
     } catch (submitError) {
       setError(
-        submitError instanceof Error ? submitError.message : "An error occurred"
+        submitError instanceof Error
+          ? submitError.message
+          : "An error occurred",
       );
     } finally {
       setLoading(false);
@@ -305,7 +345,10 @@ const SpaceForm = ({
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        <DashboardSection title="Basic Information" contentClassName="space-y-4">
+        <DashboardSection
+          title="Basic Information"
+          contentClassName="space-y-4"
+        >
           <div className="space-y-4">
             <div>
               <label className={labelClassName}>Space Name</label>
@@ -368,7 +411,10 @@ const SpaceForm = ({
                   onTranslationChange: (lang, val) =>
                     setFormData((prev) => ({
                       ...prev,
-                      nameTranslations: { ...prev.nameTranslations, [lang]: val },
+                      nameTranslations: {
+                        ...prev.nameTranslations,
+                        [lang]: val,
+                      },
                     })),
                 },
                 {
@@ -380,7 +426,10 @@ const SpaceForm = ({
                   onTranslationChange: (lang, val) =>
                     setFormData((prev) => ({
                       ...prev,
-                      shortDescTranslations: { ...prev.shortDescTranslations, [lang]: val },
+                      shortDescTranslations: {
+                        ...prev.shortDescTranslations,
+                        [lang]: val,
+                      },
                     })),
                 },
                 {
@@ -392,7 +441,10 @@ const SpaceForm = ({
                   onTranslationChange: (lang, val) =>
                     setFormData((prev) => ({
                       ...prev,
-                      descriptionTranslations: { ...prev.descriptionTranslations, [lang]: val },
+                      descriptionTranslations: {
+                        ...prev.descriptionTranslations,
+                        [lang]: val,
+                      },
                     })),
                 },
               ]}
@@ -406,7 +458,10 @@ const SpaceForm = ({
                 onChange={(event) =>
                   setFormData((prev) => {
                     const categorySlug = event.target.value;
-                    const category = findCategoryBySlug(categories, categorySlug);
+                    const category = findCategoryBySlug(
+                      categories,
+                      categorySlug,
+                    );
 
                     return {
                       ...prev,
@@ -429,7 +484,7 @@ const SpaceForm = ({
                         </option>
                       ))}
                     </optgroup>
-                  ) : null
+                  ) : null,
                 )}
               </select>
               <p className="mt-2 text-sm text-muted-foreground">
@@ -516,15 +571,21 @@ const SpaceForm = ({
           </p>
 
           <div>
-            <label className={labelClassName}>YouTube Video URL (optional)</label>
+            <label className={labelClassName}>
+              YouTube Video URL (optional)
+            </label>
             <input
               type="url"
               placeholder="https://www.youtube.com/watch?v=..."
               value={formData.videoUrl}
-              onChange={(e) => setFormData(prev => ({ ...prev, videoUrl: e.target.value }))}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, videoUrl: e.target.value }))
+              }
               className={fieldClassName}
             />
-            <p className="text-sm text-muted-foreground mt-1">Paste a YouTube link to embed a video on the listing page</p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Paste a YouTube link to embed a video on the listing page
+            </p>
           </div>
         </DashboardSection>
 
@@ -550,7 +611,10 @@ const SpaceForm = ({
               ))}
             </select>
             <p className="text-sm text-muted-foreground mt-1">
-              <a href="/host/venues/new" className="text-primary hover:underline">
+              <a
+                href="/host/venues/new"
+                className="text-primary hover:underline"
+              >
                 + Create new venue
               </a>
             </p>
@@ -585,7 +649,8 @@ const SpaceForm = ({
                 onChange={(event) =>
                   setFormData((prev) => ({
                     ...prev,
-                    pricingType: event.target.value as SpaceFormValues["pricingType"],
+                    pricingType: event.target
+                      .value as SpaceFormValues["pricingType"],
                   }))
                 }
                 className={fieldClassName}
@@ -654,6 +719,68 @@ const SpaceForm = ({
           </div>
         </DashboardSection>
 
+        <DashboardSection title="Availability">
+          <div className="overflow-hidden rounded-lg border border-border/60">
+            <div className="hidden grid-cols-[1fr_88px_minmax(0,1fr)_minmax(0,1fr)] gap-3 border-b border-border/60 bg-accent/20 px-4 py-3 text-sm font-medium text-muted-foreground sm:grid">
+              <span>Day</span>
+              <span>Open</span>
+              <span>Start</span>
+              <span>End</span>
+            </div>
+            <div className="divide-y divide-border/60">
+              {formData.availability.map((day) => (
+                <div
+                  key={day.dayOfWeek}
+                  className="grid grid-cols-[auto_minmax(0,1fr)_minmax(0,1fr)] items-center gap-3 px-4 py-3 sm:grid-cols-[1fr_88px_minmax(0,1fr)_minmax(0,1fr)]"
+                >
+                  <span className="col-span-3 text-sm font-medium text-foreground sm:col-span-1">
+                    {weekdayLabels[day.dayOfWeek]}
+                  </span>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={day.isOpen}
+                      onChange={(event) =>
+                        updateAvailability(day.dayOfWeek, {
+                          isOpen: event.target.checked,
+                        })
+                      }
+                      aria-label={`${weekdayLabels[day.dayOfWeek]} open`}
+                      className="h-5 w-5 rounded border-input text-primary focus:ring-2 focus:ring-ring/50 dark:bg-input/30"
+                    />
+                  </label>
+                  <input
+                    type="time"
+                    required={day.isOpen}
+                    disabled={!day.isOpen}
+                    value={day.startTime}
+                    onChange={(event) =>
+                      updateAvailability(day.dayOfWeek, {
+                        startTime: event.target.value,
+                      })
+                    }
+                    aria-label={`${weekdayLabels[day.dayOfWeek]} start time`}
+                    className={`${fieldClassName} min-w-0 py-2 disabled:bg-accent/20`}
+                  />
+                  <input
+                    type="time"
+                    required={day.isOpen}
+                    disabled={!day.isOpen}
+                    value={day.endTime}
+                    onChange={(event) =>
+                      updateAvailability(day.dayOfWeek, {
+                        endTime: event.target.value,
+                      })
+                    }
+                    aria-label={`${weekdayLabels[day.dayOfWeek]} end time`}
+                    className={`${fieldClassName} min-w-0 py-2 disabled:bg-accent/20`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </DashboardSection>
+
         <DashboardSection title="Amenities">
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {amenities.map((amenity) => (
@@ -686,8 +813,8 @@ const SpaceForm = ({
                 onChange={(event) =>
                   setFormData((prev) => ({
                     ...prev,
-                    cancellationPolicy:
-                      event.target.value as SpaceFormValues["cancellationPolicy"],
+                    cancellationPolicy: event.target
+                      .value as SpaceFormValues["cancellationPolicy"],
                   }))
                 }
                 className={fieldClassName}

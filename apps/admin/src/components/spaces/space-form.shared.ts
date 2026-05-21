@@ -1,4 +1,5 @@
 import type {
+  Availability,
   CancellationPolicy,
   PricingType,
   Space,
@@ -34,6 +35,31 @@ export const fieldClassName =
 
 export const labelClassName = "mb-1 block text-sm font-medium text-foreground";
 
+export interface AvailabilityFormValue {
+  dayOfWeek: number;
+  startTime: string;
+  endTime: string;
+  isOpen: boolean;
+}
+
+export const weekdayLabels = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+] as const;
+
+export const createDefaultAvailability = (): AvailabilityFormValue[] =>
+  weekdayLabels.map((_, dayOfWeek) => ({
+    dayOfWeek,
+    startTime: "09:00",
+    endTime: "21:00",
+    isOpen: dayOfWeek >= 1 && dayOfWeek <= 5,
+  }));
+
 export interface SpaceFormValues {
   name: string;
   shortDescription: string;
@@ -56,6 +82,7 @@ export interface SpaceFormValues {
   videoUrl: string;
   currency: string;
   pricingTiers: Array<{ minutes: number; label: string; price: string }>;
+  availability: AvailabilityFormValue[];
 }
 
 export interface SpaceFormPayload {
@@ -80,6 +107,7 @@ export interface SpaceFormPayload {
   videoUrl: string | null;
   currency: string;
   pricingTiers: Array<{ minutes: number; label: string; price: number }>;
+  availability: AvailabilityFormValue[];
 }
 
 export const createEmptySpaceFormValues = (): SpaceFormValues => ({
@@ -104,14 +132,20 @@ export const createEmptySpaceFormValues = (): SpaceFormValues => ({
   videoUrl: "",
   currency: "USD",
   pricingTiers: [],
+  availability: createDefaultAvailability(),
 });
 
-const emptyToNull = (obj: Record<string, string>): Record<string, string> | null =>
+const emptyToNull = (
+  obj: Record<string, string>,
+): Record<string, string> | null =>
   Object.keys(obj).length === 0 ? null : obj;
 
 export const buildSpacePayload = (
   formData: SpaceFormValues,
-  category?: Pick<NormalizedTaxonomyCategory, "legacySpaceType" | "slug" | "spaceType">
+  category?: Pick<
+    NormalizedTaxonomyCategory,
+    "legacySpaceType" | "slug" | "spaceType"
+  >,
 ): SpaceFormPayload => ({
   ...formData,
   nameTranslations: emptyToNull(formData.nameTranslations),
@@ -121,15 +155,53 @@ export const buildSpacePayload = (
   spaceType: category
     ? resolveLegacySpaceType(category, formData.spaceType)
     : formData.spaceType,
-  pricePerHour: formData.pricePerHour ? parseFloat(formData.pricePerHour) : null,
+  pricePerHour: formData.pricePerHour
+    ? parseFloat(formData.pricePerHour)
+    : null,
   pricePerDay: formData.pricePerDay ? parseFloat(formData.pricePerDay) : null,
   capacity: parseInt(formData.capacity, 10),
   venueId: formData.venueId,
   currency: formData.currency,
   pricingTiers: formData.pricingTiers
     .filter((t) => t.price !== "")
-    .map((t) => ({ minutes: t.minutes, label: t.label, price: parseFloat(t.price) || 0 })),
+    .map((t) => ({
+      minutes: t.minutes,
+      label: t.label,
+      price: parseFloat(t.price) || 0,
+    })),
+  availability: formData.availability
+    .map(({ dayOfWeek, startTime, endTime, isOpen }) => ({
+      dayOfWeek,
+      startTime,
+      endTime,
+      isOpen,
+    }))
+    .sort((a, b) => a.dayOfWeek - b.dayOfWeek),
 });
+
+const mapAvailabilityToFormValues = (
+  availability?: Availability[] | null,
+): AvailabilityFormValue[] => {
+  if (!Array.isArray(availability) || availability.length === 0) {
+    return createDefaultAvailability();
+  }
+
+  const byDay = new Map(
+    availability.map((entry) => [
+      entry.dayOfWeek,
+      {
+        dayOfWeek: entry.dayOfWeek,
+        startTime: entry.startTime,
+        endTime: entry.endTime,
+        isOpen: entry.isOpen,
+      },
+    ]),
+  );
+
+  return createDefaultAvailability().map(
+    (fallback) => byDay.get(fallback.dayOfWeek) ?? fallback,
+  );
+};
 
 export const mapSpaceToFormValues = (
   space: Pick<
@@ -150,13 +222,14 @@ export const mapSpaceToFormValues = (
     | "amenities"
     | "currency"
     | "pricingTiers"
+    | "availability"
   > & {
     venueId?: number | null;
     videoUrl?: string | null;
     nameTranslations?: Record<string, string> | null;
     shortDescTranslations?: Record<string, string> | null;
     descriptionTranslations?: Record<string, string> | null;
-  }
+  },
 ): SpaceFormValues => ({
   name: space.name,
   shortDescription: space.shortDescription,
@@ -174,7 +247,8 @@ export const mapSpaceToFormValues = (
   cancellationPolicy: space.cancellationPolicy,
   houseRules: space.houseRules ?? "",
   categorySlug: space.categorySlug,
-  amenityIds: space.amenities?.map((spaceAmenity) => spaceAmenity.amenityId) ?? [],
+  amenityIds:
+    space.amenities?.map((spaceAmenity) => spaceAmenity.amenityId) ?? [],
   images: Array.isArray(space.images) ? space.images : [],
   videoUrl: space.videoUrl ?? "",
   currency: space.currency ?? "USD",
@@ -183,4 +257,5 @@ export const mapSpaceToFormValues = (
     label: t.label,
     price: t.price.toString(),
   })),
+  availability: mapAvailabilityToFormValues(space.availability),
 });
