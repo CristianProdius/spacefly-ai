@@ -87,9 +87,8 @@ const HostSpacesPage = () => {
       setError(
         "Spaces could not be loaded. Check the product service and retry.",
       );
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   }, [getToken, router]);
 
   useEffect(() => {

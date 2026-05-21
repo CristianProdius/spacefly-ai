@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import useAuthStore from "@/stores/authStore";
 import {
@@ -64,8 +64,9 @@ const statusBadgeClassName = (status: string) =>
   );
 
 const HostBookingsPage = () => {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const { token } = useAuthStore();
+  const { getToken } = useAuthStore();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,37 +87,52 @@ const HostBookingsPage = () => {
     setError(null);
     setLoading(true);
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${resolvedToken}` },
         }
       );
       if (res.ok) {
         const data = await res.json();
         setBookings(data);
+      } else if (res.status === 401) {
+        router.push("/login");
       } else {
         setError("Booking service unavailable");
       }
     } catch {
       setError("Booking service unavailable");
-    } finally {
-      setLoading(false);
     }
-  }, [token]);
+    setLoading(false);
+  }, [getToken, router]);
 
   useEffect(() => {
-    if (token) fetchBookings();
-  }, [fetchBookings, token]);
+    fetchBookings();
+  }, [fetchBookings]);
 
   const handleApprove = async (bookingId: string) => {
     setActionLoading(bookingId);
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/${bookingId}/approve`,
         {
           method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${resolvedToken}` },
         }
       );
 
@@ -144,13 +160,20 @@ const HostBookingsPage = () => {
 
     setActionLoading(bookingId);
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/${bookingId}/reject`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${resolvedToken}`,
           },
           body: JSON.stringify({ reason }),
         }
@@ -178,11 +201,18 @@ const HostBookingsPage = () => {
   const handleComplete = async (bookingId: string) => {
     setActionLoading(bookingId);
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/${bookingId}/complete`,
         {
           method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${resolvedToken}` },
         }
       );
 

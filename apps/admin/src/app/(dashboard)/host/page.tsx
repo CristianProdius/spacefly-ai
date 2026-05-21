@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
 import {
   AlertCircle,
@@ -42,18 +43,32 @@ interface HostBookingSummary {
 }
 
 const HostDashboardPage = () => {
-  const { token, user } = useAuthStore();
+  const router = useRouter();
+  const { getToken, user } = useAuthStore();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchStats = useCallback(async () => {
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const spacesRes = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/host/my`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+          headers: { Authorization: `Bearer ${resolvedToken}` },
+        },
       );
+
+      if (spacesRes.status === 401) {
+        router.push("/login");
+        return;
+      }
+
       const spaces: HostSpaceSummary[] = spacesRes.ok
         ? await spacesRes.json()
         : [];
@@ -61,9 +76,15 @@ const HostDashboardPage = () => {
       const bookingsRes = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+          headers: { Authorization: `Bearer ${resolvedToken}` },
+        },
       );
+
+      if (bookingsRes.status === 401) {
+        router.push("/login");
+        return;
+      }
+
       const bookings: HostBookingSummary[] = bookingsRes.ok
         ? await bookingsRes.json()
         : [];
@@ -102,16 +123,13 @@ const HostDashboardPage = () => {
       });
     } catch (error) {
       console.error("Error fetching dashboard stats:", error);
-    } finally {
-      setLoading(false);
     }
-  }, [token]);
+    setLoading(false);
+  }, [getToken, router]);
 
   useEffect(() => {
-    if (token) {
-      fetchStats();
-    }
-  }, [fetchStats, token]);
+    fetchStats();
+  }, [fetchStats]);
 
   if (loading) {
     return (

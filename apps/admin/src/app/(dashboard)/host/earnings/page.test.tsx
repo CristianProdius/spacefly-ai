@@ -3,6 +3,9 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockStore = vi.fn();
+const getToken = vi.fn();
+const push = vi.fn();
+const router = { push };
 
 const createDeferred = <T,>() => {
   let resolve!: (value: T | PromiseLike<T>) => void;
@@ -15,6 +18,10 @@ const createDeferred = <T,>() => {
 
 vi.mock("@/stores/authStore", () => ({
   default: () => mockStore(),
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => router,
 }));
 
 describe("host earnings page", () => {
@@ -36,7 +43,10 @@ describe("host earnings page", () => {
 
   beforeEach(() => {
     mockStore.mockReset();
-    mockStore.mockReturnValue({ token: "test-token" });
+    getToken.mockReset();
+    getToken.mockResolvedValue("test-token");
+    push.mockReset();
+    mockStore.mockReturnValue({ getToken });
 
     const currentMonth = new Date();
     const inThisMonth = new Date(
