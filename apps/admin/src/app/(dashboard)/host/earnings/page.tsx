@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
 import {
   Calendar,
@@ -41,7 +42,8 @@ interface EarningsStats {
 }
 
 const HostEarningsPage = () => {
-  const { token } = useAuthStore();
+  const router = useRouter();
+  const { getToken } = useAuthStore();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [stats, setStats] = useState<EarningsStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,12 +53,24 @@ const HostEarningsPage = () => {
     setError(null);
     setLoading(true);
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_ORDER_SERVICE_URL}/bookings/host`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${resolvedToken}` },
         }
       );
+
+      if (res.status === 401) {
+        router.push("/login");
+        return;
+      }
 
       if (res.ok) {
         const data: Booking[] = await res.json();
@@ -105,14 +119,13 @@ const HostEarningsPage = () => {
       }
     } catch {
       setError("Booking service unavailable");
-    } finally {
-      setLoading(false);
     }
-  }, [token]);
+    setLoading(false);
+  }, [getToken, router]);
 
   useEffect(() => {
-    if (token) fetchEarnings();
-  }, [fetchEarnings, token]);
+    fetchEarnings();
+  }, [fetchEarnings]);
 
   if (loading) {
     return (

@@ -5,6 +5,9 @@ import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 const mockStore = vi.fn();
+const getToken = vi.fn();
+const push = vi.fn();
+const router = { push };
 const mockSearchParams = {
   get: vi.fn(),
 };
@@ -14,6 +17,7 @@ vi.mock("@/stores/authStore", () => ({
 }));
 
 vi.mock("next/navigation", () => ({
+  useRouter: () => router,
   useSearchParams: () => mockSearchParams,
 }));
 
@@ -52,8 +56,11 @@ describe("host bookings page", () => {
 
   beforeEach(() => {
     mockStore.mockReset();
+    getToken.mockReset();
+    getToken.mockResolvedValue("test-token");
+    push.mockReset();
     mockStore.mockReturnValue({
-      token: "test-token",
+      getToken,
     });
     mockSearchParams.get.mockReset();
     mockSearchParams.get.mockReturnValue(null);

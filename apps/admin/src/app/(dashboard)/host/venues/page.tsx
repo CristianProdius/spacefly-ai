@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
 import {
   Hotel,
@@ -34,48 +35,67 @@ interface Venue {
 }
 
 const HostVenuesPage = () => {
-  const { token } = useAuthStore();
+  const router = useRouter();
+  const { getToken } = useAuthStore();
   const [venues, setVenues] = useState<Venue[]>([]);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
 
   const fetchVenues = useCallback(async () => {
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/venues/host/my`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${resolvedToken}` },
         }
       );
       if (res.ok) {
         const data = await res.json();
         setVenues(data);
+      } else if (res.status === 401) {
+        router.push("/login");
       }
     } catch (error) {
       console.error("Error fetching venues:", error);
-    } finally {
-      setLoading(false);
     }
-  }, [token]);
+    setLoading(false);
+  }, [getToken, router]);
 
   useEffect(() => {
-    if (token) fetchVenues();
-  }, [fetchVenues, token]);
+    fetchVenues();
+  }, [fetchVenues]);
 
   const deleteVenue = async (venueId: number) => {
     if (!confirm("Are you sure you want to delete this venue?")) return;
 
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/venues/${venueId}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `Bearer ${resolvedToken}` },
         }
       );
 
       if (res.ok) {
         setVenues((prev) => prev.filter((venue) => venue.id !== venueId));
+      } else if (res.status === 401) {
+        router.push("/login");
+        return;
       }
     } catch (error) {
       console.error("Error deleting venue:", error);
