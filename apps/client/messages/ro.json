@@ -8,6 +8,7 @@
     "signOut": "Deconectare",
     "signUp": "Inregistrare",
     "browseSpaces": "Exploreaza Spatii",
+    "browseHosts": "Explorează gazde",
     "myBookings": "Rezervarile Mele",
     "hostDashboard": "Panou Gazda",
     "becomeAHost": "Devino Gazda",
@@ -481,5 +482,49 @@
     "trustLine": "Peste 1.000 de gazde in peste 50 de orase",
     "copyright": "© 2026 Spacefly.ai.",
     "allRightsReserved": "Toate drepturile rezervate."
+  },
+  "venue": {
+    "metaTitle": "{name} — Spacefly.ai",
+    "backToSpaces": "Înapoi la spații",
+    "hostedBy": "Gazdă: {name}",
+    "viewHost": "Vezi gazda",
+    "hostingSince": "Gazdă din {year}",
+    "verified": "Gazdă verificată",
+    "about": "Despre acest local",
+    "address": "Adresă",
+    "spaces": "Spații la acest local",
+    "noSpaces": "Nu există spații disponibile la acest local.",
+    "detailLoadError": "Nu am putut încărca localul.",
+    "retry": "Încearcă din nou",
+    "workingHours": {
+      "title": "Orar de lucru",
+      "closed": "Închis",
+      "day": {
+        "monday": "Luni",
+        "tuesday": "Marți",
+        "wednesday": "Miercuri",
+        "thursday": "Joi",
+        "friday": "Vineri",
+        "saturday": "Sâmbătă",
+        "sunday": "Duminică"
+      }
+    }
+  },
+  "hosts": {
+    "title": "Gazde pe Spacefly.ai",
+    "description": "Descoperă oamenii și companiile care găzduiesc pe Spacefly.ai.",
+    "card": {
+      "venues": "{count, plural, one {# local} other {# locale}}",
+      "spaces": "{count, plural, one {# spațiu} other {# spații}}",
+      "hostingSince": "Din {year}"
+    },
+    "profile": {
+      "backToHosts": "Înapoi la gazde",
+      "venues": "Locale",
+      "noVenues": "Această gazdă nu are localuri publice.",
+      "viewVenue": "Vezi localul"
+    },
+    "empty": "Nu există gazde de afișat.",
+    "loadError": "Nu am putut încărca gazdele."
   }
 }

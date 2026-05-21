@@ -8,6 +8,7 @@
     "signOut": "Выйти",
     "signUp": "Зарегистрироваться",
     "browseSpaces": "Обзор Пространств",
+    "browseHosts": "Все хосты",
     "myBookings": "Мои Бронирования",
     "hostDashboard": "Панель Хоста",
     "becomeAHost": "Стать Хостом",
@@ -481,5 +482,49 @@
     "trustLine": "Более 1 000 хостов в более чем 50 городах",
     "copyright": "© 2026 Spacefly.ai.",
     "allRightsReserved": "Все права защищены."
+  },
+  "venue": {
+    "metaTitle": "{name} — Spacefly.ai",
+    "backToSpaces": "К списку пространств",
+    "hostedBy": "Хост: {name}",
+    "viewHost": "Профиль хоста",
+    "hostingSince": "С {year} года",
+    "verified": "Проверенный хост",
+    "about": "О заведении",
+    "address": "Адрес",
+    "spaces": "Пространства в этом заведении",
+    "noSpaces": "В этом заведении пока нет доступных пространств.",
+    "detailLoadError": "Не удалось загрузить заведение.",
+    "retry": "Повторить",
+    "workingHours": {
+      "title": "Часы работы",
+      "closed": "Закрыто",
+      "day": {
+        "monday": "Понедельник",
+        "tuesday": "Вторник",
+        "wednesday": "Среда",
+        "thursday": "Четверг",
+        "friday": "Пятница",
+        "saturday": "Суббота",
+        "sunday": "Воскресенье"
+      }
+    }
+  },
+  "hosts": {
+    "title": "Хосты на Spacefly.ai",
+    "description": "Знакомьтесь с людьми и компаниями, размещающими пространства.",
+    "card": {
+      "venues": "{count, plural, one {# заведение} few {# заведения} other {# заведений}}",
+      "spaces": "{count, plural, one {# пространство} few {# пространства} other {# пространств}}",
+      "hostingSince": "С {year}"
+    },
+    "profile": {
+      "backToHosts": "К списку хостов",
+      "venues": "Заведения",
+      "noVenues": "У этого хоста пока нет публичных заведений.",
+      "viewVenue": "Открыть заведение"
+    },
+    "empty": "Хостов пока нет.",
+    "loadError": "Не удалось загрузить хостов."
   }
 }
