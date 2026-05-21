@@ -108,7 +108,11 @@ const Lightbox = ({ images, initialIndex, open, onClose, alt }: LightboxProps) =
           </div>
 
           {/* Close button */}
-          <Dialog.Close className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors cursor-pointer">
+          <Dialog.Close
+            aria-label="Close gallery"
+            onClick={onClose}
+            className="absolute top-4 right-4 z-20 p-2 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors cursor-pointer"
+          >
             <X className="size-6" />
           </Dialog.Close>
 
