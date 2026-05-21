@@ -2,7 +2,6 @@ import z from "zod";
 import type { PricingTier } from "./currency";
 
 export type { Currency, ExchangeRate, PricingTier } from "./currency";
-export type { Venue, VenueWithHost, VenueWithSpaces } from "./venue";
 
 export type SpaceType =
   | "OFFICE_DESK"
