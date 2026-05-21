@@ -2,12 +2,27 @@
 import React from "react";
 import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 
 const mockStore = vi.fn();
+const getToken = vi.fn();
+const push = vi.fn();
+const router = { push };
 
 vi.mock("@/stores/authStore", () => ({
   default: () => mockStore(),
+}));
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => router,
 }));
 
 vi.mock("next/link", () => ({
@@ -48,7 +63,9 @@ describe("host spaces page", () => {
   const getClassNames = () =>
     Array.from(container.querySelectorAll<HTMLElement>("*"))
       .map((element) => element.className)
-      .filter((className): className is string => typeof className === "string");
+      .filter(
+        (className): className is string => typeof className === "string",
+      );
 
   beforeAll(() => {
     (
@@ -60,8 +77,12 @@ describe("host spaces page", () => {
 
   beforeEach(() => {
     mockStore.mockReset();
+    getToken.mockReset();
+    getToken.mockResolvedValue("test-token");
+    push.mockReset();
     mockStore.mockReturnValue({
-      token: "test-token",
+      getToken,
+      token: "stale-token",
     });
 
     container = document.createElement("div");
@@ -83,7 +104,7 @@ describe("host spaces page", () => {
       vi.fn().mockResolvedValue({
         ok: true,
         json: async () => [],
-      })
+      }),
     );
 
     const pageModule = await import("./page");
@@ -98,31 +119,39 @@ describe("host spaces page", () => {
     });
 
     expect(container.textContent).toContain("My Spaces");
-    expect(container.textContent).toContain("You haven't listed any spaces yet");
-    expect(container.querySelectorAll('a[href="/host/spaces/new"]').length).toBe(2);
+    expect(container.textContent).toContain(
+      "You haven't listed any spaces yet",
+    );
+    expect(
+      container.querySelectorAll('a[href="/host/spaces/new"]').length,
+    ).toBe(2);
 
     const classNames = getClassNames();
-    expect(classNames.some((className) => className.includes("bg-card"))).toBe(true);
-    expect(
-      classNames.some((className) => className.includes("text-muted-foreground"))
-    ).toBe(true);
-    expect(
-      classNames.some((className) => className.includes("border-border/60"))
-    ).toBe(true);
-    expect(classNames.some((className) => className.includes("bg-gray-50"))).toBe(
-      false
+    expect(classNames.some((className) => className.includes("bg-card"))).toBe(
+      true,
     );
+    expect(
+      classNames.some((className) =>
+        className.includes("text-muted-foreground"),
+      ),
+    ).toBe(true);
+    expect(
+      classNames.some((className) => className.includes("border-border/60")),
+    ).toBe(true);
+    expect(
+      classNames.some((className) => className.includes("bg-gray-50")),
+    ).toBe(false);
     expect(classNames.some((className) => className.includes("bg-white"))).toBe(
-      false
-    );
-    expect(classNames.some((className) => className.includes("text-gray-500"))).toBe(
-      false
-    );
-    expect(classNames.some((className) => className.includes("text-gray-900"))).toBe(
-      false
+      false,
     );
     expect(
-      classNames.some((className) => className.includes("bg-gradient-to-r"))
+      classNames.some((className) => className.includes("text-gray-500")),
+    ).toBe(false);
+    expect(
+      classNames.some((className) => className.includes("text-gray-900")),
+    ).toBe(false);
+    expect(
+      classNames.some((className) => className.includes("bg-gradient-to-r")),
     ).toBe(false);
   });
 
@@ -147,7 +176,7 @@ describe("host spaces page", () => {
             totalReviews: 16,
           },
         ],
-      })
+      }),
     );
 
     const pageModule = await import("./page");
@@ -162,7 +191,7 @@ describe("host spaces page", () => {
     });
 
     const menuButton = container.querySelector(
-      'button[aria-label="Open actions for Riverside Loft"]'
+      'button[aria-label="Open actions for Riverside Loft"]',
     );
 
     expect(menuButton).not.toBeNull();
@@ -172,25 +201,55 @@ describe("host spaces page", () => {
     });
 
     expect(container.textContent).toContain("Deactivate");
-    expect(container.querySelector('a[href="/host/spaces/42/edit"]')?.textContent).toContain(
-      "Edit"
-    );
+    expect(
+      container.querySelector('a[href="/host/spaces/42/edit"]')?.textContent,
+    ).toContain("Edit");
 
     const classNames = getClassNames();
-    expect(classNames.some((className) => className.includes("bg-popover"))).toBe(
-      true
-    );
     expect(
-      classNames.some((className) => className.includes("text-popover-foreground"))
+      classNames.some((className) => className.includes("bg-popover")),
     ).toBe(true);
-    expect(classNames.some((className) => className.includes("hover:bg-accent"))).toBe(
-      true
-    );
-    expect(classNames.some((className) => className.includes("hover:bg-gray-50"))).toBe(
-      false
-    );
-    expect(classNames.some((className) => className.includes("border-gray-200"))).toBe(
-      false
+    expect(
+      classNames.some((className) =>
+        className.includes("text-popover-foreground"),
+      ),
+    ).toBe(true);
+    expect(
+      classNames.some((className) => className.includes("hover:bg-accent")),
+    ).toBe(true);
+    expect(
+      classNames.some((className) => className.includes("hover:bg-gray-50")),
+    ).toBe(false);
+    expect(
+      classNames.some((className) => className.includes("border-gray-200")),
+    ).toBe(false);
+  });
+
+  it("refreshes the access token before loading host spaces", async () => {
+    getToken.mockResolvedValue("fresh-token");
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => [],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(getToken).toHaveBeenCalled();
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining("/spaces/host/my"),
+      expect.objectContaining({
+        headers: { Authorization: "Bearer fresh-token" },
+      }),
     );
   });
 });

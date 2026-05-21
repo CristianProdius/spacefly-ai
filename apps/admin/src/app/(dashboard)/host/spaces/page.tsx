@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
 import {
   BadgeCheck,
@@ -49,7 +50,8 @@ interface Space {
 }
 
 const HostSpacesPage = () => {
-  const { token } = useAuthStore();
+  const router = useRouter();
+  const { getToken } = useAuthStore();
   const [spaces, setSpaces] = useState<Space[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -59,42 +61,60 @@ const HostSpacesPage = () => {
     setError(null);
     setLoading(true);
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/host/my`,
         {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+          headers: { Authorization: `Bearer ${resolvedToken}` },
+        },
       );
       if (res.ok) {
         const data = await res.json();
         setSpaces(data);
+      } else if (res.status === 401) {
+        router.push("/login");
       } else {
         throw new Error("Failed to fetch spaces");
       }
     } catch (error) {
       console.error("Error fetching spaces:", error);
-      setError("Spaces could not be loaded. Check the product service and retry.");
+      setError(
+        "Spaces could not be loaded. Check the product service and retry.",
+      );
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, [getToken, router]);
 
   useEffect(() => {
-    if (token) fetchSpaces();
-  }, [fetchSpaces, token]);
+    fetchSpaces();
+  }, [fetchSpaces]);
 
   const toggleSpaceStatus = async (spaceId: number, currentStatus: boolean) => {
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${spaceId}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${resolvedToken}`,
           },
           body: JSON.stringify({ isActive: !currentStatus }),
-        }
+        },
       );
 
       if (res.ok) {
@@ -102,15 +122,17 @@ const HostSpacesPage = () => {
           prev.map((space) =>
             space.id === spaceId
               ? { ...space, isActive: !currentStatus }
-              : space
-          )
+              : space,
+          ),
         );
       } else {
         throw new Error("Failed to update space status");
       }
     } catch (error) {
       console.error("Error toggling space status:", error);
-      setError("Space status could not be updated. Retry after checking the product service.");
+      setError(
+        "Space status could not be updated. Retry after checking the product service.",
+      );
     }
     setMenuOpen(null);
   };
@@ -119,12 +141,19 @@ const HostSpacesPage = () => {
     if (!confirm("Are you sure you want to delete this space?")) return;
 
     try {
+      const resolvedToken = await getToken();
+
+      if (!resolvedToken) {
+        router.push("/login");
+        return;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${spaceId}`,
         {
           method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        }
+          headers: { Authorization: `Bearer ${resolvedToken}` },
+        },
       );
 
       if (res.ok) {
@@ -134,7 +163,9 @@ const HostSpacesPage = () => {
       }
     } catch (error) {
       console.error("Error deleting space:", error);
-      setError("Space could not be deleted. Retry after checking the product service.");
+      setError(
+        "Space could not be deleted. Retry after checking the product service.",
+      );
     }
     setMenuOpen(null);
   };
@@ -156,7 +187,7 @@ const HostSpacesPage = () => {
   const activeSpaces = spaces.filter((space) => space.isActive).length;
   const inactiveSpaces = spaces.length - activeSpaces;
   const reviewedSpaces = spaces.filter(
-    (space) => space.averageRating != null && space.averageRating > 0
+    (space) => space.averageRating != null && space.averageRating > 0,
   ).length;
 
   if (loading) {
@@ -393,23 +424,24 @@ const HostSpacesPage = () => {
                       <span className="font-medium text-foreground">
                         {getPriceDisplay(space)}
                       </span>
-                      {space.averageRating != null && space.averageRating > 0 && (
-                        <div className="flex items-center gap-1">
-                          <Star className="size-4 fill-yellow-400 text-yellow-400" />
-                          <span className="text-foreground">
-                            {space.averageRating.toFixed(1)}
-                          </span>
-                          <span className="text-muted-foreground">
-                            ({space.totalReviews})
-                          </span>
-                        </div>
-                      )}
+                      {space.averageRating != null &&
+                        space.averageRating > 0 && (
+                          <div className="flex items-center gap-1">
+                            <Star className="size-4 fill-yellow-400 text-yellow-400" />
+                            <span className="text-foreground">
+                              {space.averageRating.toFixed(1)}
+                            </span>
+                            <span className="text-muted-foreground">
+                              ({space.totalReviews})
+                            </span>
+                          </div>
+                        )}
                       <span
                         className={cn(
                           "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset",
                           space.isActive
                             ? "bg-green-500/10 text-green-700 ring-green-500/20 dark:text-green-300"
-                            : "bg-muted text-muted-foreground ring-border/60"
+                            : "bg-muted text-muted-foreground ring-border/60",
                         )}
                       >
                         {space.isActive ? "Active" : "Inactive"}
