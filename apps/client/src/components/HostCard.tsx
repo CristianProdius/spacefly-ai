@@ -8,6 +8,7 @@ import type { HostSummary } from "@repo/types";
 
 const HostCard = ({ host }: { host: HostSummary }) => {
   const t = useTranslations("hosts.card");
+  const tVenue = useTranslations("venue");
   const displayName = host.name ?? host.username;
   const initials = displayName.slice(0, 1).toUpperCase();
   const hostingYear = host.hostingSince ? new Date(host.hostingSince).getFullYear() : null;
@@ -38,7 +39,7 @@ const HostCard = ({ host }: { host: HostSummary }) => {
           )}
           {host.hostVerified && (
             <span className="inline-flex items-center gap-1 text-xs text-success mt-0.5">
-              <Check className="size-3.5" /> Verified
+              <Check className="size-3.5" /> {tVenue("verified")}
             </span>
           )}
         </div>

@@ -78,7 +78,7 @@ export const getHosts = async (req: Request, res: Response) => {
         hostingSince: true,
         hostVerified: true,
         venues: {
-          where: { isActive: true },
+          where: { isActive: true, ...(city ? { city } : {}) },
           select: {
             city: true,
             _count: { select: { spaces: { where: { isActive: true } } } },

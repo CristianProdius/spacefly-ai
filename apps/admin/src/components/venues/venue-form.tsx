@@ -469,6 +469,7 @@ const VenueForm = ({
                     <input
                       type="checkbox"
                       checked={isOpen}
+                      aria-label={`${day} open`}
                       onChange={(event) => {
                         if (event.target.checked) {
                           setDay({ open: "09:00", close: "18:00" });
@@ -482,6 +483,7 @@ const VenueForm = ({
                   <input
                     type="time"
                     disabled={!isOpen}
+                    aria-label={`${day} opening time`}
                     value={value?.open ?? ""}
                     onChange={(event) =>
                       setDay({
@@ -494,6 +496,7 @@ const VenueForm = ({
                   <input
                     type="time"
                     disabled={!isOpen}
+                    aria-label={`${day} closing time`}
                     value={value?.close ?? ""}
                     onChange={(event) =>
                       setDay({
