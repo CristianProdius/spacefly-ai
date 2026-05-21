@@ -67,7 +67,7 @@ describe("host controller", () => {
       })
     );
     expect(res.status).toHaveBeenCalledWith(200);
-    const payload = res.json.mock.calls[0][0];
+    const payload = res.json.mock.calls[0]![0];
     expect(payload.hosts).toHaveLength(1);
     expect(payload.hosts[0]).toMatchObject({
       id: "u1",
@@ -121,7 +121,7 @@ describe("host controller", () => {
       })
     );
     expect(res.status).toHaveBeenCalledWith(200);
-    const payload = res.json.mock.calls[0][0];
+    const payload = res.json.mock.calls[0]![0];
     expect(payload.id).toBe("u1");
     expect(payload.venues).toHaveLength(1);
     expect(payload.venues[0].spaces[0].id).toBe(10);

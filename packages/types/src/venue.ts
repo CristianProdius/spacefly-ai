@@ -89,6 +89,18 @@ export interface HostSummary {
   cities: string[];
 }
 
+export interface HostVenueCard {
+  id: number;
+  name: string;
+  shortDescription: string;
+  city: string;
+  country: string;
+  images: string[];
+  isActive: boolean;
+  spaces: VenueSpaceSummary[];
+  _count?: { spaces: number };
+}
+
 export interface HostDetail extends HostSummary {
-  venues: VenueWithSpaces[];
+  venues: HostVenueCard[];
 }
