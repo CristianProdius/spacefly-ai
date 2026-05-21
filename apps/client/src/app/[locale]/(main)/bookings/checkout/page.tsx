@@ -51,10 +51,6 @@ const CheckoutPage = () => {
             endTime: draft.endTime,
             guests: draft.guests,
             isHourly: draft.isHourly,
-            subtotal: draft.subtotal,
-            cleaningFee: draft.cleaningFee,
-            serviceFee: draft.serviceFee,
-            totalAmount: draft.totalAmount,
           }),
         }
       );

@@ -246,4 +246,92 @@ describe("host bookings page", () => {
       false
     );
   });
+
+  it("filters bookings by space so hosts can separate requests across spaces", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => [
+          {
+            id: "pending-1",
+            spaceId: 1,
+            status: "PENDING",
+            startDate: "2099-02-01T10:00:00.000Z",
+            endDate: "2099-02-01T10:00:00.000Z",
+            startTime: "10:00",
+            endTime: "12:00",
+            guests: 4,
+            isHourly: true,
+            totalAmount: 120,
+            createdAt: "2099-01-01T12:00:00.000Z",
+            space: {
+              id: 1,
+              name: "Studio One",
+              images: ["/studio-one.jpg"],
+            },
+            guest: {
+              id: "guest-1",
+              name: "Alex",
+              email: "alex@example.com",
+              image: null,
+            },
+          },
+          {
+            id: "confirmed-1",
+            spaceId: 2,
+            status: "CONFIRMED",
+            startDate: "2099-02-02T10:00:00.000Z",
+            endDate: "2099-02-03T10:00:00.000Z",
+            startTime: null,
+            endTime: null,
+            guests: 8,
+            isHourly: false,
+            totalAmount: 240,
+            createdAt: "2099-01-01T12:00:00.000Z",
+            space: {
+              id: 2,
+              name: "Gallery Hall",
+              images: ["/gallery-hall.jpg"],
+            },
+            guest: {
+              id: "guest-2",
+              name: "Jamie",
+              email: "jamie@example.com",
+              image: null,
+            },
+          },
+        ],
+      })
+    );
+
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    const spaceFilter = container.querySelector(
+      'select[aria-label="Filter bookings by space"]'
+    ) as HTMLSelectElement | null;
+
+    expect(spaceFilter).not.toBeNull();
+
+    await act(async () => {
+      spaceFilter!.value = "1";
+      spaceFilter!.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+
+    const bookingsListText = Array.from(container.querySelectorAll("article"))
+      .map((article) => article.textContent)
+      .join(" ");
+
+    expect(bookingsListText).toContain("Studio One");
+    expect(bookingsListText).not.toContain("Gallery Hall");
+  });
 });

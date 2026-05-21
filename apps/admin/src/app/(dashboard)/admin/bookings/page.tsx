@@ -3,15 +3,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useAuthStore from "@/stores/authStore";
-import { columns } from "./columns";
+import { AdminBooking, columns } from "./columns";
 import { DataTable } from "./data-table";
-import { Booking } from "@repo/types";
 import { DataLoadError } from "@/components/dashboard";
 
 const BookingsPage = () => {
   const router = useRouter();
   const { isAuthenticated, isAdmin, isLoading: authLoading, getToken } = useAuthStore();
-  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [bookings, setBookings] = useState<AdminBooking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

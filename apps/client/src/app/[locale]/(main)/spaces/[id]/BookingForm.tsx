@@ -9,6 +9,7 @@ import useBookingStore from "@/stores/bookingStore";
 import useAuthStore from "@/stores/authStore";
 import { useTranslations } from "next-intl";
 import { formatPrice, formatPriceFull } from "@/lib/utils";
+import { calculateBookingPricing } from "@/lib/booking-pricing";
 
 interface BookingFormProps {
   space: SpaceWithHost;
@@ -34,41 +35,29 @@ const BookingForm = ({ space }: BookingFormProps) => {
   const canBookDaily = space.pricingType === "DAILY" || space.pricingType === "BOTH";
 
   const startHour = parseInt(startTime.split(":")[0]!);
-  const roundCurrency = (amount: number) => Math.round(amount * 100) / 100;
 
   const pricing = useMemo(() => {
-    if (!startDate) return null;
+    return calculateBookingPricing({
+      bookingType,
+      endDate,
+      endTime,
+      space,
+      startDate,
+      startTime,
+    });
+  }, [bookingType, startDate, endDate, startTime, endTime, space]);
 
-    let subtotal = 0;
-    let hours = 0;
-    let days = 0;
-
-    if (bookingType === "hourly" && space.pricePerHour) {
-      const end = parseInt(endTime.split(":")[0]!);
-      hours = end - startHour;
-      if (hours <= 0) hours = 1;
-      subtotal = roundCurrency(hours * space.pricePerHour);
-    } else if (bookingType === "daily" && space.pricePerDay && startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      days = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
-      if (days <= 0) days = 1;
-      subtotal = roundCurrency(days * space.pricePerDay);
-    }
-
-    const cleaningFee = roundCurrency(subtotal * 0.05); // 5% cleaning fee
-    const serviceFee = roundCurrency(subtotal * 0.1); // 10% service fee
-    const totalAmount = roundCurrency(subtotal + cleaningFee + serviceFee);
-
-    return {
-      hours,
-      days,
-      subtotal,
-      cleaningFee,
-      serviceFee,
-      totalAmount,
-    };
-  }, [bookingType, startDate, endDate, startTime, endTime, space, startHour]);
+  const subtotalLabel = pricing?.appliedTier
+    ? `${pricing.appliedTier.label} x ${pricing.appliedTier.units}`
+    : bookingType === "hourly"
+      ? t("hoursCalc", {
+          price: space.pricePerHour ?? 0,
+          count: pricing?.hours ?? 0,
+        })
+      : t("daysCalc", {
+          price: space.pricePerDay ?? 0,
+          count: pricing?.days ?? 0,
+        });
 
   const handleBooking = () => {
     if (!isAuthenticated) {
@@ -274,9 +263,7 @@ const BookingForm = ({ space }: BookingFormProps) => {
         <div className="border-t border-border pt-4 mb-6 space-y-2">
           <div className="flex justify-between text-muted">
             <span>
-              {bookingType === "hourly"
-                ? t("hoursCalc", { price: space.pricePerHour ?? 0, count: pricing.hours })
-                : t("daysCalc", { price: space.pricePerDay ?? 0, count: pricing.days })}
+              {subtotalLabel}
             </span>
             <span>{formatPriceFull(pricing.subtotal, (space as any).currency)}</span>
           </div>

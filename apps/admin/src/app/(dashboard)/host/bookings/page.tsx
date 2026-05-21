@@ -70,6 +70,7 @@ const HostBookingsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState(searchParams.get("status") || "all");
+  const [spaceFilter, setSpaceFilter] = useState(searchParams.get("spaceId") || "all");
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   const statusFilters = [
@@ -204,9 +205,24 @@ const HostBookingsPage = () => {
     }
   };
 
-  const filteredBookings = bookings.filter((booking) =>
-    filter === "all" ? true : booking.status === filter
-  );
+  const spaceOptions = Array.from(
+    new Map(
+      bookings.map((booking) => [
+        booking.spaceId,
+        {
+          id: booking.spaceId,
+          name: booking.space.name,
+        },
+      ])
+    ).values()
+  ).sort((a, b) => a.name.localeCompare(b.name));
+
+  const filteredBookings = bookings.filter((booking) => {
+    const matchesStatus = filter === "all" ? true : booking.status === filter;
+    const matchesSpace =
+      spaceFilter === "all" ? true : booking.spaceId.toString() === spaceFilter;
+    return matchesStatus && matchesSpace;
+  });
   const pendingCount = bookings.filter(
     (booking) => booking.status === "PENDING"
   ).length;
@@ -326,26 +342,53 @@ const HostBookingsPage = () => {
         title="Booking requests"
         description="Filter bookings by status and respond to incoming requests."
       >
-        <div className="flex gap-2 overflow-x-auto pb-2">
-          {statusFilters.map((statusFilter) => (
-            <button
-              key={statusFilter.value}
-              onClick={() => setFilter(statusFilter.value)}
-              className={cn(
-                "inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
-                filter === statusFilter.value
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "border border-border/60 bg-accent/40 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-              )}
-            >
-              {statusFilter.label}
-              {statusFilter.value === "PENDING" && pendingCount > 0 ? (
-                <span className="ml-2 rounded-full bg-amber-500 px-1.5 py-0.5 text-xs text-white">
-                  {pendingCount}
-                </span>
-              ) : null}
-            </button>
-          ))}
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex gap-2 overflow-x-auto pb-2 lg:pb-0">
+            {statusFilters.map((statusFilter) => (
+              <button
+                key={statusFilter.value}
+                onClick={() => setFilter(statusFilter.value)}
+                className={cn(
+                  "inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium whitespace-nowrap transition-colors",
+                  filter === statusFilter.value
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "border border-border/60 bg-accent/40 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                )}
+              >
+                {statusFilter.label}
+                {statusFilter.value === "PENDING" && pendingCount > 0 ? (
+                  <span className="ml-2 rounded-full bg-amber-500 px-1.5 py-0.5 text-xs text-white">
+                    {pendingCount}
+                  </span>
+                ) : null}
+              </button>
+            ))}
+          </div>
+
+          {spaceOptions.length > 0 ? (
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="booking-space-filter"
+                className="text-sm font-medium text-muted-foreground"
+              >
+                Space
+              </label>
+              <select
+                id="booking-space-filter"
+                aria-label="Filter bookings by space"
+                value={spaceFilter}
+                onChange={(event) => setSpaceFilter(event.target.value)}
+                className="h-10 min-w-48 rounded-lg border border-border/60 bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+              >
+                <option value="all">All spaces</option>
+                {spaceOptions.map((space) => (
+                  <option key={space.id} value={space.id.toString()}>
+                    {space.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : null}
         </div>
 
         {filteredBookings.length === 0 ? (
