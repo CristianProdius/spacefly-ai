@@ -6,6 +6,7 @@ import categoryRouter from "./routes/category.route.js";
 import amenityRouter from "./routes/amenity.route.js";
 import uploadRouter from "./routes/upload.route.js";
 import venueRouter from "./routes/venue.route.js";
+import hostRouter from "./routes/host.route.js";
 import currencyRoutes from "./routes/currency.route.js";
 import { consumer, producer } from "./utils/kafka.js";
 
@@ -50,6 +51,7 @@ app.use("/categories", categoryRouter);
 app.use("/amenities", amenityRouter);
 app.use("/uploads", uploadRouter);
 app.use("/venues", venueRouter);
+app.use("/hosts", hostRouter);
 app.use("/currencies", currencyRoutes);
 
 // Error handler
