@@ -54,6 +54,13 @@ const MobileMenu = () => {
               {t("browseSpaces")}
             </Dialog.Close>
 
+            <Dialog.Close render={<Link href="/hosts" />} className={cn(
+              "block px-4 py-3 text-sm font-medium",
+              pathname === "/hosts" ? "text-primary" : "text-foreground"
+            )}>
+              {t("browseHosts")}
+            </Dialog.Close>
+
             {isAuthenticated && (
               <Dialog.Close render={<Link href="/bookings" />} className={cn(
                 "block px-4 py-3 text-sm font-medium",
