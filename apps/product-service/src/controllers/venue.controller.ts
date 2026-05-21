@@ -19,7 +19,17 @@ export const getVenue = async (req: Request, res: Response) => {
   const venue = await prisma.venue.findUnique({
     where: { id: venueId },
     include: {
-      host: { select: { id: true, name: true, image: true } },
+      host: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+          image: true,
+          bio: true,
+          hostingSince: true,
+          hostVerified: true,
+        },
+      },
       spaces: {
         where: { isActive: true },
         select: {
@@ -30,8 +40,12 @@ export const getVenue = async (req: Request, res: Response) => {
           pricePerHour: true,
           pricePerDay: true,
           pricingType: true,
+          currency: true,
           images: true,
           isActive: true,
+          city: true,
+          country: true,
+          instantBook: true,
         },
         orderBy: { createdAt: "asc" },
       },
