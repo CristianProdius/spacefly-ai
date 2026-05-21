@@ -42,9 +42,11 @@ export interface Venue {
 export interface VenueHostSummary {
   id: string;
   name: string | null;
+  username: string;
   image: string | null;
   bio?: string | null;
   hostingSince?: string | null;
+  hostVerified: boolean;
 }
 
 export interface VenueWithHost extends Venue {

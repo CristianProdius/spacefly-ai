@@ -1,6 +1,7 @@
 "use client";
 
 import { Space } from "@repo/types";
+import type { VenueSpaceSummary } from "@repo/types";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -9,11 +10,15 @@ import { parseImages, getPriceDisplay, type PriceLabels } from "@/lib/utils";
 import { getSpaceCategoryLabel } from "@/lib/taxonomy";
 import { type SpaceWithCategory } from "./SpaceList";
 
-const SpaceCard = ({ space }: { space: Space | SpaceWithCategory }) => {
+const SpaceCard = ({ space }: { space: Space | SpaceWithCategory | VenueSpaceSummary }) => {
   const images = parseImages(space.images);
   const t = useTranslations("spaces");
   const tc = useTranslations("common");
   const categoryLabel = getSpaceCategoryLabel(space);
+  const averageRating =
+    "averageRating" in space && typeof space.averageRating === "number"
+      ? space.averageRating
+      : undefined;
 
   const priceLabels: PriceLabels = {
     perHr: tc("perHrShort"),
@@ -48,10 +53,10 @@ const SpaceCard = ({ space }: { space: Space | SpaceWithCategory }) => {
             <h3 className="font-semibold text-foreground line-clamp-1">
               {space.name}
             </h3>
-            {space.averageRating !== undefined && space.averageRating > 0 && (
+            {averageRating !== undefined && averageRating > 0 && (
               <div className="flex items-center gap-1 text-sm shrink-0">
                 <Star className="w-3.5 h-3.5 fill-foreground text-foreground" />
-                <span className="font-medium">{space.averageRating.toFixed(1)}</span>
+                <span className="font-medium">{averageRating.toFixed(1)}</span>
               </div>
             )}
           </div>

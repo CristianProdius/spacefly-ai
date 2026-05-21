@@ -9,32 +9,9 @@ import ImageGallery from "@/components/ImageGallery";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import SpaceCard from "@/components/SpaceCard";
 import WorkingHoursDisplay from "@/components/WorkingHoursDisplay";
-import type { Space } from "@repo/types";
+import type { VenueDetail } from "@repo/types";
 
-interface VenueDetailResponse {
-  id: number;
-  name: string;
-  shortDescription: string;
-  description: string;
-  images: string[] | string;
-  videoUrl: string | null;
-  address: string;
-  city: string;
-  state: string | null;
-  country: string;
-  postalCode: string | null;
-  workingHours: Record<string, { open: string; close: string } | null> | null;
-  host: {
-    id: string;
-    name: string | null;
-    username: string;
-    image: string | null;
-    bio: string | null;
-    hostingSince: string | null;
-    hostVerified: boolean;
-  };
-  spaces: Array<Space & { city: string; country: string }>;
-}
+type VenueDetailResponse = VenueDetail;
 
 async function getVenue(
   id: string,
@@ -121,7 +98,7 @@ export default async function VenueDetailPage({ params }: PageProps) {
               <h2 className="text-xl font-semibold text-foreground mb-2">
                 {t("workingHours.title")}
               </h2>
-              <WorkingHoursDisplay hours={venue.workingHours as never} />
+              <WorkingHoursDisplay hours={venue.workingHours} />
             </section>
           )}
         </div>
@@ -177,7 +154,7 @@ export default async function VenueDetailPage({ params }: PageProps) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {venue.spaces.map((space) => (
-              <SpaceCard key={space.id} space={space as Space} />
+              <SpaceCard key={space.id} space={space} />
             ))}
           </div>
         )}

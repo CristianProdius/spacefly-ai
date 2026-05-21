@@ -79,7 +79,9 @@ type ApiGroup = {
   sortOrder?: number | null;
 };
 
-type SpaceCategoryLike = Pick<Space, "categorySlug" | "spaceType"> & {
+type SpaceCategoryLike = {
+  spaceType: Space["spaceType"] | string;
+  categorySlug?: string | null;
   category?: {
     group?: LooseGroupSummary | null;
     groupSlug?: string | null;
