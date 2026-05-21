@@ -62,6 +62,7 @@ export const createVenue = async (req: Request, res: Response) => {
     latitude,
     longitude,
     currency,
+    workingHours,
   } = req.body;
   if (!name || !address || !city || !country) {
     return res
@@ -86,6 +87,7 @@ export const createVenue = async (req: Request, res: Response) => {
       latitude: latitude || null,
       longitude: longitude || null,
       currency: currency || undefined,
+      workingHours: workingHours ?? undefined,
       hostId,
     },
   });
@@ -123,6 +125,7 @@ export const updateVenue = async (req: Request, res: Response) => {
     longitude,
     currency,
     isActive,
+    workingHours,
   } = req.body;
   const venueData = {
     ...(name !== undefined && { name }),
@@ -142,6 +145,7 @@ export const updateVenue = async (req: Request, res: Response) => {
     ...(longitude !== undefined && { longitude }),
     ...(currency !== undefined && { currency }),
     ...(isActive !== undefined && { isActive }),
+    ...(workingHours !== undefined && { workingHours }),
   };
 
   // Cascade location changes to all spaces under this venue
