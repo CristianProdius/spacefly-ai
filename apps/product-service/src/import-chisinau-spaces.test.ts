@@ -5,7 +5,7 @@ import {
 } from "../../../scripts/data/chisinau-spaces";
 
 const buildSeed = (
-  overrides: Partial<CuratedSpaceSeed> = {}
+  overrides: Partial<CuratedSpaceSeed> = {},
 ): CuratedSpaceSeed => ({
   address: "Main Street 1",
   amenityNames: ["WiFi"],
@@ -15,6 +15,7 @@ const buildSeed = (
   country: "Moldova",
   description: "A validated curated listing.",
   houseRules: "Keep the room tidy.",
+  hostSlug: "ihub-chisinau",
   imageSourceUrls: ["https://example.com/image.jpg"],
   latitude: null,
   longitude: null,
@@ -40,7 +41,27 @@ describe("curated Chisinau space validation", () => {
     const seed = buildSeed();
 
     expect(() =>
-      validateCuratedSpaceSeeds([seed, buildSeed({ address: "Other Street 2" })])
+      validateCuratedSpaceSeeds([
+        seed,
+        buildSeed({ address: "Other Street 2" }),
+      ]),
     ).toThrow("Duplicate space name in manifest");
+  });
+
+  it("requires each listing to identify a local host", () => {
+    const seed: Partial<CuratedSpaceSeed> = buildSeed();
+    delete seed.hostSlug;
+
+    expect(() => validateCuratedSpaceSeeds([seed as CuratedSpaceSeed])).toThrow(
+      "local host is required",
+    );
+  });
+
+  it("rejects listings assigned to an unknown local host", () => {
+    expect(() =>
+      validateCuratedSpaceSeeds([
+        buildSeed({ hostSlug: "missing-host" } as Partial<CuratedSpaceSeed>),
+      ]),
+    ).toThrow("Unknown local host slug");
   });
 });

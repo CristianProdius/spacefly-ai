@@ -1,7 +1,15 @@
 import { SpaceWithHost } from "@repo/types";
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { AlertCircle, MapPin, Users, Star, Check, RotateCcw, RefreshCw } from "lucide-react";
+import {
+  AlertCircle,
+  MapPin,
+  Users,
+  Star,
+  Check,
+  RotateCcw,
+  RefreshCw,
+} from "lucide-react";
 import BookingForm from "./BookingForm";
 import ReviewSection from "./ReviewSection";
 import LocationMapLoader from "./LocationMapLoader";
@@ -13,18 +21,21 @@ import { Link } from "@/i18n/navigation";
 import ImageGallery from "@/components/ImageGallery";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 
-async function getSpace(id: string, locale?: string): Promise<{
+async function getSpace(
+  id: string,
+  locale?: string,
+): Promise<{
   error: boolean;
   notFound: boolean;
   space: SpaceWithHost | null;
 }> {
   try {
     const langParam = locale && locale !== "en" ? `?lang=${locale}` : "";
-    const res = await fetch(
-      `${PRODUCT_SERVICE_URL}/spaces/${id}${langParam}`,
-      { next: { revalidate: 60 } }
-    );
-    if (res.status === 404) return { error: false, notFound: true, space: null };
+    const res = await fetch(`${PRODUCT_SERVICE_URL}/spaces/${id}${langParam}`, {
+      next: { revalidate: 60 },
+    });
+    if (res.status === 404)
+      return { error: false, notFound: true, space: null };
     if (!res.ok) return { error: true, notFound: false, space: null };
     return { error: false, notFound: false, space: await res.json() };
   } catch {
@@ -55,7 +66,9 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
         <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
           <AlertCircle className="w-8 h-8 text-red-600" />
         </div>
-        <h1 className="text-2xl font-bold text-foreground text-balance">{t("detailLoadError")}</h1>
+        <h1 className="text-2xl font-bold text-foreground text-balance">
+          {t("detailLoadError")}
+        </h1>
         <p className="text-muted mt-2 text-pretty">{t("serviceError")}</p>
         <Link
           href={`/spaces/${id}`}
@@ -72,14 +85,41 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
   const categoryLabel = getSpaceCategoryLabel(space);
 
   const hostName = space.host?.name || tCommon("unknown");
-  const hostInitials = hostName.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+  const hostInitials = hostName
+    .split(" ")
+    .map((w) => w[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   const cancellationPolicy = space.cancellationPolicy;
-  const cancellationLabel = ["FLEXIBLE", "MODERATE", "STRICT", "NON_REFUNDABLE"].includes(cancellationPolicy)
-    ? tCancellation(cancellationPolicy as "FLEXIBLE" | "MODERATE" | "STRICT" | "NON_REFUNDABLE")
+  const cancellationLabel = [
+    "FLEXIBLE",
+    "MODERATE",
+    "STRICT",
+    "NON_REFUNDABLE",
+  ].includes(cancellationPolicy)
+    ? tCancellation(
+        cancellationPolicy as
+          | "FLEXIBLE"
+          | "MODERATE"
+          | "STRICT"
+          | "NON_REFUNDABLE",
+      )
     : cancellationPolicy;
-  const cancellationDesc = ["FLEXIBLE", "MODERATE", "STRICT", "NON_REFUNDABLE"].includes(cancellationPolicy)
-    ? tCancellation(`${cancellationPolicy}_DESC` as "FLEXIBLE_DESC" | "MODERATE_DESC" | "STRICT_DESC" | "NON_REFUNDABLE_DESC")
+  const cancellationDesc = [
+    "FLEXIBLE",
+    "MODERATE",
+    "STRICT",
+    "NON_REFUNDABLE",
+  ].includes(cancellationPolicy)
+    ? tCancellation(
+        `${cancellationPolicy}_DESC` as
+          | "FLEXIBLE_DESC"
+          | "MODERATE_DESC"
+          | "STRICT_DESC"
+          | "NON_REFUNDABLE_DESC",
+      )
     : t("contactHostForDetails");
 
   return (
@@ -112,9 +152,13 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
               {space.name}
             </h1>
             {(space as { venue?: { name?: string } | null }).venue?.name &&
-              (space as { venue?: { name?: string } | null }).venue!.name !== space.name && (
+              (space as { venue?: { name?: string } | null }).venue!.name !==
+                space.name && (
                 <p className="text-sm text-muted mb-2">
-                  {t("atVenue", { venue: (space as { venue?: { name?: string } | null }).venue!.name! })}
+                  {t("atVenue", {
+                    venue: (space as { venue?: { name?: string } | null })
+                      .venue!.name!,
+                  })}
                 </p>
               )}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-muted">
@@ -131,7 +175,9 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
               {space.averageRating != null && space.averageRating > 0 ? (
                 <div className="flex items-center gap-1">
                   <Star className="size-4 fill-primary text-primary" />
-                  <span className="font-medium">{space.averageRating.toFixed(1)}</span>
+                  <span className="font-medium">
+                    {space.averageRating.toFixed(1)}
+                  </span>
                   <span className="text-muted">
                     ({t("reviewsLabel", { count: space.totalReviews ?? 0 })})
                   </span>
@@ -143,34 +189,50 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
           </div>
 
           {/* Host Info */}
-          <div className="flex items-center gap-4">
-            {space.host?.image ? (
-              <div className="relative size-14 rounded-full overflow-hidden ring-2 ring-primary/20">
-                <Image
-                  src={space.host.image}
-                  alt={hostName}
-                  fill
-                  className="object-cover"
-                />
+          {space.host?.id ? (
+            <Link
+              href={`/hosts/${space.host.id}`}
+              className="group -m-2 flex items-center gap-4 rounded-xl p-2 transition-colors hover:bg-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            >
+              {space.host.image ? (
+                <div className="relative size-14 rounded-full overflow-hidden ring-2 ring-primary/20">
+                  <Image
+                    src={space.host.image}
+                    alt={hostName}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="size-14 rounded-full bg-primary-light text-primary ring-2 ring-primary/20 flex items-center justify-center font-semibold text-lg">
+                  {hostInitials}
+                </div>
+              )}
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground truncate group-hover:underline">
+                  {t("hostedBy", { name: hostName })}
+                </p>
+                {space.host.hostingSince && (
+                  <p className="text-sm text-muted">
+                    {t("hostingSince", {
+                      year: new Date(space.host.hostingSince).getFullYear(),
+                    })}
+                  </p>
+                )}
               </div>
-            ) : (
+            </Link>
+          ) : (
+            <div className="flex items-center gap-4">
               <div className="size-14 rounded-full bg-primary-light text-primary ring-2 ring-primary/20 flex items-center justify-center font-semibold text-lg">
                 {hostInitials}
               </div>
-            )}
-            <div className="min-w-0">
-              <p className="font-semibold text-foreground truncate">
-                {t("hostedBy", { name: hostName })}
-              </p>
-              {space.host?.hostingSince && (
-                <p className="text-sm text-muted">
-                  {t("hostingSince", {
-                    year: new Date(space.host.hostingSince).getFullYear(),
-                  })}
+              <div className="min-w-0">
+                <p className="font-semibold text-foreground truncate">
+                  {t("hostedBy", { name: hostName })}
                 </p>
-              )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Description */}
           <div>
@@ -210,7 +272,10 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
               </h2>
               <div className="space-y-2">
                 {(space as any).pricingTiers.map((tier: any) => (
-                  <div key={tier.id} className="flex justify-between py-2 border-b border-border last:border-0">
+                  <div
+                    key={tier.id}
+                    className="flex justify-between py-2 border-b border-border last:border-0"
+                  >
                     <span className="text-muted">{tier.label}</span>
                     <span className="font-medium text-foreground">
                       {formatPrice(tier.price, (space as any).currency)}
@@ -243,10 +308,10 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
                 <RotateCcw className="size-5 text-success" />
               </div>
               <div>
-                <p className="font-medium text-foreground">{cancellationLabel}</p>
-                <p className="text-muted text-sm mt-1">
-                  {cancellationDesc}
+                <p className="font-medium text-foreground">
+                  {cancellationLabel}
                 </p>
+                <p className="text-muted text-sm mt-1">{cancellationDesc}</p>
               </div>
             </div>
           </div>

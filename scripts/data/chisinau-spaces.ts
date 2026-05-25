@@ -1,5 +1,6 @@
 export type CuratedSpaceSeed = {
   name: string;
+  hostSlug: string;
   shortDescription: string;
   description: string;
   categorySlug:
@@ -34,12 +35,80 @@ export type CuratedSpaceSeed = {
   notes: string;
 };
 
+export type CuratedHostSeed = {
+  slug: string;
+  name: string;
+  email: string;
+  username: string;
+  bio: string;
+};
+
 const DEFAULT_CITY = "Chisinau";
 const DEFAULT_COUNTRY = "Moldova";
+
+export const CHISINAU_HOSTS: CuratedHostSeed[] = [
+  {
+    slug: "ihub-chisinau",
+    name: "iHUB Chisinau",
+    email: "hosts+ihub-chisinau@spacefly.ai",
+    username: "ihub-chisinau",
+    bio: "Local coworking and startup hub in central Chisinau.",
+  },
+  {
+    slug: "totem-coworking",
+    name: "Totem Coworking",
+    email: "hosts+totem-coworking@spacefly.ai",
+    username: "totem-coworking",
+    bio: "Local coworking venue near Valea Trandafirilor in Chisinau.",
+  },
+  {
+    slug: "courtyard-chisinau",
+    name: "Courtyard by Marriott Chisinau",
+    email: "hosts+courtyard-chisinau@spacefly.ai",
+    username: "courtyard-chisinau",
+    bio: "Local hotel meeting and event venue in Chisinau.",
+  },
+  {
+    slug: "radisson-leogrand",
+    name: "Radisson Blu Leogrand Hotel",
+    email: "hosts+radisson-leogrand@spacefly.ai",
+    username: "radisson-leogrand",
+    bio: "Local hotel and event venue in central Chisinau.",
+  },
+  {
+    slug: "miadora",
+    name: "MiaDora",
+    email: "hosts+miadora@spacefly.ai",
+    username: "miadora",
+    bio: "Local wedding and event hall in Chisinau.",
+  },
+  {
+    slug: "villa-garden",
+    name: "Villa Garden",
+    email: "hosts+villa-garden@spacefly.ai",
+    username: "villa-garden",
+    bio: "Local wedding and event venue in Rose Valley Park.",
+  },
+  {
+    slug: "tekwill",
+    name: "Tekwill",
+    email: "hosts+tekwill@spacefly.ai",
+    username: "tekwill",
+    bio: "Local innovation and coworking hub in Chisinau.",
+  },
+  {
+    slug: "c51-coworking",
+    name: "C51 Coworking House",
+    email: "hosts+c51-coworking@spacefly.ai",
+    username: "c51-coworking",
+    bio: "Local coworking house on Strada Columna in Chisinau.",
+  },
+];
 
 export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   {
     name: "iHUB Flex Desk",
+    hostSlug: "ihub-chisinau",
     shortDescription:
       "Flexible open-desk access inside central Chisinau's best-known startup hub.",
     description:
@@ -61,7 +130,13 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
       "https://ihub.ua/wp-content/uploads/2022/09/services_coworking.jpg",
       "https://ihub.ua/wp-content/uploads/2022/09/hero-ihub-scaled.jpg",
     ],
-    amenityNames: ["WiFi", "Coffee/Tea", "Lounge Area", "Printer", "24/7 Access"],
+    amenityNames: [
+      "WiFi",
+      "Coffee/Tea",
+      "Lounge Area",
+      "Printer",
+      "24/7 Access",
+    ],
     sourceUrls: ["https://ihub.ua/en/chisinau/", "https://www.ihub.md/"],
     houseRules:
       "Shared desk access. Keep calls brief in the open area and use meeting rooms for longer conversations.",
@@ -70,6 +145,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "Totem Open Desk",
+    hostSlug: "totem-coworking",
     shortDescription:
       "Flexible desk access near Valea Trandafirilor with meeting rooms and a cafeteria on site.",
     description:
@@ -111,6 +187,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "iHUB Business Office",
+    hostSlug: "ihub-chisinau",
     shortDescription:
       "Private office membership for teams that need a dedicated room inside iHUB Chisinau.",
     description:
@@ -150,6 +227,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "Totem Private Office",
+    hostSlug: "totem-coworking",
     shortDescription:
       "Private office in a modern coworking venue near Rose Valley Park.",
     description:
@@ -191,6 +269,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "iHUB Meeting Room",
+    hostSlug: "ihub-chisinau",
     shortDescription:
       "Central Chisinau meeting room for small business sessions and startup calls.",
     description:
@@ -211,7 +290,13 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
     imageSourceUrls: [
       "https://ihub.ua/wp-content/uploads/2022/09/services_meeting.jpg",
     ],
-    amenityNames: ["WiFi", "TV Screen", "Whiteboard", "Coffee/Tea", "Reception"],
+    amenityNames: [
+      "WiFi",
+      "TV Screen",
+      "Whiteboard",
+      "Coffee/Tea",
+      "Reception",
+    ],
     sourceUrls: ["https://ihub.ua/en/chisinau/"],
     houseRules:
       "Hourly meeting-room booking. Keep the room in setup-ready condition for the next reservation.",
@@ -220,6 +305,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "Courtyard Amber Meeting Room",
+    hostSlug: "courtyard-chisinau",
     shortDescription:
       "Hotel meeting room on Arborilor for boardroom sessions, training, and client meetings.",
     description:
@@ -240,7 +326,13 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
     imageSourceUrls: [
       "https://cache.marriott.com/content/dam/marriott-renditions/KIVCY/kivcy-amber-meeting-8319-hor-clsc.jpg?downsize=1336px%3A%2A&interpolation=progressive-bilinear&output-quality=70",
     ],
-    amenityNames: ["WiFi", "Air Conditioning", "Reception", "Projector", "Parking"],
+    amenityNames: [
+      "WiFi",
+      "Air Conditioning",
+      "Reception",
+      "Projector",
+      "Parking",
+    ],
     sourceUrls: [
       "https://www.marriott.com/en-us/hotels/kivcy-courtyard-chisinau/events/",
       "https://www.marriott.com/en-us/hotels/kivcy-courtyard-chisinau/photos/",
@@ -252,6 +344,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "Radisson Leogrand Convention Center",
+    hostSlug: "radisson-leogrand",
     shortDescription:
       "Large-scale convention and gala venue in the center of Chisinau.",
     description:
@@ -291,6 +384,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "Courtyard Diamond Hall",
+    hostSlug: "courtyard-chisinau",
     shortDescription:
       "Large Marriott event hall for launches, forums, workshops, and corporate receptions.",
     description:
@@ -311,7 +405,13 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
     imageSourceUrls: [
       "https://cache.marriott.com/content/dam/marriott-renditions/KIVCY/kivcy-diamond-meeting-8316-hor-clsc.jpg?downsize=1336px%3A%2A&interpolation=progressive-bilinear&output-quality=70",
     ],
-    amenityNames: ["WiFi", "Air Conditioning", "Reception", "Projector", "Parking"],
+    amenityNames: [
+      "WiFi",
+      "Air Conditioning",
+      "Reception",
+      "Projector",
+      "Parking",
+    ],
     sourceUrls: [
       "https://www.marriott.com/en-us/hotels/kivcy-courtyard-chisinau/events/",
       "https://www.marriott.com/en-us/hotels/kivcy-courtyard-chisinau/photos/",
@@ -323,6 +423,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "MiaDora Wedding Hall",
+    hostSlug: "miadora",
     shortDescription:
       "Classical wedding venue in Botanica with a large reception hall, terrace, and landscaped grounds.",
     description:
@@ -354,6 +455,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "Villa Garden Sky Garden Hall",
+    hostSlug: "villa-garden",
     shortDescription:
       "Refined wedding hall in Valea Trandafirilor with a green terrace and lounge zones.",
     description:
@@ -392,6 +494,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "Tekwill Coworking Hub",
+    hostSlug: "tekwill",
     shortDescription:
       "Large innovation-led coworking hub at UTM with desks, labs, events, and community programming.",
     description:
@@ -431,6 +534,7 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
   },
   {
     name: "C51 Coworking House",
+    hostSlug: "c51-coworking",
     shortDescription:
       "Historic coworking house on Columna for quiet work sessions and intimate community events.",
     description:
@@ -468,11 +572,20 @@ export const CHISINAU_SPACES: CuratedSpaceSeed[] = [
 ];
 
 export const validateCuratedSpaceSeeds = (
-  spaces: ReadonlyArray<CuratedSpaceSeed> = CHISINAU_SPACES
+  spaces: ReadonlyArray<CuratedSpaceSeed> = CHISINAU_SPACES,
 ) => {
   const names = new Set<string>();
+  const hostSlugs = new Set(CHISINAU_HOSTS.map((host) => host.slug));
 
   for (const space of spaces) {
+    if (!space.hostSlug?.trim()) {
+      throw new Error(`${space.name}: local host is required`);
+    }
+    if (!hostSlugs.has(space.hostSlug)) {
+      throw new Error(
+        `${space.name}: Unknown local host slug: ${space.hostSlug}`,
+      );
+    }
     if (space.city !== "Chisinau") {
       throw new Error(`${space.name}: city must remain Chisinau`);
     }

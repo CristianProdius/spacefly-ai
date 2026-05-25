@@ -1,4 +1,6 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { hashPassword } from "@repo/auth-middleware";
+import { randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { Prisma } from "../packages/db/generated/prisma/index.js";
 import { prisma } from "../packages/db/src/client.ts";
@@ -9,12 +11,12 @@ import {
   sniffUploadedImageType,
 } from "../apps/product-service/src/utils/upload.ts";
 import {
+  CHISINAU_HOSTS,
   CHISINAU_SPACES,
   type CuratedSpaceSeed,
   validateCuratedSpaceSeeds,
 } from "./data/chisinau-spaces.ts";
 
-const OWNER_EMAIL = "cristian@prodiusenterprise.com";
 const DEFAULT_DESCRIPTION_SUFFIX =
   "Details, final availability, and pricing should be confirmed directly with the venue host.";
 const FETCH_TIMEOUT_MS = 20_000;
@@ -37,7 +39,8 @@ const slugify = (value: string) =>
 
 const buildAvailability = (space: CuratedSpaceSeed): AvailabilityRow[] => {
   const isVenue =
-    space.categorySlug === "event-venue" || space.categorySlug === "wedding-venue";
+    space.categorySlug === "event-venue" ||
+    space.categorySlug === "wedding-venue";
   const isIhub = space.name.startsWith("iHUB");
   const isTotem = space.name.startsWith("Totem");
 
@@ -81,8 +84,7 @@ const fetchImageBuffer = async (url: string) => {
     try {
       const response = await fetch(url, {
         headers: {
-          accept:
-            "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+          accept: "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
           "user-agent":
             "Mozilla/5.0 (compatible; SpaceflySeedBot/1.0; +https://spacefly.ai)",
         },
@@ -91,7 +93,7 @@ const fetchImageBuffer = async (url: string) => {
 
       if (!response.ok) {
         throw new Error(
-          `Failed to download image: ${response.status} ${response.statusText} (${url})`
+          `Failed to download image: ${response.status} ${response.statusText} (${url})`,
         );
       }
 
@@ -104,7 +106,9 @@ const fetchImageBuffer = async (url: string) => {
       const buffer = Buffer.from(arrayBuffer);
 
       if (buffer.byteLength > MAX_IMAGE_BYTES) {
-        throw new Error(`Image exceeds ${MAX_IMAGE_BYTES} bytes after download: ${url}`);
+        throw new Error(
+          `Image exceeds ${MAX_IMAGE_BYTES} bytes after download: ${url}`,
+        );
       }
 
       return buffer;
@@ -118,16 +122,20 @@ const fetchImageBuffer = async (url: string) => {
   throw new Error(`Failed to download image after retries: ${url}`);
 };
 
-const buildImportImageObjectKey = (ownerId: string, space: CuratedSpaceSeed, imageIndex: number) =>
+const buildImportImageObjectKey = (
+  ownerId: string,
+  space: CuratedSpaceSeed,
+  imageIndex: number,
+) =>
   `spaces/${ownerId.replace(/[^a-zA-Z0-9_-]/g, "_")}/imports/chisinau/${slugify(
-    space.categorySlug
+    space.categorySlug,
   )}/${slugify(space.name)}-${imageIndex + 1}`;
 
 const uploadImageToStorage = async (
   ownerId: string,
   space: CuratedSpaceSeed,
   url: string,
-  imageIndex: number
+  imageIndex: number,
 ) => {
   const buffer = await fetchImageBuffer(url);
   const imageType = sniffUploadedImageType(buffer);
@@ -142,14 +150,59 @@ const uploadImageToStorage = async (
       ContentLength: buffer.byteLength,
       ContentType: imageType.mime,
       Key: objectKey,
-    })
+    }),
   );
 
   return buildPublicUploadUrl(objectKey);
 };
 
-export const validateManifest = (spaces: ReadonlyArray<CuratedSpaceSeed> = CHISINAU_SPACES) => {
+export const validateManifest = (
+  spaces: ReadonlyArray<CuratedSpaceSeed> = CHISINAU_SPACES,
+) => {
   validateCuratedSpaceSeeds(spaces);
+};
+
+const upsertCuratedHosts = async () => {
+  const placeholderPassword = await hashPassword(randomUUID());
+  const hosts = new Map<
+    string,
+    { id: string; hostVerified: boolean; hostingSince: Date | null }
+  >();
+
+  for (const host of CHISINAU_HOSTS) {
+    const existing = await prisma.user.findUnique({
+      where: { email: host.email },
+      select: { hostingSince: true },
+    });
+    const saved = await prisma.user.upsert({
+      where: { email: host.email },
+      update: {
+        bio: host.bio,
+        emailVerified: true,
+        hostVerified: true,
+        hostingSince: existing?.hostingSince ?? new Date(),
+        name: host.name,
+        role: "HOST",
+        username: host.username,
+      },
+      create: {
+        bio: host.bio,
+        email: host.email,
+        emailVerified: true,
+        hostVerified: true,
+        hostingSince: new Date(),
+        name: host.name,
+        password: placeholderPassword,
+        role: "HOST",
+        username: host.username,
+      },
+      select: { id: true, hostVerified: true, hostingSince: true },
+    });
+
+    hosts.set(host.slug, saved);
+  }
+
+  return hosts;
 };
 
 export const main = async () => {
@@ -160,19 +213,14 @@ export const main = async () => {
     return;
   }
 
-  const owner = await prisma.user.findUnique({
-    where: { email: OWNER_EMAIL },
-    select: { id: true, hostVerified: true, hostingSince: true },
-  });
-
-  if (!owner) {
-    throw new Error(`Owner account not found for ${OWNER_EMAIL}`);
-  }
+  const hostsBySlug = await upsertCuratedHosts();
 
   const amenities = await prisma.amenity.findMany({
     select: { id: true, name: true },
   });
-  const amenityByName = new Map(amenities.map((amenity) => [amenity.name, amenity.id]));
+  const amenityByName = new Map(
+    amenities.map((amenity) => [amenity.name, amenity.id]),
+  );
 
   const categories = await prisma.spaceCategory.findMany({
     select: { slug: true },
@@ -181,10 +229,14 @@ export const main = async () => {
 
   for (const space of CHISINAU_SPACES) {
     if (!categorySlugs.has(space.categorySlug)) {
-      throw new Error(`Missing category slug in database: ${space.categorySlug}`);
+      throw new Error(
+        `Missing category slug in database: ${space.categorySlug}`,
+      );
     }
 
-    const missingAmenity = space.amenityNames.find((name) => !amenityByName.has(name));
+    const missingAmenity = space.amenityNames.find(
+      (name) => !amenityByName.has(name),
+    );
     if (missingAmenity) {
       throw new Error(`Missing amenity in database: ${missingAmenity}`);
     }
@@ -194,12 +246,21 @@ export const main = async () => {
 
   for (const space of CHISINAU_SPACES) {
     console.log(`Importing ${space.name}...`);
+    const owner = hostsBySlug.get(space.hostSlug);
+    if (!owner) {
+      throw new Error(
+        `Local host not found for ${space.name}: ${space.hostSlug}`,
+      );
+    }
+
     const uploadedImages = await Promise.all(
       space.imageSourceUrls.map((imageSourceUrl, imageIndex) =>
-        uploadImageToStorage(owner.id, space, imageSourceUrl, imageIndex)
-      )
+        uploadImageToStorage(owner.id, space, imageSourceUrl, imageIndex),
+      ),
     );
-    const amenityIds = space.amenityNames.map((name) => amenityByName.get(name)!);
+    const amenityIds = space.amenityNames.map(
+      (name) => amenityByName.get(name)!,
+    );
     const availability = buildAvailability(space);
 
     const data = {
@@ -227,7 +288,7 @@ export const main = async () => {
       houseRules: space.houseRules,
       categorySlug: space.categorySlug,
       hostId: owner.id,
-    } satisfies Prisma.SpaceUncheckedCreateInput;
+    } satisfies Omit<Prisma.SpaceUncheckedCreateInput, "venueId">;
 
     const savedSpace = await prisma.$transaction(async (tx) => {
       const matches = await tx.space.findMany({
@@ -242,17 +303,45 @@ export const main = async () => {
 
       if (matches.length > 1) {
         throw new Error(
-          `Duplicate spaces found for ${space.name} at ${space.address}; manual cleanup required`
+          `Duplicate spaces found for ${space.name} at ${space.address}; manual cleanup required`,
         );
       }
 
       const saved =
         matches[0] == null
-          ? await tx.space.create({ data })
+          ? await tx.space.create({
+              data: {
+                ...data,
+                venueId: (
+                  await tx.venue.create({
+                    data: {
+                      address: space.address,
+                      city: space.city,
+                      country: space.country,
+                      description: data.description,
+                      hostId: owner.id,
+                      images: uploadedImages,
+                      latitude: space.latitude,
+                      longitude: space.longitude,
+                      name: space.name,
+                      postalCode: space.postalCode,
+                      shortDescription: space.shortDescription,
+                      state: space.state,
+                    },
+                    select: { id: true },
+                  })
+                ).id,
+              },
+            })
           : await tx.space.update({
               where: { id: matches[0].id },
               data,
             });
+
+      await tx.venue.update({
+        where: { id: saved.venueId },
+        data: { hostId: owner.id },
+      });
 
       await tx.spaceAmenity.deleteMany({
         where: { spaceId: saved.id },
@@ -281,25 +370,18 @@ export const main = async () => {
     console.log(`Imported ${space.name} as space #${savedSpace.id}`);
   }
 
-  await prisma.user.update({
-    where: { email: OWNER_EMAIL },
-    data: {
-      hostVerified: true,
-      hostingSince: owner.hostingSince ?? new Date(),
-    },
-  });
-
   const total = await prisma.space.count({
     where: {
       city: "Chisinau",
-      host: { email: OWNER_EMAIL },
+      hostId: { in: Array.from(hostsBySlug.values()).map((host) => host.id) },
     },
   });
-  console.log(`Done. ${OWNER_EMAIL} now owns ${total} Chisinau spaces.`);
+  console.log(`Done. Imported ${total} Chisinau spaces across local hosts.`);
 };
 
 const isDirectRun =
-  process.argv[1] != null && import.meta.url === pathToFileURL(process.argv[1]).href;
+  process.argv[1] != null &&
+  import.meta.url === pathToFileURL(process.argv[1]).href;
 
 if (isDirectRun) {
   main()
