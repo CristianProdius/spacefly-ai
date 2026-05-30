@@ -49,7 +49,7 @@ export default async function HostsPage() {
       ) : result.data.hosts.length === 0 ? (
         <p className="text-muted py-12 text-center">{t("empty")}</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {result.data.hosts.map((host) => (
             <HostCard key={host.id} host={host} />
           ))}
