@@ -1,6 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import { Star, ArrowRight, TrendingUp, Sparkles, Users } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -78,7 +78,7 @@ export default function FeaturedStoryScroll({
               >
                 {/* Image */}
                 <Link
-                  href={`/spaces/${space.id}`}
+                  href={spaceHref(space)}
                   className="group relative aspect-[4/3] rounded-2xl overflow-hidden"
                 >
                   <Image
@@ -125,7 +125,7 @@ export default function FeaturedStoryScroll({
                   </div>
 
                   <Link
-                    href={`/spaces/${space.id}`}
+                    href={spaceHref(space)}
                     className="inline-flex items-center gap-2 text-primary hover:text-primary-hover font-medium text-sm mt-2 group/link"
                   >
                     View details

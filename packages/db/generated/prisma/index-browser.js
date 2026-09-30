@@ -206,6 +206,7 @@ exports.Prisma.RevokedAccessTokenScalarFieldEnum = {
 exports.Prisma.VenueScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  slug: 'slug',
   shortDescription: 'shortDescription',
   description: 'description',
   nameTranslations: 'nameTranslations',
@@ -244,6 +245,7 @@ exports.Prisma.ExchangeRateScalarFieldEnum = {
 exports.Prisma.SpaceScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  slug: 'slug',
   shortDescription: 'shortDescription',
   description: 'description',
   nameTranslations: 'nameTranslations',
@@ -446,7 +448,8 @@ exports.Currency = exports.$Enums.Currency = {
   USD: 'USD',
   EUR: 'EUR',
   MDL: 'MDL',
-  RON: 'RON'
+  RON: 'RON',
+  GBP: 'GBP'
 };
 
 exports.SpaceType = exports.$Enums.SpaceType = {

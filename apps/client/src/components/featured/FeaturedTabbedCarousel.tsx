@@ -1,6 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -87,7 +87,7 @@ export default function FeaturedTabbedCarousel({
             return (
               <Link
                 key={space.id}
-                href={`/spaces/${space.id}`}
+                href={spaceHref(space)}
                 className="shrink-0 w-[280px] sm:w-[280px] snap-start group"
               >
                 <div className="relative aspect-[3/4] rounded-xl overflow-hidden">

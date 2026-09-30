@@ -1,6 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import { Star, ChevronLeft, ChevronRight, MapPin, Quote } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -150,7 +150,7 @@ export default function FeaturedSocialProof({
 
                   {/* Space card side */}
                   <Link
-                    href={`/spaces/${space.id}`}
+                    href={spaceHref(space)}
                     className="group block border border-border rounded-xl overflow-hidden hover:shadow-layered-md transition-shadow"
                   >
                     <div className="relative aspect-[4/3]">

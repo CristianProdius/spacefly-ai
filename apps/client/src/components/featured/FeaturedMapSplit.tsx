@@ -1,6 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import {
   Star,
   MapPin,
@@ -277,7 +277,7 @@ export default function FeaturedMapSplit({
                 return (
                   <Link
                     key={space.id}
-                    href={`/spaces/${space.id}`}
+                    href={spaceHref(space)}
                     className={cn(
                       "group flex gap-4 p-3 rounded-xl transition-all duration-200",
                       hoveredId === space.id

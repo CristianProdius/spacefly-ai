@@ -52,7 +52,7 @@ vi.mock("@repo/db", async () => {
       deleteMany: vi.fn(),
       count: vi.fn(),
     },
-    venue: { findUnique: vi.fn() },
+    venue: { findUnique: vi.fn(), findMany: vi.fn() },
     booking: { findMany: vi.fn(), count: vi.fn() },
     spaceAmenity: { deleteMany: vi.fn(), createMany: vi.fn() },
     spaceCategory: { findUnique: vi.fn() },
@@ -85,6 +85,7 @@ const {
   validateAmenityIds,
   deleteSpace,
   getMySpaces,
+  getHostMedia,
 } = await import("./space.controller.js");
 
 type AnyMock = Mock;
@@ -262,43 +263,69 @@ describe("deleteSpace - PRODSVC-022 hard delete", () => {
     });
   });
 
-  it("returns 409 and does not delete when the space has bookings", async () => {
+  it("hides a space with bookings instead of leaving it publicly listed", async () => {
     const res = buildRes();
     (prisma.space.findUnique as AnyMock).mockResolvedValueOnce({
       id: 8,
       hostId: "user-1",
+      isActive: true,
     });
     (prisma.booking.count as AnyMock).mockResolvedValueOnce(3);
+    (prisma.space.update as AnyMock).mockResolvedValueOnce({
+      id: 8,
+      isActive: false,
+    });
 
     await deleteSpace(
       buildReq({ params: { id: "8" } }) as never,
       res as never,
     );
 
-    expect(res.statusCode).toBe(409);
-    expect((res.body as { code?: string })?.code).toBe("SPACE_HAS_BOOKINGS");
+    expect(res.statusCode).toBe(200);
+    expect((res.body as { code?: string; deactivated?: boolean })?.code).toBe(
+      "SPACE_DEACTIVATED_HAS_BOOKINGS",
+    );
+    expect((res.body as { deactivated?: boolean }).deactivated).toBe(true);
     expect(prisma.space.delete).not.toHaveBeenCalled();
+    expect(prisma.space.update).toHaveBeenCalledWith({
+      where: { id: 8 },
+      data: { isActive: false },
+    });
+    expect(producer.send).toHaveBeenCalledWith("space.updated", {
+      value: { id: 8 },
+    });
   });
 
-  it("maps a P2003 FK race on delete to the same 409 (TOCTOU backstop)", async () => {
+  it("maps a P2003 FK race on delete to hide-the-listing (TOCTOU backstop)", async () => {
     const res = buildRes();
     (prisma.space.findUnique as AnyMock).mockResolvedValueOnce({
       id: 9,
       hostId: "user-1",
+      isActive: true,
     });
     // Count says 0, but a booking lands before delete -> FK Restrict throws.
     (prisma.booking.count as AnyMock).mockResolvedValueOnce(0);
     (prisma.space.delete as AnyMock).mockRejectedValueOnce(
       Object.assign(new Error("FK violation"), { code: "P2003" }),
     );
+    (prisma.space.update as AnyMock).mockResolvedValueOnce({
+      id: 9,
+      isActive: false,
+    });
 
     await deleteSpace(
       buildReq({ params: { id: "9" } }) as never,
       res as never,
     );
 
-    expect(res.statusCode).toBe(409);
-    expect((res.body as { code?: string })?.code).toBe("SPACE_HAS_BOOKINGS");
+    expect(res.statusCode).toBe(200);
+    expect((res.body as { code?: string })?.code).toBe(
+      "SPACE_DEACTIVATED_HAS_BOOKINGS",
+    );
+    expect(prisma.space.update).toHaveBeenCalledWith({
+      where: { id: 9 },
+      data: { isActive: false },
+    });
   });
 
   it("rethrows non-P2003 delete errors to the global handler", async () => {
@@ -1526,6 +1553,18 @@ describe("getSpace - M11 soft-delete visibility", () => {
     expect(call?.where?.venue).toEqual({ isActive: true });
     expect(call?.where?.host).toEqual({ deletedAt: null });
   });
+
+  it("looks up a public slug instead of 400ing non-numeric ids", async () => {
+    const res = buildRes();
+    (prisma.space.findFirst as AnyMock).mockResolvedValueOnce(null);
+    await getSpace(
+      buildReq({ params: { id: "iride-hot-desk" } }),
+      res as never,
+    );
+    const call = (prisma.space.findFirst as AnyMock).mock.calls[0]?.[0];
+    expect(call?.where?.slug).toBe("iride-hot-desk");
+    expect(call?.where?.id).toBeUndefined();
+  });
 });
 
 describe("getAvailability - M11 soft-delete guard", () => {
@@ -1669,6 +1708,21 @@ describe("getMySpaces - AUD-B6 attaches ratings", () => {
     const unrated = body.find((s) => s.id === 20)!;
     expect(unrated.averageRating).toBe(0);
     expect(unrated.totalReviews).toBe(0);
+  });
+});
+
+describe("getHostMedia", () => {
+  it("returns unique image urls from the host venues and spaces", async () => {
+    (prisma.venue.findMany as AnyMock).mockResolvedValueOnce([
+      { images: ["a.jpg", "b.jpg"] },
+    ]);
+    (prisma.space.findMany as AnyMock).mockResolvedValueOnce([
+      { images: ["b.jpg", "c.jpg"] },
+    ]);
+    const res = buildRes();
+    await getHostMedia(buildReq(), res as never);
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual({ images: ["a.jpg", "b.jpg", "c.jpg"] });
   });
 });
 

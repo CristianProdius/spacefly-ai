@@ -869,6 +869,35 @@ describe("getVenue host PII filter (AUD-006)", () => {
     expect(res.status).toHaveBeenCalledWith(404);
     expect(res.json).toHaveBeenCalledWith({ message: "Venue not found" });
   });
+
+  it("looks up a public slug instead of 400ing non-numeric ids", async () => {
+    mocks.venueFindFirst.mockResolvedValueOnce({
+      id: 23,
+      slug: "regus-iride-business-centre",
+      isActive: true,
+      city: "Bucharest",
+      country: "Romania",
+      host: { id: "host-1", name: "Regus" },
+      spaces: [],
+    });
+    const req = {
+      params: { id: "regus-iride-business-centre" },
+      query: {},
+    } as unknown as Request;
+    const res = createResponse();
+
+    await getVenue(req, res);
+
+    expect(mocks.venueFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: {
+          slug: "regus-iride-business-centre",
+          host: { deletedAt: null },
+        },
+      }),
+    );
+    expect(res.status).toHaveBeenCalledWith(200);
+  });
 });
 
 describe("getVenueCountsByHost filters (AUD-020)", () => {

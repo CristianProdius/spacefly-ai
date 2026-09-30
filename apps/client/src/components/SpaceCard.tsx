@@ -1,7 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
-import type { VenueSpaceSummary } from "@repo/types";
+import { Space, spaceHref, venueHref, type VenueSpaceSummary } from "@repo/types";
 import { Star } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -30,7 +29,7 @@ const SpaceCard = ({ space }: { space: Space | SpaceWithCategory | VenueSpaceSum
   return (
     <div className="group">
       {/* IMAGE — links to the space */}
-      <Link href={`/spaces/${space.id}`} className="block">
+      <Link href={spaceHref(space)} className="block">
         <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
           <Image
             src={images[0] || "/placeholder-space.jpg"}
@@ -52,7 +51,7 @@ const SpaceCard = ({ space }: { space: Space | SpaceWithCategory | VenueSpaceSum
       {/* DETAILS */}
       <div className="pt-3 flex flex-col gap-0.5">
         <div className="flex items-start justify-between gap-2">
-          <Link href={`/spaces/${space.id}`} className="min-w-0">
+          <Link href={spaceHref(space)} className="min-w-0">
             <h3 className="font-semibold text-foreground line-clamp-1 hover:underline">
               {space.name}
             </h3>
@@ -67,7 +66,7 @@ const SpaceCard = ({ space }: { space: Space | SpaceWithCategory | VenueSpaceSum
 
         {"venue" in space && space.venue && space.venue.name !== space.name && (
           <Link
-            href={`/venues/${space.venue.id}`}
+            href={venueHref(space.venue)}
             className="text-xs text-muted line-clamp-1 hover:underline"
           >
             {t("atVenue", { venue: space.venue.name })}

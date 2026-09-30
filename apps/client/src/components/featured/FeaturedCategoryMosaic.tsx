@@ -1,6 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import {
   Building2,
   DoorOpen,
@@ -152,7 +152,7 @@ export default function FeaturedCategoryMosaic({
                         return (
                           <Link
                             key={space.id}
-                            href={`/spaces/${space.id}`}
+                            href={spaceHref(space)}
                             className="shrink-0 w-[200px] group/card"
                           >
                             <div className="relative aspect-[4/3] rounded-lg overflow-hidden">

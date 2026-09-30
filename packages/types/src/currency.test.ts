@@ -6,8 +6,8 @@ import {
 } from "./currency";
 
 describe("currency definitions", () => {
-  it("includes RON alongside USD/EUR/MDL", () => {
-    expect(CURRENCIES).toEqual(["USD", "EUR", "MDL", "RON"]);
+  it("includes RON and GBP alongside USD/EUR/MDL", () => {
+    expect(CURRENCIES).toEqual(["USD", "EUR", "MDL", "RON", "GBP"]);
   });
 
   it("renders MDL and RON as unambiguous suffixes, not a bare L", () => {
@@ -16,6 +16,7 @@ describe("currency definitions", () => {
     expect(CURRENCY_SYMBOLS.RON).toBe("RON");
     expect(CURRENCY_SYMBOLS.USD).toBe("$");
     expect(CURRENCY_SYMBOLS.EUR).toBe("€");
+    expect(CURRENCY_SYMBOLS.GBP).toBe("£");
   });
 
   it("has a human label for every currency", () => {

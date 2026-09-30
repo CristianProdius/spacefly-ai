@@ -119,6 +119,7 @@ export interface BlockedDate {
 
 export interface Space {
   id: number;
+  slug?: string;
   name: string;
   shortDescription: string;
   description: string;

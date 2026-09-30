@@ -22,6 +22,9 @@ import {
   parsePositiveInteger,
   parsePositiveIntegerWithDefault,
 } from "../lib/validation.js";
+import { publicLookupWhere } from "../lib/public-id.js";
+import { allocateUniqueSlug } from "../lib/listing-slug.js";
+import { spaceSlugSource } from "@repo/types";
 
 // PRODSVC-012: bound host-scoped lists so a host with thousands of spaces
 // can't OOM the API or blow the wire payload.
@@ -31,6 +34,7 @@ const SPACE_LIST_MAX_LIMIT = 200;
 const venueInclude = {
   select: {
     id: true,
+    slug: true,
     name: true,
     shortDescription: true,
     description: true,
@@ -57,9 +61,11 @@ const venueInclude = {
   },
 };
 
-// Shared by the deleteSpace booking guard and its P2003 race backstop.
-const SPACE_HAS_BOOKINGS_MESSAGE =
-  "This space has existing bookings and can't be deleted. Deactivate it instead to hide it from listings while preserving booking history.";
+// Delete with booking history cannot hard-delete (Booking FK Restrict). Hide
+// the listing instead of returning 409 and leaving isActive:true — otherwise
+// the space stays on the public venue page after the host "deleted" it.
+const SPACE_DEACTIVATED_HAS_BOOKINGS_MESSAGE =
+  "This space has existing bookings so it was hidden from the site instead of deleted.";
 
 const SORT_FIELDS = new Set([
   "createdAt",
@@ -916,9 +922,8 @@ export const getSpaces = async (req: Request, res: Response) => {
 // Get single space by ID
 export const getSpace = async (req: Request, res: Response) => {
   const id = req.params.id as string;
-  const spaceId = parseInt(id, 10);
-  if (Number.isNaN(spaceId))
-    return res.status(400).json({ message: "Invalid ID" });
+  const lookup = publicLookupWhere(id);
+  if (!lookup) return res.status(400).json({ message: "Invalid ID" });
 
   // AUD-007: this route is public. If the host has been soft-deleted
   // (deletedAt not null) we must return 404 so the included `host` block
@@ -933,7 +938,7 @@ export const getSpace = async (req: Request, res: Response) => {
   // never comes back — no separate branch that could diverge.
   const space = await prisma.space.findFirst({
     where: {
-      id: spaceId,
+      ...lookup,
       isActive: true,
       host: { deletedAt: null },
       venue: { isActive: true },
@@ -1134,6 +1139,16 @@ export const createSpace = async (req: Request, res: Response) => {
       .status(400)
       .json({ message: "Cannot add a space to a deactivated venue" });
   }
+
+  spaceData.slug = await allocateUniqueSlug(
+    spaceSlugSource(venue.name ?? "", spaceData.name ?? "space"),
+    async (candidate) =>
+      !!(await prisma.space.findUnique({
+        where: { slug: candidate },
+        select: { id: true },
+      })),
+    "space",
+  );
 
   // PRODSVC-009: pre-validate categorySlug so Prisma doesn't 500 on unknown
   // slugs and the client gets an actionable error.
@@ -1500,36 +1515,44 @@ export const deleteSpace = async (req: Request, res: Response) => {
       .json({ message: "Not authorized to delete this space" });
   }
 
-  // PRODSVC-022: "Delete" must actually remove the space, not just flip
-  // isActive=false. The old soft delete left the row in place, and getMySpaces
-  // (below) returns every hostId row regardless of isActive, so a "deleted"
-  // space kept reappearing as an inactive listing and could never be removed.
-  //
-  // Hard delete is safe for spaces with no booking history: SpaceAmenity,
-  // PricingTier, Availability, BlockedDate and Review all cascade
-  // (schema.prisma onDelete: Cascade). The Booking relation does NOT cascade
-  // (onDelete defaults to Restrict) so historical bookings are preserved — a
-  // space that has bookings can't be hard-deleted; we return 409 with a clear
-  // reason instead of letting Prisma throw an opaque FK error.
+  const hideFromPublic = async (bookingCount?: number) => {
+    await prisma.space.update({
+      where: { id: spaceId },
+      data: { isActive: false },
+    });
+    try {
+      await producer.send("space.updated", { value: { id: spaceId } });
+    } catch (err) {
+      console.error(
+        "Failed to publish space.updated event for space",
+        spaceId,
+        "- hidden from listings but search/cache will be stale until reconciled:",
+        err instanceof Error ? err.message : err
+      );
+    }
+    return res.status(200).json({
+      message: SPACE_DEACTIVATED_HAS_BOOKINGS_MESSAGE,
+      code: "SPACE_DEACTIVATED_HAS_BOOKINGS",
+      deactivated: true,
+      bookingCount,
+    });
+  };
+
+  // PRODSVC-022: "Delete" must actually remove the space when it has no
+  // booking history. SpaceAmenity, PricingTier, Availability, BlockedDate and
+  // Review all cascade. Booking does NOT (onDelete Restrict), so a space with
+  // bookings is hidden (isActive=false) instead of 409-and-still-listed.
   const bookingCount = await prisma.booking.count({ where: { spaceId } });
   if (bookingCount > 0) {
-    return res
-      .status(409)
-      .json({ message: SPACE_HAS_BOOKINGS_MESSAGE, code: "SPACE_HAS_BOOKINGS", bookingCount });
+    return hideFromPublic(bookingCount);
   }
 
   try {
     await prisma.space.delete({ where: { id: spaceId } });
   } catch (err) {
-    // TOCTOU backstop: the count above and this delete are not atomic, so a
-    // booking can land in the gap (order-service writes to the same DB). The
-    // Booking->Space FK is onDelete: Restrict, so that race surfaces as a
-    // Prisma P2003. Map it to the same friendly 409 the count guard returns
-    // instead of leaking the generic "invalid foreign key" error to the host.
+    // TOCTOU backstop: a booking can land between the count and delete.
     if ((err as { code?: string })?.code === "P2003") {
-      return res
-        .status(409)
-        .json({ message: SPACE_HAS_BOOKINGS_MESSAGE, code: "SPACE_HAS_BOOKINGS" });
+      return hideFromPublic();
     }
     throw err;
   }
@@ -1547,6 +1570,30 @@ export const deleteSpace = async (req: Request, res: Response) => {
   }
 
   res.status(200).json({ message: "Space deleted successfully" });
+};
+
+const collectImageUrls = (rows: { images: unknown }[]): string[] => {
+  const urls: string[] = [];
+  const seen = new Set<string>();
+  for (const row of rows) {
+    const images = Array.isArray(row.images) ? row.images : [];
+    for (const url of images) {
+      if (typeof url === "string" && url.length > 0 && !seen.has(url)) {
+        seen.add(url);
+        urls.push(url);
+      }
+    }
+  }
+  return urls;
+};
+
+export const getHostMedia = async (req: Request, res: Response) => {
+  const hostId = req.userId!;
+  const [venues, spaces] = await Promise.all([
+    prisma.venue.findMany({ where: { hostId }, select: { images: true } }),
+    prisma.space.findMany({ where: { hostId }, select: { images: true } }),
+  ]);
+  res.status(200).json({ images: collectImageUrls([...venues, ...spaces]) });
 };
 
 // Get host's own spaces

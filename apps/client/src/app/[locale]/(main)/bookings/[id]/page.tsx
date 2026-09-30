@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useRouter } from "@/i18n/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { spaceHref } from "@repo/types";
 import useAuthStore from "@/stores/authStore";
 import { fetchWithAuth, SessionExpiredError } from "@/lib/apiClient";
 import { ORDER_SERVICE_URL } from "@/lib/config";
@@ -258,7 +259,7 @@ const BookingDetailPage = () => {
               </div>
               <div>
                 <Link
-                  href={`/spaces/${booking.space.id}`}
+                  href={spaceHref(booking.space)}
                   className="font-semibold text-gray-900 hover:text-indigo-600"
                 >
                   {booking.space.name}

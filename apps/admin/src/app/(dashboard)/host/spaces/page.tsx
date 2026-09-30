@@ -33,6 +33,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { formatMoney } from "@/lib/format";
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "react-toastify";
 
 interface Space {
   id: number;
@@ -61,6 +63,8 @@ const HostSpacesPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [menuOpen, setMenuOpen] = useState<number | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [bulkBusy, setBulkBusy] = useState(false);
 
   const fetchSpaces = useCallback(async () => {
     setError(null);
@@ -139,44 +143,124 @@ const HostSpacesPage = () => {
     setMenuOpen(null);
   };
 
+  const applyDeleteResult = (
+    spaceId: number,
+    body: { deactivated?: boolean } | null,
+  ) => {
+    if (body?.deactivated) {
+      setSpaces((prev) =>
+        prev.map((space) =>
+          space.id === spaceId ? { ...space, isActive: false } : space,
+        ),
+      );
+    } else {
+      setSpaces((prev) => prev.filter((space) => space.id !== spaceId));
+    }
+    setSelectedIds((prev) => prev.filter((id) => id !== spaceId));
+  };
+
+  // Resolves true when the space had bookings and was hidden, not deleted.
+  const deleteSpaceById = async (spaceId: number): Promise<boolean> => {
+    let res: Response;
+    try {
+      res = await apiFetch(
+        `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${spaceId}`,
+        { method: "DELETE" },
+      );
+    } catch (err) {
+      if (err instanceof UnauthenticatedError) {
+        router.push("/login");
+        return false;
+      }
+      throw err;
+    }
+
+    if (res.ok) {
+      const body = (await res.json().catch(() => null)) as {
+        deactivated?: boolean;
+      } | null;
+      applyDeleteResult(spaceId, body);
+      return body?.deactivated === true;
+    }
+
+    const body = await res.json().catch(() => null);
+    throw new Error(body?.message ?? "Failed to delete space");
+  };
+
+  const toggleSelected = (spaceId: number, checked: boolean) => {
+    setSelectedIds((prev) =>
+      checked
+        ? prev.includes(spaceId)
+          ? prev
+          : [...prev, spaceId]
+        : prev.filter((id) => id !== spaceId),
+    );
+  };
+
+  const allSelected =
+    spaces.length > 0 && selectedIds.length === spaces.length;
+
+  const toggleSelectAll = (checked: boolean) => {
+    setSelectedIds(checked ? spaces.map((space) => space.id) : []);
+  };
+
   const deleteSpace = async (spaceId: number) => {
     if (!confirm("Are you sure you want to delete this space?")) return;
 
     try {
-      let res: Response;
-      try {
-        res = await apiFetch(
-          `${process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL}/spaces/${spaceId}`,
-          { method: "DELETE" },
+      if (await deleteSpaceById(spaceId)) {
+        toast.info(
+          "This space has bookings, so it was hidden from the site instead of deleted.",
         );
-      } catch (err) {
-        if (err instanceof UnauthenticatedError) {
-          router.push("/login");
-          return;
-        }
-        throw err;
-      }
-
-      if (res.ok) {
-        setSpaces((prev) => prev.filter((space) => space.id !== spaceId));
-      } else if (res.status === 409) {
-        // Space has booking history and can't be hard-deleted — surface the
-        // server's reason so the host knows to deactivate instead.
-        const body = await res.json().catch(() => null);
-        setError(
-          body?.message ??
-            "This space has existing bookings and can't be deleted. Deactivate it instead.",
-        );
-      } else {
-        throw new Error("Failed to delete space");
       }
     } catch (error) {
       console.error("Error deleting space:", error);
       setError(
-        "Space could not be deleted. Retry after checking the product service.",
+        error instanceof Error
+          ? error.message
+          : "Space could not be deleted. Retry after checking the product service.",
       );
     }
     setMenuOpen(null);
+  };
+
+  const deleteSelected = async () => {
+    if (selectedIds.length === 0) return;
+    if (
+      !confirm(
+        `Delete ${selectedIds.length} selected space${selectedIds.length === 1 ? "" : "s"}? Spaces with bookings will be hidden from the site instead.`,
+      )
+    ) {
+      return;
+    }
+
+    setBulkBusy(true);
+    setError(null);
+    const remaining: number[] = [];
+    const failures: string[] = [];
+    let hidden = 0;
+    for (const spaceId of selectedIds) {
+      try {
+        if (await deleteSpaceById(spaceId)) hidden += 1;
+      } catch (error) {
+        remaining.push(spaceId);
+        failures.push(
+          error instanceof Error ? error.message : `Space ${spaceId} failed`,
+        );
+      }
+    }
+    setSelectedIds(remaining);
+    if (hidden > 0) {
+      toast.info(
+        `${hidden} space${hidden === 1 ? " has" : "s have"} bookings, so ${hidden === 1 ? "it was" : "they were"} hidden from the site instead of deleted.`,
+      );
+    }
+    if (failures.length > 0) {
+      setError(
+        `Failed to delete ${failures.length} of ${selectedIds.length} space(s): ${failures[0]}`,
+      );
+    }
+    setBulkBusy(false);
   };
 
   const getPriceDisplay = (space: Space) => {
@@ -340,12 +424,44 @@ const HostSpacesPage = () => {
           }
         >
           <div className="space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border/60 bg-accent/20 px-3 py-2">
+              <label className="inline-flex items-center gap-2 text-sm text-foreground">
+                <Checkbox
+                  checked={allSelected}
+                  onCheckedChange={(value) => toggleSelectAll(value === true)}
+                  aria-label="Select all spaces"
+                />
+                Select all
+              </label>
+              {selectedIds.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => void deleteSelected()}
+                  disabled={bulkBusy}
+                  className="inline-flex items-center gap-2 rounded-md bg-destructive px-3 py-1.5 text-sm font-medium text-white hover:bg-destructive/90 disabled:opacity-60"
+                >
+                  <Trash2 className="size-4" />
+                  {bulkBusy
+                    ? "Deleting…"
+                    : `Delete selected (${selectedIds.length})`}
+                </button>
+              )}
+            </div>
             {spaces.map((space) => (
               <article
                 key={space.id}
                 className="rounded-xl border border-border/60 bg-background p-4 shadow-sm transition-colors hover:bg-accent/20"
               >
                 <div className="flex gap-4">
+                  <div className="flex items-start pt-1">
+                    <Checkbox
+                      checked={selectedIds.includes(space.id)}
+                      onCheckedChange={(value) =>
+                        toggleSelected(space.id, value === true)
+                      }
+                      aria-label={`Select ${space.name}`}
+                    />
+                  </div>
                   <div className="relative h-24 w-32 shrink-0 overflow-hidden rounded-lg bg-muted">
                     <Image
                       src={space.images?.[0] || "/placeholder-space.jpg"}

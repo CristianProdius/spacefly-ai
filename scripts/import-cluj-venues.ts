@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { Prisma } from "../packages/db/generated/prisma/index.js";
 import { prisma } from "../packages/db/src/client.ts";
+import { uniqueSpaceSlug, uniqueVenueSlug } from "./lib/listing-slugs.ts";
 import {
   buildPublicUploadUrl,
   getS3Client,
@@ -131,9 +132,9 @@ export const main = async () => {
         postalCode: venue.postalCode, shortDescription: venue.shortDescription, description: venueDescription,
         shortDescTranslations: toTranslations(venue.shortDescriptionRo), descriptionTranslations: toTranslations(venue.descriptionRo),
         hostId: owner.id, images: venueImages, latitude: null, longitude: null, state: null,
-      } satisfies Prisma.VenueUncheckedCreateInput;
+      };
       if (m[0]) { await tx.venue.update({ where: { id: m[0].id }, data: venueData }); return m[0].id; }
-      return (await tx.venue.create({ data: venueData, select: { id: true } })).id;
+      return (await tx.venue.create({ data: { ...venueData, slug: await uniqueVenueSlug(tx, venue.name, CITY) }, select: { id: true } })).id;
     });
     venueCount += 1;
 
@@ -152,11 +153,11 @@ export const main = async () => {
         cleaningFee: 0, currency: CURRENCY, capacity: space.capacity, minBookingHours, maxBookingHours,
         images: spaceImages, isActive: true, instantBook: false, houseRules: space.houseRules,
         categorySlug: space.categorySlug, hostId: owner.id, venueId: savedVenueId,
-      } satisfies Prisma.SpaceUncheckedCreateInput;
+      };
       await prisma.$transaction(async (tx) => {
         const m = await tx.space.findMany({ where: { name: space.name, venueId: savedVenueId }, select: { id: true }, orderBy: { id: "asc" } });
         if (m.length > 1) throw new Error(`Duplicate space ${space.name}`);
-        const saved = m[0] ? await tx.space.update({ where: { id: m[0].id }, data }) : await tx.space.create({ data });
+        const saved = m[0] ? await tx.space.update({ where: { id: m[0].id }, data }) : await tx.space.create({ data: { ...data, slug: await uniqueSpaceSlug(tx, venue.name, space.name) } });
         await tx.spaceAmenity.deleteMany({ where: { spaceId: saved.id } });
         await tx.spaceAmenity.createMany({ data: amenityIds.map((amenityId) => ({ spaceId: saved.id, amenityId })), skipDuplicates: true });
         await tx.availability.deleteMany({ where: { spaceId: saved.id } });

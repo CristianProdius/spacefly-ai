@@ -1,6 +1,9 @@
 import { randomBytes } from "node:crypto";
 import { PrismaClient } from "../generated/prisma";
 import bcrypt from "bcryptjs";
+// Relative source import, not @repo/types: a package dependency would add
+// another edge to the turbo graph for one pure helper (see hashPassword below).
+import { allocateUniqueSlug, spaceSlugSource } from "../../types/src/slug";
 
 const prisma = new PrismaClient();
 
@@ -485,9 +488,16 @@ async function main() {
   ];
 
   for (const spaceData of demoSpaces) {
+    const venueName = `${spaceData.name} Venue`;
     const venue = await prisma.venue.create({
       data: {
-        name: `${spaceData.name} Venue`,
+        name: venueName,
+        slug: await allocateUniqueSlug(
+          venueName,
+          async (slug) =>
+            !!(await prisma.venue.findUnique({ where: { slug }, select: { id: true } })),
+          "venue",
+        ),
         shortDescription: spaceData.shortDescription,
         description: spaceData.description,
         images: spaceData.images,
@@ -518,6 +528,12 @@ async function main() {
     const space = await prisma.space.create({
       data: {
         ...spaceCreate,
+        slug: await allocateUniqueSlug(
+          spaceSlugSource(venueName, spaceCreate.name),
+          async (slug) =>
+            !!(await prisma.space.findUnique({ where: { slug }, select: { id: true } })),
+          "space",
+        ),
         venueId: venue.id,
       },
     });

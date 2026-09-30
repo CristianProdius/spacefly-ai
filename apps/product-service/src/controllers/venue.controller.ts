@@ -7,6 +7,8 @@ import {
   parsePositiveIntegerWithDefault,
 } from "../lib/validation.js";
 import { lookupActiveUser } from "@repo/auth-middleware";
+import { publicLookupWhere } from "../lib/public-id.js";
+import { allocateUniqueSlug } from "../lib/listing-slug.js";
 
 // PRODSVC-021: valid Currency enum members, mirroring the space controller's
 // `CURRENCIES` set. Used to reject unknown currency codes (e.g. "XXX") with a
@@ -236,6 +238,7 @@ export const getVenuesList = async (req: Request, res: Response) => {
         : { skip: (page - 1) * limit, take: limit }),
       select: {
         id: true,
+        slug: true,
         name: true,
         shortDescription: true,
         city: true,
@@ -314,15 +317,15 @@ export const getVenuesList = async (req: Request, res: Response) => {
 };
 
 export const getVenue = async (req: Request, res: Response) => {
-  const venueId = parseInt(req.params.id as string, 10);
-  if (Number.isNaN(venueId)) return res.status(400).json({ message: "Invalid ID" });
+  const lookup = publicLookupWhere(req.params.id as string);
+  if (!lookup) return res.status(400).json({ message: "Invalid ID" });
   // AUD-006: this route is public; if the host was soft-deleted (deletedAt
   // not null) we must hide the venue rather than leak the (former) host's
   // name/bio/image. Use findFirst with a relation filter so the row never
   // returns if the host is tombstoned. Return the same 404 message in both
   // cases so we don't expose host deletion as a side channel.
   const venue = await prisma.venue.findFirst({
-    where: { id: venueId, host: { deletedAt: null } },
+    where: { ...lookup, host: { deletedAt: null } },
     include: {
       host: {
         select: {
@@ -341,6 +344,7 @@ export const getVenue = async (req: Request, res: Response) => {
         where: { isActive: true },
         select: {
           id: true,
+          slug: true,
           name: true,
           spaceType: true,
           capacity: true,
@@ -440,9 +444,19 @@ export const createVenue = async (req: Request, res: Response) => {
   if (scalarError) {
     return res.status(400).json({ message: scalarError });
   }
+  const slug = await allocateUniqueSlug(
+    name,
+    async (candidate) =>
+      !!(await prisma.venue.findUnique({
+        where: { slug: candidate },
+        select: { id: true },
+      })),
+    "venue",
+  );
   const venue = await prisma.venue.create({
     data: {
       name,
+      slug,
       shortDescription: shortDescription || "",
       description: description || "",
       nameTranslations: nameTranslations ?? undefined,

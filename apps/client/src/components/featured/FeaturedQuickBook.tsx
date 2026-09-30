@@ -1,6 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import { Star, Zap } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -54,7 +54,7 @@ export default function FeaturedQuickBook({
                 key={space.id}
                 className="shrink-0 w-[200px] sm:w-[200px] snap-start"
               >
-                <Link href={`/spaces/${space.id}`} className="group block">
+                <Link href={spaceHref(space)} className="group block">
                   <div className="relative aspect-[3/4] rounded-xl overflow-hidden">
                     <Image
                       src={images[0] || "/placeholder-space.jpg"}
@@ -102,7 +102,7 @@ export default function FeaturedQuickBook({
 
                 {/* Book button */}
                 <Link
-                  href={`/spaces/${space.id}`}
+                  href={spaceHref(space)}
                   className="mt-2 w-full flex items-center justify-center gap-1.5 bg-primary hover:bg-primary-hover text-primary-foreground text-sm font-medium py-2 rounded-lg transition-colors"
                 >
                   <Zap className="w-3.5 h-3.5" />

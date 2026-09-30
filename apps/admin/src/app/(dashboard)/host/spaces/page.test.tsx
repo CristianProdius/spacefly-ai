@@ -38,6 +38,11 @@ vi.mock("@/lib/apiFetch", () => {
   };
 });
 
+const toastInfo = vi.fn();
+vi.mock("react-toastify", () => ({
+  toast: { info: (...args: unknown[]) => toastInfo(...args) },
+}));
+
 vi.mock("next/navigation", () => ({
   useRouter: () => router,
 }));
@@ -266,5 +271,138 @@ describe("host spaces page", () => {
     expect(apiFetchMock).toHaveBeenCalledWith(
       expect.stringContaining("/spaces/host/my"),
     );
+  });
+
+  it("lets the host select multiple spaces for bulk delete", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => [
+          {
+            id: 42,
+            name: "Riverside Loft",
+            images: ["/loft.jpg"],
+            city: "Chisinau",
+            country: "Moldova",
+            capacity: 12,
+            pricePerHour: 40,
+            pricePerDay: null,
+            pricingType: "HOURLY",
+            isActive: true,
+            averageRating: 4.8,
+            totalReviews: 16,
+          },
+          {
+            id: 43,
+            name: "Studio One",
+            images: ["/studio.jpg"],
+            city: "Chisinau",
+            country: "Moldova",
+            capacity: 4,
+            pricePerHour: 20,
+            pricePerDay: null,
+            pricingType: "HOURLY",
+            isActive: true,
+            averageRating: null,
+            totalReviews: 0,
+          },
+        ],
+      }),
+    );
+
+    const pageModule = await import("./page");
+
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    const loftCheckbox = container.querySelector(
+      'button[aria-label="Select Riverside Loft"]',
+    );
+    const studioCheckbox = container.querySelector(
+      'button[aria-label="Select Studio One"]',
+    );
+    expect(loftCheckbox).not.toBeNull();
+    expect(studioCheckbox).not.toBeNull();
+
+    await act(async () => {
+      loftCheckbox?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      studioCheckbox?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    expect(container.textContent).toContain("Delete selected (2)");
+  });
+
+  it("tells the host when bulk delete hid spaces that have bookings", async () => {
+    const space = (id: number, name: string) => ({
+      id,
+      name,
+      images: [],
+      city: "Bucharest",
+      country: "Romania",
+      capacity: 4,
+      pricePerHour: 20,
+      pricePerDay: null,
+      pricingType: "HOURLY",
+      isActive: true,
+      averageRating: null,
+      totalReviews: 0,
+    });
+    const fetchMock = vi.fn(async (_url: string, init?: RequestInit) => {
+      if (init?.method === "DELETE") {
+        return {
+          ok: true,
+          json: async () =>
+            _url.endsWith("/51")
+              ? { code: "SPACE_DEACTIVATED_HAS_BOOKINGS", deactivated: true }
+              : { message: "Space deleted successfully" },
+        };
+      }
+      return {
+        ok: true,
+        json: async () => [space(51, "Iride Coworking"), space(52, "Iride Desk")],
+      };
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    vi.stubGlobal("confirm", () => true);
+    toastInfo.mockClear();
+
+    const pageModule = await import("./page");
+    await act(async () => {
+      root.render(React.createElement(pageModule.default));
+    });
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    await act(async () => {
+      container
+        .querySelector('button[aria-label="Select all spaces"]')
+        ?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    const deleteButton = Array.from(container.querySelectorAll("button")).find(
+      (button) => button.textContent?.includes("Delete selected (2)"),
+    );
+    await act(async () => {
+      deleteButton?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
+
+    expect(toastInfo).toHaveBeenCalledWith(
+      expect.stringContaining("hidden from the site instead of deleted"),
+    );
+    // The hidden space stays in the list (inactive); the deleted one is gone.
+    expect(container.textContent).toContain("Iride Coworking");
+    expect(container.textContent).not.toContain("Iride Desk");
   });
 });

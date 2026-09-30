@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
+import { spaceHref } from "@repo/types";
 import { formatPrice, parseImages } from "@/lib/utils";
 
 interface SpaceMapPinProps {
   space: {
     id: number;
+    slug?: string;
     name: string;
     images: unknown;
     pricePerHour: number | null;
@@ -52,7 +54,7 @@ const SpaceMapPin = ({ space }: SpaceMapPinProps) => {
           </p>
         )}
         <Link
-          href={`/spaces/${space.id}`}
+          href={spaceHref(space)}
           className="block text-center text-xs font-medium text-primary hover:underline mt-2"
         >
           View Details →

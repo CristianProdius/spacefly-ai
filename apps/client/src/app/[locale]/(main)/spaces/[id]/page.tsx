@@ -1,5 +1,6 @@
-import { SpaceWithHost, hostProfileHref } from "@repo/types";
-import { notFound } from "next/navigation";
+import { SpaceWithHost, hostProfileHref, spaceHref } from "@repo/types";
+import { notFound, permanentRedirect } from "next/navigation";
+import type { Metadata } from "next";
 import Image from "next/image";
 import {
   AlertCircle,
@@ -49,6 +50,20 @@ interface SpaceDetailPageProps {
   params: Promise<{ id: string; locale: string }>;
 }
 
+export async function generateMetadata({
+  params,
+}: SpaceDetailPageProps): Promise<Metadata> {
+  const { id, locale } = await params;
+  const { space } = await getSpace(id, locale);
+  if (!space) return {};
+  const t = await getTranslations({ locale, namespace: "venue" });
+  return {
+    title: t("metaTitle", { name: space.name }),
+    description: space.shortDescription || undefined,
+    alternates: { canonical: spaceHref(space) },
+  };
+}
+
 const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
   const { id, locale } = await params;
   const result = await getSpace(id, locale);
@@ -81,6 +96,10 @@ const SpaceDetailPage = async ({ params }: SpaceDetailPageProps) => {
         </Link>
       </div>
     );
+  }
+
+  if (/^\d+$/.test(id) && space.slug && space.slug !== id) {
+    permanentRedirect(spaceHref(space));
   }
 
   const images = parseImages(space.images);
