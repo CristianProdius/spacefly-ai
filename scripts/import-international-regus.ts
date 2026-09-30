@@ -102,6 +102,18 @@ const upsertHosts = async () => {
   for (const v of INTERNATIONAL_REGUS_VENUES) if (!seen.has(v.hostSlug)) seen.set(v.hostSlug, v);
   for (const [slug, v] of seen) {
     const email = `hosts+${slug}@spacefly.ai`;
+    // Brand branches join the brand's existing host (one host per brand, e.g.
+    // every Regus city under regus-bucharest). Never rewrite that profile —
+    // it's live and may have been claimed/edited by the real owner.
+    if (v.hostExisting) {
+      const existing = await prisma.user.findUnique({
+        where: { email },
+        select: { id: true },
+      });
+      if (!existing) throw new Error(`Existing host not found: ${slug} (${email})`);
+      bySlug.set(slug, existing);
+      continue;
+    }
     const saved = await prisma.user.upsert({
       where: { email },
       update: {
