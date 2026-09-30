@@ -1,4 +1,5 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { AlertCircle, MapPin, RefreshCw, Check, Megaphone, Star } from "lucide-react";
 import { getTranslations } from "next-intl/server";
@@ -9,7 +10,7 @@ import ImageGallery from "@/components/ImageGallery";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
 import SpaceCard from "@/components/SpaceCard";
 import WorkingHoursDisplay from "@/components/WorkingHoursDisplay";
-import { hostProfileHref, type VenueDetail } from "@repo/types";
+import { hostProfileHref, venueHref, type VenueDetail } from "@repo/types";
 
 type VenueDetailResponse = VenueDetail;
 
@@ -32,6 +33,18 @@ async function getVenue(
 
 interface PageProps {
   params: Promise<{ id: string; locale: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id, locale } = await params;
+  const { venue } = await getVenue(id, locale);
+  if (!venue) return {};
+  const t = await getTranslations({ locale, namespace: "venue" });
+  return {
+    title: t("metaTitle", { name: venue.name }),
+    description: venue.shortDescription || undefined,
+    alternates: { canonical: venueHref(venue) },
+  };
 }
 
 export default async function VenueDetailPage({ params }: PageProps) {
@@ -61,6 +74,9 @@ export default async function VenueDetailPage({ params }: PageProps) {
   }
 
   const venue = result.venue;
+  if (/^\d+$/.test(id) && venue.slug && venue.slug !== id) {
+    permanentRedirect(venueHref(venue));
+  }
   const images = parseImages(venue.images);
   const hostingYear = venue.host.hostingSince
     ? new Date(venue.host.hostingSince).getFullYear()

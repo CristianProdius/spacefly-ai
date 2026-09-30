@@ -6,6 +6,7 @@ import {
   getSpaces,
   updateSpace,
   getMySpaces,
+  getHostMedia,
   getAvailability,
   updateAvailability,
   checkAvailability,
@@ -24,6 +25,7 @@ const router: Router = Router();
 // Public routes
 router.get("/", getSpaces);
 router.get("/host/my", shouldBeHost, resolveActingHost, getMySpaces);
+router.get("/host/media", shouldBeHost, resolveActingHost, getHostMedia);
 router.get("/:id", getSpace);
 router.get("/:id/availability", getAvailability);
 router.get("/:id/reviews", getSpaceReviews);

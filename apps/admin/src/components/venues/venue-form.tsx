@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { ArrowLeft, BadgeCheck, Loader2, Megaphone, Star, Upload, X } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Loader2, Megaphone, Star } from "lucide-react";
 
 const MapPickerDynamic = dynamic(() => import("./map-picker"), { ssr: false });
 
@@ -24,6 +23,7 @@ import {
   type WorkingHoursDay,
 } from "./venue-form.shared";
 import TranslationTabs from "@/components/translation-tabs";
+import ImageGalleryField from "@/components/media/image-gallery-field";
 
 interface VenueFormProps {
   title: string;
@@ -111,13 +111,6 @@ const VenueForm = ({
       setUploadingImage(false);
       event.target.value = "";
     }
-  };
-
-  const removeImage = (index: number) => {
-    setFormData((prev) => ({
-      ...prev,
-      images: prev.images.filter((_, imageIndex) => imageIndex !== index),
-    }));
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -273,6 +266,7 @@ const VenueForm = ({
                 <option value="EUR">EUR (&euro;)</option>
                 <option value="MDL">MDL (Lei MD)</option>
                 <option value="RON">RON (Lei RO)</option>
+                <option value="GBP">GBP (&pound;)</option>
               </select>
               <p className="mt-1 text-sm text-muted-foreground">
                 This currency will be used as the default for spaces in this venue.
@@ -350,60 +344,16 @@ const VenueForm = ({
         )}
 
         <DashboardSection title="Images" contentClassName="space-y-4">
-          <div className="mb-4 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {formData.images.map((imageUrl, index) => (
-              <div
-                key={`${imageUrl}-${index}`}
-                className="relative aspect-square overflow-hidden rounded-lg border border-border/60 bg-accent/20"
-              >
-                <Image
-                  src={imageUrl}
-                  alt={`Venue ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeImage(index)}
-                  aria-label={`Remove image ${index + 1}`}
-                  className="absolute right-2 top-2 inline-flex size-8 items-center justify-center rounded-full bg-destructive text-white shadow-sm transition-colors hover:bg-destructive/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/30"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-
-            <label className="flex aspect-square cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border/60 bg-accent/20 px-4 text-center transition-colors hover:border-primary/40 hover:bg-accent/30">
-              {uploadingImage ? (
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              ) : (
-                <>
-                  <Upload className="mb-2 h-8 w-8 text-muted-foreground" />
-                  <span className="text-sm font-medium text-foreground">
-                    Upload
-                  </span>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-            </label>
-          </div>
-
-          {uploadError && (
-            <p className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
-              {uploadError}
-            </p>
-          )}
-
-          <p className="text-sm text-muted-foreground">
-            Upload high-quality photos of your venue. First image will be the
-            cover.
-          </p>
+          <ImageGalleryField
+            images={formData.images}
+            onChange={(images) =>
+              setFormData((prev) => ({ ...prev, images }))
+            }
+            onUpload={handleImageUpload}
+            uploading={uploadingImage}
+            uploadError={uploadError}
+            altPrefix="Venue"
+          />
 
           <div>
             <label className={labelClassName}>YouTube Video URL (optional)</label>

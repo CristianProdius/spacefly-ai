@@ -1,4 +1,4 @@
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { MapPin, Star } from "lucide-react";
@@ -54,7 +54,7 @@ const FeaturedSpaceCard = async () => {
 
   return (
     <Link
-      href={`/spaces/${space.id}`}
+      href={spaceHref(space)}
       className="bg-subtle rounded-2xl border border-border overflow-hidden block"
     >
       <div className="flex flex-col sm:flex-row">

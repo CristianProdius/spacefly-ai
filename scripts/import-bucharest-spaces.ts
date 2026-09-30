@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { Prisma } from "../packages/db/generated/prisma/index.js";
 import { prisma } from "../packages/db/src/client.ts";
+import { uniqueSpaceSlug, uniqueVenueSlug } from "./lib/listing-slugs.ts";
 import {
   buildPublicUploadUrl,
   getS3Client,
@@ -305,7 +306,7 @@ export const main = async () => {
       houseRules: space.houseRules,
       categorySlug: CATEGORY_SLUG,
       hostId: owner.id,
-    } satisfies Omit<Prisma.SpaceUncheckedCreateInput, "venueId">;
+    } satisfies Omit<Prisma.SpaceUncheckedCreateInput, "venueId" | "slug">;
 
     const savedSpace = await prisma.$transaction(async (tx) => {
       // Identify existing spaces by name; verify against the venue address so we
@@ -330,9 +331,11 @@ export const main = async () => {
           ? await tx.space.create({
               data: {
                 ...data,
+                slug: await uniqueSpaceSlug(tx, space.name, space.name),
                 venueId: (
                   await tx.venue.create({
                     data: {
+                      slug: await uniqueVenueSlug(tx, space.name, CITY),
                       address: space.address,
                       city: CITY,
                       country: COUNTRY,

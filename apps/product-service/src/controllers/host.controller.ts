@@ -245,6 +245,7 @@ const HOST_DETAIL_SELECT = {
     orderBy: { createdAt: "desc" as const },
     select: {
       id: true,
+      slug: true,
       name: true,
       shortDescription: true,
       city: true,
@@ -258,6 +259,7 @@ const HOST_DETAIL_SELECT = {
         where: { isActive: true },
         select: {
           id: true,
+          slug: true,
           name: true,
           spaceType: true,
           capacity: true,

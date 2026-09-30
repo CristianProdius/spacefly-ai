@@ -4,6 +4,7 @@ import { randomUUID } from "node:crypto";
 import { pathToFileURL } from "node:url";
 import { Prisma } from "../packages/db/generated/prisma/index.js";
 import { prisma } from "../packages/db/src/client.ts";
+import { uniqueSpaceSlug, uniqueVenueSlug } from "./lib/listing-slugs.ts";
 import {
   buildPublicUploadUrl,
   getS3Client,
@@ -220,13 +221,16 @@ export const main = async () => {
         latitude: null,
         longitude: null,
         state: null,
-      } satisfies Prisma.VenueUncheckedCreateInput;
+      };
 
       if (matches[0]) {
         await tx.venue.update({ where: { id: matches[0].id }, data: venueData });
         return matches[0].id;
       }
-      const created = await tx.venue.create({ data: venueData, select: { id: true } });
+      const created = await tx.venue.create({
+        data: { ...venueData, slug: await uniqueVenueSlug(tx, venue.name, CITY) },
+        select: { id: true },
+      });
       return created.id;
     });
     venueCount += 1;
@@ -266,7 +270,7 @@ export const main = async () => {
         categorySlug: space.categorySlug,
         hostId: owner.id,
         venueId: savedVenueId,
-      } satisfies Prisma.SpaceUncheckedCreateInput;
+      };
 
       await prisma.$transaction(async (tx) => {
         const matches = await tx.space.findMany({
@@ -279,7 +283,12 @@ export const main = async () => {
         }
         const saved = matches[0]
           ? await tx.space.update({ where: { id: matches[0].id }, data })
-          : await tx.space.create({ data });
+          : await tx.space.create({
+              data: {
+                ...data,
+                slug: await uniqueSpaceSlug(tx, venue.name, space.name),
+              },
+            });
         await tx.spaceAmenity.deleteMany({ where: { spaceId: saved.id } });
         await tx.spaceAmenity.createMany({
           data: amenityIds.map((amenityId) => ({ spaceId: saved.id, amenityId })),

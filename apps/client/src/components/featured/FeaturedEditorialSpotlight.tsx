@@ -1,6 +1,6 @@
 "use client";
 
-import { Space } from "@repo/types";
+import { Space, spaceHref } from "@repo/types";
 import { Star, MapPin } from "lucide-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
@@ -38,7 +38,7 @@ export default function FeaturedEditorialSpotlight({
         <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-4">
           {/* Hero card — spans 2x2 */}
           <Link
-            href={`/spaces/${hero.id}`}
+            href={spaceHref(hero)}
             className="md:col-span-2 md:row-span-2 group relative rounded-xl overflow-hidden aspect-square md:aspect-auto"
           >
             <Image
@@ -79,7 +79,7 @@ export default function FeaturedEditorialSpotlight({
             return (
               <Link
                 key={space.id}
-                href={`/spaces/${space.id}`}
+                href={spaceHref(space)}
                 className="group relative rounded-xl overflow-hidden aspect-[4/3]"
               >
                 <Image

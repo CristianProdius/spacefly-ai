@@ -84,6 +84,7 @@ vi.mock("@repo/db", () => {
     space: {
       count: mocks.count,
       create: mocks.create,
+      findFirst: mocks.findUnique,
       findMany: mocks.findMany,
       findUnique: mocks.findUnique,
       update: mocks.update,
@@ -100,6 +101,7 @@ vi.mock("@repo/db", () => {
       groupBy: mocks.groupBy,
     },
     venue: {
+      findMany: vi.fn(),
       findUnique: mocks.venueFindUnique,
     },
     user: {

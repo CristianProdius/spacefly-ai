@@ -3,6 +3,7 @@ const CURRENCY_SYMBOLS: Record<string, string> = {
   EUR: "€",
   MDL: "MDL",
   RON: "RON",
+  GBP: "£",
 };
 
 const CURRENCY_POSITION: Record<string, "prefix" | "suffix"> = {
@@ -10,6 +11,7 @@ const CURRENCY_POSITION: Record<string, "prefix" | "suffix"> = {
   EUR: "prefix",
   MDL: "suffix",
   RON: "suffix",
+  GBP: "prefix",
 };
 
 // AUDIT-B5-FRONTEND (LOW-1): accept an optional next-intl `locale` so ro/ru

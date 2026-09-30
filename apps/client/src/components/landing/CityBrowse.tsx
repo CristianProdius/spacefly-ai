@@ -6,7 +6,7 @@ const cities = [
   { key: "NewYork", slug: "New York" },
   { key: "London", slug: "London" },
   { key: "SanFrancisco", slug: "San Francisco" },
-  { key: "Toronto", slug: "Toronto" },
+  { key: "Dublin", slug: "Dublin" },
   { key: "Berlin", slug: "Berlin" },
   { key: "Sydney", slug: "Sydney" },
 ] as const;

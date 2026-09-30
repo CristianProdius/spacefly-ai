@@ -10,7 +10,8 @@ const source = readFileSync(
 test("space detail host section links to the host profile", () => {
   assert.match(
     source,
-    /href=\{`\/hosts\/\$\{space\.host\.id\}`\}/,
+    // Slug URL (/hosts/<username>) via the shared helper, not the raw CUID.
+    /href=\{hostProfileHref\(space\.host\)\}/,
     "Hosted-by section should navigate to the host profile page",
   );
 });

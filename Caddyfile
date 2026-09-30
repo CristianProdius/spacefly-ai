@@ -6,6 +6,12 @@ spacefly.ai {
 	reverse_proxy client:3000
 }
 
+# www -> apex. Needs a DNS record for www.spacefly.ai (CNAME to spacefly.ai);
+# Caddy then issues the www certificate itself.
+www.spacefly.ai {
+	redir https://spacefly.ai{uri} permanent
+}
+
 admin.spacefly.ai {
 	reverse_proxy admin:3000
 }

@@ -1,6 +1,7 @@
 import { pathToFileURL } from "node:url";
 import { Prisma } from "../packages/db/generated/prisma/index.js";
 import { prisma } from "../packages/db/src/client.ts";
+import { uniqueSpaceSlug, uniqueVenueSlug } from "./lib/listing-slugs.ts";
 import {
   BUCHAREST_EXPAND,
   type CuratedExpandSpace,
@@ -94,12 +95,12 @@ export const main = async () => {
         categorySlug: space.categorySlug,
         hostId: existing.hostId,
         venueId: existing.id,
-      } satisfies Prisma.SpaceUncheckedCreateInput;
+      };
 
       await prisma.$transaction(async (tx) => {
         const m = await tx.space.findMany({ where: { name: space.name, venueId: existing.id }, select: { id: true }, orderBy: { id: "asc" } });
         if (m.length > 1) throw new Error(`Duplicate space ${space.name} in venue ${existing.id}`);
-        const saved = m[0] ? await tx.space.update({ where: { id: m[0].id }, data }) : await tx.space.create({ data });
+        const saved = m[0] ? await tx.space.update({ where: { id: m[0].id }, data }) : await tx.space.create({ data: { ...data, slug: await uniqueSpaceSlug(tx, existing.name, space.name) } });
         await tx.spaceAmenity.deleteMany({ where: { spaceId: saved.id } });
         await tx.spaceAmenity.createMany({ data: amenityIds.map((amenityId) => ({ spaceId: saved.id, amenityId })), skipDuplicates: true });
         await tx.availability.deleteMany({ where: { spaceId: saved.id } });

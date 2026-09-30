@@ -5,9 +5,11 @@ import { Link } from "@/i18n/navigation";
 import { Check, Megaphone, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { VerificationStatus } from "@repo/types";
+import { venueHref } from "@repo/types";
 
 export interface VenueListItem {
   id: number;
+  slug?: string;
   name: string;
   shortDescription: string;
   city: string;
@@ -40,7 +42,7 @@ const VenueCard = ({ venue }: { venue: VenueListItem }) => {
       ? `${venue.city}, ${venue.country}`
       : venue.city || venue.country || "";
   const heroImage = venue.images[0] ?? null;
-  const venueHref = `/venues/${venue.id}` as const;
+  const venueHrefValue = venueHref(venue);
   const hostingYear = venue.host.hostingSince
     ? new Date(venue.host.hostingSince).getFullYear()
     : null;
@@ -68,7 +70,7 @@ const VenueCard = ({ venue }: { venue: VenueListItem }) => {
   return (
     <div className="group">
       {/* IMAGE — links straight to the venue detail page. */}
-      <Link href={venueHref} className="block">
+      <Link href={venueHrefValue} className="block">
         <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-subtle">
           {heroImage ? (
             <Image
@@ -105,7 +107,7 @@ const VenueCard = ({ venue }: { venue: VenueListItem }) => {
 
       {/* DETAILS */}
       <div className="pt-3 flex flex-col gap-0.5">
-        <Link href={venueHref} className="min-w-0">
+        <Link href={venueHrefValue} className="min-w-0">
           <h3 className="font-semibold text-foreground line-clamp-1 hover:underline">
             {venue.name}
           </h3>

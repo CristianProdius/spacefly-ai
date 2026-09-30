@@ -6,9 +6,11 @@ import { Check, MapPin, Megaphone, Star } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { parseImages } from "@/lib/utils";
 import type { VerificationStatus } from "@repo/types";
+import { venueHref } from "@repo/types";
 
 interface VenueCardData {
   id: number;
+  slug?: string;
   name: string;
   shortDescription?: string;
   city: string;
@@ -46,7 +48,7 @@ const VenueSpaceCard = ({ venue }: { venue: VenueCardData }) => {
     },
   ];
   return (
-    <Link href={`/venues/${venue.id}`} className="group block">
+    <Link href={venueHref(venue)} className="group block">
       <div className="relative aspect-[4/3] rounded-xl overflow-hidden">
         <Image
           src={images[0] || "/placeholder-space.jpg"}

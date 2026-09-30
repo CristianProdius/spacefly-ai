@@ -67,6 +67,7 @@ enum Currency {
   EUR
   MDL
   RON
+  GBP
 }
 
 enum BookingActor {
@@ -247,6 +248,7 @@ model RevokedAccessToken {
 model Venue {
   id                      Int     @id @default(autoincrement())
   name                    String
+  slug                    String  @unique
   shortDescription        String  @default("")
   description             String  @default("")
   nameTranslations        Json? // { "ro": "...", "ru": "..." }
@@ -313,6 +315,7 @@ model ExchangeRate {
 model Space {
   id                      Int         @id @default(autoincrement())
   name                    String
+  slug                    String      @unique
   shortDescription        String
   description             String
   nameTranslations        Json? // { "ro": "...", "ru": "..." }

@@ -199,7 +199,8 @@ export const Currency: {
   USD: 'USD',
   EUR: 'EUR',
   MDL: 'MDL',
-  RON: 'RON'
+  RON: 'RON',
+  GBP: 'GBP'
 };
 
 export type Currency = (typeof Currency)[keyof typeof Currency]
@@ -11227,6 +11228,7 @@ export namespace Prisma {
   export type VenueMinAggregateOutputType = {
     id: number | null
     name: string | null
+    slug: string | null
     shortDescription: string | null
     description: string | null
     videoUrl: string | null
@@ -11251,6 +11253,7 @@ export namespace Prisma {
   export type VenueMaxAggregateOutputType = {
     id: number | null
     name: string | null
+    slug: string | null
     shortDescription: string | null
     description: string | null
     videoUrl: string | null
@@ -11275,6 +11278,7 @@ export namespace Prisma {
   export type VenueCountAggregateOutputType = {
     id: number
     name: number
+    slug: number
     shortDescription: number
     description: number
     nameTranslations: number
@@ -11318,6 +11322,7 @@ export namespace Prisma {
   export type VenueMinAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
     shortDescription?: true
     description?: true
     videoUrl?: true
@@ -11342,6 +11347,7 @@ export namespace Prisma {
   export type VenueMaxAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
     shortDescription?: true
     description?: true
     videoUrl?: true
@@ -11366,6 +11372,7 @@ export namespace Prisma {
   export type VenueCountAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
     shortDescription?: true
     description?: true
     nameTranslations?: true
@@ -11482,6 +11489,7 @@ export namespace Prisma {
   export type VenueGroupByOutputType = {
     id: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations: JsonValue | null
@@ -11530,6 +11538,7 @@ export namespace Prisma {
   export type VenueSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -11562,6 +11571,7 @@ export namespace Prisma {
   export type VenueSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -11592,6 +11602,7 @@ export namespace Prisma {
   export type VenueSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -11622,6 +11633,7 @@ export namespace Prisma {
   export type VenueSelectScalar = {
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -11648,7 +11660,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "images" | "videoUrl" | "workingHours" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "currency" | "venueVerificationStatus" | "venueRecommended" | "venueSponsored" | "hostId" | "timezone" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
+  export type VenueOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "images" | "videoUrl" | "workingHours" | "address" | "city" | "state" | "country" | "postalCode" | "latitude" | "longitude" | "currency" | "venueVerificationStatus" | "venueRecommended" | "venueSponsored" | "hostId" | "timezone" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["venue"]>
   export type VenueInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     spaces?: boolean | Venue$spacesArgs<ExtArgs>
@@ -11670,6 +11682,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
+      slug: string
       shortDescription: string
       description: string
       nameTranslations: Prisma.JsonValue | null
@@ -12121,6 +12134,7 @@ export namespace Prisma {
   interface VenueFieldRefs {
     readonly id: FieldRef<"Venue", 'Int'>
     readonly name: FieldRef<"Venue", 'String'>
+    readonly slug: FieldRef<"Venue", 'String'>
     readonly shortDescription: FieldRef<"Venue", 'String'>
     readonly description: FieldRef<"Venue", 'String'>
     readonly nameTranslations: FieldRef<"Venue", 'Json'>
@@ -13668,6 +13682,7 @@ export namespace Prisma {
   export type SpaceMinAggregateOutputType = {
     id: number | null
     name: string | null
+    slug: string | null
     shortDescription: string | null
     description: string | null
     spaceType: $Enums.SpaceType | null
@@ -13695,6 +13710,7 @@ export namespace Prisma {
   export type SpaceMaxAggregateOutputType = {
     id: number | null
     name: string | null
+    slug: string | null
     shortDescription: string | null
     description: string | null
     spaceType: $Enums.SpaceType | null
@@ -13722,6 +13738,7 @@ export namespace Prisma {
   export type SpaceCountAggregateOutputType = {
     id: number
     name: number
+    slug: number
     shortDescription: number
     description: number
     nameTranslations: number
@@ -13779,6 +13796,7 @@ export namespace Prisma {
   export type SpaceMinAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
     shortDescription?: true
     description?: true
     spaceType?: true
@@ -13806,6 +13824,7 @@ export namespace Prisma {
   export type SpaceMaxAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
     shortDescription?: true
     description?: true
     spaceType?: true
@@ -13833,6 +13852,7 @@ export namespace Prisma {
   export type SpaceCountAggregateInputType = {
     id?: true
     name?: true
+    slug?: true
     shortDescription?: true
     description?: true
     nameTranslations?: true
@@ -13951,6 +13971,7 @@ export namespace Prisma {
   export type SpaceGroupByOutputType = {
     id: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations: JsonValue | null
@@ -14001,6 +14022,7 @@ export namespace Prisma {
   export type SpaceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -14043,6 +14065,7 @@ export namespace Prisma {
   export type SpaceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -14077,6 +14100,7 @@ export namespace Prisma {
   export type SpaceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -14111,6 +14135,7 @@ export namespace Prisma {
   export type SpaceSelectScalar = {
     id?: boolean
     name?: boolean
+    slug?: boolean
     shortDescription?: boolean
     description?: boolean
     nameTranslations?: boolean
@@ -14139,7 +14164,7 @@ export namespace Prisma {
     categorySlug?: boolean
   }
 
-  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "pricePerMonth" | "cleaningFee" | "currency" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "videoUrl" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
+  export type SpaceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "slug" | "shortDescription" | "description" | "nameTranslations" | "shortDescTranslations" | "descriptionTranslations" | "spaceType" | "pricingType" | "pricePerHour" | "pricePerDay" | "pricePerMonth" | "cleaningFee" | "currency" | "capacity" | "minBookingHours" | "maxBookingHours" | "images" | "videoUrl" | "isActive" | "instantBook" | "cancellationPolicy" | "houseRules" | "createdAt" | "updatedAt" | "hostId" | "venueId" | "categorySlug", ExtArgs["result"]["space"]>
   export type SpaceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     host?: boolean | UserDefaultArgs<ExtArgs>
     venue?: boolean | VenueDefaultArgs<ExtArgs>
@@ -14181,6 +14206,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
+      slug: string
       shortDescription: string
       description: string
       nameTranslations: Prisma.JsonValue | null
@@ -14642,6 +14668,7 @@ export namespace Prisma {
   interface SpaceFieldRefs {
     readonly id: FieldRef<"Space", 'Int'>
     readonly name: FieldRef<"Space", 'String'>
+    readonly slug: FieldRef<"Space", 'String'>
     readonly shortDescription: FieldRef<"Space", 'String'>
     readonly description: FieldRef<"Space", 'String'>
     readonly nameTranslations: FieldRef<"Space", 'Json'>
@@ -28113,6 +28140,7 @@ export namespace Prisma {
   export const VenueScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    slug: 'slug',
     shortDescription: 'shortDescription',
     description: 'description',
     nameTranslations: 'nameTranslations',
@@ -28157,6 +28185,7 @@ export namespace Prisma {
   export const SpaceScalarFieldEnum: {
     id: 'id',
     name: 'name',
+    slug: 'slug',
     shortDescription: 'shortDescription',
     description: 'description',
     nameTranslations: 'nameTranslations',
@@ -29187,6 +29216,7 @@ export namespace Prisma {
     NOT?: VenueWhereInput | VenueWhereInput[]
     id?: IntFilter<"Venue"> | number
     name?: StringFilter<"Venue"> | string
+    slug?: StringFilter<"Venue"> | string
     shortDescription?: StringFilter<"Venue"> | string
     description?: StringFilter<"Venue"> | string
     nameTranslations?: JsonNullableFilter<"Venue">
@@ -29218,6 +29248,7 @@ export namespace Prisma {
   export type VenueOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     nameTranslations?: SortOrderInput | SortOrder
@@ -29248,6 +29279,7 @@ export namespace Prisma {
 
   export type VenueWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    slug?: string
     AND?: VenueWhereInput | VenueWhereInput[]
     OR?: VenueWhereInput[]
     NOT?: VenueWhereInput | VenueWhereInput[]
@@ -29278,11 +29310,12 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Venue"> | Date | string
     host?: XOR<UserScalarRelationFilter, UserWhereInput>
     spaces?: SpaceListRelationFilter
-  }, "id">
+  }, "id" | "slug">
 
   export type VenueOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     nameTranslations?: SortOrderInput | SortOrder
@@ -29320,6 +29353,7 @@ export namespace Prisma {
     NOT?: VenueScalarWhereWithAggregatesInput | VenueScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Venue"> | number
     name?: StringWithAggregatesFilter<"Venue"> | string
+    slug?: StringWithAggregatesFilter<"Venue"> | string
     shortDescription?: StringWithAggregatesFilter<"Venue"> | string
     description?: StringWithAggregatesFilter<"Venue"> | string
     nameTranslations?: JsonNullableWithAggregatesFilter<"Venue">
@@ -29412,6 +29446,7 @@ export namespace Prisma {
     NOT?: SpaceWhereInput | SpaceWhereInput[]
     id?: IntFilter<"Space"> | number
     name?: StringFilter<"Space"> | string
+    slug?: StringFilter<"Space"> | string
     shortDescription?: StringFilter<"Space"> | string
     description?: StringFilter<"Space"> | string
     nameTranslations?: JsonNullableFilter<"Space">
@@ -29453,6 +29488,7 @@ export namespace Prisma {
   export type SpaceOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     nameTranslations?: SortOrderInput | SortOrder
@@ -29493,6 +29529,7 @@ export namespace Prisma {
 
   export type SpaceWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    slug?: string
     AND?: SpaceWhereInput | SpaceWhereInput[]
     OR?: SpaceWhereInput[]
     NOT?: SpaceWhereInput | SpaceWhereInput[]
@@ -29533,11 +29570,12 @@ export namespace Prisma {
     blockedDates?: BlockedDateListRelationFilter
     bookings?: BookingListRelationFilter
     reviews?: ReviewListRelationFilter
-  }, "id">
+  }, "id" | "slug">
 
   export type SpaceOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     nameTranslations?: SortOrderInput | SortOrder
@@ -29577,6 +29615,7 @@ export namespace Prisma {
     NOT?: SpaceScalarWhereWithAggregatesInput | SpaceScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Space"> | number
     name?: StringWithAggregatesFilter<"Space"> | string
+    slug?: StringWithAggregatesFilter<"Space"> | string
     shortDescription?: StringWithAggregatesFilter<"Space"> | string
     description?: StringWithAggregatesFilter<"Space"> | string
     nameTranslations?: JsonNullableWithAggregatesFilter<"Space">
@@ -31065,6 +31104,7 @@ export namespace Prisma {
 
   export type VenueCreateInput = {
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31095,6 +31135,7 @@ export namespace Prisma {
   export type VenueUncheckedCreateInput = {
     id?: number
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31124,6 +31165,7 @@ export namespace Prisma {
 
   export type VenueUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31154,6 +31196,7 @@ export namespace Prisma {
   export type VenueUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31184,6 +31227,7 @@ export namespace Prisma {
   export type VenueCreateManyInput = {
     id?: number
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31212,6 +31256,7 @@ export namespace Prisma {
 
   export type VenueUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31240,6 +31285,7 @@ export namespace Prisma {
   export type VenueUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31328,6 +31374,7 @@ export namespace Prisma {
 
   export type SpaceCreateInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31366,6 +31413,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31403,6 +31451,7 @@ export namespace Prisma {
 
   export type SpaceUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31441,6 +31490,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31479,6 +31529,7 @@ export namespace Prisma {
   export type SpaceCreateManyInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31509,6 +31560,7 @@ export namespace Prisma {
 
   export type SpaceUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -31537,6 +31589,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -33077,6 +33130,7 @@ export namespace Prisma {
   export type VenueCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     nameTranslations?: SortOrder
@@ -33112,6 +33166,7 @@ export namespace Prisma {
   export type VenueMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     videoUrl?: SortOrder
@@ -33136,6 +33191,7 @@ export namespace Prisma {
   export type VenueMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     videoUrl?: SortOrder
@@ -33390,6 +33446,7 @@ export namespace Prisma {
   export type SpaceCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     nameTranslations?: SortOrder
@@ -33433,6 +33490,7 @@ export namespace Prisma {
   export type SpaceMaxOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     spaceType?: SortOrder
@@ -33460,6 +33518,7 @@ export namespace Prisma {
   export type SpaceMinOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
+    slug?: SortOrder
     shortDescription?: SortOrder
     description?: SortOrder
     spaceType?: SortOrder
@@ -36229,6 +36288,7 @@ export namespace Prisma {
 
   export type VenueCreateWithoutHostInput = {
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -36258,6 +36318,7 @@ export namespace Prisma {
   export type VenueUncheckedCreateWithoutHostInput = {
     id?: number
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -36296,6 +36357,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutHostInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -36333,6 +36395,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutHostInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -36762,6 +36825,7 @@ export namespace Prisma {
     NOT?: VenueScalarWhereInput | VenueScalarWhereInput[]
     id?: IntFilter<"Venue"> | number
     name?: StringFilter<"Venue"> | string
+    slug?: StringFilter<"Venue"> | string
     shortDescription?: StringFilter<"Venue"> | string
     description?: StringFilter<"Venue"> | string
     nameTranslations?: JsonNullableFilter<"Venue">
@@ -36810,6 +36874,7 @@ export namespace Prisma {
     NOT?: SpaceScalarWhereInput | SpaceScalarWhereInput[]
     id?: IntFilter<"Space"> | number
     name?: StringFilter<"Space"> | string
+    slug?: StringFilter<"Space"> | string
     shortDescription?: StringFilter<"Space"> | string
     description?: StringFilter<"Space"> | string
     nameTranslations?: JsonNullableFilter<"Space">
@@ -37858,6 +37923,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutVenueInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -37895,6 +37961,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutVenueInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -38113,6 +38180,7 @@ export namespace Prisma {
 
   export type VenueCreateWithoutSpacesInput = {
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -38142,6 +38210,7 @@ export namespace Prisma {
   export type VenueUncheckedCreateWithoutSpacesInput = {
     id?: number
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -38515,6 +38584,7 @@ export namespace Prisma {
 
   export type VenueUpdateWithoutSpacesInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -38544,6 +38614,7 @@ export namespace Prisma {
   export type VenueUncheckedUpdateWithoutSpacesInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -38787,6 +38858,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutCategoryInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -38824,6 +38896,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutCategoryInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39003,6 +39076,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutAmenitiesInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39040,6 +39114,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutAmenitiesInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39112,6 +39187,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutAmenitiesInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39149,6 +39225,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutAmenitiesInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39211,6 +39288,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutPricingTiersInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39248,6 +39326,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutPricingTiersInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39300,6 +39379,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutPricingTiersInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39337,6 +39417,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutPricingTiersInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39373,6 +39454,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutMonthlyPlansInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39410,6 +39492,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutMonthlyPlansInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39536,6 +39619,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutMonthlyPlansInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39573,6 +39657,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutMonthlyPlansInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39625,6 +39710,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutAvailabilityInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39662,6 +39748,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutAvailabilityInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39714,6 +39801,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutAvailabilityInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39751,6 +39839,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutAvailabilityInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39787,6 +39876,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutBlockedDatesInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39824,6 +39914,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutBlockedDatesInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39876,6 +39967,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutBlockedDatesInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -39913,6 +40005,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutBlockedDatesInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40099,6 +40192,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutBookingsInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40136,6 +40230,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutBookingsInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40400,6 +40495,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutBookingsInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40437,6 +40533,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutBookingsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40610,6 +40707,7 @@ export namespace Prisma {
 
   export type SpaceCreateWithoutReviewsInput = {
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40647,6 +40745,7 @@ export namespace Prisma {
   export type SpaceUncheckedCreateWithoutReviewsInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40849,6 +40948,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutReviewsInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -40886,6 +40986,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutReviewsInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41188,6 +41289,7 @@ export namespace Prisma {
   export type VenueCreateManyHostInput = {
     id?: number
     name: string
+    slug: string
     shortDescription?: string
     description?: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41216,6 +41318,7 @@ export namespace Prisma {
   export type SpaceCreateManyHostInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41445,6 +41548,7 @@ export namespace Prisma {
 
   export type VenueUpdateWithoutHostInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41474,6 +41578,7 @@ export namespace Prisma {
   export type VenueUncheckedUpdateWithoutHostInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41503,6 +41608,7 @@ export namespace Prisma {
   export type VenueUncheckedUpdateManyWithoutHostInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41530,6 +41636,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutHostInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41567,6 +41674,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutHostInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41604,6 +41712,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateManyWithoutHostInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41931,6 +42040,7 @@ export namespace Prisma {
   export type SpaceCreateManyVenueInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41960,6 +42070,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutVenueInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -41997,6 +42108,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutVenueInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -42034,6 +42146,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateManyWithoutVenueInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -42374,6 +42487,7 @@ export namespace Prisma {
   export type SpaceCreateManyCategoryInput = {
     id?: number
     name: string
+    slug: string
     shortDescription: string
     description: string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -42403,6 +42517,7 @@ export namespace Prisma {
 
   export type SpaceUpdateWithoutCategoryInput = {
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -42440,6 +42555,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateWithoutCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue
@@ -42477,6 +42593,7 @@ export namespace Prisma {
   export type SpaceUncheckedUpdateManyWithoutCategoryInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     shortDescription?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     nameTranslations?: NullableJsonNullValueInput | InputJsonValue

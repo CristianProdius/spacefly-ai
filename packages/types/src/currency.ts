@@ -1,4 +1,4 @@
-export type Currency = "USD" | "EUR" | "MDL" | "RON";
+export type Currency = "USD" | "EUR" | "MDL" | "RON" | "GBP";
 
 export interface ExchangeRate {
   id: number;
@@ -23,6 +23,7 @@ export const CURRENCIES: readonly Currency[] = [
   "EUR",
   "MDL",
   "RON",
+  "GBP",
 ] as const;
 
 // MDL/RON use their ISO code as the symbol: a bare "L" was ambiguous between
@@ -32,6 +33,7 @@ export const CURRENCY_SYMBOLS: Record<Currency, string> = {
   EUR: "€",
   MDL: "MDL",
   RON: "RON",
+  GBP: "£",
 };
 
 export const CURRENCY_LABELS: Record<Currency, string> = {
@@ -39,6 +41,7 @@ export const CURRENCY_LABELS: Record<Currency, string> = {
   EUR: "Euro (EUR)",
   MDL: "Moldovan Leu (MDL)",
   RON: "Romanian Leu (RON)",
+  GBP: "British Pound (GBP)",
 };
 
 export const PRICING_TIER_PRESETS = [

@@ -20,6 +20,7 @@ export type WorkingHours = Record<WeekdayKey, WorkingHoursDay | null>;
 
 export interface Venue {
   id: number;
+  slug?: string;
   name: string;
   shortDescription: string;
   description: string;
@@ -64,6 +65,7 @@ export interface VenueWithHost extends Venue {
 
 export interface VenueSpaceSummary {
   id: number;
+  slug?: string;
   name: string;
   spaceType: string;
   capacity: number;
@@ -105,6 +107,7 @@ export interface HostSummary {
 
 export interface HostVenueCard {
   id: number;
+  slug?: string;
   name: string;
   shortDescription: string;
   city: string;
